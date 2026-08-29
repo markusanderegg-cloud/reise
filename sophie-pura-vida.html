@@ -62,7 +62,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .ikon { display: inline-flex; align-items: center; }
 .verborgen { display: none; }
 .verborgen.offen { display: block; margin-top: 14px; }
-.abstandoben { margin-top: 38px; }
+.abstandoben { margin-top: 30px; }
 .abstandunten { margin-bottom: 12px; }
 .vorzeile { white-space: pre-line; }
 .brechen { word-break: break-all; }
@@ -81,7 +81,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .polster { padding: 10px 14px; }
 
 .klein { font-size: 12.5px; color: var(--grau); }
-.klein2 { font-size: 17px; }
+.klein2 { font-size: 16px; }
 .hinweis { font-size: 13px; color: var(--grau); line-height: 1.5; }
 .text { font-size: 14px; line-height: 1.6; }
 .notiz { font-size: 12.5px; color: var(--terra); margin-top: 5px; }
@@ -113,7 +113,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 
 .kopf { margin-bottom: 24px; margin-top: 6px; }
-.kopf h1 { font-family: var(--serif); font-size: 30px; line-height: 1.1; margin: 0; color: var(--ink); }
+.kopf h1 { font-family: var(--serif); font-size: 24px; line-height: 1.1; margin: 0; color: var(--ink); }
 .kopf .unter { font-size: 14px; color: var(--grau); margin: 8px 0 0; line-height: 1.55; }
 .zurueck {
   display: inline-flex; align-items: center; gap: 4px;
@@ -140,7 +140,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   background: var(--karte); border: 1px solid var(--linie);
   border-radius: 16px; padding: 14px 16px; text-align: left;
 }
-.kacheltitel { font-family: var(--serif); font-size: 19px; line-height: 1.15; margin-bottom: 5px; }
+.kacheltitel { font-family: var(--serif); font-size: 16px; line-height: 1.2; margin-bottom: 5px; }
 
 /* ── Rundknöpfe ── */
 
@@ -173,8 +173,8 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 
 /* ── Textblöcke ── */
 
-.blocktitel { font-family: var(--serif); font-size: 17px; margin-bottom: 12px; }
-.abschnitt { font-family: var(--serif); font-size: 19px; }
+.blocktitel { font-family: var(--serif); font-size: 15px; margin-bottom: 10px; }
+.abschnitt { font-family: var(--serif); font-size: 16px; }
 .punkte li {
   position: relative; padding-left: 18px; font-size: 14px; line-height: 1.55; margin-bottom: 10px;
 }
@@ -260,8 +260,9 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 /* ── Route ── */
 
 .zeitstrahl { position: relative; padding-left: 26px; }
-.zeitstrahl::before {
-  content: ""; position: absolute; left: 7px; top: 8px; bottom: 20px;
+.strang { position: relative; padding-left: 26px; }
+.strang::before {
+  content: ""; position: absolute; left: 7px; top: 8px; bottom: 22px;
   width: 2px; background: var(--sand-tief);
 }
 .etappe { position: relative; margin-bottom: 20px; }
@@ -270,19 +271,41 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   background: var(--terra); border: 2px solid var(--terra);
 }
 .etappe .punkt.offen { background: var(--sand); border-color: var(--grau); }
-.etappenort { font-family: var(--serif); font-size: 19px; margin: 3px 0 4px; }
+.etappenort { font-family: var(--serif); font-size: 16px; margin: 3px 0 4px; }
 
 
-/* ── Aufklappbare Blöcke ── */
-.faltkarte { padding: 0; }
+/* ── Aufklappbare Blöcke: leichte Zeilen statt Karten ── */
+.blockband {
+  background: var(--karte); border: 0; border-radius: 12px;
+  overflow: hidden; margin-bottom: 14px; padding: 6px 0;
+}
+.bandtitel {
+  font-family: var(--serif); font-size: 17px; line-height: 1.15; color: var(--ink);
+  padding: 12px 14px 7px; margin: 0 14px 5px 22px;
+  border-bottom: 1px solid var(--linie); padding-left: 0; padding-right: 0;
+}
+.faltkarte {
+  padding: 0; background: none; border: 0; border-radius: 0; margin: 0;
+}
 .faltkopf {
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  width: 100%; padding: 16px 18px; text-align: left;
+  width: 100%; padding: 6px 15px; text-align: left;
 }
 .blocktitel.ohneabstand { margin-bottom: 0; }
 .faltpfeil { display: inline-flex; flex-shrink: 0; transition: transform .15s; }
 .faltpfeil.auf { transform: rotate(180deg); }
-.faltinhalt { display: none; padding: 0 18px 16px; }
+.faltinhalt { display: none; padding: 0 14px 11px; }
+
+/* Sofortmassnahme und Zusatzinformation behalten ihre Fläche */
+.karte.faltkarte.dringend, .karte.faltkarte.zusatz {
+  border: 1px solid; border-radius: 12px; margin: 4px 0 10px;
+}
+.karte.faltkarte.dringend { background: var(--alarm-hell); border-color: #EBC6C0; }
+.karte.faltkarte.zusatz { background: #FBF3DC; border-color: #EBDFBC; }
+.karte.faltkarte.dringend .faltkopf,
+.karte.faltkarte.zusatz .faltkopf { padding: 13px 14px; }
+.karte.faltkarte.dringend .faltinhalt,
+.karte.faltkarte.zusatz .faltinhalt { padding: 0 14px 14px; }
 .faltinhalt.offen { display: block; }
 
 .begriff { display: block; font-size: 14px; font-weight: 600; line-height: 1.45; }
@@ -299,6 +322,14 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 .gruppentitel {
   font-size: 11px; color: var(--grau); letter-spacing: .08em; text-transform: uppercase;
+}
+/* Grössenordnung der App:
+   Seitentitel 30 · Bereich 19 · Block 15 · Text 14 · Hinweis 13 · Etikett 11.
+   Eine Überschrift ist nie kleiner als das, was unter ihr steht. */
+.gruppentitel.klein3 {
+  font-family: var(--serif); font-size: 17px; letter-spacing: 0;
+  text-transform: none; color: var(--ink); font-weight: 400;
+  margin: 0 0 7px 3px;
 }
 .zuknopf { font-size: 12.5px; color: var(--terra); }
 .mehrknopf { font-size: 12.5px; color: var(--grau); margin: -8px 0 20px; display: block; }
@@ -319,7 +350,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .heldtitel { font-family: var(--serif); font-size: 27px; color: #211C18; line-height: 1.15; }
 .heldunter { font-size: 13.5px; line-height: 1.5; color: #5A524C; margin-top: 8px; }
 .heldlupe {
-  width: 40px; height: 40px; border-radius: 20px; flex-shrink: 0;
+  width: 40px; height: 40px; border-radius: 20px; flex-shrink: 0; margin-top: 29px;
   background: var(--sand); border: 1px solid var(--linie);
   display: flex; align-items: center; justify-content: center;
 }
@@ -345,7 +376,6 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   width: 62px; flex-shrink: 0; font-size: 11.5px; color: var(--terra);
   letter-spacing: .04em; text-transform: uppercase;
 }
-.terminwas { display: block; font-size: 14px; line-height: 1.45; margin-top: 2px; }
 
 /* ── Eigene Punkte in Checklisten ── */
 .hakenzeile { display: flex; align-items: flex-start; }
@@ -392,7 +422,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 
 /* Schmale Notfallleiste auf der Startseite */
-.notfallzeile { display: flex; justify-content: flex-end; margin-top: 18px; }
+.notfallzeile { display: flex; justify-content: flex-end; margin-top: 46px; margin-bottom: 4px; }
 .notfallleiste {
   display: inline-flex; align-items: center; gap: 10px;
   background: var(--alarm-hell); border: 1px solid #EBC6C0;
@@ -439,7 +469,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 
   /* Karten etwas grosszügiger */
   .karte { padding: 20px 22px; }
-  .kopf h1 { font-size: 34px; }
+  .kopf h1 { font-size: 26px; }
 }
 
 /* ── Terminliste auf der Startseite ── */
@@ -453,7 +483,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 .terminhaken .box.an { background: var(--terra); border-color: var(--terra); }
 .terminknopf { flex: 1; text-align: left; }
-.terminwas { display: block; font-size: 13.5px; font-weight: 600; line-height: 1.3; margin-top: 1px; }
+.terminwas { display: block; font-size: 14px; line-height: 1.45; margin-top: 2px; }
 .terminwann {
   display: block; font-size: 10.5px; color: var(--grau);
   letter-spacing: .05em; text-transform: uppercase;
@@ -478,6 +508,134 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
               border-top: 1px solid var(--linie); }
 .offenwann { color: var(--terra); font-size: 12px; }
 
+/* ── Sprung zu einer anderen Stelle in der App ── */
+.sprung {
+  display: flex; align-items: center; gap: 8px; width: 100%; text-align: left;
+  background: var(--sand); border: 1px solid var(--linie); border-radius: 10px;
+  padding: 9px 12px; margin-top: 4px;
+}
+.sprungtext { flex: 1; font-size: 13.5px; color: var(--terra); }
+.sprungpfeil { display: inline-flex; transform: rotate(-90deg); }
+
+.registernr {
+  font-size: 10.5px; color: var(--terra); letter-spacing: .06em;
+  text-transform: uppercase; margin-bottom: 3px;
+}
+
+/* ── Notfall: Nummernknopf oben, Reiter darunter ── */
+.notfallreiter { margin-bottom: 14px; }
+.nummernknopf {
+  display: flex; align-items: center; justify-content: center; gap: 9px; width: 100%;
+  background: var(--alarm-hell); border: 1px solid #EBC6C0; border-radius: 12px;
+  padding: 11px; margin-bottom: 9px;
+  font-family: var(--serif); font-size: 16px; color: var(--alarm);
+}
+.nummernknopf.an { background: var(--alarm); border-color: var(--alarm); color: #fff; }
+.notfallreiter .reiter { margin-bottom: 0; }
+
+.hinweiskarte { border-left: 3px solid var(--terra); }
+
+/* ── Sofortmassnahmen: heller Alarmgrund, roter Rand ── */
+.karte.dringend {
+  background: var(--alarm-hell);
+  border-color: #EBC6C0;
+  border-left: 3px solid var(--alarm);
+}
+.karte.dringend .blocktitel { color: var(--alarm); }
+.karte.dringend .faltpfeil svg { stroke: var(--alarm); }
+
+/* Wochenende-Kasten auf der Startseite: enger gesetzt */
+.wochenende .haken { padding: 4px 0; }
+.wochenende .hakentext { line-height: 1.35; }
+.wochenende .neuzeile { margin-top: 6px; padding-top: 8px; }
+
+
+.faltkarte .zeile.mitte { flex: 1; }
+
+.gesamtstand { font-family: var(--serif); font-size: 17px; color: var(--terra); }
+
+/* ── Etappen als Knopf ── */
+.etappeknopf { position: relative; width: 100%; text-align: left; background: none; border: 0; }
+.etappepfeil {
+  position: absolute; right: 0; top: 2px;
+  display: inline-flex; transform: rotate(-90deg);
+}
+.zurueckzeile {
+  display: flex; align-items: center; gap: 6px; background: none; border: 0;
+  font-size: 13px; color: var(--terra); padding: 0 0 6px;
+}
+.zurueckpfeil { display: inline-flex; transform: rotate(90deg); }
+.landtitel { font-family: var(--serif); font-size: 22px; color: var(--tinte); margin-bottom: 10px; }
+
+/* Länderfarben im Zeitstrahl */
+.ortlabel.gt { color: #7A6A4F; letter-spacing: 0.1em; }
+.ortlabel.cr { color: #4E6B52; letter-spacing: 0.1em; }
+
+.flagge { border-radius: 2px; vertical-align: middle; }
+.ortlabel.zeile { display: flex; align-items: center; gap: 6px; }
+.ortlabel.pe { color: #A33; letter-spacing: 0.1em; }
+
+/* Ländermarke im Zeitstrahl */
+.landmarke {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--serif); font-size: 20px; letter-spacing: -0.01em;
+  margin: 26px 0 10px; padding: 0;
+}
+.landmarke:first-child { margin-top: 2px; }
+.landmarke.gt { color: #7A6A4F; }
+.landmarke.cr { color: #4E6B52; }
+.landmarke.pe { color: #A33; }
+
+.landknopf { background: none; border: 0; width: 100%; text-align: left; }
+.landpfeil { display: inline-flex; transform: rotate(-90deg); opacity: .55; margin-left: 2px; }
+
+/* Notruf 911: Nummer links, Text daneben, Telefon rechts */
+.notrufzeile { align-items: center; gap: 14px; }
+.notrufnr {
+  font-family: var(--serif); font-size: 32px; line-height: 1;
+  color: var(--alarm); flex-shrink: 0;
+}
+
+.chip.chipalarm { color: var(--alarm); border-color: #EBC6C0; }
+.chip.chipalarm.an { background: var(--alarm); border-color: var(--alarm); color: #fff; }
+
+/* Zusatzinformation: leicht gelb hinterlegt */
+.karte.zusatz { background: #FBF3DC; border-color: #EBDFBC; }
+.karte.zusatz .blocktitel { color: #7A6320; }
+.karte.zusatz .faltpfeil svg { stroke: #9A7D28; }
+
+/* Begriff mit Zusatztext */
+.mitmehr { list-style: none; }
+.mehrknopfzeile { display: flex; align-items: baseline; gap: 8px; text-align: left; }
+.mehrmarke {
+  display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0;
+  background: #FBF3DC; border: 1px solid #E8D9AE; border-radius: 11px;
+  padding: 2px 9px 2px 4px; margin-left: 8px;
+}
+.mehrmarke.auf { background: #F3E7C6; }
+.mehrzeichen {
+  width: 15px; height: 15px; border-radius: 8px; flex-shrink: 0;
+  background: #E0CE96; color: #6B551A; font-size: 10.5px; line-height: 15px;
+  text-align: center; font-style: italic; font-weight: 600;
+}
+.mehrtext { font-size: 11.5px; color: #7A6320; white-space: nowrap; }
+.mehrbox {
+  display: none; background: #FBF3DC; border: 1px solid #EBDFBC; border-radius: 10px;
+  padding: 10px 12px; margin: 8px 0 2px;
+}
+.mehrbox.offen { display: block; }
+.mehrbox .text { font-size: 13px; line-height: 1.5; color: #5C4C1C; }
+
+/* Einträge in einer Gruppe: kleiner und in Navy, damit der Titel führt */
+.blockband .faltkopf .blocktitel {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-size: 14px; font-weight: 400; color: #55504A; letter-spacing: 0;
+}
+
+
+/* Nach dem roten Sofortblock beginnt der ruhige Teil – deutlich mehr Luft */
+.karte.faltkarte.dringend + .gruppentitel.klein3 { margin-top: 44px; }
+
 </style>
 </head>
 <body>
@@ -491,35 +649,33 @@ const KARTE_CR = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAkGBwg
 
 const NOTRUF = [
   { label: "Notruf Guatemala und Costa Rica", nr: "911", hint: "Polizei, Ambulanz, Feuerwehr" },
-  { label: "BKB Debit Mastercard sperren", nr: "+41612663333", zeige: "+41 61 266 33 33", hint: "Selbst sperren – vor jeder anderen Meldung" },
-  { label: "BKB StudCard Debit sperren", nr: "+41589588383", zeige: "+41 58 958 83 83", hint: "Alternativ in der BKB-App „One“" },
-  { label: "Visana – Notfälle Ausland, 24 h", nr: "+41848848855", zeige: "+41 848 848 855", hint: "Vor jeder teuren Behandlung und vor jedem Transport" },
+  { label: "BKB STU Visa Debit sperren", nr: "+41589588383", zeige: "+41 58 958 83 83", hint: "Nur ohne Internet – mit Internet in der App „one“, gratis" },
   { label: "Visana – Karten, Gepäck, Annullation", nr: "+41446285280", zeige: "+41 44 628 52 80", hint: "Erst nach eigener Sperrung. Sperrt die restlichen Karten" },
+  { label: "Visana – Notfälle Ausland, 24 h", nr: "+41848848855", zeige: "+41 848 848 855", hint: "Vor jeder teuren Behandlung und vor jedem Transport" },
   { label: "Rega – Rücktransport", nr: "+41333333333", zeige: "+41 333 333 333", hint: "Helikopter, Ambulanzflug, Rückführung in die Schweiz" },
-  { label: "EDA-Helpline Bern", nr: "+41800247365", zeige: "+41 800 24 7 365", hint: "Rund um die Uhr, wenn die Botschaften zu sind" },
-  { label: "Botschaft Guatemala-Stadt", nr: "+50223675520", zeige: "+502 2 367 55 20", hint: "Nur diplomatisch – konsularisch hilft San José" },
-  { label: "Botschaft San José – konsularisch für beide Länder", nr: "+50622214829", zeige: "+506 22 21 48 29", hint: "Auch für Guatemala zuständig: Notpass, Ausweise" },
+  { label: "EDA-Helpline Bern", nr: "+41584653333", zeige: "+41 58 465 33 33", hint: "Rund um die Uhr. Bei Passverlust zuerst hier anrufen – sie sagt, welche Stelle zuständig ist" },
+  { label: "Botschaft Guatemala-Stadt", nr: "+50223675520", zeige: "+502 2 367 55 20", hint: "Nur diplomatisch – Pässe und Ausweise laufen über San José" },
+  { label: "Konsularcenter San José", nr: "+50622214829", zeige: "+506 22 21 48 29", hint: "Zuständig für Pässe und Ausweise – auch für Guatemala" },
 ];
 
 const ERSTE_MINUTEN = [
-  ["Karten selbst sperren", "Revolut in der App einfrieren, dann die BKB-Karte telefonisch. Erst danach Visana. Immer beide informieren – die Bank zuerst, denn für die Haftung zählt der Zeitpunkt deiner Meldung."],
-  ["Polizeianzeige („denuncia“)", "Guatemala: Proatur oder PNC. Costa Rica: OIJ. Ohne Rapport zahlt keine Versicherung und stellt kein Konsulat einen Ersatzpass aus. Kopie sofort fotografieren."],
-  ["Zu Hause anrufen", "Sie können parallel telefonieren, während du auf dem Posten sitzt – und dir sofort Geld schicken."],
-  ["Liste machen, was genau fehlt", "Portemonnaie, Rucksack oder Spind – der Umfang bestimmt, was als Nächstes zu tun ist."],
-  ["Bei Gerätediebstahl: Verlustmodus, nicht löschen", "„Wo ist?“ muss über den ganzen Anspruch aktiv bleiben, sonst verfällt AppleCare."],
+  ["In Sicherheit gehen", "Weg vom Ort, hinein in ein Geschäft, ein Hotel oder eine Tankstelle. Alles Weitere machst du im Sitzen, nicht auf der Strasse."],
+  ["Bei Verletzung oder Gefahr: 911", "Gilt in Guatemala und Costa Rica. Polizei, Ambulanz und Feuerwehr über dieselbe Nummer."],
+  ["Karten sperren, bevor du telefonierst", "Beides in der App: Revolut einfrieren, BKB in „one“ sperren – gratis und in Sekunden. Für die Haftung zählt der Zeitpunkt deiner Meldung."],
+  ["Zu Hause anrufen", "Auch kurz. Wer alles allein lösen will, verliert Zeit – und niemand weiss Bescheid."],
+  ["Erst dann nachschlagen, was zu tun ist", "Der Reiter „Ablauf“ zeigt, was pro Fall zu tun ist. Bevor du irgendwo anrufst: Angaben sammeln unter „Vorher“."],
 ];
 
 const VERLUST = [
   {
     was: "Bankkarte BKB",
     punkte: [
-      "Sofort selbst sperren: Debit Mastercard +41 61 266 33 33 · StudCard Debit +41 58 958 83 83. Aus dem Ausland immer mit +41 wählen.",
-      "Oder in der BKB-App „One“ – geht sofort und ohne Warteschlaufe, solange das Handy da ist.",
+      "<b>Zuerst in der App „one“ sperren</b> – geht in Sekunden, weltweit und gratis, sobald du WLAN hast. Karte auswählen, Schloss-Symbol, sperren.",
+      "Erst wenn kein Internet da ist: telefonisch unter +41 58 958 83 83, immer mit +41. Der Anruf kostet Roaming – wenn möglich das Telefon der Hostelrezeption nutzen.",
       "Bereithalten: Name, Geburtsdatum, Kontonummer, ungefähres Datum der letzten Zahlung.",
       "Die Ersatzkarte geht an die Schweizer Adresse, nicht nach Mittelamerika.",
       "Kontobewegungen prüfen und Missbrauch sofort melden – wer zu spät reklamiert, bleibt auf dem Schaden sitzen.",
-      { label: "BKB Debit Mastercard", nr: "+41 61 266 33 33" },
-      { label: "BKB StudCard Debit", nr: "+41 58 958 83 83" },
+      { label: "BKB STU Visa Debit", nr: "+41 58 958 83 83" },
     ],
   },
   {
@@ -545,11 +701,12 @@ const VERLUST = [
     was: "Schweizer Pass – der aufwendigste Fall",
     punkte: [
       "Polizeianzeige ist zwingend – Voraussetzung für jedes Ersatzdokument.",
-      "Immer die Botschaft in San José kontaktieren – sie ist konsularisch für beide Länder zuständig: +506 22 21 48 29, sanjose.cc@eda.admin.ch. Guatemala-Stadt ist nur diplomatisch. Ausserhalb der Bürozeiten die EDA-Helpline.",
+      "<b>Zuerst die EDA-Helpline anrufen:</b> +41 58 465 33 33, rund um die Uhr. Sie sagt dir, welche Vertretung deinen Fall bearbeitet.",
+      "Nach heutigem Stand ist das <b>Regionale Konsularcenter San José</b>: +506 22 21 48 29, sanjose.cc@eda.admin.ch – zuständig für Costa Rica, Guatemala und vier weitere Länder. Guatemala-Stadt ist nur diplomatisch.",
       "Provisorisches Reisedokument beantragen: für die Rückreise, gebührenpflichtig, dauert einige Tage.",
-      "Mitbringen: Polizeirapport, Passkopie aus Register 03, zwei Passfotos (vor Ort machen lassen), Identitätsnachweis.",
+      "Mitbringen: Polizeirapport, Passkopie aus Register 05, zwei Passfotos (vor Ort machen lassen), Identitätsnachweis.",
       "Fehlt der Einreisestempel, weil er im gestohlenen Pass war: Vor der Ausreise braucht es eine Bestätigung der Einwanderungsbehörde. Die Botschaft erklärt den Weg.",
-      { label: "EDA-Helpline Bern", nr: "+41 800 24 7 365", hinweis: "Rund um die Uhr" },
+      { label: "EDA-Helpline Bern", nr: "+41 58 465 33 33", hinweis: "Rund um die Uhr, aus dem Ausland" },
     ],
   },
   {
@@ -752,15 +909,15 @@ const DOKUMENTE = [
     kurz: "Ernstfall, Dorm, Bus, abends allein, digital",
     bloecke: [
       ["Die ersten Minuten im Ernstfall", [
+        { sprung: "notfall", param: "ablauf", label: "Vollständig im Notfall-Bereich" },
         "Reihenfolge vor Vollständigkeit: erst stoppen, was Geld kostet, dann dokumentieren, dann ersetzen.",
-        "Karten selbst sperren – Revolut in der App, dann die BKB-Karte telefonisch, erst danach Visana.",
+        "Karten selbst sperren – beide in der App: Revolut einfrieren, BKB in „one“. Erst danach Visana.",
         "Polizeianzeige erstatten und den Rapport sofort fotografieren.",
         "Zu Hause anrufen, damit parallel telefoniert werden kann.",
         "Bei Gerätediebstahl: Verlustmodus aktivieren, aber nicht löschen.",
         "Notruf 911 gilt in Guatemala und in Costa Rica.",
         { label: "Notruf Guatemala und Costa Rica", nr: "911" },
-        { label: "BKB Debit Mastercard", nr: "+41 61 266 33 33" },
-        { label: "BKB StudCard Debit", nr: "+41 58 958 83 83" },
+        { label: "BKB STU Visa Debit", nr: "+41 58 958 83 83" },
         { label: "Visana – Karten sperren", nr: "+41 44 628 52 80" },
       ]],
       ["Im Dorm", [
@@ -795,44 +952,55 @@ const DOKUMENTE = [
   },
   {
     id: "versicherung", titel: "Versicherungen",
-    kurz: "Wer zahlt was, Karten sperren, was gedeckt ist",
+    kurz: "Wer zahlt was, krank oder verletzt, Karten sperren",
     bloecke: [
       ["Karten sperren – die Reihenfolge", [
-        "<b>Zuerst selbst sperren:</b> Revolut in der App, BKB telefonisch oder in der App „One“.",
-        "<b>Danach Visana:</b> Der Kartendienst im Vacanza-Zusatzpaket sperrt alle übrigen Karten und übernimmt die Ersatzgebühren.",
-        "Der Dienst ersetzt die eigene Meldung nicht – für die Haftung gegenüber der Bank zählt der Zeitpunkt deiner Meldung.",
-        { label: "BKB Debit Mastercard", nr: "+41 61 266 33 33" },
-        { label: "BKB StudCard Debit", nr: "+41 58 958 83 83" },
+        "<b>Zuerst selbst sperren – beide in der App:</b> Revolut einfrieren, BKB in „one“. Gratis und in Sekunden. Telefonisch nur ohne Internet.",
+        "<b>Danach Visana:</b> Der Kartendienst sperrt alle übrigen Karten und übernimmt die Ersatzgebühren.",
+        "Der Dienst ersetzt die eigene Meldung nicht – für die Haftung zählt der Zeitpunkt deiner Meldung.",
+        { label: "BKB STU Visa Debit – nur ohne Internet", nr: "+41 58 958 83 83" },
         { label: "Visana – Karten, Gepäck, Annullation", nr: "+41 44 628 52 80" },
       ]],
+      ["## Was du hast", null],
       ["Wer ist wofür zuständig", [
-        "Visana Vacanza – Behandlung vor Ort: Spital, Röntgen, Gips, Medikamente.",
-        "Visana Zusatzpaket – Reisegepäck, Annullationskosten, Sperrung aller Karten: +41 44 628 52 80.",
-        "Rega – Rücktransport in die Schweiz, Ambulanzflug, Helikopter: +41 333 333 333.",
-        "AppleCare+ – iPhone bei Diebstahl, Verlust oder Defekt.",
-        "TCS ETI gilt nur für Europa und hilft auf dieser Reise nicht.",
+        "<b>Visana Vacanza</b> – Behandlung vor Ort: Spital, Röntgen, Gips, Medikamente.",
+        "<b>Visana Zusatzpaket</b> – Reisegepäck, Annullationskosten, Sperrung aller Karten.",
+        "<b>Rega</b> – Rücktransport in die Schweiz, Ambulanzflug, Helikopter.",
+        "<b>Zürich Hausrat</b> – gestohlene Ausrüstung, ergänzend zum Reisegepäck.",
+        "TCS ETI gilt nur für Europa und hilft auf dieser Reise nicht. AppleCare+ steht im Handy-Bereich.",
         { label: "Visana – Notfälle Ausland, 24 h", nr: "+41 848 848 855" },
         { label: "Visana – Karten, Gepäck, Annullation", nr: "+41 44 628 52 80" },
         { label: "Rega – Rücktransport", nr: "+41 333 333 333" },
       ]],
-      ["Die Regel", [
-        "Vor jeder teuren Behandlung und vor jedem Transport zuerst anrufen. Wer erst zahlt und danach meldet, riskiert die Rückerstattung.",
-        "Die englische Deckungsbestätigung ist im Spital wichtiger als die Police selbst.",
-        "Bei Gepäckdiebstahl beide Versicherungen melden, Fristen beachten – ausgezahlt wird aber nur einmal.",
-      ]],
       ["Was bei Vacanza abgeschlossen ist", [
-        "Heilungskosten-Versicherung inklusive 24-Stunden-Soforthilfe und Ausland-Rechtsschutz.",
+        "Heilungskosten inklusive 24-Stunden-Soforthilfe und Ausland-Rechtsschutz.",
         "Zusatzpaket: Reisegepäck, Annullationskosten sowie Kredit- und Kundenkartenversicherung.",
-        "Dauer 8 Monate ab Abreisedatum – deckt die Rückkehr im Januar/Februar mit Reserve.",
+        "<b>Dauer 8 Monate ab Abreise</b> – deckt die Rückkehr im Januar oder Februar mit Reserve.",
+        "<b>Die Prämie muss vor Reisebeginn bezahlt sein.</b> Ohne Zahlung keine Deckung.",
+        "<b>Englische Deckungsbestätigung anfordern</b> – im Spital wichtiger als die Police selbst.",
       ]],
-      ["AppleCare+ im Detail", [
-        "Der Schutz gilt weltweit, abgewickelt wird er von der Versicherung AIG.",
-        "„Wo ist?“ muss zum Zeitpunkt des Verlusts und während des ganzen Anspruchs aktiviert bleiben.",
-        "Unverzüglich melden – Verzögerung ist ein Ablehnungsgrund.",
-        "Bei Defekt umgekehrt: vor der Abgabe „Wo ist?“ deaktivieren und das Gerät entkoppeln.",
-        "Selbstbeteiligung in der Schweiz: 29 Franken bei Glasbruch, 99 Franken bei anderen Schäden.",
-        { label: "Deckung prüfen", url: "https://checkcoverage.apple.com" },
-        { label: "Anspruch einreichen", url: "https://support.apple.com" },
+      ["## Wenn etwas passiert", null],
+      ["Wie ernst ist es", [
+        "<b>Selbst behandeln:</b> Durchfall ohne Fieber unter drei Tagen, Erkältung, Kopfweh, kleine Wunden.",
+        "<b>Sofort Arzt:</b> Fieber über 38.5 °C länger als zwei Tage – in beiden Ländern kommt Dengue vor.",
+        "<b>Sofort Arzt:</b> blutiger Durchfall oder starke Bauchschmerzen – kein Imodium einnehmen.",
+        "<b>Sofort Arzt:</b> Wunde wird rot, warm und schmerzt zunehmend.",
+        "<b>Linse raus, Brille auf, Arzt:</b> rotes, schmerzendes Auge.",
+        "<b>911:</b> Bewusstlosigkeit, Atemnot, starke Blutung – erst danach die Versicherung.",
+      ]],
+      ["Der Ablauf bei Arzt oder Spital", [
+        "<b>1 Visana anrufen:</b> +41 848 848 855, rund um die Uhr, auf Deutsch. Vor jeder teuren Behandlung und vor jedem Transport.",
+        "<b>2 Bereithalten:</b> Policennummer, Name, Geburtsdatum, was du hast, seit wann, wo du bist.",
+        "<b>3 Kostengutsprache verlangen und Fallnummer notieren</b> – ohne Fallnummer beginnt jedes weitere Gespräch von vorn.",
+        "<b>4 Belege behalten und fotografieren:</b> Rechnung, Diagnose, Rezepte – bevor du sie aus der Hand gibst.",
+        "<b>5 Zu Hause anrufen</b>, auch wenn es harmlos ist.",
+        "<b>6 Rückerstattung einreichen</b> über das Visana-Kundenportal.",
+        { label: "Visana – Notfälle Ausland, 24 h", nr: "+41 848 848 855" },
+      ]],
+      ["Was gedeckt ist und was nicht", [
+        "<b>Gedeckt:</b> Arzt, Spital, Röntgen, Gips, Medikamente auf Rezept, Notfallzahnbehandlung bei Schmerzen, medizinisch begründeter Rücktransport, Suche und Bergung durch die Rega.",
+        "<b>Nicht gedeckt:</b> Vorsorge, Impfungen, Kontrollen ohne Anlass, geplante Zahnbehandlungen, Rückflug aus anderen Gründen.",
+        "Bei Gepäckdiebstahl beide Versicherungen melden, Fristen beachten – ausgezahlt wird aber nur einmal.",
       ]],
     ],
   },
@@ -840,30 +1008,6 @@ const DOKUMENTE = [
     id: "gesundheit", titel: "Gesundheit und Apotheke",
     kurz: "Wasser, Mücken, Durchfall, Linsen, was dabei ist",
     bloecke: [
-      ["Vor Ort", [
-        "Wasser: In Guatemala nur gefiltert oder abgefüllt trinken, im Zweifel auch zum Zähneputzen. In Costa Rica ist Leitungswasser meist trinkbar.",
-        "Mücken: Dengue ist in beiden Ländern verbreitet. Die übertragende Mücke sticht am Tag – Schutz tagsüber ist so wichtig wie abends.",
-        "Apotheken sind in beiden Ländern gut ausgestattet, vieles ist rezeptfrei erhältlich. Nachkaufen ist einfacher als schleppen.",
-        "Vor jeder teuren Behandlung die Visana-Assistance anrufen.",
-        { label: "Visana – Notfälle Ausland, 24 h", nr: "+41 848 848 855", hinweis: "Vor der Behandlung anrufen" },
-      ]],
-      ["Durchfall", [
-        "Elektrolytpulver ist wichtiger als Imodium – der Flüssigkeitsverlust ist das Problem, nicht der Durchfall selbst.",
-        "Imodium nur zum Überbrücken einer Busfahrt.",
-        "Bei blutigem Durchfall oder hohem Fieber nicht abwarten, sondern zum Arzt.",
-        "Das Reserve-Antibiotikum nur nach Rücksprache einsetzen.",
-        { label: "Visana – Notfälle Ausland, 24 h", nr: "+41 848 848 855" },
-      ]],
-      ["Brille und Linsen", [
-        "Linsen nie mit Leitungswasser spülen, nie damit schwimmen oder duschen.",
-        "Bei rotem oder schmerzendem Auge: Linse raus, Brille auf, zum Arzt.",
-        "Die zweite Brille liegt getrennt vom Rest in der Wertsachen-Box.",
-        "Rezept und Linsenwerte als PDF – damit lässt sich vor Ort Ersatz anfertigen.",
-        "Tageslinsen als Ergänzung für Touren und Bootsfahrten prüfen – dort ist Hygiene schwierig.",
-        "Monatslinsen: fünf bis sechs Paare plus Reserve. Mit der Optikerin durchgehen, wie lange sie in Hitze und Staub wirklich halten – oft kürzer als zu Hause.",
-        "<b>Lensy Care 4:</b> Die sechs Stunden Neutralisierungszeit im Behälter einhalten – nie zum Spülen oder direkt ins Auge. Nur der mitgelieferte Behälter mit Platinkatalysator funktioniert.",
-        "Ersatzflasche vor Ort: In Guatemala und Costa Rica ist Peroxidlösung schwer zu finden. Genug mitnehmen oder auf Kochsalz-Systeme ausweichen.",
-      ]],
       ["Rezeptfrei dabei", [
         "Ibuprofen und Paracetamol", "Imodium akut", "Elektrolytpulver, mehrere Beutel",
         "Kohletabletten", "Antihistaminikum-Gel", "Hydrocortison 0.5 %",
@@ -879,68 +1023,96 @@ const DOKUMENTE = [
         "Gegen Mücken bleibt DEET oder Icaridin massgebend – in Dengue-Gebieten sind ätherische Öle kein ausreichender Schutz.",
         "Die Öle helfen bei Alltagsbeschwerden. Bei anhaltendem Fieber, blutigem Durchfall oder einem entzündeten Auge gehört sie zum Arzt – vorher die Visana-Assistance anrufen.",
       ]],
-      ["Rezeptpflichtig dabei", [
-        "Hormonelle Verhütung für die volle Dauer",
-        "Stärkere Cortisoncreme",
-        "Ärztliche Bescheinigung auf Englisch, mit Wirkstoffnamen statt Markennamen",
+      ["Brille und Linsen", [
+        "Linsen nie mit Leitungswasser spülen, nie damit schwimmen oder duschen.",
+        "Bei rotem oder schmerzendem Auge: Linse raus, Brille auf, zum Arzt.",
+        "Die zweite Brille liegt getrennt vom Rest in der Wertsachen-Box.",
+        "Rezept und Linsenwerte als PDF – damit lässt sich vor Ort Ersatz anfertigen.",
+        "Tageslinsen als Ergänzung für Touren und Bootsfahrten prüfen – dort ist Hygiene schwierig.",
+        "Monatslinsen: fünf bis sechs Paare plus Reserve. Mit der Optikerin durchgehen, wie lange sie in Hitze und Staub wirklich halten – oft kürzer als zu Hause.",
+        "<b>Lensy Care 4:</b> Die sechs Stunden Neutralisierungszeit im Behälter einhalten – nie zum Spülen oder direkt ins Auge. Nur der mitgelieferte Behälter mit Platinkatalysator funktioniert.",
+        "Ersatzflasche vor Ort: In Guatemala und Costa Rica ist Peroxidlösung schwer zu finden. Genug mitnehmen oder auf Kochsalz-Systeme ausweichen.",
       ]],
-    ],
+      ["Durchfall", [
+        "Elektrolytpulver ist wichtiger als Imodium – der Flüssigkeitsverlust ist das Problem, nicht der Durchfall selbst.",
+        "Imodium nur zum Überbrücken einer Busfahrt.",
+        "Bei blutigem Durchfall oder hohem Fieber nicht abwarten, sondern zum Arzt.",
+        "Das Reserve-Antibiotikum nur nach Rücksprache einsetzen.",
+        { label: "Visana – Notfälle Ausland, 24 h", nr: "+41 848 848 855" },
+      ]],
+      ["Vor Ort", [
+        "Wasser: In Guatemala nur gefiltert oder abgefüllt trinken, im Zweifel auch zum Zähneputzen. In Costa Rica ist Leitungswasser meist trinkbar.",
+        "Mücken: Dengue ist in beiden Ländern verbreitet. Die übertragende Mücke sticht am Tag – Schutz tagsüber ist so wichtig wie abends.",
+        "Apotheken sind in beiden Ländern gut ausgestattet, vieles ist rezeptfrei erhältlich. Nachkaufen ist einfacher als schleppen.",
+        "Vor jeder teuren Behandlung die Visana-Assistance anrufen.",
+        { label: "Visana – Notfälle Ausland, 24 h", nr: "+41 848 848 855", hinweis: "Vor der Behandlung anrufen" },
+      ]],    ],
   },
   {
     id: "geld", titel: "Finanzen, Geld und Karten",
-    kurz: "Karte sperren, Setup, Revolut, Bargeld, Routine",
+    kurz: "Setup, Konten, Sperren, Bargeld, Budget",
     bloecke: [
-      ["Karte sperren – zuerst selbst, dann Visana", [
-        "<b>Revolut:</b> in der App einfrieren. Ohne Handy über app.revolut.com am zweiten iPhone.",
-        "<b>BKB:</b> telefonisch sperren oder in der App „One“. Für die Haftung zählt der Zeitpunkt deiner Meldung.",
-        "<b>Danach Visana anrufen</b> – der Kartendienst sperrt die restlichen Karten und übernimmt die Ersatzgebühren.",
-        { label: "BKB Debit Mastercard", nr: "+41 61 266 33 33" },
-        { label: "BKB StudCard Debit", nr: "+41 58 958 83 83" },
+      ["Karte sperren – zuerst in der App", [
+        "<b>Immer zuerst in der App:</b> Revolut einfrieren, BKB in „one“ – Karte wählen, Schloss-Symbol, sperren. Gratis, weltweit, in Sekunden.",
+        "<b>Ohne Handy:</b> app.revolut.com am zweiten iPhone, dort ist „one“ ebenfalls installiert.",
+        "<b>Telefonisch nur ohne Internet.</b> Der Anruf kostet Roaming – wenn möglich das Telefon der Hostelrezeption nutzen.",
+        "<b>Danach Visana</b> – sperrt die restlichen Karten und übernimmt die Ersatzgebühren.",
+        { label: "BKB STU Visa Debit – nur ohne Internet", nr: "+41 58 958 83 83" },
         { label: "Visana – Karten, Gepäck, Annullation", nr: "+41 44 628 52 80" },
-        "Der vollständige Ablauf steht unter Notfall und in 00-03 Diebstahl und Verlust.",
+        { sprung: "notfall", param: "ablauf", label: "Vollständiger Ablauf im Notfall-Bereich" },
       ]],
+      ["## Was du hast", null],
       ["Dein Setup", [
-        { begriff: "Revolut Premium", text: "Deine Alltagskarte, immer bei dir im Portemonnaie. Darauf liegt nur ein Wochenbudget – geht sie verloren, ist der Schaden klein." },
-        { begriff: "BKB-Debitkarte", text: "Deine Reservekarte, im Spind in der Wertsachen-Box. Nur wenn Revolut ausfällt, nie auf Tagesausflüge." },
-        { begriff: "Bargeld an drei Orten", text: "Tagesgeld am Körper, rund 150 USD im Spind, 50–100 USD versteckt im Rucksack. Das Versteckte wird nie angefasst – es existiert für den Tag, an dem alles andere weg ist." },
+        { begriff: "Revolut Premium", text: "Deine Alltagskarte, immer bei dir. Darauf liegt nur ein Wochenbudget – geht sie verloren, ist der Schaden klein.",
+          mehrLabel: "Was Premium bringt",
+          mehr: "<b>Was Premium dir bringt:</b> unbegrenzter Währungstausch zum guten Kurs, auch am Wochenende – im Standard-Abo kostet er dann rund ein Prozent mehr. Höherer Freibetrag beim Bargeldbezug, trotzdem gilt: selten und viel abheben.<br><br><b>Was Premium nicht ist:</b> keine Reiseversicherung. Für Arzt, Spital und Gepäck gilt allein die Visana-Police." },
+        { begriff: "BKB STU Visa Debit", text: "Deine Reserve, im Spind in der Wertsachen-Box. Nur wenn Revolut ausfällt, nie auf Tagesausflüge." },
+        { begriff: "Bargeld an drei Orten", text: "Tagesgeld am Körper, rund 150 USD im Spind, 50–100 USD versteckt im Rucksack. Das Versteckte wird nie angefasst." },
       ]],
       ["Deine Revolut-Konten", [
-        { begriff: "Hauptkonto", text: "Dein Wochenbudget, etwa 150–250 Franken. Nur dieses Konto hängt an der Karte – geht sie verloren, ist der Schaden klein." },
-        { begriff: "Reisekasse", text: "Rund 1'000 Franken. Jeden Sonntagabend schiebst du daraus das Budget für die neue Woche nach." },
-        { begriff: "Notreserve", text: "Rund 500 Franken für Umbuchung, Arztbesuch oder eine spontane Nacht im Einzelzimmer. Wird sonst nicht angetastet." },
-        { begriff: "USD-Währungskonto", text: "USD ist in beiden Ländern die Zweitwährung. Werktags tauschen spart später den Umweg." },
-        { begriff: "Budget-Funktion", text: "Zeigt Ausgaben pro Land und Kategorie – so siehst du, ob dein Tagesbudget aufgeht." },
+        { begriff: "Hauptkonto", text: "Dein Wochenbudget, etwa 150–250 Franken. Nur dieses Konto hängt an der Karte." },
+        { begriff: "Reisekasse", text: "Rund 1'000 Franken. Sonntagabends schiebst du daraus das Budget für die neue Woche nach." },
+        { begriff: "Notreserve", text: "Rund 500 Franken für Umbuchung, Arzt oder eine spontane Nacht im Einzelzimmer." },
+        { begriff: "USD-Konto", text: "USD ist in beiden Ländern die Zweitwährung. Mit Premium tauschst du jederzeit zum guten Kurs, auch am Wochenende." },
       ]],
-      ["Was Premium bringt", [
-        "Kein Wochenendaufschlag beim Währungstausch – du musst nicht auf den Wochentag achten.",
-        "Höherer Freibetrag beim Bargeldbezug. Trotzdem selten und viel abheben.",
-        "Unbegrenzter Umtausch werktags zum guten Kurs.",
-        "Aber: Die Reiseversicherung im Premium-Abo ersetzt die Visana-Police nicht.",
-      ]],
+      ["## Wie du es nutzt", null],
       ["Die Regel, die am meisten spart", [
-        "Fragt der Automat oder das Terminal, ob in Franken oder in Quetzal/Colón abgerechnet wird: immer die Landeswährung wählen.",
-        "„Garantiertes Umrechnen“ ablehnen – der Aufschlag liegt teils bei neun Prozent.",
-        "Gilt auch beim Kartenzahlen im Restaurant.",
-      ]],
-      ["Sicherheit im Alltag", [
-        "Karte einfrieren statt sperren, wenn du sie nur verlegt hast.",
-        "Tageslimit fürs Abheben setzen: umgerechnet 300 Franken.",
-        "Push-Benachrichtigung für jede Zahlung – dann fällt Missbrauch in Sekunden auf.",
-        "Virtuelle Einmalkarte für Online-Buchungen, danach löschen.",
-        "PIN auswendig können – die App nützt nichts, wenn das Handy weg ist.",
-      ]],
+        "<b>Am Automaten immer die Landeswährung wählen.</b> Fragt das Gerät „mit Umrechnung in CHF?“, lehnst du ab – der eigene Kurs des Automaten kostet 3 bis 12 Prozent.",
+        "Dasselbe beim Bezahlen im Laden: <b>immer in Quetzal oder Colones abrechnen</b>, nie in Franken.",
+              ]],
       ["Deine Routine", [
-        "Sonntagabend: Budget von der Reisekasse aufs Hauptkonto nachschieben.",
-        "Vor jedem Ortswechsel Bargeld holen.",
-        "Einmal im Monat die Gebührenübersicht anschauen.",
-        "Vor dem Verlassen eines Landes: Restbargeld ausgeben und das Landeswährungskonto leeren.",
-        "Belege fotografieren – für Versicherungsfälle und fürs Budget.",
+        "<b>Jeden Sonntag:</b> Budget von der Reisekasse aufs Hauptkonto schieben.",
+        "<b>Ausgaben der Woche anschauen</b> – liegt der Tagesschnitt im Rahmen?",
+        "Belege fotografieren und ablegen.",
+        "Vor jedem Ortswechsel: genug Bargeld für zwei Tage.",
+      ]],
+      ["Dein Budget", [
+        "<b>Guatemala:</b> 25–35 USD pro Tag · <b>Costa Rica:</b> 35–45 USD pro Tag.",
+        "Darin enthalten: Hostelbett, Essen, lokale Transporte, gelegentlich eine Tour.",
+        "Nicht enthalten: Flüge, Sprachschule, grössere Touren wie Acatenango.",
+        "Wenn eine Woche teurer wird, gleicht die nächste es aus – die Reisekasse ist der Puffer, nicht die Notreserve.",
       ]],
       ["Was Revolut nicht kann", [
-        "Automaten lehnen Fintech-Karten manchmal ohne Grund ab.",
-        "Konten werden bei ungewöhnlicher Aktivität automatisch gesperrt; die Klärung läuft nur über den In-App-Chat und kann Tage dauern.",
-        "Für Mietwagenkautionen wird oft eine echte Kreditkarte verlangt.",
-        "Genau dafür liegt die BKB-Karte im Spind.",
+        "<b>Kein Bargeld einzahlen</b> – was du abgehoben hast, bleibt bar.",
+        "<b>Keine Filiale, kein Telefon</b> – Hilfe nur über den In-App-Chat.",
+        "<b>Kontosperre bei Verdacht</b> kommt vor. Deshalb existiert die BKB-Karte im Spind.",
+        "<b>Nicht überall akzeptiert</b> – in Guatemala braucht es ohnehin Bargeld.",
+      ]],
+      ["## Vor Ort", null],
+      ["Guatemala – Bargeldland", [
+        "Währung Quetzal. Rechne mit <b>25–35 USD pro Tag</b>.",
+        "<b>Fast alles ist bar:</b> Hostels, Shuttles, Chicken Buses, Märkte, Comedores, Touren. Karte nur in Supermärkten, Hotels und besseren Restaurants.",
+        "<b>Automaten:</b> Banco Industrial und BAM sind am günstigsten. Die gelben 5B-Geräte stehen überall, sind aber die teuersten.",
+        "<b>Gebühr Q25–Q50 pro Abhebung</b>, Limite meist Q2'000. Die Gebühr hängt am Vorgang, nicht am Betrag – immer das Maximum ziehen.",
+        "Nur Automaten in Banken, Einkaufszentren oder Hotels, und nur tagsüber. Nie einen, der frei an der Strasse steht.",
+        "Um kleine Scheine bitten – ein Q200-Schein ist im Comedor unbezahlbar.",
+      ]],
+      ["Costa Rica – Kartenland", [
+        "Währung Colón, USD werden vielerorts genommen. Rechne mit <b>35–45 USD pro Tag</b>.",
+        "<b>Karte fast überall</b>, auch bei kleinen Beträgen. Hier bringt Revolut am meisten.",
+        "US-Dollar nur in Noten zu 1, 5, 10 und 20 – grössere und beschädigte werden oft abgelehnt. Wechselgeld kommt in Colones.",
+        "<b>Automaten:</b> BAC und Scotiabank erlauben höhere Beträge, stehen aber nur in grösseren Orten. Banco Nacional und BCR sind überall.",
+        "Gebühr rund 2–6 USD pro Abhebung.",
       ]],
     ],
   },
@@ -948,11 +1120,6 @@ const DOKUMENTE = [
     id: "fluege", titel: "Flüge, Bus und Tickets",
     kurz: "Flug, Busticket, Ausreisenachweis, Check-in",
     bloecke: [
-      ["Buchen", [
-        { label: "Tica Bus – internationale Busse", url: "https://ticabus.com", hinweis: "San José → Nicaragua oder Panama" },
-        { label: "Busbud – Bustickets Costa Rica", url: "https://busbud.com/de/country/cr", hinweis: "Auch Inlandstrecken" },
-        { label: "Onward Ticket – nur als Notlösung", url: "https://onwardticket.com", hinweis: "Echtes Ticket, rund 48 Stunden gültig" },
-      ]],
       ["Vorab gebucht", [
         "<b>Busticket San José → Nicaragua oder Panama</b>, rund 25–50 Franken. Wird zweimal gebraucht: beim Check-in in Zürich und bei der Einreise nach Costa Rica. Darf danach verfallen.",
         "<b>Regionalflug Guatemala-Stadt → San José</b>, One-Way – zugleich der Ausreisenachweis für Guatemala, ebenfalls schon beim Check-in in Zürich verlangt.",
@@ -976,7 +1143,12 @@ const DOKUMENTE = [
         "Das Ausreisedatum muss innerhalb der gestempelten Aufenthaltsdauer liegen.",
         "Die Buchungsadressen stehen zuoberst unter „Buchen“.",
       ]],
-    ],
+
+      ["Wo du buchst", [
+        { label: "Tica Bus – internationale Busse", url: "https://ticabus.com", hinweis: "San José → Nicaragua oder Panama" },
+        { label: "Busbud – Bustickets Costa Rica", url: "https://busbud.com/de/country/cr", hinweis: "Auch Inlandstrecken" },
+        { label: "Onward Ticket – nur als Notlösung", url: "https://onwardticket.com", hinweis: "Echtes Ticket, rund 48 Stunden gültig" },
+      ]],    ],
   },
   {
     id: "djrv", titel: "Reiseerklärung Guatemala",
@@ -1016,34 +1188,51 @@ const DOKUMENTE = [
     ],
   },
   {
-    id: "handy", titel: "Handy und Roaming",
-    kurz: "Yallo Black Plus, Daten sparen, erreichbar bleiben",
+    id: "handy", titel: "Handy und AppleCare+",
+    kurz: "Abo, Setup, eSIM neu, Diebstahl",
     bloecke: [
-      ["Dein Abo", [
-        "Yallo Black Plus: Guatemala und Costa Rica liegen beide in Region A.",
-        "5 GB Daten pro Monat und 300 Roaming-Minuten inklusive.",
-        "Keine zusätzliche eSIM nötig – das spart Einrichtung und Kosten.",
-        "Vor dem Abflug: Datenroaming in den Einstellungen aktivieren und die Region im Kundenkonto prüfen.",
+      ["Wenn das Handy gestohlen ist", [
+        "<b>1 Orten und sperren:</b> Ersatzhandy ins WLAN, „Wo ist?“ oder icloud.com/find, Gerät <b>als verloren markieren</b>. Verlangt Apple einen Code: „Keinen Code erhalten?“ → an die Nummer der Eltern.",
+        "<b>2 SIM sperren:</b> App „My yallo“ – Meine Einstellungen → SIM-Karte sperren.",
+        "<b>3 Denuncia holen:</b> Touristenpolizei. Ohne Rapport zahlt niemand.",
+        "<b>4 Neue eSIM</b> nach der Anleitung oben.",
+        "<b>5 WhatsApp</b> mit der Schweizer Nummer neu anmelden.",
+        "<b>6 AppleCare einreichen:</b> www.aigtheftandloss.ch mit Foto der Denuncia.",
+        "<b>Niemals aus der Apple-ID löschen</b>, solange der Fall läuft – sonst verfällt der Anspruch.",
+        { label: "Yallo Support", nr: "+41 44 525 01 23" },
+        { label: "AIG Diebstahl-Hotline", nr: "+1 833 768 4600" },
+        { label: "Apple Support", nr: "+41 848 000 132" },
+        { label: "Schadenmeldung AppleCare+", url: "https://www.aigtheftandloss.ch" },
+      ]],
+      ["## Was du hast", null],
+      ["Abo und Roaming", [
+        "Yallo Black Plus: <b>Guatemala und Costa Rica</b> liegen in Ländergruppe A – 5 GB Daten und 300 Roaming-Minuten pro Monat.",
+        "<b>Peru fällt heraus</b> (Gruppe B). Dort nach der Landung eine Daten-eSIM kaufen, etwa über Airalo – 5 bis 10 Franken für einige Gigabyte.",
+        "Vor dem Abflug: Datenroaming aktivieren und die Ländergruppe im Kundenkonto prüfen.",
         { label: "Yallo Kundenkonto", url: "https://yallo.ch" },
       ]],
-      ["Daten sparen", [
-        "Offline-Karten für beide Länder vor dem Abflug herunterladen.",
-        "Spanisch-Sprachpaket in Google Translate offline laden.",
-        "Automatische Updates und iCloud-Fotosync nur über WLAN.",
-        "Am Monatsende den Verbrauch prüfen – 5 GB sind schnell weg.",
+      ["Dein Setup", [
+        { begriff: "Hauptgerät mit eSIM", text: "Eine eSIM kann niemand herausnehmen. Das Gerät bleibt eingebucht und ortbar, solange es eingeschaltet ist." },
+        { begriff: "Ersatzgerät ohne SIM", text: "Liegt geladen im Spind. Darauf sind „My yallo“, Revolut, „one“ und „Wo ist?“ installiert und eingeloggt." },
+        { begriff: "Ein Vertrag, eine SIM", text: "Aktivierst du eine zweite SIM, wird die erste abgeschaltet. Deshalb liegt das Ersatzgerät ohne Linie bereit." },
+        { begriff: "AppleCare+ mit Diebstahl", text: "Abgewickelt über AIG, nicht über den Apple Store. Selbstbehalt pro Fall." },
       ]],
-      ["Wenn das erste Handy weg ist", [
-        "Die Nummer bleibt dir – gesperrt wird nur die SIM. Entscheidend ist, wie schnell das Ersatzgerät wieder verbunden ist.",
-        { begriff: "Zweit-SIM auf derselben Nummer", text: "Die beste Lösung, falls Yallo sie bei Black Plus anbietet: Beide Geräte haben dieselbe Nummer, das Ersatzhandy ist ohne Zutun erreichbar." },
-        { begriff: "Lokale Prepaid-eSIM", text: "Claro oder Tigo in Guatemala, Kölbi in Costa Rica. Wenige Dollar, liegt vorbereitet im Ersatzgerät. Andere Nummer, aber sofort verbunden." },
-        { begriff: "Ohne SIM geht vieles weiter", text: "WhatsApp, iMessage, Mail, Banking, „Wo ist?“ und Offline-Karten laufen über WLAN. Nur Telefonieren nicht – und das ist am Strassenrand der Unterschied." },
-        { begriff: "Zwei-Faktor auf Authenticator", text: "Kommen die Codes per SMS an die gesperrte Nummer, sperrst du dich selbst aus dem Banking aus." },
+      ["## Vorher einrichten", null],
+      ["Vor der Reise einrichten", [
+        { begriff: "Kontrollzentrum sperren", text: "Einstellungen → Face ID & Code → „Kontrollzentrum“ im Sperrbildschirm aus. Sonst schaltet ein Dieb den Flugmodus ein und das Gerät ist nicht mehr ortbar." },
+        { begriff: "„Wo ist?“ vollständig", text: "Alle drei Schalter an: Mein iPhone suchen, Wo ist?-Netzwerk, Letzten Standort senden." },
+        { begriff: "Elternnummer hinterlegen", text: "Als vertrauenswürdige Telefonnummer in der Apple-ID und als Zweitkontakt bei Yallo. Sonst kommt der Bestätigungscode nirgends an." },
+        { begriff: "WhatsApp-Backup täglich", text: "Chats → Chat-Backup → täglich, Videos ausschalten." },
+        { begriff: "Reise-Ordner offline", text: "In der Dateien-App den Ordner markieren und „Offline behalten“ wählen." },
       ]],
-      ["Erreichbar bleiben", [
-        "WhatsApp ist der Standard: Hostels, Shuttles und Touranbieter antworten dort, nicht per E-Mail.",
-        "„Wo ist?“ dauerhaft mit zu Hause teilen – keine Kontrolle, sondern eine Rückfallebene.",
-        "Zweites iPhone geladen im Spind, gleiche Apple-ID, Notfallordner offline.",
-        "Feste Zeit zum Melden vereinbaren – dann weiss zu Hause, wann Schweigen ungewöhnlich ist.",
+      ["## Wenn etwas passiert", null],
+      ["Neue eSIM einrichten", [
+        "<b>1 Beantragen:</b> im Yallo-Konto eine neue eSIM bestellen – App „My yallo“ oder yallo.ch. Die Telefonnummer bleibt dieselbe.",
+        "<b>2 QR-Code anzeigen:</b> auf der Startseite der App „My yallo“. Im alten Yallo-Dashboard ganz links anklicken, dann wird der Code eingeblendet.",
+        "<b>3 Falls du nicht herankommst:</b> Der Code geht an das Konto der Eltern oder wird im Yallo-Konto angezeigt. Sie fotografieren ihn ab und schicken ihn.",
+        "<b>4 Scannen:</b> QR-Code mit dem neuen Handy abfotografieren und die eSIM installieren.",
+        "<b>Kein zweites Gerät?</b> Angaben von Hand eintippen: Einstellungen → Mobiles Netz → eSIM hinzufügen → Details manuell eingeben.",
+        "<b>Sobald die neue eSIM aktiv ist</b>, wird die alte abgeschaltet.",
       ]],
     ],
   },
@@ -1128,7 +1317,7 @@ const DOKUMENTE = [
       ]],
       ["Wenn es ernst wird", [
         "Die Helpline berät weltweit, rund um die Uhr – auch wenn die Botschaft geschlossen ist.",
-        { label: "EDA-Helpline Bern", nr: "+41 800 24 7 365" },
+        { label: "EDA-Helpline Bern", nr: "+41 58 465 33 33" },
         { label: "Reisehinweise Guatemala", url: "https://www.eda.admin.ch/eda/de/home/vertretungen-und-reisehinweise/guatemala.html" },
         { label: "Reisehinweise Costa Rica", url: "https://www.eda.admin.ch/eda/de/home/vertretungen-und-reisehinweise/costa-rica.html" },
       ]],
@@ -1167,6 +1356,51 @@ const DOKUMENTE = [
     ],
   },
 ];
+
+
+
+const ORTE = {
+  antigua: {
+    name: "Antigua", land: "guatemala", zeit: "Oktober · erste Tage allein",
+    bloecke: [
+      ["Warum hier", [
+        "Kolonialstadt auf 1'500 m, kompakt und zu Fuss zu machen – ideal für die ersten Tage allein.",
+        "Viele Reisende, dadurch leicht Anschluss. Spanischschulen, Cafés, Märkte.",
+        "Ausgangspunkt für den Acatenango – zwei Tage, kalt in der Nacht, Ausrüstung wird gestellt.",
+      ]],
+      ["Ankommen und bewegen", [
+        "Vom Flughafen mit einem <b>vorgebuchten Shuttle</b>, rund eine Stunde. Nicht nachts fahren.",
+        "In der Stadt alles zu Fuss. Nachts nicht allein durch schlecht beleuchtete Gassen.",
+        "Das Kopfsteinpflaster ist uneben – feste Schuhe, kein Rollkoffer.",
+      ]],
+      ["Geld und Alltag", [
+        "Bargeldland: Märkte, Comedores und Shuttles nur bar. Karte in Supermärkten und Hotels.",
+        "Automaten von Banco Industrial und BAM sind am günstigsten, nur tagsüber und in Gebäuden.",
+        "Höhe 1'500 m – abends kühl, eine warme Schicht gehört in den Tagesrucksack.",
+      ]],
+    ],
+  },
+  atitlan: {
+    name: "Lago de Atitlán", land: "guatemala", zeit: "Oktober · einige Tage",
+    bloecke: [
+      ["Die Orte am See", [
+        "<b>Panajachel</b> – Verkehrsknoten, Ankunft mit dem Shuttle, Boote in alle Dörfer.",
+        "<b>San Marcos</b> – ruhig, Yoga und Rückzug.",
+        "<b>San Pedro</b> – lebhaft, günstig, viele junge Reisende.",
+      ]],
+      ["Bewegen auf dem See", [
+        "Zwischen den Dörfern fahren <b>Lanchas</b> – Boote ohne Fahrplan, sie fahren ab, wenn sie voll sind.",
+        "<b>Nur tagsüber fahren.</b> Nach Einbruch der Dunkelheit legen kaum Boote ab, und der Wind nimmt zu.",
+        "Preis vorher fragen und in Quetzal bezahlen. Für Reisende gilt oft ein höherer Tarif.",
+      ]],
+      ["Worauf achten", [
+        "Am Ufer gibt es wenige Automaten – Bargeld in Panajachel holen, bevor du in ein Dorf fährst.",
+        "Das Wasser ist nicht überall sauber – nicht überall baden, Einheimische fragen.",
+        "Höhe 1'560 m, abends kühl. Regen im Oktober meist nachmittags.",
+      ]],
+    ],
+  },
+};
 
 
 const LAENDER = {
@@ -1369,7 +1603,6 @@ const LAENDER = {
         "Sansa fliegt von San José an die Küste und spart einen ganzen Tag.",
         "Uber in San José und Umgebung verfügbar.",
         "OIJ ist die zuständige Stelle für Anzeigen.",
-        { label: "Visit Costa Rica – offizielles Tourismusportal", url: "https://de.visitcostarica.com/", hinweis: "Auf Deutsch, vom Tourismusinstitut ICT" },
         { label: "Karten aller Regionen", url: "https://de.visitcostarica.com/where-to-go/costa-rica-maps" },
         { label: "Karibikküste – Region im Detail", url: "https://de.visitcostarica.com/where-to-go/caribbean" },
       ]],
@@ -1469,13 +1702,13 @@ const ORTSWECHSEL = [
 ];
 
 const WOCHE = [
-  "Zu Hause anrufen – nicht nur schreiben",
-  "Budget von der Reisekasse aufs Hauptkonto schieben",
-  "Ausgaben der Woche kurz anschauen – liegt der Tagesschnitt im Rahmen?",
-  "Belege der Woche fotografiert und in 02-02_Belege abgelegt",
+  "Zu Hause anrufen, nicht nur schreiben",
+  "Budget aufs Hauptkonto schieben",
+  "Ausgaben der Woche anschauen",
+  "Belege fotografiert und abgelegt",
   "Wäsche gemacht oder abgegeben",
-  "Vorräte geprüft: Sonnencreme, Mückenschutz, Elektrolyte, Monatshygiene",
-  "Fotos gesichert, sobald du in gutem WLAN bist",
+  "Vorräte geprüft: Creme, Mückenschutz",
+  "Fotos gesichert im guten WLAN",
 ];
 
 const WOCHE_WICHTIG = 3;
@@ -1511,7 +1744,7 @@ const RUECKKEHR = [
 ];
 
 const ROUTE = [
-  { ort: "Guatemala-Stadt", note: "Ankunft und Weiterflug. Transfer vorbuchen, tagsüber ankommen.", tag: "Ankunft" },
+  { ort: "Guatemala-Stadt", note: "Ankunft und Weiterflug. Transfer vorbuchen, tagsüber ankommen.", tag: "Guatemala" },
   { ort: "Rundreise in der Gruppe", note: "Rund zwei Wochen mit Intrepid.", tag: "Guatemala" },
   { ort: "Antigua", note: "Kolonialstadt auf 1'500 m. Kompakt, viele Reisende, Ausgangspunkt für Acatenango.", tag: "Guatemala" },
   { ort: "Lago de Atitlán", note: "Panajachel als Knoten, San Marcos ruhig, San Pedro lebhaft. Per Boot, tagsüber.", tag: "Guatemala" },
@@ -1520,7 +1753,7 @@ const ROUTE = [
   { ort: "Sámara – Strandcampus", note: "Zwei oder drei Wochen, falls sie den Kurs verlängert. Intercultura erlaubt es, die Wochen ohne Aufpreis zwischen Heredia und Sámara aufzuteilen.", tag: "offen" },
   { ort: "Unterwegs mit dem Bus", note: "Zwei bis drei Wochen. Die Route entsteht vor Ort.", tag: "Costa Rica" },
   { ort: "Kost und Logis gegen Mitarbeit", note: "Drei bis vier Wochen, eher am Meer.", tag: "Costa Rica" },
-  { ort: "Peru", note: "Ende Dezember, falls es dazukommt – mit einer Freundin.", tag: "offen" },
+  { ort: "Noch nicht entschieden", note: "Ende Dezember, falls es dazukommt – mit einer Freundin.", tag: "Peru" },
 ];
 
 
@@ -1531,7 +1764,7 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "54 · 29.08.2026";
+const VERSION = "134 · 29.08.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
@@ -1555,6 +1788,8 @@ const el = (tag, attrs = {}, ...kinder) => {
 };
 
 const rein = (t) => String(t).replace(/<[^>]+>/g, "");
+/* Steuerzeichen aus Blocktiteln: "## " Gruppe, "!! " Zusatzinformation. */
+const ohneMarker = (t) => String(t).replace(/^(##|!!) /, "");
 
 /* Zerlegt "<b>Titel:</b> Erklärung" in zwei Zeilen – alle Listen gleich aufgebaut. */
 const zerlege = (p) => {
@@ -1619,7 +1854,16 @@ const kopf = (titel, unter, zurueck, zurueckText = "Übersicht") =>
     el("h1", {}, titel),
     unter ? el("p", { class: "unter" }, unter) : null);
 
-const anrufKarte = ({ label, nr, zeige, hint, ton = "weiss" }) => {
+const anrufKarte = ({ label, nr, zeige, hint, ton = "weiss", nummerZuerst = false }) => {
+  if (nummerZuerst) {
+    return el("a", { href: telLink(nr), class: "block" },
+      karte(el("div", { class: "zeile notrufzeile" },
+        el("div", { class: "notrufnr" }, zeige || nr),
+        el("div", { class: "min0" },
+          el("div", { class: "klein" }, label),
+          hint ? el("div", { class: "hinweis" }, hint) : null),
+        el("span", { class: "rundknopf alarm" }, svg("phone", 19, "#fff", 2))), ton));
+  }
   const a = el("a", { href: telLink(nr), class: "block" },
     karte(el("div", { class: "zeile" },
       el("div", { class: "min0" },
@@ -1660,25 +1904,88 @@ const linkZeile = ({ label, url, hinweis }) => {
       el("span", { class: "rundknopf klein" }, svg("link", 16, "#fff", 2.2))));
 };
 
+/* Blöcke mit Sofortmassnahmen bekommen einen roten Rand und hellen Grund. */
+const DRINGEND = ["sperren", "gestohlen", "verloren", "Notfall", "Denuncia", "Diebstahl"];
+const NICHT_DRINGEND = ["kein Sperren", "was kein"];
+const istDringend = (titel) => {
+  const t = titel.toLowerCase();
+  if (NICHT_DRINGEND.some((w) => t.includes(w.toLowerCase()))) return false;
+  return DRINGEND.some((w) => t.includes(w.toLowerCase()));
+};
+
+/* Zeichnet die Blöcke eines Themas – "## Titel" wird zur Zwischenüberschrift. */
+const bloeckeMit = (bloecke) => {
+  const teile = [];
+  let band = null;
+
+  const neuesBand = (titel) => {
+    /* Überschrift über der Fläche – wie die Wochenroutine auf der Startseite. */
+    if (titel) teile.push(el("div", { class: "gruppentitel abstandoben klein3" }, titel));
+    band = el("div", { class: "blockband" });
+    teile.push(band);
+  };
+
+  bloecke.forEach(([t, p]) => {
+    if (t.startsWith("## ")) { neuesBand(t.slice(3)); return; }
+    const block = faltblock(t, p, false);
+    /* Rot und Gelb stehen für sich, alles andere sammelt sich in seiner weissen Fläche. */
+    if (t.startsWith("!! ") || istDringend(t)) { teile.push(block); band = null; return; }
+    if (!band) neuesBand(null);
+    band.appendChild(block);
+  });
+  return teile;
+};
+
 const faltblock = (titel, punkte, offenStart = false) => {
   const inhalt = el("ul", { class: "punkte" },
     punkte.map((roh) => {
       const p = zerlege(roh);
       if (typeof p === "string") return el("li", { html: p });
-      if (p.begriff) return el("li", {},
-        el("span", { class: "begriff" }, p.begriff),
-        el("span", { class: "begrifftext", html: p.text }));
+      if (p.begriff) return begriffZeile(p);
+      if (p.sprung) return el("li", { class: "ohnepunkt" }, sprungZeile(p));
       return el("li", { class: "ohnepunkt" }, p.url ? linkZeile(p) : anrufZeile(p));
     }));
   const koerper = el("div", { class: "faltinhalt" + (offenStart ? " offen" : "") }, inhalt);
   const pfeil = el("span", { class: "faltpfeil" + (offenStart ? " auf" : "") },
-    svg("chevron", 18, "#B65A3C", 2));
+    svg("chevron", 16, "#B08A78", 1.5));
+  const zusatz = titel.startsWith("!! ");
+  const reinTitel = zusatz ? titel.slice(3) : titel;
   const knopf = el("button", { class: "faltkopf", onclick: () => {
     const auf = koerper.classList.toggle("offen");
     pfeil.classList.toggle("auf", auf);
-  } }, el("span", { class: "blocktitel ohneabstand" }, titel), pfeil);
-  return el("div", { class: "karte faltkarte" }, knopf, koerper);
+  } }, el("span", { class: "blocktitel ohneabstand" }, reinTitel), pfeil);
+  return el("div", { class: "karte faltkarte"
+    + (istDringend(reinTitel) ? " dringend" : "") + (zusatz ? " zusatz" : "") },
+    knopf, koerper);
 };
+
+/* Verweist auf eine andere Stelle in der App – ein Tipp führt hin. */
+/* Begriff mit Zusatztext – antippen öffnet die gelbe Erklärung darunter. */
+const begriffZeile = (p) => {
+  if (!p.mehr) {
+    return el("li", {},
+      el("span", { class: "begriff" }, p.begriff),
+      el("span", { class: "begrifftext", html: p.text }));
+  }
+  const box = el("div", { class: "mehrbox" }, el("div", { class: "text", html: p.mehr }));
+  const marke = el("span", { class: "mehrmarke" },
+    el("span", { class: "mehrzeichen" }, "i"),
+    el("span", { class: "mehrtext" }, p.mehrLabel || "Mehr dazu"));
+  return el("li", { class: "mitmehr" },
+    el("button", { class: "mehrknopfzeile", onclick: () => {
+      const auf = box.classList.toggle("offen");
+      marke.classList.toggle("auf", auf);
+      marke.children[1].textContent = auf ? "Schliessen" : (p.mehrLabel || "Mehr dazu");
+    } },
+      el("span", { class: "begriff" }, p.begriff), marke),
+    el("span", { class: "begrifftext", html: p.text }),
+    box);
+};
+
+const sprungZeile = (p) =>
+  el("button", { class: "sprung", onclick: () => gehe(p.sprung, p.param) },
+    el("span", { class: "sprungtext" }, p.label),
+    el("span", { class: "sprungpfeil" }, svg("chevron", 15, "#B65A3C", 2)));
 
 const block = (titel, punkte) =>
   karte([
@@ -1687,12 +1994,11 @@ const block = (titel, punkte) =>
       punkte.map((roh) => {
         const p = zerlege(roh);
         if (typeof p === "string") return el("li", { html: p });
-        if (p.begriff) return el("li", {},
-          el("span", { class: "begriff" }, p.begriff),
-          el("span", { class: "begrifftext", html: p.text }));
+        if (p.begriff) return begriffZeile(p);
+        if (p.sprung) return el("li", { class: "ohnepunkt" }, sprungZeile(p));
         return el("li", { class: "ohnepunkt" }, p.url ? linkZeile(p) : anrufZeile(p));
       })),
-  ]);
+  ], istDringend(titel) ? "dringend" : "weiss");
 
 const reiter = (optionen, aktiv, aendern) =>
   el("div", { class: "reiter" },
@@ -1701,6 +2007,29 @@ const reiter = (optionen, aktiv, aendern) =>
         class: "chip" + (aktiv === k ? " an" : ""),
         onclick: () => aendern(k),
       }, l)));
+
+/* Aufklappbare Hakenliste: zugeklappt sieht man Titel und Stand. */
+const faltHakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig = 0,
+                        offenStart = false) => {
+  const karteEl = hakenliste(titel, punkte, schluessel, ruecksetzbar, wichtig);
+  const teile = Array.from(karteEl.children);
+  const kopfzeile = teile[0];
+  const rest = teile.slice(1);
+  karteEl.innerHTML = "";
+
+  const koerper = el("div", { class: "faltinhalt" + (offenStart ? " offen" : "") }, rest);
+  const pfeil = el("span", { class: "faltpfeil" + (offenStart ? " auf" : "") },
+    svg("chevron", 16, "#B08A78", 1.5));
+  const knopf = el("button", { class: "faltkopf", onclick: () => {
+    const auf = koerper.classList.toggle("offen");
+    pfeil.classList.toggle("auf", auf);
+  } }, kopfzeile, pfeil);
+
+  karteEl.className = "karte faltkarte";
+  karteEl.appendChild(knopf);
+  karteEl.appendChild(koerper);
+  return karteEl;
+};
 
 const hakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig = 0) => {
   const stand = hole("haken:" + schluessel, {});
@@ -1902,7 +2231,7 @@ const INDEX = (() => {
   })));
   MELDUNG.forEach(([bt, punkte]) => punkte.forEach((pt) => idx.push({
     ort: `Vor dem Anruf · ${bt}`, titel: bt, text: rein(pt),
-    ziel: { seite: "notfall", param: "meldung" },
+    ziel: { seite: "notfall", param: "formular" },
   })));
   SAETZE.forEach(([de, es]) => idx.push({
     ort: "Notfall · Spanisch", titel: es, text: de,
@@ -1912,15 +2241,16 @@ const INDEX = (() => {
     ort: `Buchen · ${bt}`, titel: pt.label, text: pt.url + " " + (pt.hinweis || ""),
     ziel: { seite: "buchen" },
   })));
-  DOKUMENTE.forEach((d) => d.bloecke.forEach(([bt, punkte]) => punkte.forEach((pt) => {
+  DOKUMENTE.forEach((d) => d.bloecke.forEach(([bt0, punkte]) => { const bt = ohneMarker(bt0); (punkte || []).forEach((pt) => {
     const txt = typeof pt === "string" ? rein(pt)
       : pt.begriff ? rein(`${pt.begriff} ${pt.text}`)
       : rein(`${pt.label} ${pt.nr || pt.url || ""}`);
     idx.push({ ort: `${d.titel} · ${bt}`, titel: pt.begriff || bt, text: txt,
-      ziel: { seite: ["geld", "versicherung"].includes(d.id) ? "geld" : "wissen", param: d.id } });
-  })));
+      ziel: { seite: ["geld", "versicherung", "handy"].includes(d.id) ? "geld" : "wissen",
+              param: d.id } });
+  }); }));
   Object.entries(LAENDER).forEach(([k, L]) => {
-    L.bloecke.forEach(([bt, punkte]) => punkte.forEach((pt) => {
+    L.bloecke.forEach(([bt, punkte]) => (punkte || []).forEach((pt) => {
       const txt = typeof pt === "string" ? rein(pt) : rein(`${pt.label} ${pt.nr || pt.url || ""}`);
       idx.push({ ort: `${L.name} · ${bt}`, titel: bt, text: txt,
         ziel: { seite: "route", param: { tab: "land", land: k, unter: "info" } } });
@@ -2166,8 +2496,9 @@ const seiteStart = () => {
 
   return el("div", {},
     wochenende() ? el("div", {},
-      el("div", { class: "gruppentitel abstandoben" }, "Wochenroutine"),
-      hakenliste("Diese Woche", WOCHE.slice(0, WOCHE_WICHTIG), "woche", true),
+      el("div", { class: "gruppentitel abstandoben klein3" }, "Wochenroutine"),
+      el("div", { class: "wochenende" },
+        hakenliste("Dieses Wochenende", WOCHE.slice(0, WOCHE_WICHTIG), "woche", true)),
       el("button", { class: "textknopf mehrwoche", onclick: () => gehe("heute", "woche") },
         "Ganze Wochenroutine öffnen")) : null,
 
@@ -2176,174 +2507,54 @@ const seiteStart = () => {
     el("p", { class: "version" }, "Fassung " + VERSION));
 };
 
-/* Alle Listen an einem Ort – zeigt nur, was noch offen ist. */
-const ALLE_LISTEN = () => [
-  ["Tagesrucksack", TAGESRUCKSACK, "tour:rucksack", "tour"],
-  ["Bevor du losgehst", VOR_DER_TOUR, "tour:vorher", "tour"],
-  ["Ankunft am neuen Ort", ANKUNFT, "ankunft", "ankunft"],
-  ["Vor dem Ortswechsel", ORTSWECHSEL, "ortswechsel", "ortswechsel"],
-  ["Jede Woche", WOCHE, "woche", "woche"],
-  ...PACKLISTE.map(([t, p]) => ["Packliste · " + t, p, "pack:" + t, "pack"]),
-  ["Vor dem Abflug", VOR_ABFLUG, "abflug", "abflug"],
-  ["Rückkehr", RUECKKEHR, "rueckkehr", "rueck"],
-];
-
-const seiteOffen = () => {
-  let offen = null;
-  const wrap = el("div");
-
-  const zeichne = () => {
-    wrap.innerHTML = "";
-    wrap.appendChild(el("div", { class: "hinweis abstandunten" },
-      "Alles, was noch offen ist – aus allen Listen. Erledigtes erscheint hier nicht."));
-
-    // Termine zuoberst
-    const stand = hole("termine", {});
-    const aufgaben = (t) => (Array.isArray(t) ? t : [t]);
-    const offeneTermine = [];
-    TERMINE.forEach(([datum, titel, text]) => {
-      aufgaben(text).forEach((z) => {
-        if (!stand[titel + "|" + z]) offeneTermine.push([datum, titel, z]);
-      });
-    });
-
-    const karteEl = el("div", { class: "karte" },
-      el("div", { class: "zeile mitte" },
-        el("div", { class: "blocktitel" }, "Termine"),
-        el("div", { class: "klein" }, offeneTermine.length + " offen")));
-    if (offen === "termine") {
-      offeneTermine.forEach(([datum, titel, z]) => {
-        const k = titel + "|" + z;
-        karteEl.appendChild(el("button", {
-          class: "haken",
-          onclick: () => { stand[k] = !stand[k]; merke("termine", stand); zeichne(); },
-        },
-          el("span", { class: "box klein" }),
-          el("span", { class: "hakentext" },
-            el("span", { class: "offenwann" }, wannText(datum) + " · "),
-            el("span", { html: z }))));
-      });
-    }
-    karteEl.appendChild(el("div", { class: "offenzeile" },
-      el("button", { class: "textknopf", onclick: () => {
-        offen = offen === "termine" ? null : "termine"; zeichne();
-      } }, offen === "termine" ? "zuklappen" : "anzeigen"),
-      el("button", { class: "textknopf", onclick: () => {
-        const t = offeneTermine.map(([d, , z]) => rein(z) + " (" + wannText(d) + ")").join("\n");
-        navigator.clipboard.writeText(t).then(
-          () => alert("Termine kopiert – in Erinnerungen einfügen."),
-          () => alert("Kopieren nicht möglich."));
-      } }, "kopieren")));
-    wrap.appendChild(karteEl);
-
-    // Alle Checklisten
-    ALLE_LISTEN().forEach(([titel, punkte, schluessel, reiter]) => {
-      const hak = hole("haken:" + schluessel, {});
-      const eigene = hole("eigene:" + schluessel, []);
-      const alle = punkte.concat(eigene);
-      const offeneP = alle.filter((p) => !hak[p]);
-
-      const k = el("div", { class: "karte" },
-        el("div", { class: "zeile mitte" },
-          el("div", { class: "blocktitel" }, titel),
-          el("div", { class: "klein" }, offeneP.length + " von " + alle.length)));
-
-      if (offen === schluessel) {
-        offeneP.forEach((p) => {
-          k.appendChild(el("button", {
-            class: "haken",
-            onclick: () => { hak[p] = true; merke("haken:" + schluessel, hak); zeichne(); },
-          }, el("span", { class: "box klein" }), el("span", { class: "hakentext" }, p)));
-        });
-        if (!offeneP.length) {
-          k.appendChild(el("div", { class: "hinweis" }, "Alles abgehakt."));
-        }
-      }
-
-      k.appendChild(el("div", { class: "offenzeile" },
-        el("button", { class: "textknopf", onclick: () => {
-          offen = offen === schluessel ? null : schluessel; zeichne();
-        } }, offen === schluessel ? "zuklappen" : "anzeigen"),
-        el("button", { class: "textknopf", onclick: () => {
-          navigator.clipboard.writeText(offeneP.join("\n")).then(
-            () => alert(titel + " kopiert – in Erinnerungen einfügen."),
-            () => alert("Kopieren nicht möglich."));
-        } }, "kopieren"),
-        el("button", { class: "textknopf", onclick: () => gehe("heute", reiter) }, "öffnen")));
-      wrap.appendChild(k);
-    });
-  };
-  zeichne();
-  return wrap;
-};
-
 const seiteHeute = () => {
-  let tab = typeof param === "string" ? param : "tour";
   const wrap = el("div");
-  const inhalt = el("div");
+  wrap.appendChild(kopf("Heute", "Deine Listen – unterwegs, vorher und danach", null));
 
-  const UNTERWEGS = [["offen", "Offen"], ["tour", "Tagestour"], ["ankunft", "Ankunft"],
-                     ["ortswechsel", "Ortswechsel"], ["woche", "Jede Woche"]];
-  const RANDZEIT = [["pack", "Packliste"], ["abflug", "Vor dem Abflug"], ["rueck", "Rückkehr"]];
-  let mehr = RANDZEIT.some(([k]) => k === tab);
+  /* Gesamtstand über alle Listen – zählt Vorgaben und eigene Punkte. */
+  const ALLE = [
+    ["tour:rucksack", TAGESRUCKSACK], ["tour:vorher", VOR_DER_TOUR], ["ankunft", ANKUNFT],
+    ["ortswechsel", ORTSWECHSEL], ["woche", WOCHE],
+    ...PACKLISTE.map(([t, p]) => ["pack:" + t, p]),
+    ["abflug", VOR_ABFLUG], ["rueckkehr", RUECKKEHR],
+  ];
+  let gesamt = 0, offen = 0;
+  ALLE.forEach(([k, p]) => {
+    const stand = hole("haken:" + k, {});
+    const alle = p.concat(hole("eigene:" + k, []));
+    gesamt += alle.length;
+    offen += alle.filter((x) => !stand[x]).length;
+  });
 
-  const zeichne = () => {
-    inhalt.innerHTML = "";
-    inhalt.appendChild(reiter(UNTERWEGS, tab, (k) => { tab = k; zeichne(); }));
+  wrap.appendChild(karte([
+    el("div", { class: "zeile mitte" },
+      el("div", { class: "blocktitel ohneabstand" }, "Insgesamt offen"),
+      el("div", { class: "gesamtstand" }, offen + " von " + gesamt)),
+    el("div", { class: "hinweis" },
+      "Antippen öffnet eine Liste – die Haken bleiben gespeichert."),
+  ]));
 
-    if (mehr || RANDZEIT.some(([k]) => k === tab)) {
-      inhalt.appendChild(el("div", { class: "gruppenzeile" },
-        el("span", { class: "gruppentitel" }, "Vor der Reise und danach"),
-        el("button", { class: "zuknopf",
-          onclick: () => { mehr = false; tab = "tour"; zeichne(); } }, "ausblenden")));
-      inhalt.appendChild(reiter(RANDZEIT, tab, (k) => { tab = k; zeichne(); }));
-    } else {
-      inhalt.appendChild(el("button", { class: "mehrknopf",
-        onclick: () => { mehr = true; zeichne(); } },
-        "Vorbereitung und Rückkehr anzeigen"));
-    }
+  const gruppe = (titel) => wrap.appendChild(
+    el("div", { class: "gruppentitel abstandoben klein3" }, titel));
 
-    const einleitung = (t) => inhalt.appendChild(el("div", { class: "hinweis abstandunten" }, t));
+  gruppe("Unterwegs");
+  wrap.appendChild(faltHakenliste("In den Tagesrucksack", TAGESRUCKSACK, "tour:rucksack", true));
+  wrap.appendChild(faltHakenliste("Bevor du losgehst", VOR_DER_TOUR, "tour:vorher", true));
+  wrap.appendChild(faltHakenliste("Angekommen", ANKUNFT, "ankunft", true));
+  wrap.appendChild(faltHakenliste("Vor dem Ortswechsel", ORTSWECHSEL, "ortswechsel", true));
+  wrap.appendChild(faltHakenliste("Wochenroutine", WOCHE, "woche", true, WOCHE_WICHTIG));
 
-    if (tab === "offen") {
-      inhalt.appendChild(seiteOffen());
-    }
-    if (tab === "tour") {
-      einleitung("Für Wanderungen, Bootsfahrten, Vulkantouren und jeden Tag, an dem du das Hostel "
-        + "länger verlässt.");
-      inhalt.appendChild(hakenliste("In den Tagesrucksack", TAGESRUCKSACK, "tour:rucksack", true));
-      inhalt.appendChild(hakenliste("Bevor du losgehst", VOR_DER_TOUR, "tour:vorher", true));
-    }
-    if (tab === "ankunft") {
-      einleitung("Die erste Stunde an einem neuen Ort. Sieben Minuten Aufwand, die später viel "
-        + "sparen.");
-      inhalt.appendChild(hakenliste("Angekommen", ANKUNFT, "ankunft", true));
-    }
-    if (tab === "ortswechsel") {
-      einleitung("Bevor du weiterziehst. Vergessene Ladegeräte und leere Portemonnaies sind die "
-        + "häufigsten Ärgernisse unterwegs.");
-      inhalt.appendChild(hakenliste("Weiterreise", ORTSWECHSEL, "ortswechsel", true));
-    }
-    if (tab === "woche") {
-      einleitung("Sonntagabend, wenn du ohnehin im Hostel sitzt. Die ersten drei Punkte sind "
-        + "die, die wirklich zählen.");
-      inhalt.appendChild(hakenliste("Wochenroutine", WOCHE, "woche", true, WOCHE_WICHTIG));
-    }
-    if (tab === "pack") {
-      einleitung("Zielgewicht 9.5–10.5 kg, Obergrenze 12 kg. Kleidung für maximal 6–7 Tage – "
-        + "Wäscheservice vor Ort kostet rund 3 USD pro Kilo.");
-      PACKLISTE.forEach(([t, p]) => inhalt.appendChild(hakenliste(t, p, "pack:" + t)));
-    }
-    if (tab === "abflug") inhalt.appendChild(hakenliste("Vor dem Abflug", VOR_ABFLUG, "abflug"));
-    if (tab === "rueck") inhalt.appendChild(hakenliste("Rückkehr", RUECKKEHR, "rueckkehr"));
-  };
+  gruppe("Vor der Reise");
+  PACKLISTE.forEach(([t, p]) =>
+    wrap.appendChild(faltHakenliste("Packliste · " + t, p, "pack:" + t)));
+  wrap.appendChild(faltHakenliste("Vor dem Abflug", VOR_ABFLUG, "abflug"));
 
-  wrap.appendChild(kopf("Heute", "Zum Abhaken – die Haken bleiben gespeichert.", null));
+  gruppe("Nach der Reise");
+  wrap.appendChild(faltHakenliste("Rückkehr", RUECKKEHR, "rueckkehr"));
 
-  wrap.appendChild(inhalt);
-  zeichne();
   return wrap;
 };
+
 
 
 const MELDEFELDER = [
@@ -2451,14 +2662,23 @@ const seiteMeldung = () => {
 };
 
 const seiteNotfall = () => {
-  let tab = typeof param === "string" ? param : "meldung";
+  /* Der Notfall öffnet immer mit den Nummern – im Ernstfall zählt das Wählen. */
+  let tab = typeof param === "string" ? param : "nummern";
   const wrap = el("div");
   const inhalt = el("div");
 
   const zeichne = () => {
     inhalt.innerHTML = "";
     if (tab === "nummern") {
-      inhalt.appendChild(anrufKarte({ ...NOTRUF[0], ton: "alarm" }));
+      inhalt.appendChild(anrufKarte({ ...NOTRUF[0], ton: "alarm", nummerZuerst: true }));
+      inhalt.appendChild(el("div", { class: "karte hinweiskarte" },
+        el("div", { class: "blocktitel" }, "Karten sperren: zuerst in der App"),
+        el("ul", { class: "punkte" },
+          el("li", { html: "<b>Revolut</b> in der App einfrieren." }),
+          el("li", { html: "<b>BKB STU Visa Debit</b> in der App „one“ sperren – "
+                           + "Karte wählen, Schloss-Symbol, sperren." }),
+          el("li", { html: "Beides ist gratis und dauert Sekunden, sobald du Internet hast." }),
+          el("li", { html: "<b>Ohne Internet:</b> die Nummern unten anrufen." }))));
       NOTRUF.slice(1).forEach((n) => inhalt.appendChild(anrufKarte(n)));
       inhalt.appendChild(meineNummern());
     }
@@ -2473,7 +2693,7 @@ const seiteNotfall = () => {
       ], "terra"));
       VERLUST.forEach((v) => inhalt.appendChild(faltblock(v.was, v.punkte, false)));
     }
-    if (tab === "meldung") {
+    if (tab === "formular") {
       inhalt.appendChild(karte([
         el("div", { class: "blocktitel" }, "Erst lesen, dann wählen"),
         el("div", { class: "text" },
@@ -2493,8 +2713,6 @@ const seiteNotfall = () => {
           + "gibst.<br><br>Die Bestätigung <b>schriftlich</b> verlangen. Ein Telefonat lässt sich "
           + "später nicht belegen." }),
       ], "terra"));
-    }
-    if (tab === "formular") {
       inhalt.appendChild(seiteMeldung());
     }
     if (tab === "saetze") {
@@ -2505,33 +2723,33 @@ const seiteNotfall = () => {
 
   wrap.appendChild(kopf("Notfall",
     "Erst stoppen, was Geld kostet. Dann dokumentieren. Dann ersetzen.", null));
-  const REITER_NOTFALL = [["meldung", "Vor dem Anruf"], ["ablauf", "Ablauf"],
-    ["formular", "Meldung"], ["saetze", "Spanisch"]];
+  const REITER_NOTFALL = [["nummern", "Nummern"], ["ablauf", "Ablauf"],
+    ["formular", "Melden"], ["saetze", "Sätze"]];
   const reiterZeile = () => {
-    const z = el("div", { class: "reiter" });
-    z.appendChild(el("button", {
-      class: "notfallknopf" + (tab === "nummern" ? " an" : ""),
-      "aria-label": "Direkt zu den Nummern",
-      onclick: () => { tab = "nummern"; zeichneReiter(); zeichne(); },
-    }, svg("phone", 21, tab === "nummern" ? "#fff" : "#A8322A", 2.2)));
-    REITER_NOTFALL.forEach(([k, l]) => z.appendChild(el("button", {
-      class: "chip" + (tab === k ? " an" : ""),
+    const z = el("div", { class: "notfallreiter" });
+    const zeile = el("div", { class: "reiter" });
+    REITER_NOTFALL.forEach(([k, l]) => zeile.appendChild(el("button", {
+      class: "chip" + (tab === k ? " an" : "") + (k === "nummern" ? " chipalarm" : ""),
       onclick: () => { tab = k; zeichneReiter(); zeichne(); },
     }, l)));
+    z.appendChild(zeile);
     return z;
   };
   wrap.appendChild(reiterZeile());
   wrap.appendChild(inhalt);
 
   const zeichneReiter = () => {
-    wrap.querySelector(".reiter").replaceWith(reiterZeile());
+    wrap.querySelector(".notfallreiter").replaceWith(reiterZeile());
   };
   zeichne();
   return wrap;
 };
 
-const WISSEN_REIHE = ["sicherheit", "gesundheit", "handy", "fluege", "djrv", "schule",
-                      "eda", "ablage"];
+/* Dieselbe Reihenfolge und Nummerierung wie die Register im Dossier. */
+const WISSEN_REIHE = [
+  ["01", "sicherheit"], ["02", "gesundheit"], ["05", "ablage"],
+  ["06", "fluege"], ["06", "djrv"], ["06", "schule"], ["06", "eda"],
+];
 
 const seiteWissen = () => {
   const offen = typeof param === "string" ? DOKUMENTE.find((d) => d.id === param) : null;
@@ -2539,10 +2757,12 @@ const seiteWissen = () => {
   if (offen) {
     return el("div", {},
       kopf(offen.titel, null, () => gehe("wissen"), "Wissen"),
-      offen.bloecke.map(([t, p], i) => faltblock(t, p, i === 0)));
+      bloeckeMit(offen.bloecke));
   }
 
-  const liste = WISSEN_REIHE.map((id) => DOKUMENTE.find((d) => d.id === id)).filter(Boolean);
+  const liste = WISSEN_REIHE
+    .map(([nr, id]) => [nr, DOKUMENTE.find((d) => d.id === id)])
+    .filter(([, d]) => d);
   return el("div", {},
     kopf("Wissen", "Einmal lesen, dann kennt man es.", null),
     el("div", { class: "spalten" },
@@ -2550,28 +2770,32 @@ const seiteWissen = () => {
       el("div", { class: "karte terra" },
         el("div", { class: "kacheltitel klein2" }, "Buchen"),
         el("div", { class: "hinweis" }, "Hostels, Busse, Schule, Formulare"))),
-      liste.map((d) =>
+      liste.map(([nr, d]) =>
         el("button", { class: "block", onclick: () => gehe("wissen", d.id) },
           karte(el("div", {},
+            el("div", { class: "registernr" }, "Register " + nr),
             el("div", { class: "kacheltitel klein2" }, d.titel),
             el("div", { class: "hinweis" }, d.kurz)))))));
 };
 
-const GELD_REIHE = ["geld", "versicherung"];
+const GELD_REIHE = [["03", "geld"], ["02", "versicherung"], ["04", "handy"]];
 
 const seiteGeld = () => {
   const offen = typeof param === "string" ? DOKUMENTE.find((d) => d.id === param) : null;
   if (offen) {
     return el("div", {},
-      kopf(offen.titel, null, () => gehe("geld"), "Geld & Police"),
-      offen.bloecke.map(([t, p], i) => faltblock(t, p, i === 0)));
+      kopf(offen.titel, null, () => gehe("geld"), "Geld, Police & Handy"),
+      bloeckeMit(offen.bloecke));
   }
-  const liste = GELD_REIHE.map((id) => DOKUMENTE.find((d) => d.id === id)).filter(Boolean);
+  const liste = GELD_REIHE
+    .map(([nr, id]) => [nr, DOKUMENTE.find((d) => d.id === id)])
+    .filter(([, d]) => d);
   return el("div", {},
-    kopf("Geld & Police", "Karten sperren, Konten, Versicherung.", null),
-    liste.map((d) =>
+    kopf("Geld, Police & Handy", "Karten, Konten, Budget, Versicherung, Gerät.", null),
+    liste.map(([nr, d]) =>
       el("button", { class: "block", onclick: () => gehe("geld", d.id) },
         karte(el("div", {},
+          el("div", { class: "registernr" }, "Register " + nr),
           el("div", { class: "kacheltitel klein2" }, d.titel),
           el("div", { class: "hinweis" }, d.kurz))))));
 };
@@ -2629,26 +2853,109 @@ const hostelKarte = (h) => {
 const seiteRoute = () => {
   let tab = (param && param.tab) || (typeof param === "string" ? param : "etappen");
   let land = (param && param.land) || "guatemala";
+  let ort = (param && param.ort) || null;
   const wrap = el("div");
   const inhalt = el("div");
 
+  /* Welches Land steckt hinter einer Etappe – für den Sprung ins Länderwissen. */
+  /* Jedes Land hat seine eigene Farbe – Ankunft und Offenes bleiben grau. */
+  /* Noch nicht entschiedene Etappen bekommen den hohlen Punkt. */
+  const offenerPunkt = (r) => /offen|noch nicht/i.test(r.tag + r.ort);
+
+  const tagfarbe = (r) => {
+    const t = r.tag + " " + r.ort;
+    if (/Guatemala/i.test(t)) return "gt";
+    if (/Costa Rica|San José|Heredia|Sámara/i.test(t)) return "cr";
+    if (/Peru/i.test(t)) return "pe";
+    return "grau";
+  };
+
+  /* Flaggen als Vektorgrafik – auf jedem Gerät gleich scharf. */
+  const flagge = (r) => {
+    const tag = r.tag + " " + r.ort;
+    const rahmen = (inhalt) => {
+      const s = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      s.setAttribute("viewBox", "0 0 21 14");
+      s.setAttribute("width", "24");
+      s.setAttribute("height", "16");
+      s.setAttribute("class", "flagge");
+      s.innerHTML = inhalt
+        + '<rect x=".25" y=".25" width="20.5" height="13.5" fill="none"'
+        + ' stroke="rgba(0,0,0,.18)" stroke-width=".5"/>';
+      return s;
+    };
+    if (/Guatemala/i.test(tag)) {
+      return rahmen(
+        '<rect width="7" height="14" fill="#4997D0"/>'
+        + '<rect x="7" width="7" height="14" fill="#fff"/>'
+        + '<rect x="14" width="7" height="14" fill="#4997D0"/>'
+        + '<circle cx="10.5" cy="7" r="2.1" fill="none" stroke="#4E6B52" stroke-width=".7"/>');
+    }
+    if (/Costa Rica|San José|Heredia|Sámara/i.test(tag)) {
+      return rahmen(
+        '<rect width="21" height="14" fill="#002B7F"/>'
+        + '<rect y="2.8" width="21" height="8.4" fill="#fff"/>'
+        + '<rect y="4.9" width="21" height="4.2" fill="#CE1126"/>');
+    }
+    if (/Peru/i.test(tag)) {
+      return rahmen(
+        '<rect width="7" height="14" fill="#D91023"/>'
+        + '<rect x="7" width="7" height="14" fill="#fff"/>'
+        + '<rect x="14" width="7" height="14" fill="#D91023"/>');
+    }
+    return null;
+  };
+
+  /* Ziel einer Etappe: eigener Ort, sonst das Land. Ohne Inhalt kein Sprung. */
+  const zielZu = (r) => {
+    if (/Antigua/i.test(r.ort)) return { ort: "antigua" };
+    if (/Atitlán/i.test(r.ort)) return { ort: "atitlan" };
+    return null;
+  };
+
   const zeichne = () => {
     inhalt.innerHTML = "";
-    inhalt.appendChild(reiter(
-      [["etappen", "Etappen"], ["guatemala", "Guatemala"], ["costarica", "Costa Rica"]],
-      tab === "etappen" ? "etappen" : land,
-      (k) => { if (k === "etappen") { tab = "etappen"; } else { tab = "land"; land = k; } zeichne(); }));
 
     if (tab === "etappen") {
       inhalt.appendChild(el("div", { class: "hinweis abstandunten" },
-        "Die Etappen in ihrer Reihenfolge – ohne Daten, weil sich das unterwegs entscheidet."));
-      inhalt.appendChild(el("div", { class: "zeitstrahl" },
-        ROUTE.map((r) =>
-          el("div", { class: "etappe" },
-            el("span", { class: "punkt" + (r.tag === "offen" ? " offen" : "") }),
-            el("div", { class: "ortlabel grau" }, r.tag),
-            el("div", { class: "etappenort" }, r.ort),
-            el("div", { class: "hinweis" }, r.note)))));
+        "Die Etappen in ihrer Reihenfolge. Antippen öffnet alles, was wir zum Land wissen – "
+        + "Einreise, Geld, Sicherheit, Hostels."));
+      /* Je Land ein eigener Strang: Überschrift, darunter die Orte mit eigener Linie. */
+      const strahl = el("div");
+      let letztes = null;
+      let strang = null;
+
+      ROUTE.forEach((r) => {
+        const kuerzel = tagfarbe(r);
+        if (kuerzel !== letztes) {
+          const zielLand = { gt: "guatemala", cr: "costarica" }[kuerzel];
+          const marke = zielLand
+            ? el("button", { class: "landmarke landknopf " + kuerzel,
+                onclick: () => { tab = "land"; land = zielLand; zeichne(); } },
+                el("span", {}, r.tag), flagge(r),
+                el("span", { class: "landpfeil" }, svg("chevron", 15, "currentColor", 2)))
+            : el("div", { class: "landmarke " + kuerzel }, el("span", {}, r.tag), flagge(r));
+          strahl.appendChild(marke);
+          strang = el("div", { class: "strang" });
+          strahl.appendChild(strang);
+          letztes = kuerzel;
+        }
+
+        const ziel = zielZu(r);
+        const kern = [
+          el("span", { class: "punkt" + (offenerPunkt(r) ? " offen" : "") }),
+          el("div", { class: "etappenort" }, r.ort),
+          el("div", { class: "hinweis" }, r.note),
+        ];
+        if (!ziel) { strang.appendChild(el("div", { class: "etappe" }, kern)); return; }
+        strang.appendChild(el("button", { class: "etappe etappeknopf",
+          onclick: () => {
+            if (ziel.ort) { tab = "ort"; ort = ziel.ort; } else { tab = "land"; land = ziel.land; }
+            zeichne();
+          } },
+          kern, el("span", { class: "etappepfeil" }, svg("chevron", 16, "#B65A3C", 2))));
+      });
+      inhalt.appendChild(strahl);
       inhalt.appendChild(el("div", { class: "karte terra" },
         el("div", { class: "text" },
           "Fix gebucht ist nur, was teuer oder knapp ist: Hinflug, Rundreise, Regionalflug, "
@@ -2656,7 +2963,28 @@ const seiteRoute = () => {
       return;
     }
 
+    if (tab === "ort") {
+      const O = ORTE[ort];
+      inhalt.appendChild(el("button", { class: "zurueckzeile",
+        onclick: () => { tab = "etappen"; zeichne(); } },
+        el("span", { class: "zurueckpfeil" }, svg("chevron", 16, "#B65A3C", 2)),
+        el("span", {}, "Alle Etappen")));
+      inhalt.appendChild(el("div", { class: "landtitel" }, O.name));
+      inhalt.appendChild(el("div", { class: "klein abstandunten" }, O.zeit));
+      bloeckeMit(O.bloecke).forEach((x) => inhalt.appendChild(x));
+      inhalt.appendChild(el("button", { class: "sprung",
+        onclick: () => { tab = "land"; land = O.land; zeichne(); } },
+        el("span", { class: "sprungtext" }, "Alles zu " + LAENDER[O.land].name),
+        el("span", { class: "sprungpfeil" }, svg("chevron", 15, "#B65A3C", 2))));
+      return;
+    }
+
     const L = LAENDER[land];
+    inhalt.appendChild(el("button", { class: "zurueckzeile",
+      onclick: () => { tab = "etappen"; zeichne(); } },
+      el("span", { class: "zurueckpfeil" }, svg("chevron", 16, "#B65A3C", 2)),
+      el("span", {}, "Alle Etappen")));
+    inhalt.appendChild(el("div", { class: "landtitel" }, L.name));
     let unter = (param && param.unter) || "info";
     const zeichneLand = () => {
       const rest = inhalt.querySelector(".landinhalt");
@@ -2673,9 +3001,15 @@ const seiteRoute = () => {
             el("div", { class: "hinweis polster" },
               "San José als Ankunft, Heredia und Cartago im Zentraltal, Puntarenas und die "
               + "Nicoya-Halbinsel mit Sámara am Pazifik, Puerto Limón an der Karibik.")));
+          box.appendChild(linkZeile({
+            label: "Visit Costa Rica – offizielles Tourismusportal",
+            url: "https://de.visitcostarica.com/",
+            hinweis: "Auf Deutsch, vom Tourismusinstitut ICT",
+          }));
+          box.appendChild(el("div", { class: "abstandunten" }));
         }
         box.appendChild(el("div", { class: "klein abstandunten" }, L.zeit));
-        L.bloecke.forEach(([t, p], i) => box.appendChild(faltblock(t, p, i === 0)));
+        bloeckeMit(L.bloecke).forEach((x) => box.appendChild(x));
       } else {
         box.appendChild(el("div", { class: "hinweis abstandunten" },
           "Recherchierte Kandidaten, Stand August 2026, mit Bewertungen aus Google. Vor der "
