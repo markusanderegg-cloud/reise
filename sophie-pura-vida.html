@@ -552,7 +552,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 
 .faltkarte .zeile.mitte { flex: 1; }
 
-.gesamtstand { font-family: var(--serif); font-size: 17px; color: var(--terra); }
+.gesamtstand { font-size: 12.5px; color: var(--grau); }
 
 /* ── Etappen als Knopf ── */
 .etappeknopf { position: relative; width: 100%; text-align: left; background: none; border: 0; }
@@ -635,6 +635,14 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 
 /* Nach dem roten Sofortblock beginnt der ruhige Teil – deutlich mehr Luft */
 .karte.faltkarte.dringend + .gruppentitel.klein3 { margin-top: 44px; }
+
+/* Übersichtskarte auf Heute – gleiche Fläche wie die Gruppen */
+.blockband .zeile.mitte { padding: 2px 0; }
+
+/* Kopfzeile einer Hakenliste in der Klappzeile: kein Abstand nach unten */
+.blockband .faltkopf .zeile.mitte { padding: 0; }
+.blockband .faltkopf .blocktitel { margin-bottom: 0; }
+.blockband > .faltkarte > .faltkopf { padding-top: 5px; padding-bottom: 5px; }
 
 </style>
 </head>
@@ -1764,7 +1772,7 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "134 · 29.08.2026";
+const VERSION = "137 · 29.08.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
@@ -2534,23 +2542,28 @@ const seiteHeute = () => {
       "Antippen öffnet eine Liste – die Haken bleiben gespeichert."),
   ]));
 
-  const gruppe = (titel) => wrap.appendChild(
-    el("div", { class: "gruppentitel abstandoben klein3" }, titel));
+  /* Jede Gruppe kommt in eine eigene weisse Fläche – wie in den Themen. */
+  const gruppe = (titel, listen) => {
+    wrap.appendChild(el("div", { class: "gruppentitel abstandoben klein3" }, titel));
+    const band = el("div", { class: "blockband" });
+    listen.forEach((l) => band.appendChild(l));
+    wrap.appendChild(band);
+  };
 
-  gruppe("Unterwegs");
-  wrap.appendChild(faltHakenliste("In den Tagesrucksack", TAGESRUCKSACK, "tour:rucksack", true));
-  wrap.appendChild(faltHakenliste("Bevor du losgehst", VOR_DER_TOUR, "tour:vorher", true));
-  wrap.appendChild(faltHakenliste("Angekommen", ANKUNFT, "ankunft", true));
-  wrap.appendChild(faltHakenliste("Vor dem Ortswechsel", ORTSWECHSEL, "ortswechsel", true));
-  wrap.appendChild(faltHakenliste("Wochenroutine", WOCHE, "woche", true, WOCHE_WICHTIG));
+  gruppe("Unterwegs", [
+    faltHakenliste("In den Tagesrucksack", TAGESRUCKSACK, "tour:rucksack", true),
+    faltHakenliste("Bevor du losgehst", VOR_DER_TOUR, "tour:vorher", true),
+    faltHakenliste("Angekommen", ANKUNFT, "ankunft", true),
+    faltHakenliste("Vor dem Ortswechsel", ORTSWECHSEL, "ortswechsel", true),
+    faltHakenliste("Wochenroutine", WOCHE, "woche", true, WOCHE_WICHTIG),
+  ]);
 
-  gruppe("Vor der Reise");
-  PACKLISTE.forEach(([t, p]) =>
-    wrap.appendChild(faltHakenliste("Packliste · " + t, p, "pack:" + t)));
-  wrap.appendChild(faltHakenliste("Vor dem Abflug", VOR_ABFLUG, "abflug"));
+  gruppe("Vor der Reise", [
+    ...PACKLISTE.map(([t, p]) => faltHakenliste("Packliste · " + t, p, "pack:" + t)),
+    faltHakenliste("Vor dem Abflug", VOR_ABFLUG, "abflug"),
+  ]);
 
-  gruppe("Nach der Reise");
-  wrap.appendChild(faltHakenliste("Rückkehr", RUECKKEHR, "rueckkehr"));
+  gruppe("Nach der Reise", [faltHakenliste("Rückkehr", RUECKKEHR, "rueckkehr")]);
 
   return wrap;
 };
