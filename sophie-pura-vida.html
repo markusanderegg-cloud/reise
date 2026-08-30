@@ -113,7 +113,8 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 
 .kopf { margin-bottom: 24px; margin-top: 6px; }
-.kopf h1 { font-family: var(--serif); font-size: 24px; line-height: 1.1; margin: 0; color: var(--ink); }
+.kopf h1 {
+  font-weight: 700; font-size: 24px; line-height: 1.1; margin: 0; color: var(--ink); }
 .kopf .unter { font-size: 14px; color: var(--grau); margin: 8px 0 0; line-height: 1.55; }
 .zurueck {
   display: inline-flex; align-items: center; gap: 4px;
@@ -122,7 +123,8 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 
 .titelblock { padding: 4px 0 14px; }
 .obertitel { font-size: 12px; color: var(--grau); letter-spacing: 0.14em; text-transform: uppercase; }
-.gross { font-family: var(--serif); font-size: 32px; line-height: 1.05; margin: 6px 0 0; color: var(--ink); }
+.gross {
+  font-weight: 700; font-size: 32px; line-height: 1.05; margin: 6px 0 0; color: var(--ink); }
 .strich { width: 48px; height: 3px; background: var(--terra); border-radius: 2px; margin: 10px 0; }
 
 /* ── Startseite ── */
@@ -132,7 +134,8 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   background: var(--alarm-hell); border: 1px solid #EBC6C0;
   border-radius: 16px; padding: 18px; margin-bottom: 14px;
 }
-.alarmtitel { font-family: var(--serif); font-size: 23px; color: var(--alarm); }
+.alarmtitel {
+  font-weight: 700; font-size: 23px; color: var(--alarm); }
 .alarmtext { font-size: 13px; color: #8B5A52; margin-top: 7px; line-height: 1.45; }
 
 .raster { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -140,7 +143,8 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   background: var(--karte); border: 1px solid var(--linie);
   border-radius: 16px; padding: 14px 16px; text-align: left;
 }
-.kacheltitel { font-family: var(--serif); font-size: 16px; line-height: 1.2; margin-bottom: 5px; }
+.kacheltitel {
+  font-weight: 600; font-size: 16px; line-height: 1.2; margin-bottom: 5px; }
 
 /* ── Rundknöpfe ── */
 
@@ -154,9 +158,10 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .rundknopf.hell { background: var(--terra-hell); }
 .knopfreihe { display: flex; gap: 8px; flex-shrink: 0; }
 
-.nummer { font-family: var(--serif); font-size: 21px; margin-top: 2px; }
+.nummer {
+  font-weight: 600; font-size: 21px; margin-top: 2px; }
 .nummer.alarm { color: var(--alarm); }
-.satz { font-family: var(--serif); font-size: 19px; margin-top: 4px; }
+.satz { font-size: 19px; margin-top: 4px; }
 
 /* ── Aktionsfelder in Textblöcken ── */
 
@@ -165,7 +170,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   background: var(--terra-hell); border: 1px solid #E8CFC3;
   border-radius: 12px; padding: 12px 14px; margin-top: 10px;
 }
-.aktionswert { font-family: var(--serif); font-size: 18px; margin-top: 2px; line-height: 1.35; }
+.aktionswert { font-size: 18px; margin-top: 2px; line-height: 1.35; }
 .leerfeld {
   background: var(--sand); border: 1px dashed var(--linie);
   border-radius: 12px; padding: 12px 14px; margin-top: 10px; font-size: 13px;
@@ -173,8 +178,12 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 
 /* ── Textblöcke ── */
 
-.blocktitel { font-family: var(--serif); font-size: 15px; margin-bottom: 10px; }
-.abschnitt { font-family: var(--serif); font-size: 16px; }
+.blocktitel {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 10px;
+}
+.abschnitt {
+  font-weight: 600; font-size: 16px; }
 .punkte li {
   position: relative; padding-left: 18px; font-size: 14px; line-height: 1.55; margin-bottom: 10px;
 }
@@ -249,7 +258,8 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   text-transform: uppercase; margin-bottom: 4px;
 }
 .ortlabel.grau { color: var(--grau); letter-spacing: 0.1em; }
-.treffertitel { font-family: var(--serif); font-size: 16px; line-height: 1.3; margin-bottom: 5px; }
+.treffertitel {
+  font-weight: 600; font-size: 16px; line-height: 1.3; margin-bottom: 5px; }
 
 /* ── Hostels ── */
 
@@ -260,27 +270,30 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 /* ── Route ── */
 
 .zeitstrahl { position: relative; padding-left: 26px; }
-.strang { position: relative; padding-left: 26px; }
+.strang { position: relative; padding-left: 30px; }
 .strang::before {
-  content: ""; position: absolute; left: 7px; top: 8px; bottom: 22px;
+  content: ""; position: absolute; left: 9px; top: 10px; bottom: 22px;
   width: 2px; background: var(--sand-tief);
 }
 .etappe { position: relative; margin-bottom: 20px; }
 .etappe .punkt {
-  position: absolute; left: -26px; top: 6px; width: 16px; height: 16px; border-radius: 8px;
+  position: absolute; left: -30px; top: 3px; width: 21px; height: 21px; border-radius: 11px;
   background: var(--terra); border: 2px solid var(--terra);
+  color: #fff; font-size: 11px; font-weight: 600; line-height: 17px; text-align: center;
 }
-.etappe .punkt.offen { background: var(--sand); border-color: var(--grau); }
-.etappenort { font-family: var(--serif); font-size: 16px; margin: 3px 0 4px; }
+.etappe .punkt.offen { background: var(--sand); border-color: var(--grau); color: var(--grau); }
+.etappenort {
+  font-weight: 600; font-size: 16px; margin: 3px 0 4px; }
 
 
 /* ── Aufklappbare Blöcke: leichte Zeilen statt Karten ── */
 .blockband {
-  background: var(--karte); border: 0; border-radius: 12px;
+  background: var(--karte); border: 1px solid #E6DCCB; border-radius: 12px;
   overflow: hidden; margin-bottom: 14px; padding: 6px 0;
 }
 .bandtitel {
-  font-family: var(--serif); font-size: 17px; line-height: 1.15; color: var(--ink);
+  font-weight: 600;
+  font-size: 17px; line-height: 1.15; color: var(--ink);
   padding: 12px 14px 7px; margin: 0 14px 5px 22px;
   border-bottom: 1px solid var(--linie); padding-left: 0; padding-right: 0;
 }
@@ -327,7 +340,8 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
    Seitentitel 30 · Bereich 19 · Block 15 · Text 14 · Hinweis 13 · Etikett 11.
    Eine Überschrift ist nie kleiner als das, was unter ihr steht. */
 .gruppentitel.klein3 {
-  font-family: var(--serif); font-size: 17px; letter-spacing: 0;
+  font-weight: 600;
+  font-size: 17px; letter-spacing: 0;
   text-transform: none; color: var(--ink); font-weight: 400;
   margin: 0 0 7px 3px;
 }
@@ -347,7 +361,8 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   padding: 18px; box-shadow: inset 0 1px 0 rgba(0,0,0,.06);
   display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
 }
-.heldtitel { font-family: var(--serif); font-size: 27px; color: #211C18; line-height: 1.15; }
+.heldtitel {
+  font-weight: 700; font-size: 27px; color: #211C18; line-height: 1.15; }
 .heldunter { font-size: 13.5px; line-height: 1.5; color: #5A524C; margin-top: 8px; }
 .heldlupe {
   width: 40px; height: 40px; border-radius: 20px; flex-shrink: 0; margin-top: 29px;
@@ -428,7 +443,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   background: var(--alarm-hell); border: 1px solid #EBC6C0;
   border-radius: 12px; padding: 9px 9px 9px 15px;
 }
-.notfallwort { font-family: var(--serif); font-size: 17px; color: var(--alarm); }
+.notfallwort { font-size: 17px; color: var(--alarm); }
 .rundknopf.alarm.klein { width: 32px; height: 32px; border-radius: 16px; }
 .notfallpfeil { display: inline-flex; transform: rotate(-90deg); opacity: .7; }
 
@@ -528,7 +543,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   display: flex; align-items: center; justify-content: center; gap: 9px; width: 100%;
   background: var(--alarm-hell); border: 1px solid #EBC6C0; border-radius: 12px;
   padding: 11px; margin-bottom: 9px;
-  font-family: var(--serif); font-size: 16px; color: var(--alarm);
+  font-size: 16px; color: var(--alarm);
 }
 .nummernknopf.an { background: var(--alarm); border-color: var(--alarm); color: #fff; }
 .notfallreiter .reiter { margin-bottom: 0; }
@@ -565,7 +580,8 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   font-size: 13px; color: var(--terra); padding: 0 0 6px;
 }
 .zurueckpfeil { display: inline-flex; transform: rotate(90deg); }
-.landtitel { font-family: var(--serif); font-size: 22px; color: var(--tinte); margin-bottom: 10px; }
+.landtitel {
+  font-weight: 600; font-size: 22px; color: var(--tinte); margin-bottom: 10px; }
 
 /* Länderfarben im Zeitstrahl */
 .ortlabel.gt { color: #7A6A4F; letter-spacing: 0.1em; }
@@ -578,7 +594,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 /* Ländermarke im Zeitstrahl */
 .landmarke {
   display: flex; align-items: center; gap: 10px;
-  font-family: var(--serif); font-size: 20px; letter-spacing: -0.01em;
+  font-size: 20px; letter-spacing: -0.01em;
   margin: 26px 0 10px; padding: 0;
 }
 .landmarke:first-child { margin-top: 2px; }
@@ -592,7 +608,8 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 /* Notruf 911: Nummer links, Text daneben, Telefon rechts */
 .notrufzeile { align-items: center; gap: 14px; }
 .notrufnr {
-  font-family: var(--serif); font-size: 32px; line-height: 1;
+  font-weight: 700;
+  font-size: 32px; line-height: 1;
   color: var(--alarm); flex-shrink: 0;
 }
 
@@ -627,10 +644,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .mehrbox .text { font-size: 13px; line-height: 1.5; color: #5C4C1C; }
 
 /* Einträge in einer Gruppe: kleiner und in Navy, damit der Titel führt */
-.blockband .faltkopf .blocktitel {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-  font-size: 14px; font-weight: 400; color: #55504A; letter-spacing: 0;
-}
+.blockband .faltkopf .blocktitel { font-weight: 400; color: #55504A; }
 
 
 /* Nach dem roten Sofortblock beginnt der ruhige Teil – deutlich mehr Luft */
@@ -643,6 +657,56 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .blockband .faltkopf .zeile.mitte { padding: 0; }
 .blockband .faltkopf .blocktitel { margin-bottom: 0; }
 .blockband > .faltkarte > .faltkopf { padding-top: 5px; padding-bottom: 5px; }
+
+.stationkopf { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+
+
+
+/* Aufgeklappte Station in der Zeitachse */
+.stationsinhalt { margin: 2px 0 22px; }
+.etappeknopf.auf .etappenort { color: var(--terra); }
+.etappepfeil.auf { transform: rotate(0deg); }
+
+/* ── Ländermarke und Stationszeile: drei Ebenen ── */
+.landmarke {
+  display: flex; align-items: flex-start; gap: 10px;
+  margin: 30px 0 12px; padding: 0; width: 100%; text-align: left;
+}
+.landmarke:first-child { margin-top: 4px; }
+.landtext { flex: 1; }
+.landzeile { display: flex; align-items: center; gap: 9px; }
+.landname {
+  font-weight: 600; font-size: 21px; line-height: 1.1; }
+.landname.gt { color: #7A6A4F; }
+.landname.cr { color: #4E6B52; }
+.landname.pe { color: #A33; }
+.landzeit { font-size: 12.5px; color: var(--grau); margin: 3px 0 2px; }
+.landpfeil { display: inline-flex; transform: rotate(-90deg); margin-top: 6px; }
+
+.etappenzeit { font-size: 12px; color: var(--grau); margin: 1px 0 3px; }
+
+/* Inhalt eines Beutels – zweite Zeile in der Checkliste */
+.unterzeile { display: block; font-size: 12.5px; color: var(--grau); line-height: 1.4; margin-top: 1px; }
+
+/* Tourismusportal – schmale farbige Zeile in der Route */
+.portalzeile {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  background: #E8EFE7; border: 1px solid #CBDAC7; border-radius: 10px;
+  padding: 8px 12px; margin: 0 0 14px;
+}
+.portaltext { font-size: 13px; color: #3E5A42; }
+
+/* Buchen – der einzige Weg nach aussen, deshalb kräftig */
+.karte.buchenkarte {
+  position: relative;
+  background: var(--terra); border-color: var(--terra);
+}
+.karte.buchenkarte .kacheltitel { color: #fff; }
+.buchenunter { font-size: 13px; color: rgba(255,255,255,.85); line-height: 1.4; }
+.buchenpfeil {
+  position: absolute; right: 14px; top: 50%; margin-top: -8px;
+  display: inline-flex; transform: rotate(-90deg); opacity: .9;
+}
 
 </style>
 </head>
@@ -753,7 +817,7 @@ const TERMINE_VORHER = [
     "<b>Ablegen:</b> beide Bestätigungen als PDF in 04-02_Buchungsbestaetigungen.",
   ]],
   ["2. Sep", "Flug buchen", [
-    "Landung am Vortag vor 18 Uhr, kein Umstieg in den USA. One-Way, 23 kg Aufgabegepäck.",
+    "Landung am Vortag vor 18 Uhr. One-Way, 23 kg Aufgabegepäck.",
   ]],
   ["5. Sep", "Tagesrucksack und Yallo", [
     "<b>Tagesrucksack:</b> Patagonia Terravia 24 L bei Transa – früh bestellen, zeitweise Lieferrückstand.",
@@ -1125,38 +1189,23 @@ const DOKUMENTE = [
     ],
   },
   {
-    id: "fluege", titel: "Flüge, Bus und Tickets",
-    kurz: "Flug, Busticket, Ausreisenachweis, Check-in",
+    id: "fluege", titel: "Tickets und Nachweise",
+    kurz: "Weiterreisenachweis, wo du buchst",
     bloecke: [
-      ["Vorab gebucht", [
-        "<b>Busticket San José → Nicaragua oder Panama</b>, rund 25–50 Franken. Wird zweimal gebraucht: beim Check-in in Zürich und bei der Einreise nach Costa Rica. Darf danach verfallen.",
-        "<b>Regionalflug Guatemala-Stadt → San José</b>, One-Way – zugleich der Ausreisenachweis für Guatemala, ebenfalls schon beim Check-in in Zürich verlangt.",
-        "<b>Hinflug Schweiz → Guatemala-Stadt</b>, One-Way. Ankunft vor 18 Uhr, kein Umstieg in den USA.",
-      ]],
-      ["Unterwegs zu buchen", [
-        "Unterkünfte, Busse und Touren entstehen vor Ort.",
-        "Peru entscheidet sich Anfang Dezember. Falls es dazukommt: Flug San José → Lima buchen – damit ist auch der Ausreisenachweis erledigt.",
-        "Rückflug spätestens Anfang Januar buchen, vier bis sechs Wochen Vorlauf. Die Reserve dafür liegt separat und gehört nicht zum Reisebudget.",
-      ]],
-      ["Beim Check-in in Zürich", [
-        "Regionalflug und Busticket werden verlangt – beides ausgedruckt bereithalten.",
-        "Kontrolliert wird von der Airline, nicht vom Grenzbeamten: Sie haftet, wenn sie jemanden ohne gültige Papiere befördert.",
-        "Nicht diskutieren, einfach vorzeigen.",
-      ]],
       ["Wenn du unterwegs einen Nachweis brauchst", [
-        "Erste Wahl: ein Flug, den du ohnehin brauchst.",
-        "Zweite Wahl: Busticket über ticabus.com oder busbud.com, 25–50 Franken.",
-        "Dritte Wahl: günstiger Copa-Flug in ein Nachbarland.",
-        "Letzte Möglichkeit: onwardticket.com – echtes Ticket, rund 48 Stunden gültig, muss auf den Check-in getimt sein.",
+        "<b>Erste Wahl:</b> ein Flug, den du ohnehin brauchst.",
+        "<b>Zweite Wahl:</b> Busticket über ticabus.com oder busbud.com, 25–50 Franken.",
+        "<b>Dritte Wahl:</b> günstiger Copa-Flug in ein Nachbarland.",
+        "<b>Letzte Möglichkeit:</b> onwardticket.com – echtes Ticket, rund 48 Stunden gültig, etwa 15 Franken.",
         "Das Ausreisedatum muss innerhalb der gestempelten Aufenthaltsdauer liegen.",
-        "Die Buchungsadressen stehen zuoberst unter „Buchen“.",
       ]],
-
       ["Wo du buchst", [
-        { label: "Tica Bus – internationale Busse", url: "https://ticabus.com", hinweis: "San José → Nicaragua oder Panama" },
-        { label: "Busbud – Bustickets Costa Rica", url: "https://busbud.com/de/country/cr", hinweis: "Auch Inlandstrecken" },
-        { label: "Onward Ticket – nur als Notlösung", url: "https://onwardticket.com", hinweis: "Echtes Ticket, rund 48 Stunden gültig" },
-      ]],    ],
+        { label: "Tica Bus – internationale Busse", url: "https://ticabus.com" },
+        { label: "Busbud – Bustickets Costa Rica", url: "https://busbud.com/de/country/cr" },
+        { label: "Copa Airlines – Regionalflüge", url: "https://www.copaair.com/" },
+        { label: "Onward Ticket – nur als Notlösung", url: "https://onwardticket.com" },
+      ]],
+    ],
   },
   {
     id: "djrv", titel: "Reiseerklärung Guatemala",
@@ -1179,11 +1228,11 @@ const DOKUMENTE = [
       ]],
       ["Schritt für Schritt", [
         "Seite öffnen, Sprache wählen – Spanisch oder Englisch.",
-        "E-Mail-Adresse eingeben, auf die du auch unterwegs zugreifst.",
-        "Nationalität und Passnummer genau wie im Pass eintragen.",
-        "Reisedaten: Flugnummer, Datum, Ankunfts- oder Abflughafen.",
-        "Gepäck: Anzahl Stücke. Persönliche Kleidung und Reiseausrüstung gelten als persönliches Gepäck.",
-        "Fragen nach mitgeführten Waren und nach Bargeld über 10'000 USD: bei einer Rucksackreise überall Nein.",
+        "<b>E-Mail-Adresse (email)</b> eingeben, auf die du auch unterwegs zugreifst.",
+        "<b>Nationalität (nationality)</b> und <b>Passnummer (passport number)</b> genau wie im Pass.",
+        "<b>Flugnummer (flight number)</b>, Datum, Ankunfts- oder Abflughafen.",
+        "<b>Gepäck (luggage)</b>: Anzahl Stücke. Persönliche Kleidung und Reiseausrüstung gelten als persönliches Gepäck.",
+        "<b>Wert mitgeführter Waren (value of goods other than luggage)</b> und Bargeld über 10'000 USD: bei einer Rucksackreise überall Nein oder 0.",
         "Angaben kontrollieren – ein Tippfehler in der Passnummer macht die Erklärung ungültig.",
         "QR-Code kommt per E-Mail: ausdrucken UND als Screenshot in die Fotos-App.",
       ]],
@@ -1367,6 +1416,268 @@ const DOKUMENTE = [
 
 
 
+
+const STATIONEN = [
+  {
+    id: "hinflug", nummer: "1", kurzname: "Hinflug", titel: "Hinflug nach Guatemala", land: "guatemala",
+    zeit: "Ende September", kurz: "One-Way, mit Nachweisen im Gepäck",
+    abschnitte: [
+      ["Der Flug", [
+        ["eigen", "Was gebucht ist", [
+          "One-Way Schweiz → Guatemala-Stadt, 23 kg Aufgabegepäck.",
+          "<b>Landung am Vortag der Tour, vor 18 Uhr</b> – damit der Transfer bei Tageslicht fährt.",
+          "Buchungsbestätigung offline auf dem Handy und ausgedruckt.",
+        ]],
+      ]],
+      ["Nachweise, die mitfliegen", [
+        ["eigen", "Weiterreise ab Guatemala", [
+          "Guatemala verlangt bei der Einreise einen Nachweis, dass du das Land wieder verlässt.",
+          "<b>Das ist der Regionalflug nach San José</b> – vor dem Hinflug buchen, sonst fehlt er am Schalter.",
+        ]],
+        ["eigen", "Ausreise ab Costa Rica", [
+          "Costa Rica verlangt dasselbe – schon beim Einchecken in Zürich kann danach gefragt werden.",
+          "<b>Busticket nach Nicaragua</b> genügt, rund 25 bis 40 Dollar bei Tica Bus oder Transnica.",
+          "Beide Tickets als PDF im Ordner und offline auf dem Handy.",
+          { label: "Tica Bus – Costa Rica nach Nicaragua", url: "https://ticabus.com/" },
+          { label: "Transnica", url: "https://transnica.com/" },
+          { label: "Copa Airlines – Regionalflüge", url: "https://www.copaair.com/" },
+        ]],
+      ]],
+      ["Beim Check-in in Zürich", [
+        ["eigen", "Was verlangt wird", [
+          "Regionalflug und Busticket werden verlangt – beides ausgedruckt bereithalten.",
+          "Kontrolliert wird von der Airline, nicht vom Grenzbeamten: <b>sie haftet</b>, wenn du am Ziel abgewiesen wirst.",
+          "Nicht diskutieren, einfach vorzeigen.",
+        ]],
+      ]],
+      ["Einreiseformular", [["thema", "djrv"]]],
+      ["Checkliste", [["liste", "abflug"]]],
+    ],
+  },
+  {
+    id: "ankunft-gt", nummer: "2", kurzname: "Ankunft", titel: "Ankunft Guatemala",
+    land: "guatemala", zeit: "Ende September", kurz: "Vom Flughafen bis ins Hostel",
+    abschnitte: [
+      ["Am Flughafen", [
+        ["eigen", "Schritt für Schritt", [
+          "<b>1</b> QR-Code der Reiseerklärung bereithalten – ausgefüllt vor dem Abflug, siehe Station 1.",
+          "<b>2</b> Passkontrolle: Weiterreiseticket und Adresse der ersten Unterkunft zeigen.",
+          "<b>3</b> Einreisestempel im Pass kontrollieren, bevor du weitergehst.",
+          "<b>4</b> Gepäck holen, Zoll meist grün.",
+          "<b>5</b> Geld am Automaten in der Halle abheben – Details unter Geld.",
+          "<b>6</b> SIM prüfen: Roaming aktiv, Nachricht nach Hause.",
+        ]],
+        ["eigen", "Der Transfer", [
+          "<b>Vorbestellt über das Hostel</b> – der Fahrer wartet mit deinem Namen am Ausgang.",
+          "Kein Taxi von der Strasse. Wer dich anspricht, ist nicht dein Fahrer.",
+          "Nach Antigua rund eine Stunde. <b>Nicht nachts fahren.</b>",
+        ]],
+      ]],
+      ["Einreise", [["land", "guatemala", "Einreise"]]],
+      ["Unterkunft", [
+        ["hostels", "guatemala"],
+        ["eigen", "Die ersten Handgriffe", [
+          "Wertsachen in den Spind, eigenes Schloss verwenden.",
+          "Zu Hause anrufen, nicht nur schreiben.",
+          "WLAN-Name und Adresse des Hostels notieren – für Formulare und Taxis.",
+        ]],
+      ]],
+      ["Sicherheit", [["land", "guatemala", "Sicherheit"]]],
+      ["Geld", [["land", "guatemala", "Geld"]]],
+      ["Klima", [["land", "guatemala", "Klima im Oktober"]]],
+      ["Checkliste", [["liste", "ankunft"]]],
+    ],
+  },
+  {
+    id: "rundreise", nummer: "3", kurzname: "Tour", titel: "Rundreise in der Gruppe", land: "guatemala",
+    zeit: "Oktober, Woche 1–2", kurz: "Globetrotter Basel, rund zwei Wochen",
+    abschnitte: [
+      ["Transport", [
+        ["eigen", "Was feststeht", [
+          "Gebucht über Globetrotter Basel. Das Startdatum bestimmt das Flugdatum.",
+          "<b>Der genaue Reiseplan kommt hierher</b>, sobald die Bestätigung da ist.",
+        ]],
+      ]],
+      ["Checkliste", [["liste", "tour:tour"], ["liste", "tour:rucksack"]]],
+    ],
+  },
+  {
+    id: "guatemala-allein", nummer: "4", kurzname: "Rundreise", titel: "Guatemala entdecken", land: "guatemala",
+    zeit: "Oktober, Woche 3–4", kurz: "Allein oder mit anderen, nichts gebucht",
+    abschnitte: [
+      ["Transport", [
+        ["eigen", "Wie du dich bewegst", [
+          "Shuttles zwischen den Orten, gebucht im Hostel oder online am Vortag.",
+          "<b>Nur tagsüber fahren.</b> Keine Nachtfahrten in Guatemala.",
+          "Am Lago de Atitlán fahren Lanchas ohne Fahrplan – sie legen ab, wenn sie voll sind.",
+        ]],
+      ]],
+      ["Wohin", [["land", "guatemala", "Weitere Standorte"]]],
+      ["Unterkunft", [
+        ["eigen", "Vor Ort buchen", [
+          "Hostels ein bis zwei Tage vorher – so bleibst du beweglich.",
+          "Ankunft nie nach Einbruch der Dunkelheit an einem neuen Ort.",
+          { label: "Hostelworld", url: "https://www.hostelworld.com/" },
+          { label: "Booking.com", url: "https://www.booking.com/" },
+        ]],
+        ["hostels", "guatemala"],
+      ]],
+      ["Sicherheit", [["land", "guatemala", "Sicherheit"]]],
+      ["Geld", [["land", "guatemala", "Geld"]]],
+      ["Checkliste", [["liste", "ortswechsel"], ["liste", "tour:vorher"], ["liste", "tour:tour"]]],
+    ],
+  },
+  {
+    id: "abflug-cr", nummer: "5", kurzname: "Abflug", titel: "Abflug nach Costa Rica",
+    land: "guatemala", zeit: "Ende Oktober", kurz: "Ausreise Guatemala, Regionalflug",
+    abschnitte: [
+      ["Der Flug", [
+        ["eigen", "Was zu tun ist", [
+          "<b>Reiseerklärung Guatemala ein zweites Mal ausfüllen</b> – auch für die Ausreise, bis 72 Stunden vorher.",
+          "Regionalflug mit Copa nach San José, rund zwei Stunden.",
+          "Ausreisestempel im Pass kontrollieren, bevor du das Gate suchst.",
+          { label: "Copa Airlines", url: "https://www.copaair.com/" },
+        ]],
+      ]],
+      ["Nachweise, die mitfliegen", [
+        ["eigen", "Für die Einreise in Costa Rica", [
+          "<b>Adresse der ersten Unterkunft</b> – die der Sprachschule oder Gastfamilie.",
+          "<b>Weiterreisenachweis</b> – das Busticket nach Nicaragua, schon vor dem Hinflug gebucht.",
+        ]],
+      ]],
+      ["Einreiseformular", [["thema", "djrv"]]],
+      ["Checkliste", [["liste", "ortswechsel"]]],
+    ],
+  },
+  {
+    id: "ankunft-cr", nummer: "6", kurzname: "Ankunft", titel: "Ankunft Costa Rica",
+    land: "costarica", zeit: "Ende Oktober", kurz: "Vom Flughafen bis nach Heredia",
+    abschnitte: [
+      ["Am Flughafen", [
+        ["eigen", "Schritt für Schritt", [
+          "<b>1</b> Passkontrolle: Adresse der Unterkunft nennen, Weiterreisenachweis zeigen.",
+          "<b>2</b> Einreisestempel kontrollieren – hier wird die erlaubte Aufenthaltsdauer eingetragen.",
+          "<b>3</b> Gepäck holen, Zoll meist grün.",
+          "<b>4</b> Geld: am Automaten in der Halle abheben, Colones wählen, keine Umrechnung.",
+          "<b>5</b> Nachricht nach Hause.",
+        ]],
+        ["eigen", "Weiter nach Heredia", [
+          "Rund 20 Minuten vom Flughafen. Transfer über die Schule oder Uber.",
+          "Kein Taxi von der Strasse. In San José kein Aufenthalt.",
+        ]],
+      ]],
+      ["Einreise", [["land", "costarica", "Einreise"]]],
+      ["Im Quartier", [
+        ["eigen", "Die ersten Handgriffe", [
+          "Adresse und WLAN-Name notieren.",
+          "Zu Hause anrufen, nicht nur schreiben.",
+          "Erste Runde durchs Quartier bei Tageslicht.",
+        ]],
+      ]],
+      ["Geld", [["land", "costarica", "Geld"]]],
+      ["Klima", [["land", "costarica", "Klima im November und Dezember"]]],
+      ["Checkliste", [["liste", "ankunft"]]],
+    ],
+  },
+  {
+    id: "heredia", nummer: "7", kurzname: "Heredia", titel: "Heredia – Sprachschule", land: "costarica",
+    zeit: "November", kurz: "Vier Lektionen am Vormittag, Gastfamilie",
+    abschnitte: [
+      ["Transport", [
+        ["eigen", "Hinkommen", [
+          "Vom Flughafen San José rund 20 Minuten – Transfer über die Schule oder Uber.",
+          "In Heredia alles zu Fuss oder mit dem lokalen Bus.",
+        ]],
+      ]],
+      ["Die Schule", [["thema", "schule"]]],
+      ["Unterkunft", [
+        ["eigen", "Gastfamilie oder Wohnheim", [
+          "Beides läuft über die Schule und wird bei der Anmeldung gewählt.",
+          "<b>Gastfamilie:</b> Halbpension, mehr Spanisch, fester Rhythmus.",
+          "<b>Wohnheim:</b> mehr Freiheit, mehr Anschluss an andere Reisende.",
+        ]],
+      ]],
+      ["Geld", [["land", "costarica", "Geld"]]],
+      ["Klima", [["land", "costarica", "Klima im November und Dezember"]]],
+      ["Checkliste", [["liste", "ankunft"], ["liste", "woche"]]],
+    ],
+  },
+  {
+    id: "samara", nummer: "8", kurzname: "Sámara", titel: "Sámara – Sprachschule", land: "costarica",
+    zeit: "November, offen", kurz: "Strandcampus, falls sie den Kurs verlängert",
+    abschnitte: [
+      ["Transport", [
+        ["eigen", "Hinkommen", [
+          "Vom Zentraltal an die Nicoya-Halbinsel: Bus oder Shuttle, rund fünf Stunden.",
+          "Die Schule organisiert den Wechsel zwischen den Standorten.",
+        ]],
+      ]],
+      ["Die Schule", [["thema", "schule"]]],
+      ["Unterkunft", [
+        ["eigen", "Noch nicht entschieden", [
+          "Intercultura erlaubt den Wechsel innerhalb desselben Kurses, ohne Aufpreis.",
+          "<b>Entscheidung fällt vor Ort</b>, nicht jetzt.",
+        ]],
+      ]],
+      ["Checkliste", [["liste", "ortswechsel"]]],
+    ],
+  },
+  {
+    id: "bus", nummer: "9", kurzname: "Rundreise", titel: "Unterwegs mit dem Bus", land: "costarica",
+    zeit: "November und Dezember", kurz: "Route entsteht vor Ort",
+    abschnitte: [
+      ["Transport", [
+        ["land", "costarica", "Unterwegs"],
+        ["eigen", "Was unterwegs entsteht", [
+          "Unterkünfte, Busse und Touren buchst du vor Ort, ein bis zwei Tage vorher.",
+          "Peru entscheidet sich Anfang Dezember. Falls es dazukommt: Flug ab San José.",
+          "<b>Rückflug spätestens Anfang Januar buchen</b>, vier bis sechs Wochen Vorlauf.",
+        ]],
+        ["thema", "fluege", "Wo du buchst"],
+      ]],
+      ["Unterkunft", [["hostels", "costarica"]]],
+      ["Sicherheit", [
+        ["eigen", "Im Bus", [
+          "Tagesrucksack auf dem Schoss, nie in der Ablage.",
+          "Grosses Gepäck im Bauch des Busses – Quittung behalten.",
+        ]],
+      ]],
+      ["Geld", [["land", "costarica", "Geld"]]],
+      ["Checkliste", [["liste", "ortswechsel"], ["liste", "tour:rucksack"]]],
+    ],
+  },
+  {
+    id: "workexchange", nummer: "10", kurzname: "Mitarbeit", titel: "Kost und Logis gegen Mitarbeit",
+    land: "costarica", zeit: "Dezember", kurz: "Worldpackers oder Workaway",
+    abschnitte: [
+      ["Unterkunft", [["land", "costarica", "Unterkunft gegen Mitarbeit"]]],
+      ["Checkliste", [["liste", "woche"]]],
+    ],
+  },
+  {
+    id: "peru", nummer: "11", kurzname: "Peru", titel: "Peru", land: null,
+    zeit: "Ende Dezember, offen", kurz: "Mit einer Freundin, noch nichts gebucht",
+    abschnitte: [
+      ["Einreise", [
+        ["eigen", "Was gilt", [
+          "Schweizer Pass, 183 Tage visumfrei. <b>Weiterreisenachweis wird verlangt.</b>",
+          "Vacanza deckt acht Monate ab Abreise – Peru liegt damit noch drin.",
+        ]],
+      ]],
+      ["Handy", [["thema", "handy", "Abo und Roaming"]]],
+      ["Geld", [
+        ["eigen", "Währung Sol", [
+          "Revolut funktioniert. Bargeld für kleine Orte und Märkte.",
+          "Wie überall: am Automaten die Landeswährung wählen.",
+        ]],
+      ]],
+      ["Checkliste", [["liste", "ortswechsel"]]],
+    ],
+  },
+];
+
+
+
 const ORTE = {
   antigua: {
     name: "Antigua", land: "guatemala", zeit: "Oktober · erste Tage allein",
@@ -1413,15 +1724,18 @@ const ORTE = {
 
 const LAENDER = {
   guatemala: {
-    name: "Guatemala", zeit: "Oktober · rund vier Wochen", farbe: "#7A6A4F",
+    name: "Guatemala", zeit: "Oktober · rund vier Wochen",
+    kurz: "Einreise, Geld, Sicherheit, Klima und die Standorte",
+    farbe: "#7A6A4F",
     bloecke: [
       ["Einreise", [
         "Visumfrei, 90 Tage – die Frist gilt im CA-4-Raum für Guatemala, El Salvador, Honduras und Nicaragua zusammen.",
-        "Pass mindestens 6 Monate über die Rückreise hinaus gültig, unbeschädigt, unterschrieben.",
+        "Pass mindestens 6 Monate über die Rückreise hinaus gültig, <b>zwei leere Seiten</b>, unbeschädigt, unterschrieben.",
         "Elektronische Reiseerklärung DJRV, bis zu 72 Stunden vor dem Flug – zweimal, vor Ein- und Ausreise.",
         "Weiterreiseticket erforderlich, Nachweis finanzieller Mittel wird verlangt.",
         "Adresse der ersten Unterkunft bereithalten.",
-        "Einreisestempel im Pass kontrollieren, bevor du den Schalter verlässt.",
+        "Einreisestempel im Pass kontrollieren, bevor du den Schalter verlässt – <b>fehlt er, gibt es bei der Ausreise eine Busse</b>.",
+        "Flughafensteuer bei der Ausreise: 30 US-Dollar, meist schon im Ticket enthalten.",
         { label: "Reiseerklärung DJRV ausfüllen", url: "https://farm2.sat.gob.gt/declaDelViajeroGt-web/pages/public/declaracionJuradaDelViajero.html" },
         { label: "Reisehinweise EDA Guatemala", url: "https://www.eda.admin.ch/eda/de/home/vertretungen-und-reisehinweise/guatemala.html" },
       ]],
@@ -1434,19 +1748,19 @@ const LAENDER = {
         "Um kleine Scheine bitten – ein Q200-Schein ist im Comedor unbezahlbar.",
         "US-Dollar sind Wechselreserve, kein Zahlungsmittel. Budget 25–35 USD pro Tag.",
       ]],
-      ["Klima im Oktober", [
-        "Antigua und Atitlán auf 1'500 m: 23–25 °C tags, 12–15 °C nachts – der Fleece wird fast jeden Abend gebraucht.",
-        "Flores und Tikal im Tiefland: 31 °C tags, 22 °C nachts.",
-        "Acatenango-Lager auf 3'900 m: um 0 °C. Winterausrüstung in Antigua mieten, rund 25 USD.",
-        "Ende Oktober endet die Regenzeit.",
-      ]],
       ["Sicherheit", [
         "Keine Nachtfahrten – der grösste einzelne Sicherheitsgewinn auf dieser Route.",
         "Shuttles über das Hostel buchen, nicht an der Strasse.",
         "Uber in Guatemala-Stadt und Antigua statt Strassentaxi.",
         "Touristenpolizei Proatur ist für Reisende zuständig – bei Diebstahl dort oder bei der PNC anzeigen.",
       ]],
-      ["Basen", [
+      ["Klima im Oktober", [
+        "Antigua und Atitlán auf 1'500 m: 23–25 °C tags, 12–15 °C nachts – der Fleece wird fast jeden Abend gebraucht.",
+        "Flores und Tikal im Tiefland: 31 °C tags, 22 °C nachts.",
+        "Acatenango-Lager auf 3'900 m: um 0 °C. Winterausrüstung in Antigua mieten, rund 25 USD.",
+        "Ende Oktober endet die Regenzeit.",
+      ]],
+      ["Weitere Standorte", [
         "Antigua – Kolonialstadt, kompakt, viele Reisende, kurze Wege. Ideal für die ersten Tage allein.",
         "Lago de Atitlán – Panajachel als Verkehrsknoten, San Marcos ruhig, San Pedro lebhaft. Bewegung per Boot, tagsüber.",
         "Flores und Tikal oder Semuc Champey bedeuten lange Shuttlefahrten – nur mit genügend Zeit.",
@@ -1578,7 +1892,9 @@ const LAENDER = {
     },
   },
   costarica: {
-    name: "Costa Rica", zeit: "November und Dezember", farbe: "#4E6B52",
+    name: "Costa Rica", zeit: "November und Dezember",
+    kurz: "Einreise, Geld, Klima, Busreisen und Work-Exchange",
+    farbe: "#4E6B52",
     bloecke: [
       ["Einreise", [
         "Visumfrei bis 180 Tage – gestempelt werden oft zunächst 90. Den Stempel gleich lesen.",
@@ -1647,66 +1963,71 @@ const LAENDER = {
 
 
 const PACKLISTE = [
-  ["Kleidung", ["Hardshell-Regenjacke", "Fleece oder dünner Hoodie", "Dünnes Langarmshirt", "Merino-Longsleeve", "Trekkinghose", "Leichthose oder Leggings", "2× Shorts", "3× T-Shirts oder Tops", "Sarong", "Buff", "Cap", "5× Unterwäsche", "3× Socken, davon 1 Paar Wandersocken", "Bikini", "Leichte Schlafkleidung", "Ein schickeres Teil für Abende mit Leuten aus der Schule"]],
-  ["Schuhe", ["Salomon Wanderschuh – der einzige feste Schuh", "Sandalen mit Fersenriemen"]],
-  ["Kulturbeutel", ["Festes Shampoo und Seife", "Zahnbürste und -pasta", "Sonnencreme LSF 50, riff-verträglich", "DEET 50 % für den Dschungel", "Icaridin für den Alltag, biologisch abbaubar", "Mikrofaser-Handtuch L", "Reisewaschmittel", "Wäscheleine und Klammern", "Nagelknipser und Schere", "Alaunstein – stillt Schnitte nach der Rasur, wirkt zugleich als Deo", "Monatshygiene", "Handdesinfektion", "Digitales Thermometer"]],
-  ["Elektronik", ["Smartphone", "Zweites iPhone als Backup", "Powerbank 10'000–20'000 mAh", "US-Netzteil mit USB-Ports", "CH→US-Adapter als Reserve", "2 Ladekabel", "In-Ear-Kopfhörer", "Kabeltasche"]],
-  ["Rucksack und Hostel", ["Patagonia Terravia Tote Pack 24 L, schwarz – bei Transa", "Stirnlampe mit Ersatzbatterien", "Schlafmaske", "Ohropax", "Seidenschlafsack", "Filter-Trinkflasche", "Wasserdichte Handyhülle", "Stossfeste Hülle und Handykordel zum Umhängen", "2–3 Dry Bags", "2 Karabiner", "Zip-Beutel", "ABUS-Schloss für den Locker", "Zweites Zahlenschloss als Reserve", "Zipper-Schloss", "Packing Cubes – Ordnung im Rucksack, kein Rascheln nachts", "Geruchsdichter Wäschebeutel", "Crossbody-Bag oder Gürteltasche für den Alltag"]],
+  ["Kleidung", ["Hardshell-Regenjacke", "Fleece oder dünner Hoodie", "Dünnes Langarmshirt", "Merino-Longsleeve", "Trekkinghose", "Leichthose oder Leggings", "2× Shorts", "3× T-Shirts oder Tops", "Sarong", "Buff", "Cap", "Merinomütze", "5× Unterwäsche", "3× Socken, davon 1 Paar Wandersocken", "Bikini", "Ein schickeres Teil für Abende"]],
+  ["Schuhe", ["Salomon Wanderschuh", "Sandalen mit Fersenriemen"]],
+  ["Kulturbeutel", ["Festes Shampoo und Seife", "Zahnbürste und -pasta", "Sonnencreme LSF 50, riff-verträglich", "DEET 50 % für den Dschungel", "Icaridin für den Alltag", "Mikrofaser-Handtuch L", "Reisewaschmittel", "Wäscheleine und Klammern", "Nagelknipser und Schere", "Alaunstein", "Monatshygiene", "Handdesinfektion", "Digitales Thermometer"]],
+  ["Elektronik", ["Smartphone", "Zweites iPhone als Backup", "Powerbank 10'000–20'000 mAh", "US-Netzteil mit USB-Ports", "CH→US-Adapter als Reserve", "2 Ladekabel", "In-Ear-Kopfhörer", "Tasche für Elektrozubehör"]],
+  ["Rucksack und Hostel", ["Patagonia Terravia 24 L", "Schlafbeutel: Seidenschlafsack, Schlafkleidung, Schlafmaske, Ohropax, Stirnlampe", "Filter-Trinkflasche", "Wasserdichte Handyhülle", "Stossfeste Hülle und Handykordel", "2–3 Dry Bags", "2 Karabiner", "Zip-Beutel", "ABUS-Schloss für den Locker", "Zweites Zahlenschloss als Reserve", "Zipper-Schloss", "3× Packing Cubes (2× M, 1× S)", "Geruchsdichter Wäschebeutel", "Bauchtasche für Pass, Handy, Karte",
+    "Karteikarten-Box mit RFID-Schutz"]],
   ["Brille und Linsen", ["Ersatzbrille im harten Etui", "Sonnenbrille mit Sehstärke", "Rezept und Linsenwerte als PDF", "Monatslinsen mit Reserve", "Zwei Linsenbehälter für Peroxid", "Befeuchtende Augentropfen", "Lensy Care 4 – Peroxidlösung"]],
   ["Wertsachen-Box", ["Pass im Zip-Beutel", "BKB-Karte", "150 USD in kleinen Scheinen", "Impfausweis", "Ersatzbrille", "Zweites iPhone", "Papierkopie Notfallblatt", "Zweite laminierte Passkopie"]],
-  ["Reiseapotheke", ["Ibuprofen und Paracetamol", "Imodium akut", "Elektrolytpulver", "Kohletabletten", "Antihistaminikum-Gel", "Hydrocortison 0.5 %", "Bepanthen Wundspray", "Kleine Flasche Betadine", "Pflasterset", "Elastische Binde und Leukotape", "Blasenpflaster", "Vomex gegen Reiseübelkeit – die Bergstrassen sind kurvig", "Ärztliche Bescheinigung auf Englisch"]],
+  ["Reiseapotheke", ["Ibuprofen und Paracetamol", "Imodium akut", "Elektrolytpulver", "Kohletabletten", "Antihistaminikum-Gel", "Hydrocortison 0.5 %", "Bepanthen Wundspray", "Kleine Flasche Betadine", "Pflasterset", "Elastische Binde und Leukotape", "Blasenpflaster", "Vomex gegen Reiseübelkeit", "Ärztliche Bescheinigung auf Englisch"]],
 ];
 
 const TAGESRUCKSACK = [
-  "Filter-Trinkflasche gefüllt – auf Touren 1.5 bis 2 Liter",
-  "Dry Bag für Handy und Papiere, dazu die Regenhülle für den Rucksack",
+  "Dry Bag<br><span class='unterzeile'>Passkopie, Notfallblatt laminiert, Revolut-Karte, kleines Bargeld, Powerbank</span>",
+  "Mini-Apotheke<br><span class='unterzeile'>Medikamente, Elektrolyte, Teebaumöl, Correct-X, Pflaster, Tageslinsen als Reserve</span>",
+  "Trinkflasche",
   "Sonnencreme und Mückenschutz",
-  "Regenjacke – in beiden Ländern regnet es nachmittags",
-  "Snacks für unterwegs, es gibt nicht überall etwas",
-  "Kleines Bargeld für Eintritte, Busse, Trinkgeld",
-  "Nur Revolut mitnehmen, die BKB-Karte bleibt im Spind",
-  "Laminierte Passkopie statt Original – inklusive der Seite mit dem Einreisestempel",
-  "Powerbank und Ladekabel",
-  "Stirnlampe bei Sonnenaufgangs- oder Höhlentouren",
-  "Badesachen und Mikrofaser-Handtuch",
   "Buff gegen Sonne, Staub und Wind",
-  "Kleine Notfallapotheke im Zip-Beutel: Blasenpflaster, Pflaster, Desinfektionstuch, Ibuprofen, ein bis zwei Beutel Elektrolyte",
-  "Correct-X Balsam und Teebaumöl im Miniformat",
+  "Regenjacke",
+  "Snacks",
+  "Nastücher",
+  "Sackmesser",
+  "Stirnlampe (bei Bedarf)",
+  "Badesachen und Mikrofaser-Handtuch (bei Bedarf)",
 ];
 
 const VOR_DER_TOUR = [
-  "Spind mit dem eigenen Schloss abgeschlossen – Bügel wirklich eingerastet",
-  "Rucksack zugezippt, Zipper-Schloss dran, am Bettgestell angeschlossen",
-  "Wertsachen-Box im Spind: Pass, BKB-Karte, Notgeld, zweites iPhone",
-  "Nichts an der Ladestation vergessen: Kabel, Adapter, Powerbank",
-  "Handy voll geladen, Offline-Karte des Gebiets geladen",
-  "Rückweg geklärt: wann fährt der letzte Bus oder das letzte Boot?",
-  "Jemandem gesagt, wohin du gehst und wann du zurück sein willst",
-  "Bei Vulkan- oder Dschungeltouren: feste Schuhe, warme Schicht, Regenschutz",
-  "Am Vorabend den Guide nach Wetter und nötiger Kleidung fragen – auf dem Vulkan wird es nachts eiskalt",
+  "Spind abgeschlossen",
+  "Rucksack gesichert & angeschlossen",
+  "Wertsachen-Box im Spind",
+  "Ladestation kontrolliert",
+  "Handy geladen, Offline-Karte da",
+  "Jemandem gesagt, wohin du gehst",
+];
+
+const VOR_TOUR = [
+  "Tagesrucksack gepackt",
+  "Guide nach Wetter und Kleidung gefragt",
+  "Feste Schuhe und warme Schicht",
+  "Regenschutz dabei",
+  "Rückweg geklärt",
+  "Znüni und genug Wasser",
 ];
 
 const ANKUNFT = [
-  "Adresse und Telefon der Unterkunft offline gespeichert",
-  "Locker geprüft: passt der Rucksack hinein?",
-  "Wertsachen-Box eingeräumt: Pass, BKB-Karte, Notgeld, zweites iPhone",
-  "Nächster Geldautomat und die nächste Apotheke ausfindig gemacht",
-  "Gefragt, welche Gegend man abends meiden sollte",
-  "Zu Hause gemeldet, dass du angekommen bist",
-  "WLAN-Passwort notiert, Offline-Karte des Orts geladen",
-  "Cloud-Backup laufen lassen, solange du in gutem WLAN bist",
+  "Adresse und Telefon offline gespeichert",
+  "Spind geprüft",
+  "Wertsachen-Box eingeräumt",
+  "Automat und Apotheke gefunden",
+  "Gefragt, was man abends meidet",
+  "Zu Hause gemeldet",
+  "WLAN notiert, Offline-Karte geladen",
+  "Backup laufen lassen",
 ];
 
 const ORTSWECHSEL = [
-  "Bargeld geholt – am neuen Ort gibt es vielleicht keinen guten Automaten",
-  "Locker und Zimmer zweimal kontrolliert: Ladegeräte, Wäscheleine, Türhaken",
-  "Nächste Unterkunft gebucht und die Adresse offline gespeichert",
-  "Bestätigung in 04-02_Buchungsbestaetigungen abgelegt",
-  "Weiterreise am Tag geplant – keine Ankunft nach Einbruch der Dunkelheit",
-  "Zu Hause gesagt, wohin du fährst und wann du ankommen solltest",
-  "Handy und Powerbank vollgeladen",
-  "Handgepäck-Prinzip: Handy, Geld, Pass, Powerbank und Medikamente in den Tagesrucksack – der grosse Rucksack kommt ins Fach oder aufs Dach",
-  "Am Busbahnhof direkt ein Uber oder offizielles Taxi rufen, nicht kopflos auf die Strasse laufen",
+  "Bargeld geholt",
+  "Spind und Zimmer zweimal kontrolliert",
+  "Nächste Unterkunft gebucht, Adresse offline",
+  "Bestätigung abgelegt",
+  "Weiterreise am Tag geplant",
+  "Zu Hause gesagt, wohin du fährst",
+  "Handy und Powerbank geladen",
+  "Wertsachen in den Tagesrucksack",
+  "Am Busbahnhof Uber oder offizielles Taxi",
+  "Linsenmittel-Vorrat reicht",
 ];
 
 const WOCHE = [
@@ -1715,36 +2036,45 @@ const WOCHE = [
   "Ausgaben der Woche anschauen",
   "Belege fotografiert und abgelegt",
   "Wäsche gemacht oder abgegeben",
-  "Vorräte geprüft: Creme, Mückenschutz",
+  "Vorräte geprüft",
   "Fotos gesichert im guten WLAN",
 ];
 
 const WOCHE_WICHTIG = 3;
 
 const VOR_ABFLUG = [
-  "Letzte Impfung", "Zahnkontrolle", "Vacanza-Prämie eingezahlt",
-  "Flug, Regionalflug und Busticket gebucht und ausgedruckt",
-  "Beide Karten am Automaten getestet", "Tageslimit gesetzt, PIN auswendig",
-  "Revolut eingerichtet: Töpfe, USD-Konto, App auf beiden iPhones",
-  "Zweites iPhone eingerichtet, Wiederherstellungskontakt hinterlegt",
-  "Register S, 00 und 03 offline verfügbar – auf beiden Geräten",
-  "Apps installiert und je einmal benutzt",
-  "Offline-Karten und Spanisch-Sprachpaket geladen",
-  "Reise in der Travel-Admin-App des EDA registriert – beide Etappen erfasst",
-  "Zwei-Faktor-Prüfung: Kommen Bank-SMS im Ausland an? Sonst auf eine Authenticator-App umstellen",
-  "Notfallblatt ausgefüllt, ausgedruckt, fotografiert",
-  "IMEI beider iPhones notiert",
+  "Alle drei Tickets gebucht und ausgedruckt",
   "Erste Nacht und Flughafentransfer gebucht",
-  "Offline-Test bestanden: Flugmodus an, Notfallblatt öffnen",
-  "Rucksack gepackt und gewogen – Ziel rund 10 kg",
+  "Reiseerklärung ausgefüllt, QR-Code gespeichert",
+  "Notfallblatt ausgefüllt und ausgedruckt",
+  "Register 01, 05, 07 offline auf beiden Geräten",
+  "Offline-Karten und Spanisch-Sprachpaket geladen",
+  "Karten getestet, PIN auswendig",
+  "Ersatzhandy eingerichtet",
+  "Offline-Test bestanden",
+  "Rucksack gepackt und gewogen (rund 10 kg)",
+];
+
+const VOR_REISE = [
+  "Letzte Impfung",
+  "Zahnkontrolle",
+  "Vacanza-Prämie eingezahlt",
+  "Englische Deckungsbestätigung angefordert",
+  "Linsenmittel für die ganze Reise organisiert",
+  "Revolut eingerichtet",
+  "Apps installiert und getestet",
+  "Reise beim EDA registriert",
+  "Zwei-Faktor geprüft",
+  "IMEI und Seriennummern notiert",
+  "Hauptgerät auf eSIM umgestellt",
 ];
 
 const RUECKKEHR = [
   "Restbargeld ausgeben oder wechseln",
   "Landeswährungskonto in Revolut leeren",
   "Ausreisegebühr Costa Rica bereithalten",
-  "Reiseerklärung für die Ausreise aus Guatemala ausfüllen",
-  "Ein- und Ausreisestempel im Pass kontrollieren",
+  "Reiseerklärung für die Ausreise",
+  "Stempel im Pass kontrollieren",
   "Adressen und Kontakte sichern",
   "Nachkontrolle beim Tropenarzt",
   "Versicherungsfälle einreichen",
@@ -1772,7 +2102,7 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "137 · 29.08.2026";
+const VERSION = "191 · 29.08.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
@@ -2047,6 +2377,44 @@ const hakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig = 0
   const inhalt = el("div");
   const zaehler = el("div", { class: "klein" });
 
+  /* Die Abschnitte einer Station – erscheinen direkt unter ihrer Zeile. */
+  const stationsinhalt = (S) => {
+    const box = el("div", { class: "stationsinhalt" });
+    const LISTEN = {
+      "abflug": ["Vor dem Abflug", VOR_ABFLUG],
+      "vorreise": ["Wochen vorher erledigen", VOR_REISE],
+      "ankunft": ["Ankunft im Hostel →", ANKUNFT],
+      "ortswechsel": ["Ortswechsel", ORTSWECHSEL],
+      "woche": ["Wochenroutine", WOCHE],
+      "tour:rucksack": ["Tagesrucksack", TAGESRUCKSACK],
+      "tour:vorher": ["← Hostel verlassen", VOR_DER_TOUR],
+      "tour:tour": ["Tour", VOR_TOUR],
+    };
+
+    S.abschnitte.forEach(([titel, eintraege]) => {
+      box.appendChild(el("div", { class: "gruppentitel abstandoben klein3" }, titel));
+      const band = el("div", { class: "blockband" });
+      eintraege.forEach((e) => {
+        if (e[0] === "eigen") { band.appendChild(faltblock(e[1], e[2], false)); return; }
+        if (e[0] === "liste") {
+          const [name, punkte] = LISTEN[e[1]];
+          band.appendChild(faltHakenliste(name, punkte, e[1], true));
+          return;
+        }
+        if (e[0] === "hostels") {
+          (LAENDER[e[1]].hostels || []).forEach((h) => band.appendChild(hostelKarte(h)));
+          return;
+        }
+        holeBlock(e).forEach((b) => {
+          if (String(b[0]).startsWith("## ")) return;
+          band.appendChild(faltblock(ohneMarker(b[0]), b[1], false));
+        });
+      });
+      box.appendChild(band);
+    });
+    return box;
+  };
+
   const zeichne = () => {
     inhalt.innerHTML = "";
     const alle = punkte.concat(eigene);
@@ -2068,7 +2436,8 @@ const hakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig = 0
         },
           el("span", { class: "box" + (stand[p] ? " an" : "") },
             stand[p] ? svg("check", 13, "#fff", 3) : null),
-          el("span", { class: "hakentext" + (i < wichtig && !stand[p] ? " wichtig" : "") }, p)));
+          el("span", { class: "hakentext" + (i < wichtig && !stand[p] ? " wichtig" : ""),
+            html: p })));
 
       if (selbst) {
         zeile.appendChild(el("button", {
@@ -2517,30 +2886,7 @@ const seiteStart = () => {
 
 const seiteHeute = () => {
   const wrap = el("div");
-  wrap.appendChild(kopf("Heute", "Deine Listen – unterwegs, vorher und danach", null));
-
-  /* Gesamtstand über alle Listen – zählt Vorgaben und eigene Punkte. */
-  const ALLE = [
-    ["tour:rucksack", TAGESRUCKSACK], ["tour:vorher", VOR_DER_TOUR], ["ankunft", ANKUNFT],
-    ["ortswechsel", ORTSWECHSEL], ["woche", WOCHE],
-    ...PACKLISTE.map(([t, p]) => ["pack:" + t, p]),
-    ["abflug", VOR_ABFLUG], ["rueckkehr", RUECKKEHR],
-  ];
-  let gesamt = 0, offen = 0;
-  ALLE.forEach(([k, p]) => {
-    const stand = hole("haken:" + k, {});
-    const alle = p.concat(hole("eigene:" + k, []));
-    gesamt += alle.length;
-    offen += alle.filter((x) => !stand[x]).length;
-  });
-
-  wrap.appendChild(karte([
-    el("div", { class: "zeile mitte" },
-      el("div", { class: "blocktitel ohneabstand" }, "Insgesamt offen"),
-      el("div", { class: "gesamtstand" }, offen + " von " + gesamt)),
-    el("div", { class: "hinweis" },
-      "Antippen öffnet eine Liste – die Haken bleiben gespeichert."),
-  ]));
+  wrap.appendChild(kopf("Heute", "Antippen öffnet eine Liste – die Haken bleiben gespeichert.", null));
 
   /* Jede Gruppe kommt in eine eigene weisse Fläche – wie in den Themen. */
   const gruppe = (titel, listen) => {
@@ -2551,14 +2897,16 @@ const seiteHeute = () => {
   };
 
   gruppe("Unterwegs", [
-    faltHakenliste("In den Tagesrucksack", TAGESRUCKSACK, "tour:rucksack", true),
-    faltHakenliste("Bevor du losgehst", VOR_DER_TOUR, "tour:vorher", true),
-    faltHakenliste("Angekommen", ANKUNFT, "ankunft", true),
-    faltHakenliste("Vor dem Ortswechsel", ORTSWECHSEL, "ortswechsel", true),
+    faltHakenliste("Ankunft im Hostel →", ANKUNFT, "ankunft", true),
+    faltHakenliste("← Hostel verlassen", VOR_DER_TOUR, "tour:vorher", true),
+    faltHakenliste("Tour", VOR_TOUR, "tour:tour", true),
+    faltHakenliste("Tagesrucksack", TAGESRUCKSACK, "tour:rucksack", true),
+    faltHakenliste("Ortswechsel", ORTSWECHSEL, "ortswechsel", true),
     faltHakenliste("Wochenroutine", WOCHE, "woche", true, WOCHE_WICHTIG),
   ]);
 
   gruppe("Vor der Reise", [
+    faltHakenliste("Wochen vorher erledigen", VOR_REISE, "vorreise"),
     ...PACKLISTE.map(([t, p]) => faltHakenliste("Packliste · " + t, p, "pack:" + t)),
     faltHakenliste("Vor dem Abflug", VOR_ABFLUG, "abflug"),
   ]);
@@ -2680,6 +3028,44 @@ const seiteNotfall = () => {
   const wrap = el("div");
   const inhalt = el("div");
 
+  /* Die Abschnitte einer Station – erscheinen direkt unter ihrer Zeile. */
+  const stationsinhalt = (S) => {
+    const box = el("div", { class: "stationsinhalt" });
+    const LISTEN = {
+      "abflug": ["Vor dem Abflug", VOR_ABFLUG],
+      "vorreise": ["Wochen vorher erledigen", VOR_REISE],
+      "ankunft": ["Ankunft im Hostel →", ANKUNFT],
+      "ortswechsel": ["Ortswechsel", ORTSWECHSEL],
+      "woche": ["Wochenroutine", WOCHE],
+      "tour:rucksack": ["Tagesrucksack", TAGESRUCKSACK],
+      "tour:vorher": ["← Hostel verlassen", VOR_DER_TOUR],
+      "tour:tour": ["Tour", VOR_TOUR],
+    };
+
+    S.abschnitte.forEach(([titel, eintraege]) => {
+      box.appendChild(el("div", { class: "gruppentitel abstandoben klein3" }, titel));
+      const band = el("div", { class: "blockband" });
+      eintraege.forEach((e) => {
+        if (e[0] === "eigen") { band.appendChild(faltblock(e[1], e[2], false)); return; }
+        if (e[0] === "liste") {
+          const [name, punkte] = LISTEN[e[1]];
+          band.appendChild(faltHakenliste(name, punkte, e[1], true));
+          return;
+        }
+        if (e[0] === "hostels") {
+          (LAENDER[e[1]].hostels || []).forEach((h) => band.appendChild(hostelKarte(h)));
+          return;
+        }
+        holeBlock(e).forEach((b) => {
+          if (String(b[0]).startsWith("## ")) return;
+          band.appendChild(faltblock(ohneMarker(b[0]), b[1], false));
+        });
+      });
+      box.appendChild(band);
+    });
+    return box;
+  };
+
   const zeichne = () => {
     inhalt.innerHTML = "";
     if (tab === "nummern") {
@@ -2761,7 +3147,7 @@ const seiteNotfall = () => {
 /* Dieselbe Reihenfolge und Nummerierung wie die Register im Dossier. */
 const WISSEN_REIHE = [
   ["01", "sicherheit"], ["02", "gesundheit"], ["05", "ablage"],
-  ["06", "fluege"], ["06", "djrv"], ["06", "schule"], ["06", "eda"],
+  ["06", "fluege"], ["06", "eda"],
 ];
 
 const seiteWissen = () => {
@@ -2780,9 +3166,10 @@ const seiteWissen = () => {
     kopf("Wissen", "Einmal lesen, dann kennt man es.", null),
     el("div", { class: "spalten" },
     el("button", { class: "block", onclick: () => gehe("buchen") },
-      el("div", { class: "karte terra" },
+      el("div", { class: "karte buchenkarte" },
         el("div", { class: "kacheltitel klein2" }, "Buchen"),
-        el("div", { class: "hinweis" }, "Hostels, Busse, Schule, Formulare"))),
+        el("div", { class: "buchenunter" }, "Hostels, Busse, Schule, Formulare"),
+        el("span", { class: "buchenpfeil" }, svg("chevron", 16, "#fff", 2)))),
       liste.map(([nr, d]) =>
         el("button", { class: "block", onclick: () => gehe("wissen", d.id) },
           karte(el("div", {},
@@ -2864,204 +3251,197 @@ const hostelKarte = (h) => {
 };
 
 const seiteRoute = () => {
-  let tab = (param && param.tab) || (typeof param === "string" ? param : "etappen");
-  let land = (param && param.land) || "guatemala";
-  let ort = (param && param.ort) || null;
   const wrap = el("div");
   const inhalt = el("div");
+  let tab = (param && param.tab) || "etappen";
+  let station = (param && param.station) || null;
+  let land = (param && param.land) || "guatemala";
 
-  /* Welches Land steckt hinter einer Etappe – für den Sprung ins Länderwissen. */
-  /* Jedes Land hat seine eigene Farbe – Ankunft und Offenes bleiben grau. */
-  /* Noch nicht entschiedene Etappen bekommen den hohlen Punkt. */
-  const offenerPunkt = (r) => /offen|noch nicht/i.test(r.tag + r.ort);
+  const farbe = { guatemala: "gt", costarica: "cr" };
 
-  const tagfarbe = (r) => {
-    const t = r.tag + " " + r.ort;
-    if (/Guatemala/i.test(t)) return "gt";
-    if (/Costa Rica|San José|Heredia|Sámara/i.test(t)) return "cr";
-    if (/Peru/i.test(t)) return "pe";
-    return "grau";
-  };
-
-  /* Flaggen als Vektorgrafik – auf jedem Gerät gleich scharf. */
-  const flagge = (r) => {
-    const tag = r.tag + " " + r.ort;
-    const rahmen = (inhalt) => {
+  /* Flaggen als Vektorgrafik – auf jedem Gerät gleich. */
+  const flagge = (schluessel) => {
+    const rahmen = (inneres) => {
       const s = document.createElementNS("http://www.w3.org/2000/svg", "svg");
       s.setAttribute("viewBox", "0 0 21 14");
-      s.setAttribute("width", "24");
-      s.setAttribute("height", "16");
+      s.setAttribute("width", "22");
+      s.setAttribute("height", "15");
       s.setAttribute("class", "flagge");
-      s.innerHTML = inhalt
+      s.innerHTML = inneres
         + '<rect x=".25" y=".25" width="20.5" height="13.5" fill="none"'
         + ' stroke="rgba(0,0,0,.18)" stroke-width=".5"/>';
       return s;
     };
-    if (/Guatemala/i.test(tag)) {
-      return rahmen(
-        '<rect width="7" height="14" fill="#4997D0"/>'
+    if (schluessel === "guatemala") {
+      return rahmen('<rect width="7" height="14" fill="#4997D0"/>'
         + '<rect x="7" width="7" height="14" fill="#fff"/>'
         + '<rect x="14" width="7" height="14" fill="#4997D0"/>'
         + '<circle cx="10.5" cy="7" r="2.1" fill="none" stroke="#4E6B52" stroke-width=".7"/>');
     }
-    if (/Costa Rica|San José|Heredia|Sámara/i.test(tag)) {
-      return rahmen(
-        '<rect width="21" height="14" fill="#002B7F"/>'
+    if (schluessel === "costarica") {
+      return rahmen('<rect width="21" height="14" fill="#002B7F"/>'
         + '<rect y="2.8" width="21" height="8.4" fill="#fff"/>'
         + '<rect y="4.9" width="21" height="4.2" fill="#CE1126"/>');
     }
-    if (/Peru/i.test(tag)) {
-      return rahmen(
-        '<rect width="7" height="14" fill="#D91023"/>'
-        + '<rect x="7" width="7" height="14" fill="#fff"/>'
-        + '<rect x="14" width="7" height="14" fill="#D91023"/>');
-    }
-    return null;
+    return rahmen('<rect width="7" height="14" fill="#D91023"/>'
+      + '<rect x="7" width="7" height="14" fill="#fff"/>'
+      + '<rect x="14" width="7" height="14" fill="#D91023"/>');
   };
 
-  /* Ziel einer Etappe: eigener Ort, sonst das Land. Ohne Inhalt kein Sprung. */
-  const zielZu = (r) => {
-    if (/Antigua/i.test(r.ort)) return { ort: "antigua" };
-    if (/Atitlán/i.test(r.ort)) return { ort: "atitlan" };
-    return null;
+  /* Holt einen Block dort, wo er einmal steht – nichts wird kopiert. */
+  const holeBlock = (v) => {
+    if (v[0] === "land") {
+      const L = LAENDER[v[1]];
+      const b = L.bloecke.find(([t]) => ohneMarker(t) === v[2]);
+      return b ? [[b[0], b[1]]] : [];
+    }
+    const D = DOKUMENTE.find((x) => x.id === v[1]);
+    if (!D) return [];
+    if (v.length === 2) return D.bloecke;
+    const b = D.bloecke.find(([t]) => ohneMarker(t) === v[2]);
+    return b ? [[b[0], b[1]]] : [];
+  };
+
+  /* Die Abschnitte einer Station – erscheinen direkt unter ihrer Zeile. */
+  const stationsinhalt = (S) => {
+    const box = el("div", { class: "stationsinhalt" });
+    const LISTEN = {
+      "abflug": ["Vor dem Abflug", VOR_ABFLUG],
+      "vorreise": ["Wochen vorher erledigen", VOR_REISE],
+      "ankunft": ["Ankunft im Hostel →", ANKUNFT],
+      "ortswechsel": ["Ortswechsel", ORTSWECHSEL],
+      "woche": ["Wochenroutine", WOCHE],
+      "tour:rucksack": ["Tagesrucksack", TAGESRUCKSACK],
+      "tour:vorher": ["← Hostel verlassen", VOR_DER_TOUR],
+      "tour:tour": ["Tour", VOR_TOUR],
+    };
+
+    S.abschnitte.forEach(([titel, eintraege]) => {
+      box.appendChild(el("div", { class: "gruppentitel abstandoben klein3" }, titel));
+      const band = el("div", { class: "blockband" });
+      eintraege.forEach((e) => {
+        if (e[0] === "eigen") { band.appendChild(faltblock(e[1], e[2], false)); return; }
+        if (e[0] === "liste") {
+          const [name, punkte] = LISTEN[e[1]];
+          band.appendChild(faltHakenliste(name, punkte, e[1], true));
+          return;
+        }
+        if (e[0] === "hostels") {
+          (LAENDER[e[1]].hostels || []).forEach((h) => band.appendChild(hostelKarte(h)));
+          return;
+        }
+        holeBlock(e).forEach((b) => {
+          if (String(b[0]).startsWith("## ")) return;
+          band.appendChild(faltblock(ohneMarker(b[0]), b[1], false));
+        });
+      });
+      box.appendChild(band);
+    });
+    return box;
   };
 
   const zeichne = () => {
     inhalt.innerHTML = "";
 
-    if (tab === "etappen") {
-      inhalt.appendChild(el("div", { class: "hinweis abstandunten" },
-        "Die Etappen in ihrer Reihenfolge. Antippen öffnet alles, was wir zum Land wissen – "
-        + "Einreise, Geld, Sicherheit, Hostels."));
-      /* Je Land ein eigener Strang: Überschrift, darunter die Orte mit eigener Linie. */
-      const strahl = el("div");
-      let letztes = null;
-      let strang = null;
-
-      ROUTE.forEach((r) => {
-        const kuerzel = tagfarbe(r);
-        if (kuerzel !== letztes) {
-          const zielLand = { gt: "guatemala", cr: "costarica" }[kuerzel];
-          const marke = zielLand
-            ? el("button", { class: "landmarke landknopf " + kuerzel,
-                onclick: () => { tab = "land"; land = zielLand; zeichne(); } },
-                el("span", {}, r.tag), flagge(r),
-                el("span", { class: "landpfeil" }, svg("chevron", 15, "currentColor", 2)))
-            : el("div", { class: "landmarke " + kuerzel }, el("span", {}, r.tag), flagge(r));
-          strahl.appendChild(marke);
-          strang = el("div", { class: "strang" });
-          strahl.appendChild(strang);
-          letztes = kuerzel;
-        }
-
-        const ziel = zielZu(r);
-        const kern = [
-          el("span", { class: "punkt" + (offenerPunkt(r) ? " offen" : "") }),
-          el("div", { class: "etappenort" }, r.ort),
-          el("div", { class: "hinweis" }, r.note),
-        ];
-        if (!ziel) { strang.appendChild(el("div", { class: "etappe" }, kern)); return; }
-        strang.appendChild(el("button", { class: "etappe etappeknopf",
-          onclick: () => {
-            if (ziel.ort) { tab = "ort"; ort = ziel.ort; } else { tab = "land"; land = ziel.land; }
-            zeichne();
-          } },
-          kern, el("span", { class: "etappepfeil" }, svg("chevron", 16, "#B65A3C", 2))));
-      });
-      inhalt.appendChild(strahl);
-      inhalt.appendChild(el("div", { class: "karte terra" },
-        el("div", { class: "text" },
-          "Fix gebucht ist nur, was teuer oder knapp ist: Hinflug, Rundreise, Regionalflug, "
-          + "Busticket, Schule. Alles andere entsteht unterwegs.")));
-      return;
-    }
-
-    if (tab === "ort") {
-      const O = ORTE[ort];
+    if (tab === "land") {
+      const L = LAENDER[land];
       inhalt.appendChild(el("button", { class: "zurueckzeile",
         onclick: () => { tab = "etappen"; zeichne(); } },
         el("span", { class: "zurueckpfeil" }, svg("chevron", 16, "#B65A3C", 2)),
-        el("span", {}, "Alle Etappen")));
-      inhalt.appendChild(el("div", { class: "landtitel" }, O.name));
-      inhalt.appendChild(el("div", { class: "klein abstandunten" }, O.zeit));
-      bloeckeMit(O.bloecke).forEach((x) => inhalt.appendChild(x));
-      inhalt.appendChild(el("button", { class: "sprung",
-        onclick: () => { tab = "land"; land = O.land; zeichne(); } },
-        el("span", { class: "sprungtext" }, "Alles zu " + LAENDER[O.land].name),
-        el("span", { class: "sprungpfeil" }, svg("chevron", 15, "#B65A3C", 2))));
+        el("span", {}, "Route")));
+      inhalt.appendChild(el("div", { class: "landtitel" }, L.name));
+      if (land === "guatemala" && typeof KARTE_GT !== "undefined") {
+        inhalt.appendChild(el("div", { class: "karte bild" },
+          el("img", { src: KARTE_GT, alt: "Karte Guatemala" })));
+      }
+      if (land === "costarica" && typeof KARTE_CR !== "undefined") {
+        inhalt.appendChild(el("div", { class: "karte bild" },
+          el("img", { src: KARTE_CR, alt: "Karte Costa Rica" })));
+        inhalt.appendChild(linkZeile({
+          label: "Visit Costa Rica – offizielles Tourismusportal",
+          url: "https://de.visitcostarica.com/",
+          hinweis: "Auf Deutsch, vom Tourismusinstitut ICT",
+        }));
+      }
+      bloeckeMit(L.bloecke).forEach((x) => inhalt.appendChild(x));
+      if (L.hostels && L.hostels.length) {
+        inhalt.appendChild(el("div", { class: "gruppentitel abstandoben klein3" }, "Hostels"));
+        const band = el("div", { class: "blockband" });
+        L.hostels.forEach((h) => band.appendChild(hostelKarte(h)));
+        inhalt.appendChild(band);
+      }
       return;
     }
 
-    const L = LAENDER[land];
-    inhalt.appendChild(el("button", { class: "zurueckzeile",
-      onclick: () => { tab = "etappen"; zeichne(); } },
-      el("span", { class: "zurueckpfeil" }, svg("chevron", 16, "#B65A3C", 2)),
-      el("span", {}, "Alle Etappen")));
-    inhalt.appendChild(el("div", { class: "landtitel" }, L.name));
-    let unter = (param && param.unter) || "info";
-    const zeichneLand = () => {
-      const rest = inhalt.querySelector(".landinhalt");
-      if (rest) rest.remove();
-      const box = el("div", { class: "landinhalt" });
+    /* Die Route als Zeitachse */
+    inhalt.appendChild(el("div", { class: "hinweis abstandunten" },
+      "Nur was feststeht. Antippen öffnet alles, was für diese Station gilt."));
 
-      box.appendChild(reiter([["info", "Wissen"], ["hostels", "Hostels"]], unter,
-        (k) => { unter = k; zeichneLand(); }));
+    let letztes = null;
+    let strang = null;
+    STATIONEN.forEach((S) => {
+      const k = S.land || "peru";
+      if (k !== letztes) {
+        /* Drei Zeilen wie bei den Stationen: Name, Zeitraum, Kurzbeschrieb. */
+        const L = S.land ? LAENDER[S.land] : null;
+        const name = L ? L.name : "Peru";
+        const klasse = S.land ? farbe[S.land] : "pe";
+        const dreizeiler = () => el("div", { class: "landtext" },
+          el("div", { class: "landzeile" },
+            el("span", { class: "landname " + klasse }, name),
+            flagge(S.land || "peru")),
+          el("div", { class: "landzeit" }, L ? L.zeit : "Ende Dezember, offen"),
+          el("div", { class: "hinweis" },
+            L ? L.kurz : "Mit einer Freundin, noch nichts gebucht"));
 
-      if (unter === "info") {
-        if (land === "costarica") {
-          box.appendChild(el("div", { class: "karte bild" },
-            el("img", { src: KARTE_CR, alt: "Karte Costa Rica" }),
-            el("div", { class: "hinweis polster" },
-              "San José als Ankunft, Heredia und Cartago im Zentraltal, Puntarenas und die "
-              + "Nicoya-Halbinsel mit Sámara am Pazifik, Puerto Limón an der Karibik.")));
-          box.appendChild(linkZeile({
-            label: "Visit Costa Rica – offizielles Tourismusportal",
-            url: "https://de.visitcostarica.com/",
-            hinweis: "Auf Deutsch, vom Tourismusinstitut ICT",
-          }));
-          box.appendChild(el("div", { class: "abstandunten" }));
+        if (S.land) {
+          inhalt.appendChild(el("button", { class: "landmarke landknopf",
+            onclick: () => { tab = "land"; land = S.land; zeichne(); } },
+            dreizeiler(),
+            el("span", { class: "landpfeil" }, svg("chevron", 15, "#B65A3C", 2))));
+        } else {
+          inhalt.appendChild(el("div", { class: "landmarke" }, dreizeiler()));
         }
-        box.appendChild(el("div", { class: "klein abstandunten" }, L.zeit));
-        bloeckeMit(L.bloecke).forEach((x) => box.appendChild(x));
-      } else {
-        box.appendChild(el("div", { class: "hinweis abstandunten" },
-          "Recherchierte Kandidaten, Stand August 2026, mit Bewertungen aus Google. Vor der "
-          + "Buchung die neuesten drei Monate lesen."));
-        if (L.hostelworld) box.appendChild(linkZeile({ ...L.hostelworld,
-          hinweis: "Preise, freie Betten, Bewertungen" }));
-        if (L.empfehlung) box.appendChild(el("div", { class: "karte terra abstandoben" },
-          el("div", { class: "zeile luecke" }, svg("star", 16, "#B65A3C", 2),
-            el("span", { class: "blocktitel" }, L.empfehlung.titel)),
-          el("div", { class: "text vorzeile" }, L.empfehlung.text)));
-        (L.hostels || []).forEach((h) => box.appendChild(hostelKarte(h)));
-        if (L.hostels2) {
-          box.appendChild(el("div", { class: "abschnitt abstandoben" }, L.hostels2.ort));
-          if (L.hostels2.hostelworld) box.appendChild(linkZeile({ ...L.hostels2.hostelworld,
-            hinweis: "Preise, freie Betten, Bewertungen" }));
-          box.appendChild(el("div", { class: "karte terra abstandoben" },
-            el("div", { class: "zeile luecke" }, svg("star", 16, "#B65A3C", 2),
-              el("span", { class: "blocktitel" }, L.hostels2.empfehlung.titel)),
-            el("div", { class: "text vorzeile" }, L.hostels2.empfehlung.text)));
-          L.hostels2.liste.forEach((h) => box.appendChild(hostelKarte(h)));
+
+        /* Tourismusportal des Landes – schmale Zeile unter der Ländermarke. */
+        if (S.land === "costarica") {
+          inhalt.appendChild(el("a", {
+            href: "https://de.visitcostarica.com/", target: "_blank", class: "portalzeile" },
+            el("span", { class: "portaltext" },
+              "Visit Costa Rica – Tourismusportal auf Deutsch"),
+            svg("link", 14, "#4E6B52", 1.8)));
         }
+        strang = el("div", { class: "strang" });
+        inhalt.appendChild(strang);
+        letztes = k;
       }
-      inhalt.appendChild(box);
-    };
-    zeichneLand();
+      const unbestimmt = /offen|noch nicht/i.test(S.zeit + S.kurz);
+      const auf = station === S.id;
+      strang.appendChild(el("button", { class: "etappe etappeknopf" + (auf ? " auf" : ""),
+        onclick: () => { station = auf ? null : S.id; zeichne(); } },
+        el("span", { class: "punkt" + (unbestimmt ? " offen" : "") }, S.nummer),
+        el("div", { class: "etappenort" }, S.titel),
+        el("div", { class: "etappenzeit" }, S.zeit),
+        el("div", { class: "hinweis" }, S.kurz),
+        el("span", { class: "etappepfeil" + (auf ? " auf" : "") },
+          svg("chevron", 16, "#B65A3C", 2))));
+      if (auf) strang.appendChild(stationsinhalt(S));
+    });
   };
 
-  wrap.appendChild(kopf("Route", null, null));
+  wrap.appendChild(kopf("Route", "Von der Anreise bis zur Rückkehr", null));
   wrap.appendChild(inhalt);
   zeichne();
   return wrap;
 };
 
+
 /* ── Navigation ────────────────────────────────────────────────── */
 
 const BEREICHE = [
   ["start", "Start", "home"],
+  ["route", "Route", "map", true],
   ["heute", "Heute", "check"],
-  ["route", "Route", "map"],
   ["geld", "Geld", "wallet"],
   ["wissen", "Wissen", "book"],
 ];
@@ -3076,13 +3456,15 @@ function gehe(ziel, p = null) {
 
 function leiste() {
   return el("nav", { class: "tableiste" },
-    BEREICHE.map(([k, l, ikon]) => {
+    BEREICHE.map(([k, l, ikon, wichtig]) => {
       const aktiv = seite === k || (seite === "suche" && vorSuche === k);
-      const farbe = aktiv ? "#B65A3C" : "#8B8175";
+      /* Die Route ist der Hauptweg – sie bleibt auch inaktiv farbig. */
+      /* Terracotta bleibt der Route vorbehalten – die aktive Seite wird dunkler. */
+      const farbe = wichtig ? "#B65A3C" : (aktiv ? "#2B2723" : "#8B8175");
       return el("button", {
-        class: "tab" + (aktiv ? " an" : ""),
+        class: "tab" + (aktiv ? " an" : "") + (wichtig ? " wichtig" : ""),
         onclick: () => gehe(k),
-      }, svg(ikon, 21, farbe, aktiv ? 2 : 1.7),
+      }, svg(ikon, wichtig ? 23 : 21, farbe, aktiv ? 2.2 : (wichtig ? 2.2 : 1.7)),
          el("span", { style: "color:" + farbe }, l));
     }));
 }
