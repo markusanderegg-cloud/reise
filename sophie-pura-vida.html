@@ -876,10 +876,9 @@ const TERMINE_VORHER = [
     "Ohne Zahlung keine Deckung – der wichtigste Termin im September.",
   ]],
 
-  ["12. Sep", "Busticket und Zahnkontrolle", [
+  ["12. Sep", "Busticket", [
     "<b>Busticket:</b> San José nach Nicaragua oder Panama, als Ausreisenachweis für Costa Rica.",
-    "<b>Zahnkontrolle</b> vor der Abreise.",
-  ]],
+      ]],
 
   ["20. Sep", "Sprachschule Heredia", [
     "<b>Kurs:</b> direkt buchen, nicht über eine Agentur – das spart 300 bis 500 Franken.",
@@ -2117,7 +2116,7 @@ const ANKUNFT = [
   "Adresse und Telefon offline gespeichert",
   "Spind geprüft",
   "Wertsachen-Box eingeräumt",
-  "Automat und Apotheke gefunden",
+  "Geldautomat und Apotheke gefunden",
   "Gefragt, was man abends meidet",
   "Zu Hause gemeldet",
   "WLAN notiert, Offline-Karte geladen",
@@ -2206,12 +2205,16 @@ const VOR_ABFLUG = [
 ];
 
 const VOR_REISE = [
-  "Letzte Impfung",
-  "Zahnkontrolle",
   "Vacanza-Prämie eingezahlt",
   "Englische Deckungsbestätigung angefordert",
   "Linsenmittel für die ganze Reise organisiert",
-  "Revolut eingerichtet",
+  "Revolut auf beiden iPhones eingerichtet (17 und 12)",
+  "Währungsrechner eingerichtet",
+  "Kontrollzentrum im Sperrbildschirm ausgeschaltet",
+  "„Wo ist?“ vollständig aktiviert",
+  "Schutz für gestohlene Geräte eingeschaltet",
+  "iPhone 12: eSIM-Fähigkeit geprüft, Saily installiert",
+  "iCloud-Ordner erstellt und geteilt",
   "Apps installiert und getestet",
   "Reise beim EDA registriert",
   "Zwei-Faktor geprüft",
@@ -2252,7 +2255,7 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "218 · 30.08.2026";
+const VERSION = "220 · 30.08.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
