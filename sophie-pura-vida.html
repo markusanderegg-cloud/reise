@@ -591,9 +591,10 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 
 /* ── Etappen als Knopf ── */
 .etappeknopf { position: relative; width: 100%; text-align: left; background: none; border: 0; }
+/* Pfeil nach unten = lässt sich aufklappen, nach oben = ist offen */
 .etappepfeil {
   position: absolute; right: 0; top: 2px;
-  display: inline-flex; transform: rotate(-90deg);
+  display: inline-flex; transition: transform .15s;
 }
 .zurueckzeile {
   display: flex; align-items: center; gap: 6px; background: none; border: 0;
@@ -685,7 +686,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 /* Aufgeklappte Station in der Zeitachse */
 .stationsinhalt { margin: 2px 0 22px; }
 .etappeknopf.auf .etappenort { color: var(--terra); }
-.etappepfeil.auf { transform: rotate(0deg); }
+.etappepfeil.auf { transform: rotate(180deg); }
 
 /* ── Ländermarke und Stationszeile: drei Ebenen ── */
 .landmarke {
@@ -840,37 +841,51 @@ const VERLUST = [
 const ABFLUG = "2026-09-29";
 
 const TERMINE_VORHER = [
+
   ["29. Aug", "Optiker und Yallo-App", [
     "<b>Optiker:</b> Linsen für fünf Monate klären – Menge, Haltbarkeit in den Tropen, Peroxid-Behälter mit Platinkatalysator. Tageslinsen für Touren prüfen. Rezept als PDF mitnehmen.",
     "<b>Yallo-App:</b> installieren und Anmeldung testen, solange ihr beisammen seid.",
   ]],
-  ["31. Aug", "Rundreise und Hostel buchen", [
-    "<b>Rundreise:</b> bei Globetrotter Basel buchen, Startdatum schriftlich bestätigen lassen – der Flug richtet sich danach.",
-    "<b>Hostel:</b> Maya Papaya in Antigua für den Vorabend, mit Transfer und freier Stornierung. Check-in-Grenze ist 23 Uhr.",
-    "<b>Ablegen:</b> beide Bestätigungen als PDF in 04-02_Buchungsbestaetigungen.",
+
+  ["3. Sep", "Tour buchen", [
+    "<b>Intrepid über Globetrotter Basel.</b> Startdatum schriftlich bestätigen lassen – der Flug richtet sich danach.",
+    "<b>Heart of Guatemala, 1. bis 7. Oktober</b> – Start und Ende in Antigua, Reisecode QBSG.",
+    "Bestätigung als PDF ablegen.",
   ]],
-  ["2. Sep", "Flug buchen", [
-    "Landung am Vortag vor 18 Uhr. One-Way, 23 kg Aufgabegepäck.",
-  ]],
+
   ["5. Sep", "Tagesrucksack und Yallo", [
     "<b>Tagesrucksack:</b> Patagonia Terravia 24 L bei Transa – früh bestellen, zeitweise Lieferrückstand.",
     "<b>Yallo:</b> Zweit-SIM auf derselben Nummer für das Ersatzhandy?",
   ]],
+
+  ["6. Sep", "Flüge, Bus, Hostel und Transfer", [
+    "<b>Flug Schweiz → Guatemala-Stadt.</b> Geplante Ankunft 28. September 2026, One-Way, 23 kg.",
+    "<b>Flug Guatemala-Stadt → San José</b> buchen und ausdrucken – zugleich Ausreisenachweis für Guatemala.",
+    "<b>Busticket San José → Nicaragua</b> buchen und ausdrucken – Ausreisenachweis für Costa Rica.",
+    "<b>Unterkunft in Antigua:</b> Maya Papaya für die Nächte vor der Tour – günstiger, besser bewertet, nur fünf Minuten vom Starthotel.",
+    "<b>Flughafentransfer</b> für die Ankunft buchen.",
+    "Alle Bestätigungen als PDF ablegen und offline speichern.",
+  ]],
+
   ["6. Sep", "Revolut, Scans, iCloud", [
     "<b>Revolut:</b> vollständig einrichten und einmal testen.",
     "<b>Ablage:</b> Dokumente scannen, iCloud-Struktur anlegen, die fünf Ordner teilen.",
   ]],
+
   ["8. Sep", "Vacanza-Prämie einzahlen", [
     "Ohne Zahlung keine Deckung – der wichtigste Termin im September.",
   ]],
+
   ["12. Sep", "Busticket und Zahnkontrolle", [
     "<b>Busticket:</b> San José nach Nicaragua oder Panama, als Ausreisenachweis für Costa Rica.",
     "<b>Zahnkontrolle</b> vor der Abreise.",
   ]],
+
   ["20. Sep", "Sprachschule Heredia", [
     "<b>Kurs:</b> direkt buchen, nicht über eine Agentur – das spart 300 bis 500 Franken.",
     "<b>Unterkunft:</b> Studentenwohnheim, Gastfamilie oder Hostel.",
   ]],
+
   ["72 h vorher", "Reiseerklärung Guatemala", [
     "<b>Hinflug:</b> online ausfüllen, QR-Code als Screenshot sichern.",
     "<b>Weiterflug:</b> ein zweites Mal vor dem Flug nach San José.",
@@ -1453,12 +1468,13 @@ const DOKUMENTE = [
 const STATIONEN = [
   {
     id: "hinflug", nummer: "1", kurzname: "Hinflug", titel: "Hinflug nach Guatemala", land: "guatemala",
-    zeit: "Ende September", kurz: "One-Way, mit Nachweisen im Gepäck",
+    zeit: "Ankunft 28. September", kurz: "One-Way, mit Nachweisen im Gepäck",
     abschnitte: [
       ["Der Flug", [
         ["eigen", "Was gebucht ist", [
           "One-Way Schweiz → Guatemala-Stadt, 23 kg Aufgabegepäck.",
-          "<b>Landung am Vortag der Tour, vor 18 Uhr</b> – damit der Transfer bei Tageslicht fährt.",
+          "<b>Geplante Ankunft: 28. September 2026</b>, drei Tage vor dem Start der Tour.",
+          "Landung vor 18 Uhr – damit der Transfer bei Tageslicht fährt.",
           "Buchungsbestätigung offline auf dem Handy und ausgedruckt.",
         ]],
       ]],
@@ -1489,7 +1505,7 @@ const STATIONEN = [
   },
   {
     id: "ankunft-gt", nummer: "2", kurzname: "Ankunft", titel: "Ankunft Guatemala",
-    land: "guatemala", zeit: "Ende September", kurz: "Vom Flughafen bis ins Hostel",
+    land: "guatemala", zeit: "28. September", kurz: "Vom Flughafen bis ins Hostel",
     abschnitte: [
       ["Am Flughafen", [
         ["eigen", "Schritt für Schritt", [
@@ -1509,6 +1525,12 @@ const STATIONEN = [
       ["Einreise", [["land", "guatemala", "Einreise"]]],
       ["Unterkunft", [
         ["hostels", "guatemala"],
+        ["eigen", "Wo du zuerst schläfst", [
+          "<b>Casa Florencia Hotel</b>, 7a Avenida Norte 100 – dort startet die Tour am 1. Oktober.",
+          "Die Nächte vom 28. bis 30. September im <b>Maya Papaya</b>, 1a Calle Poniente 20.",
+          "<b>Zwischen beiden liegen 300 Meter</b>, rund fünf Minuten zu Fuss.",
+          "Die Adresse wird bei der Einreise verlangt – vor dem Anstehen bereithalten.",
+        ]],
         ["eigen", "Die ersten Handgriffe", [
           "Wertsachen in den Spind, eigenes Schloss verwenden.",
           "Zu Hause anrufen, nicht nur schreiben.",
@@ -1522,13 +1544,48 @@ const STATIONEN = [
     ],
   },
   {
-    id: "rundreise", nummer: "3", kurzname: "Tour", titel: "Rundreise in der Gruppe", land: "guatemala",
-    zeit: "Oktober, Woche 1–2", kurz: "Globetrotter Basel, rund zwei Wochen",
+    id: "rundreise", nummer: "3", kurzname: "Tour", titel: "Heart of Guatemala",
+    land: "guatemala", zeit: "1. bis 7. Oktober", kurz: "Intrepid, sieben Tage ab Antigua",
     abschnitte: [
-      ["Transport", [
+      ["Die Tour", [
         ["eigen", "Was feststeht", [
-          "Gebucht über Globetrotter Basel. Das Startdatum bestimmt das Flugdatum.",
-          "<b>Der genaue Reiseplan kommt hierher</b>, sobald die Bestätigung da ist.",
+          "<b>Heart of Guatemala</b> von Intrepid, gebucht über Globetrotter Basel am 3. September.",
+          "<b>Sieben Tage, 1. bis 7. Oktober.</b> Start und Ende in Antigua, nicht in Guatemala-Stadt.",
+          "Kleingruppe bis 16 Personen mit lokalem Guide, Stil „Original“.",
+          "Enthalten: sechs Nächte Hotel, sechs Frühstücke, ein Mittagessen, alle Transporte.",
+          "Reisecode QBSG – bei jeder Rückfrage angeben.",
+          { label: "Die Tour bei Intrepid", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161" },
+          { label: "Essential Trip Information", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161/tripnotes" },
+        ]],
+        ["eigen", "Treffpunkt am ersten Tag", [
+          "<b>Willkommenstreffen um 18 Uhr</b> im Hotel – Anwesenheit ist Pflicht, dort werden Versicherung und Notfallkontakt aufgenommen.",
+          "<b>Casa Florencia Hotel</b>, 7A Avenida Norte 100, Antigua.",
+          "Wer sich verspätet, meldet sich vorher beim Hotel.",
+          { label: "Hotel anrufen", nr: "+502 7832 0261" },
+        ]],
+        ["eigen", "Der Ablauf", [
+          "<b>Tag 1</b> Antigua – Ankunft, Willkommenstreffen um 18 Uhr.",
+          "<b>Tag 2</b> San Andrés Itzapa und Quetzaltenango – Zeremonie im Tempel von San Simón, rund vier Stunden Fahrt.",
+          "<b>Tag 3</b> Quetzaltenango – frühmorgens mit dem Chicken Bus zum Markt von Almolonga.",
+          "<b>Tag 4</b> Chichicastenango und Panajachel – grosser Markt, rund 3.5 Stunden Fahrt.",
+          "<b>Tag 5</b> Panajachel – Bootsfahrt über den Atitlán nach Santiago Atitlán.",
+          "<b>Tag 6</b> zurück nach Antigua, Orientierungsrundgang, freier Abend.",
+          "<b>Tag 7</b> Antigua – keine Aktivitäten mehr, Abreise jederzeit möglich.",
+        ]],
+      ]],
+      ["Anreise zum Start", [
+        ["eigen", "Vom Flughafen nach Antigua", [
+          "<b>Flughafen Guatemala-Stadt (GUA)</b> – rund 1.5 Stunden bis Antigua.",
+          "<b>Transfer über Intrepid</b> ist gegen Gebühr buchbar; Flugdaten müssen 14 Tage vorher gemeldet sein.",
+          "Sonst offizielles Taxi vom Schalter <b>im Terminal</b>, rund 35 bis 40 US-Dollar.",
+          "Nicht nach „Antigua“ fliegen – das ist eine Karibikinsel. Ziel ist GUA.",
+        ]],
+      ]],
+      ["Gut zu wissen", [
+        ["eigen", "Worauf sie sich einstellt", [
+          "Heiss und schwül – immer genug Wasser dabei, besonders auf Rundgängen.",
+          "Spanischkenntnisse helfen; der Guide übersetzt, aber der Kontakt wird leichter.",
+          "Optional und vor Ort zu zahlen: Kochkurs 60 USD, Thermalquellen 45 USD.",
         ]],
       ]],
       ["Checkliste", [["liste", "tour:tour"], ["liste", "tour:rucksack"]]],
@@ -1601,6 +1658,12 @@ const STATIONEN = [
       ]],
       ["Einreise", [["land", "costarica", "Einreise"]]],
       ["Im Quartier", [
+        ["eigen", "Wo du zuerst schläfst", [
+          "<b>Casa Florencia Hotel</b>, 7a Avenida Norte 100 – dort startet die Tour am 1. Oktober.",
+          "Die Nächte vom 28. bis 30. September im <b>Maya Papaya</b>, 1a Calle Poniente 20.",
+          "<b>Zwischen beiden liegen 300 Meter</b>, rund fünf Minuten zu Fuss.",
+          "Die Adresse wird bei der Einreise verlangt – vor dem Anstehen bereithalten.",
+        ]],
         ["eigen", "Die ersten Handgriffe", [
           "Adresse und WLAN-Name notieren.",
           "Zu Hause anrufen, nicht nur schreiben.",
@@ -1804,6 +1867,16 @@ const LAENDER = {
       url: "https://www.hostelworld.com/hostels/north-america/guatemala/antigua/",
     },
     hostels: [
+      {
+        name: "Casa Florencia Hotel", ort: "7a Avenida Norte 100, Antigua",
+        tel: "+502 7832 0261", web: "http://www.cflorencia.net/", note: "4.5 · 102 Bewertungen",
+        tipp: "Starthotel der Intrepid-Tour",
+        gut: ["Hier beginnt die Rundreise – das Willkommenstreffen findet im Hotel statt",
+              "Ruhig, etwas nördlich des Zentrums, sicheres Tor"],
+        schlecht: ["Gäste berichten von fehlendem Warmwasser und dunklen Zimmern im Erdgeschoss",
+                   "Kein Frühstück im Haus",
+                   "<b>Nur 300 m vom Maya Papaya entfernt – fünf Minuten zu Fuss.</b> Die Nächte davor lohnen sich dort eher"],
+      },
       {
         name: "Maya Papaya", ort: "1a Calle Poniente 20, Antigua", tel: "+502 5825 7586",
         web: "https://www.hostelworld.com/hostels/p/278452/maya-papaya/", note: "4.7 · 446 Bewertungen",
@@ -2179,7 +2252,7 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "214 · 29.08.2026";
+const VERSION = "218 · 30.08.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
