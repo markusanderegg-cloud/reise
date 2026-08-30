@@ -10,6 +10,26 @@
 <title>Sophie Pura Vida</title>
 <style>
 :root {
+  /* ═══ Ebenen – die einzigen erlaubten Schriftgrössen ═══
+     Eine Überschrift steht nie auf derselben oder einer tieferen Ebene
+     als das, was unter ihr steht.
+
+     Ebene 1  30px  Titelbild auf der Startseite
+     Ebene 2  24px  Seitentitel
+     Ebene 3  19px  Ländername, Bereichsüberschrift
+     Ebene 4  16px  Gruppentitel, Ortsname, Kachel
+     Ebene 5  14px  Fliesstext, Listeneintrag, Blocktitel
+     Ebene 6  12.5px Hinweis, Legende, Zähler
+     Ebene 7  11px  Etikett, untere Leiste
+  */
+  --ebene1: 30px;
+  --ebene2: 24px;
+  --ebene3: 19px;
+  --ebene4: 16px;
+  --ebene5: 14px;
+  --ebene6: 12.5px;
+  --ebene7: 11px;
+
   --sand: #EFE7DA;
   --sand-tief: #E3D8C6;
   --karte: #FFFFFF;
@@ -35,7 +55,7 @@ body {
   background: var(--sand);
   color: var(--ink);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 15px;
+  font-size: var(--ebene4);
   line-height: 1.5;
   -webkit-text-size-adjust: 100%;
 }
@@ -80,12 +100,12 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .karte.bild { padding: 0; overflow: hidden; }
 .polster { padding: 10px 14px; }
 
-.klein { font-size: 12.5px; color: var(--grau); }
-.klein2 { font-size: 16px; }
-.hinweis { font-size: 13px; color: var(--grau); line-height: 1.5; }
-.text { font-size: 14px; line-height: 1.6; }
-.notiz { font-size: 12.5px; color: var(--terra); margin-top: 5px; }
-.fussnote { font-size: 11.5px; color: var(--grau); line-height: 1.5; margin-top: 18px; }
+.klein { font-size: var(--ebene6); color: var(--grau); }
+.klein2 { font-size: var(--ebene4); }
+.hinweis { font-size: var(--ebene6); color: var(--grau); line-height: 1.5; }
+.text { font-size: var(--ebene5); line-height: 1.6; }
+.notiz { font-size: var(--ebene6); color: var(--terra); margin-top: 5px; }
+.fussnote { font-size: var(--ebene7); color: var(--grau); line-height: 1.5; margin-top: 18px; }
 
 /* ── Kopfbereich ── */
 
@@ -104,7 +124,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   display: inline-flex; align-items: center; gap: 6px;
   background: var(--alarm-hell); border: 1px solid #EBC6C0;
   border-radius: 99px; padding: 7px 14px 7px 11px;
-  font-size: 13px; color: var(--alarm); font-weight: 500;
+  font-size: var(--ebene6); color: var(--alarm); font-weight: 500;
 }
 .lupe {
   width: 40px; height: 40px; border-radius: 20px;
@@ -114,17 +134,17 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 
 .kopf { margin-bottom: 24px; margin-top: 6px; }
 .kopf h1 {
-  font-weight: 700; font-size: 24px; line-height: 1.1; margin: 0; color: var(--ink); }
-.kopf .unter { font-size: 14px; color: var(--grau); margin: 8px 0 0; line-height: 1.55; }
+  font-weight: 700; font-size: var(--ebene2); line-height: 1.1; margin: 0; color: var(--ink); }
+.kopf .unter { font-size: var(--ebene5); color: var(--grau); margin: 8px 0 0; line-height: 1.55; }
 .zurueck {
   display: inline-flex; align-items: center; gap: 4px;
-  color: var(--terra); font-size: 14px; margin-bottom: 16px;
+  color: var(--terra); font-size: var(--ebene5); margin-bottom: 16px;
 }
 
 .titelblock { padding: 4px 0 14px; }
-.obertitel { font-size: 12px; color: var(--grau); letter-spacing: 0.14em; text-transform: uppercase; }
+.obertitel { font-size: var(--ebene6); color: var(--grau); letter-spacing: 0.14em; text-transform: uppercase; }
 .gross {
-  font-weight: 700; font-size: 32px; line-height: 1.05; margin: 6px 0 0; color: var(--ink); }
+  font-weight: 700; font-size: var(--ebene1); line-height: 1.05; margin: 6px 0 0; color: var(--ink); }
 .strich { width: 48px; height: 3px; background: var(--terra); border-radius: 2px; margin: 10px 0; }
 
 /* ── Startseite ── */
@@ -135,8 +155,8 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   border-radius: 16px; padding: 18px; margin-bottom: 14px;
 }
 .alarmtitel {
-  font-weight: 700; font-size: 23px; color: var(--alarm); }
-.alarmtext { font-size: 13px; color: #8B5A52; margin-top: 7px; line-height: 1.45; }
+  font-weight: 700; font-size: var(--ebene2); color: var(--alarm); }
+.alarmtext { font-size: var(--ebene6); color: #8B5A52; margin-top: 7px; line-height: 1.45; }
 
 .raster { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .kachel {
@@ -144,7 +164,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   border-radius: 16px; padding: 14px 16px; text-align: left;
 }
 .kacheltitel {
-  font-weight: 600; font-size: 16px; line-height: 1.2; margin-bottom: 5px; }
+  font-weight: 600; font-size: var(--ebene4); line-height: 1.2; margin-bottom: 5px; }
 
 /* ── Rundknöpfe ── */
 
@@ -159,9 +179,9 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .knopfreihe { display: flex; gap: 8px; flex-shrink: 0; }
 
 .nummer {
-  font-weight: 600; font-size: 21px; margin-top: 2px; }
+  font-weight: 600; font-size: var(--ebene3); margin-top: 2px; }
 .nummer.alarm { color: var(--alarm); }
-.satz { font-size: 19px; margin-top: 4px; }
+.satz { font-size: var(--ebene3); margin-top: 4px; }
 
 /* ── Aktionsfelder in Textblöcken ── */
 
@@ -170,22 +190,22 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   background: var(--terra-hell); border: 1px solid #E8CFC3;
   border-radius: 12px; padding: 12px 14px; margin-top: 10px;
 }
-.aktionswert { font-size: 18px; margin-top: 2px; line-height: 1.35; }
+.aktionswert { font-size: var(--ebene3); margin-top: 2px; line-height: 1.35; }
 .leerfeld {
   background: var(--sand); border: 1px dashed var(--linie);
-  border-radius: 12px; padding: 12px 14px; margin-top: 10px; font-size: 13px;
+  border-radius: 12px; padding: 12px 14px; margin-top: 10px; font-size: var(--ebene6);
 }
 
 /* ── Textblöcke ── */
 
 .blocktitel {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-  font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 10px;
+  font-size: var(--ebene5); font-weight: 500; color: var(--ink); margin-bottom: 10px;
 }
 .abschnitt {
-  font-weight: 600; font-size: 16px; }
+  font-weight: 600; font-size: var(--ebene4); }
 .punkte li {
-  position: relative; padding-left: 18px; font-size: 14px; line-height: 1.55; margin-bottom: 10px;
+  position: relative; padding-left: 18px; font-size: var(--ebene5); line-height: 1.55; margin-bottom: 10px;
 }
 .punkte li::before {
   content: ""; position: absolute; left: 0; top: 8px;
@@ -198,17 +218,17 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .schritte li { display: flex; gap: 12px; margin-bottom: 12px; }
 .schritte .ziffer {
   width: 22px; height: 22px; border-radius: 11px; background: var(--terra); color: #fff;
-  font-size: 12px; display: inline-flex; align-items: center; justify-content: center;
+  font-size: var(--ebene6); display: inline-flex; align-items: center; justify-content: center;
   flex-shrink: 0; margin-top: 1px;
 }
-.schritte b { font-size: 14px; display: block; }
+.schritte b { font-size: var(--ebene5); display: block; }
 .schritte .hinweis { display: block; margin-top: 3px; }
 
 /* ── Reiter ── */
 
 .reiter { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
 .chip {
-  padding: 8px 16px; border-radius: 999px; font-size: 13px;
+  padding: 8px 16px; border-radius: 999px; font-size: var(--ebene6);
   border: 1px solid var(--linie); color: var(--grau);
 }
 .chip.an { background: var(--ink); color: var(--sand); border-color: var(--ink); }
@@ -221,7 +241,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 
 .landwahl { display: flex; gap: 8px; margin-bottom: 16px; }
 .landknopf {
-  flex: 1; padding: 10px; border-radius: 12px; font-size: 14px;
+  flex: 1; padding: 10px; border-radius: 12px; font-size: var(--ebene5);
   border: 1px solid var(--linie); color: var(--grau);
 }
 .landknopf.an { color: #fff; }
@@ -234,7 +254,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
 }
 .haken .box.an { background: var(--terra); border-color: var(--terra); }
-.hakentext { font-size: 14px; line-height: 1.45; }
+.hakentext { font-size: var(--ebene5); line-height: 1.45; }
 .haken.ab .hakentext { color: var(--grau); text-decoration: line-through; }
 
 /* ── Eingaben ── */
@@ -243,29 +263,29 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   display: flex; align-items: center; gap: 12px; background: var(--karte);
   border: 1px solid var(--linie); border-radius: 16px; padding: 12px 16px; margin-bottom: 20px;
 }
-.suchfeld { flex: 1; border: 0; outline: none; background: none; font-size: 16px; color: var(--ink); }
+.suchfeld { flex: 1; border: 0; outline: none; background: none; font-size: var(--ebene4); color: var(--ink); }
 .feld { display: block; margin-bottom: 16px; }
 .feld input {
-  width: 100%; margin-top: 5px; padding: 10px 12px; font-size: 16px;
+  width: 100%; margin-top: 5px; padding: 10px 12px; font-size: var(--ebene4);
   border: 1px solid var(--linie); border-radius: 12px; background: var(--sand); color: var(--ink);
 }
-.textknopf { color: var(--terra); font-size: 13px; }
+.textknopf { color: var(--terra); font-size: var(--ebene6); }
 
 /* ── Suchtreffer ── */
 
 .ortlabel {
-  font-size: 11px; color: var(--terra); letter-spacing: 0.06em;
+  font-size: var(--ebene7); color: var(--terra); letter-spacing: 0.06em;
   text-transform: uppercase; margin-bottom: 4px;
 }
 .ortlabel.grau { color: var(--grau); letter-spacing: 0.1em; }
 .treffertitel {
-  font-weight: 600; font-size: 16px; line-height: 1.3; margin-bottom: 5px; }
+  font-weight: 600; font-size: var(--ebene4); line-height: 1.3; margin-bottom: 5px; }
 
 /* ── Hostels ── */
 
-.prozeile { display: flex; gap: 10px; font-size: 13.5px; line-height: 1.5; margin-bottom: 6px; }
+.prozeile { display: flex; gap: 10px; font-size: var(--ebene5); line-height: 1.5; margin-bottom: 6px; }
 .prozeile .ikon { margin-top: 3px; flex-shrink: 0; }
-.minus { color: var(--alarm); font-size: 15px; flex-shrink: 0; }
+.minus { color: var(--alarm); font-size: var(--ebene4); flex-shrink: 0; }
 
 /* ── Route ── */
 
@@ -279,11 +299,11 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .etappe .punkt {
   position: absolute; left: -30px; top: 3px; width: 21px; height: 21px; border-radius: 11px;
   background: var(--terra); border: 2px solid var(--terra);
-  color: #fff; font-size: 11px; font-weight: 600; line-height: 17px; text-align: center;
+  color: #fff; font-size: var(--ebene7); font-weight: 600; line-height: 17px; text-align: center;
 }
 .etappe .punkt.offen { background: var(--sand); border-color: var(--grau); color: var(--grau); }
 .etappenort {
-  font-weight: 600; font-size: 16px; margin: 3px 0 4px; }
+  font-weight: 600; font-size: var(--ebene4); margin: 3px 0 4px; }
 
 
 /* ── Aufklappbare Blöcke: leichte Zeilen statt Karten ── */
@@ -293,7 +313,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 .bandtitel {
   font-weight: 600;
-  font-size: 17px; line-height: 1.15; color: var(--ink);
+  font-size: var(--ebene4); line-height: 1.15; color: var(--ink);
   padding: 12px 14px 7px; margin: 0 14px 5px 22px;
   border-bottom: 1px solid var(--linie); padding-left: 0; padding-right: 0;
 }
@@ -321,32 +341,32 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .karte.faltkarte.zusatz .faltinhalt { padding: 0 14px 14px; }
 .faltinhalt.offen { display: block; }
 
-.begriff { display: block; font-size: 14px; font-weight: 600; line-height: 1.45; }
-.begrifftext { display: block; font-size: 13.5px; color: var(--grau); margin-top: 2px; line-height: 1.5; }
+.begriff { display: block; font-size: var(--ebene5); font-weight: 600; line-height: 1.45; }
+.begrifftext { display: block; font-size: var(--ebene5); color: var(--grau); margin-top: 2px; line-height: 1.5; }
 
 .banner { border: 1px solid var(--linie); border-radius: 16px; overflow: hidden; margin-bottom: 14px; }
 .banner img { display: block; width: 100%; height: 92px; object-fit: cover; object-position: center 42%; }
 .puravida { color: var(--terra); }
 
-.ruecksetzen { display: none; margin-top: 12px; font-size: 12.5px; color: var(--grau); }
+.ruecksetzen { display: none; margin-top: 12px; font-size: var(--ebene6); color: var(--grau); }
 
 .gruppenzeile {
   display: flex; align-items: center; justify-content: space-between; margin: -8px 0 8px;
 }
 .gruppentitel {
-  font-size: 11px; color: var(--grau); letter-spacing: .08em; text-transform: uppercase;
+  font-size: var(--ebene7); color: var(--grau); letter-spacing: .08em; text-transform: uppercase;
 }
 /* Grössenordnung der App:
    Seitentitel 30 · Bereich 19 · Block 15 · Text 14 · Hinweis 13 · Etikett 11.
    Eine Überschrift ist nie kleiner als das, was unter ihr steht. */
 .gruppentitel.klein3 {
   font-weight: 600;
-  font-size: 17px; letter-spacing: 0;
+  font-size: var(--ebene4); letter-spacing: 0;
   text-transform: none; color: var(--ink); font-weight: 400;
   margin: 0 0 7px 3px;
 }
-.zuknopf { font-size: 12.5px; color: var(--terra); }
-.mehrknopf { font-size: 12.5px; color: var(--grau); margin: -8px 0 20px; display: block; }
+.zuknopf { font-size: var(--ebene6); color: var(--terra); }
+.mehrknopf { font-size: var(--ebene6); color: var(--grau); margin: -8px 0 20px; display: block; }
 
 .titelzeile { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
 .titelzeile .lupe { margin-top: 2px; flex-shrink: 0; }
@@ -362,8 +382,8 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
 }
 .heldtitel {
-  font-weight: 700; font-size: 27px; color: #211C18; line-height: 1.15; }
-.heldunter { font-size: 13.5px; line-height: 1.5; color: #5A524C; margin-top: 8px; }
+  font-weight: 700; font-size: var(--ebene1); color: #211C18; line-height: 1.15; }
+.heldunter { font-size: var(--ebene5); line-height: 1.5; color: #5A524C; margin-top: 8px; }
 .heldlupe {
   width: 40px; height: 40px; border-radius: 20px; flex-shrink: 0; margin-top: 29px;
   background: var(--sand); border: 1px solid var(--linie);
@@ -382,13 +402,13 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 .tab {
   flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
-  font-size: 10.5px; padding: 3px 0;
+  font-size: var(--ebene7); padding: 3px 0;
 }
 .tab.an span { font-weight: 600; }
 #app { padding-bottom: calc(84px + env(safe-area-inset-bottom)); }
 
 .termindatum {
-  width: 62px; flex-shrink: 0; font-size: 11.5px; color: var(--terra);
+  width: 62px; flex-shrink: 0; font-size: var(--ebene7); color: var(--terra);
   letter-spacing: .04em; text-transform: uppercase;
 }
 
@@ -396,39 +416,39 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .hakenzeile { display: flex; align-items: flex-start; }
 .hakenzeile .haken { flex: 1; }
 .weg {
-  width: 30px; align-self: center; font-size: 19px; line-height: 1;
+  width: 30px; align-self: center; font-size: var(--ebene3); line-height: 1;
   color: var(--grau); flex-shrink: 0;
 }
 .neuzeile {
   display: flex; align-items: center; gap: 8px; margin-top: 10px;
   padding-top: 10px; border-top: 0.5px solid var(--linie);
 }
-.plus { color: var(--terra); font-size: 17px; width: 20px; text-align: center; flex-shrink: 0; }
+.plus { color: var(--terra); font-size: var(--ebene4); width: 20px; text-align: center; flex-shrink: 0; }
 .neufeld {
   flex: 1; border: 0; outline: none; background: none;
-  font-size: 14px; color: var(--ink); padding: 4px 0;
+  font-size: var(--ebene5); color: var(--ink); padding: 4px 0;
 }
 .neufeld::placeholder { color: var(--grau); }
 
 /* ── Meldeformular ── */
 .meldezeile { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; }
-.meldewert { font-size: 14px; text-align: right; }
-.meldeleer { font-size: 13px; color: var(--grau); font-style: italic; text-align: right; }
+.meldewert { font-size: var(--ebene5); text-align: right; }
+.meldeleer { font-size: var(--ebene6); color: var(--grau); font-style: italic; text-align: right; }
 .meldelabel { display: block; margin-bottom: 14px; }
-.meldehilfe { display: block; font-size: 11.5px; color: var(--grau); margin-top: 1px; }
+.meldehilfe { display: block; font-size: var(--ebene7); color: var(--grau); margin-top: 1px; }
 .meldefeld {
-  width: 100%; margin-top: 5px; padding: 9px 11px; font-size: 16px;
+  width: 100%; margin-top: 5px; padding: 9px 11px; font-size: var(--ebene4);
   border: 1px solid var(--linie); border-radius: 10px;
   background: var(--sand); color: var(--ink); font-family: inherit; resize: vertical;
 }
 .meldeknoepfe { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
 .meldeknopf {
   background: #fff; border: 1px solid #E8CFC3; border-radius: 12px;
-  padding: 12px 14px; font-size: 14px; color: var(--ink); text-align: left;
+  padding: 12px 14px; font-size: var(--ebene5); color: var(--ink); text-align: left;
 }
 .ruecksetzen.sichtbar { display: block; }
 
-.version { font-size: 10.5px; color: var(--grau); opacity: .7; margin-top: 10px; }
+.version { font-size: var(--ebene7); color: var(--grau); opacity: .7; margin-top: 10px; }
 
 /* Startseite: Bild und Notfall bleiben oben, nur die Termine scrollen. */
 .startkopf {
@@ -443,7 +463,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   background: var(--alarm-hell); border: 1px solid #EBC6C0;
   border-radius: 12px; padding: 9px 9px 9px 15px;
 }
-.notfallwort { font-size: 17px; color: var(--alarm); }
+.notfallwort { font-size: var(--ebene4); color: var(--alarm); }
 .rundknopf.alarm.klein { width: 32px; height: 32px; border-radius: 16px; }
 .notfallpfeil { display: inline-flex; transform: rotate(-90deg); opacity: .7; }
 
@@ -476,15 +496,15 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   .spalten > * { break-inside: avoid; }
 
   .held img { height: auto; }
-  .heldtitel { font-size: 30px; }
+  .heldtitel { font-size: var(--ebene1); }
 
   /* Leiste unten bekommt mehr Luft */
-  .tab { font-size: 12px; }
+  .tab { font-size: var(--ebene6); }
   .tab svg { width: 23px; height: 23px; }
 
   /* Karten etwas grosszügiger */
   .karte { padding: 20px 22px; }
-  .kopf h1 { font-size: 26px; }
+  .kopf h1 { font-size: var(--ebene2); }
 }
 
 /* ── Terminliste auf der Startseite ── */
@@ -498,15 +518,15 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 .terminhaken .box.an { background: var(--terra); border-color: var(--terra); }
 .terminknopf { flex: 1; text-align: left; }
-.terminwas { display: block; font-size: 14px; line-height: 1.45; margin-top: 2px; }
+.terminwas { display: block; font-size: var(--ebene5); line-height: 1.45; margin-top: 2px; }
 .terminwann {
-  display: block; font-size: 10.5px; color: var(--grau);
+  display: block; font-size: var(--ebene7); color: var(--grau);
   letter-spacing: .05em; text-transform: uppercase;
 }
 .terminwann.bald { color: var(--terra); }
 .terminwas.ab { color: var(--grau); text-decoration: line-through; }
 .termintextblock { display: block; margin: 6px 0 2px; }
-.termintext { display: block; font-size: 12.5px; color: var(--grau); line-height: 1.45; margin-bottom: 5px; }
+.termintext { display: block; font-size: var(--ebene6); color: var(--grau); line-height: 1.45; margin-bottom: 5px; }
 
 .terminaufgaben { margin: 4px 0 0; }
 .terminaufgaben .haken { align-items: flex-start; padding: 3px 0; gap: 9px; }
@@ -515,13 +535,13 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .box.klein { width: 17px; height: 17px; border-radius: 5px; }
 
 .terminstand {
-  margin-left: 14px; font-size: 11.5px; font-weight: 400; color: var(--grau);
+  margin-left: 14px; font-size: var(--ebene7); font-weight: 400; color: var(--grau);
   background: var(--sand); border-radius: 99px; padding: 1px 7px;
 }
 
 .offenzeile { display: flex; gap: 16px; margin-top: 10px; padding-top: 8px;
               border-top: 1px solid var(--linie); }
-.offenwann { color: var(--terra); font-size: 12px; }
+.offenwann { color: var(--terra); font-size: var(--ebene6); }
 
 /* ── Sprung zu einer anderen Stelle in der App ── */
 .sprung {
@@ -529,11 +549,11 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   background: var(--sand); border: 1px solid var(--linie); border-radius: 10px;
   padding: 9px 12px; margin-top: 4px;
 }
-.sprungtext { flex: 1; font-size: 13.5px; color: var(--terra); }
+.sprungtext { flex: 1; font-size: var(--ebene5); color: var(--terra); }
 .sprungpfeil { display: inline-flex; transform: rotate(-90deg); }
 
 .registernr {
-  font-size: 10.5px; color: var(--terra); letter-spacing: .06em;
+  font-size: var(--ebene7); color: var(--terra); letter-spacing: .06em;
   text-transform: uppercase; margin-bottom: 3px;
 }
 
@@ -543,7 +563,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   display: flex; align-items: center; justify-content: center; gap: 9px; width: 100%;
   background: var(--alarm-hell); border: 1px solid #EBC6C0; border-radius: 12px;
   padding: 11px; margin-bottom: 9px;
-  font-size: 16px; color: var(--alarm);
+  font-size: var(--ebene4); color: var(--alarm);
 }
 .nummernknopf.an { background: var(--alarm); border-color: var(--alarm); color: #fff; }
 .notfallreiter .reiter { margin-bottom: 0; }
@@ -567,7 +587,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 
 .faltkarte .zeile.mitte { flex: 1; }
 
-.gesamtstand { font-size: 12.5px; color: var(--grau); }
+.gesamtstand { font-size: var(--ebene6); color: var(--grau); }
 
 /* ── Etappen als Knopf ── */
 .etappeknopf { position: relative; width: 100%; text-align: left; background: none; border: 0; }
@@ -577,11 +597,11 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 .zurueckzeile {
   display: flex; align-items: center; gap: 6px; background: none; border: 0;
-  font-size: 13px; color: var(--terra); padding: 0 0 6px;
+  font-size: var(--ebene6); color: var(--terra); padding: 0 0 6px;
 }
 .zurueckpfeil { display: inline-flex; transform: rotate(90deg); }
 .landtitel {
-  font-weight: 600; font-size: 22px; color: var(--tinte); margin-bottom: 10px; }
+  font-weight: 600; font-size: var(--ebene2); color: var(--tinte); margin-bottom: 10px; }
 
 /* Länderfarben im Zeitstrahl */
 .ortlabel.gt { color: #7A6A4F; letter-spacing: 0.1em; }
@@ -594,7 +614,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 /* Ländermarke im Zeitstrahl */
 .landmarke {
   display: flex; align-items: center; gap: 10px;
-  font-size: 20px; letter-spacing: -0.01em;
+  font-size: var(--ebene3); letter-spacing: -0.01em;
   margin: 26px 0 10px; padding: 0;
 }
 .landmarke:first-child { margin-top: 2px; }
@@ -609,7 +629,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .notrufzeile { align-items: center; gap: 14px; }
 .notrufnr {
   font-weight: 700;
-  font-size: 32px; line-height: 1;
+  font-size: var(--ebene1); line-height: 1;
   color: var(--alarm); flex-shrink: 0;
 }
 
@@ -632,16 +652,16 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .mehrmarke.auf { background: #F3E7C6; }
 .mehrzeichen {
   width: 15px; height: 15px; border-radius: 8px; flex-shrink: 0;
-  background: #E0CE96; color: #6B551A; font-size: 10.5px; line-height: 15px;
+  background: #E0CE96; color: #6B551A; font-size: var(--ebene7); line-height: 15px;
   text-align: center; font-style: italic; font-weight: 600;
 }
-.mehrtext { font-size: 11.5px; color: #7A6320; white-space: nowrap; }
+.mehrtext { font-size: var(--ebene7); color: #7A6320; white-space: nowrap; }
 .mehrbox {
   display: none; background: #FBF3DC; border: 1px solid #EBDFBC; border-radius: 10px;
   padding: 10px 12px; margin: 8px 0 2px;
 }
 .mehrbox.offen { display: block; }
-.mehrbox .text { font-size: 13px; line-height: 1.5; color: #5C4C1C; }
+.mehrbox .text { font-size: var(--ebene6); line-height: 1.5; color: #5C4C1C; }
 
 /* Einträge in einer Gruppe: kleiner und in Navy, damit der Titel führt */
 .blockband .faltkopf .blocktitel { font-weight: 400; color: #55504A; }
@@ -676,17 +696,17 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .landtext { flex: 1; }
 .landzeile { display: flex; align-items: center; gap: 9px; }
 .landname {
-  font-weight: 600; font-size: 21px; line-height: 1.1; }
+  font-weight: 600; font-size: var(--ebene3); line-height: 1.1; }
 .landname.gt { color: #7A6A4F; }
 .landname.cr { color: #4E6B52; }
 .landname.pe { color: #A33; }
-.landzeit { font-size: 12.5px; color: var(--grau); margin: 3px 0 2px; }
+.landzeit { font-size: var(--ebene6); color: var(--grau); margin: 3px 0 2px; }
 .landpfeil { display: inline-flex; transform: rotate(-90deg); margin-top: 6px; }
 
-.etappenzeit { font-size: 12px; color: var(--grau); margin: 1px 0 3px; }
+.etappenzeit { font-size: var(--ebene6); color: var(--grau); margin: 1px 0 3px; }
 
 /* Inhalt eines Beutels – zweite Zeile in der Checkliste */
-.unterzeile { display: block; font-size: 12.5px; color: var(--grau); line-height: 1.4; margin-top: 1px; }
+.unterzeile { display: block; font-size: var(--ebene6); color: var(--grau); line-height: 1.4; margin-top: 1px; }
 
 /* Tourismusportal – schmale farbige Zeile in der Route */
 .portalzeile {
@@ -694,7 +714,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   background: #E8EFE7; border: 1px solid #CBDAC7; border-radius: 10px;
   padding: 8px 12px; margin: 0 0 14px;
 }
-.portaltext { font-size: 13px; color: #3E5A42; }
+.portaltext { font-size: var(--ebene6); color: #3E5A42; }
 
 /* Buchen – der einzige Weg nach aussen, deshalb kräftig */
 .karte.buchenkarte {
@@ -702,11 +722,24 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   background: var(--terra); border-color: var(--terra);
 }
 .karte.buchenkarte .kacheltitel { color: #fff; }
-.buchenunter { font-size: 13px; color: rgba(255,255,255,.85); line-height: 1.4; }
+.buchenunter { font-size: var(--ebene6); color: rgba(255,255,255,.85); line-height: 1.4; }
 .buchenpfeil {
   position: absolute; right: 14px; top: 50%; margin-top: -8px;
   display: inline-flex; transform: rotate(-90deg); opacity: .9;
 }
+
+/* Zwischenüberschrift in einer Checkliste */
+.hakengruppe {
+  font-size: var(--ebene4); font-weight: 600; color: var(--ink);
+  margin: 14px 0 4px; padding-top: 10px; border-top: 1px solid var(--linie);
+}
+.hakengruppe:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+
+/* Legende in einer Checkliste */
+.hakenlegende { font-size: var(--ebene6); color: var(--grau); margin: 2px 0 6px; }
+/* Zone links, Inhalt rechts – ohne Linien */
+/* Ort direkt hinter dem Artikel, in Grau */
+.hakenzone { color: #A39A8D; margin-left: 6px; }
 
 </style>
 </head>
@@ -1451,7 +1484,7 @@ const STATIONEN = [
         ]],
       ]],
       ["Einreiseformular", [["thema", "djrv"]]],
-      ["Checkliste", [["liste", "abflug"]]],
+      ["Checkliste", [["liste", "pack:flug"], ["liste", "abflug"]]],
     ],
   },
   {
@@ -1524,7 +1557,7 @@ const STATIONEN = [
       ]],
       ["Sicherheit", [["land", "guatemala", "Sicherheit"]]],
       ["Geld", [["land", "guatemala", "Geld"]]],
-      ["Checkliste", [["liste", "ortswechsel"], ["liste", "tour:vorher"], ["liste", "tour:tour"]]],
+      ["Checkliste", [["liste", "pack:inland"], ["liste", "ortswechsel"], ["liste", "tour:vorher"], ["liste", "tour:tour"]]],
     ],
   },
   {
@@ -1546,7 +1579,7 @@ const STATIONEN = [
         ]],
       ]],
       ["Einreiseformular", [["thema", "djrv"]]],
-      ["Checkliste", [["liste", "ortswechsel"]]],
+      ["Checkliste", [["liste", "pack:flug"], ["liste", "ortswechsel"]]],
     ],
   },
   {
@@ -1619,7 +1652,7 @@ const STATIONEN = [
           "<b>Entscheidung fällt vor Ort</b>, nicht jetzt.",
         ]],
       ]],
-      ["Checkliste", [["liste", "ortswechsel"]]],
+      ["Checkliste", [["liste", "pack:inland"], ["liste", "ortswechsel"]]],
     ],
   },
   {
@@ -1643,7 +1676,7 @@ const STATIONEN = [
         ]],
       ]],
       ["Geld", [["land", "costarica", "Geld"]]],
-      ["Checkliste", [["liste", "ortswechsel"], ["liste", "tour:rucksack"]]],
+      ["Checkliste", [["liste", "pack:inland"], ["liste", "ortswechsel"], ["liste", "tour:rucksack"]]],
     ],
   },
   {
@@ -1671,7 +1704,7 @@ const STATIONEN = [
           "Wie überall: am Automaten die Landeswährung wählen.",
         ]],
       ]],
-      ["Checkliste", [["liste", "ortswechsel"]]],
+      ["Checkliste", [["liste", "pack:flug"], ["liste", "ortswechsel"]]],
     ],
   },
 ];
@@ -1967,7 +2000,7 @@ const PACKLISTE = [
   ["Schuhe", ["Salomon Wanderschuh", "Sandalen mit Fersenriemen"]],
   ["Kulturbeutel", ["Festes Shampoo und Seife", "Zahnbürste und -pasta", "Sonnencreme LSF 50, riff-verträglich", "DEET 50 % für den Dschungel", "Icaridin für den Alltag", "Mikrofaser-Handtuch L", "Reisewaschmittel", "Wäscheleine und Klammern", "Nagelknipser und Schere", "Alaunstein", "Monatshygiene", "Handdesinfektion", "Digitales Thermometer"]],
   ["Elektronik", ["Smartphone", "Zweites iPhone als Backup", "Powerbank 10'000–20'000 mAh", "US-Netzteil mit USB-Ports", "CH→US-Adapter als Reserve", "2 Ladekabel", "In-Ear-Kopfhörer", "Tasche für Elektrozubehör"]],
-  ["Rucksack und Hostel", ["Patagonia Terravia 24 L", "Schlafbeutel: Seidenschlafsack, Schlafkleidung, Schlafmaske, Ohropax, Stirnlampe", "Filter-Trinkflasche", "Wasserdichte Handyhülle", "Stossfeste Hülle und Handykordel", "2–3 Dry Bags", "2 Karabiner", "Zip-Beutel", "ABUS-Schloss für den Locker", "Zweites Zahlenschloss als Reserve", "Zipper-Schloss", "3× Packing Cubes (2× M, 1× S)", "Geruchsdichter Wäschebeutel", "Bauchtasche für Pass, Handy, Karte",
+  ["Rucksack und Hostel", ["Patagonia Terravia 24 L", "Schlafbeutel: Seidenschlafsack, Schlafkleidung, Schlafmaske, Ohropax, Stirnlampe", "Filter-Trinkflasche", "Wasserdichte Handyhülle", "Stossfeste Hülle und Handykordel", "2–3 Dry Bags", "2 Karabiner", "Zip-Beutel", "ABUS-Schloss für den Locker", "Zweites Zahlenschloss als Reserve", "Zipper-Schloss", "3× Packing Cubes (2× M, 1× S)", "Geruchsdichter Wäschebeutel", "Bodybag für Pass, Handy, Karte",
     "Karteikarten-Box mit RFID-Schutz"]],
   ["Brille und Linsen", ["Ersatzbrille im harten Etui", "Sonnenbrille mit Sehstärke", "Rezept und Linsenwerte als PDF", "Monatslinsen mit Reserve", "Zwei Linsenbehälter für Peroxid", "Befeuchtende Augentropfen", "Lensy Care 4 – Peroxidlösung"]],
   ["Wertsachen-Box", ["Pass im Zip-Beutel", "BKB-Karte", "150 USD in kleinen Scheinen", "Impfausweis", "Ersatzbrille", "Zweites iPhone", "Papierkopie Notfallblatt", "Zweite laminierte Passkopie"]],
@@ -1975,7 +2008,8 @@ const PACKLISTE = [
 ];
 
 const TAGESRUCKSACK = [
-  "Dry Bag<br><span class='unterzeile'>Passkopie, Notfallblatt laminiert, Revolut-Karte, kleines Bargeld, Powerbank</span>",
+  "Bodybag am Körper<br><span class='unterzeile'>Pass oder Passkopie, Revolut-Karte, Bargeld, Handy</span>",
+  "Dry Bag im Rucksack<br><span class='unterzeile'>Notfallblatt laminiert, Powerbank, was trocken bleiben muss</span>",
   "Mini-Apotheke<br><span class='unterzeile'>Medikamente, Elektrolyte, Teebaumöl, Correct-X, Pflaster, Tageslinsen als Reserve</span>",
   "Trinkflasche",
   "Sonnencreme und Mückenschutz",
@@ -2015,6 +2049,49 @@ const ANKUNFT = [
   "Zu Hause gemeldet",
   "WLAN notiert, Offline-Karte geladen",
   "Backup laufen lassen",
+];
+
+const PACK_FLUG = [
+  "## Osprey Fairview Trek 70",
+  "Schuhbeutel & Handtuch ~ Boden",
+  "Cube 2 Unterteile ~ unten rückennah",
+  "Cube 3 Wäsche & Socken ~ unten aussen",
+  "Cube 1 Oberteile ~ mitte rückennah",
+  "Kabeltasche ~ mitte rückennah",
+  "Kulturbeutel ~ mitte aussen",
+  "Jacke & Fleece ~ oben rückennah",
+  "Trinkflasche leer ~ oben aussen",
+  "Schlafbeutel & Apotheke ~ Deckel",
+  "Sackmesser & grosse Flaschen ~ vorne",
+  "Regenhülle, Gurte eingezogen ~ aussen",
+  "## Patagonia Terravia 24 L – Handgepäck",
+  "Powerbank & zweites iPhone",
+  "Apotheke & Linsenlösung unter 100 ml",
+  "Eine Garnitur Kleidung, Buff, Ohropax",
+  "## Bodybag am Körper",
+  "Pass, Geld & Revolut-Karte",
+  "Handy, Ticket & QR-Code",
+];
+
+const PACK_INLAND = [
+  "## Osprey Fairview Trek 70",
+  "Schuhbeutel & Handtuch ~ Boden",
+  "Cube 2 Unterteile ~ unten rückennah",
+  "Cube 3 Wäsche & Socken ~ unten aussen",
+  "Cube 1 Oberteile ~ mitte rückennah",
+  "Kabeltasche ~ mitte rückennah",
+  "Kulturbeutel ~ mitte aussen",
+  "Jacke & Fleece ~ oben rückennah",
+  "Platz für Gekauftes ~ oben aussen",
+  "Schlafbeutel & Apotheke ~ Deckel",
+  "Trinkflasche & Wäschebeutel ~ aussen",
+  "Quittung fürs Gepäck behalten",
+  "## Patagonia Terravia 24 L",
+  "Vorne fixiert oder auf dem Schoss",
+  "Powerbank, Wasser & Jacke",
+  "## Bodybag am Körper",
+  "Pass, Geld & Revolut-Karte",
+  "Handy",
 ];
 
 const ORTSWECHSEL = [
@@ -2102,7 +2179,7 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "191 · 29.08.2026";
+const VERSION = "214 · 29.08.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
@@ -2381,11 +2458,13 @@ const hakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig = 0
   const stationsinhalt = (S) => {
     const box = el("div", { class: "stationsinhalt" });
     const LISTEN = {
-      "abflug": ["Vor dem Abflug", VOR_ABFLUG],
-      "vorreise": ["Wochen vorher erledigen", VOR_REISE],
-      "ankunft": ["Ankunft im Hostel →", ANKUNFT],
+      "abflug": ["Am Abflugtag", VOR_ABFLUG],
+      "vorreise": ["Wochen vorher", VOR_REISE],
+      "ankunft": ["→ Ankunft Hostel", ANKUNFT],
       "ortswechsel": ["Ortswechsel", ORTSWECHSEL],
-      "woche": ["Wochenroutine", WOCHE],
+      "pack:inland": ["Packordnung Inland", PACK_INLAND],
+      "pack:flug": ["Packordnung Flug", PACK_FLUG],
+      "woche": ["Wochenende", WOCHE],
       "tour:rucksack": ["Tagesrucksack", TAGESRUCKSACK],
       "tour:vorher": ["← Hostel verlassen", VOR_DER_TOUR],
       "tour:tour": ["Tour", VOR_TOUR],
@@ -2418,9 +2497,20 @@ const hakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig = 0
   const zeichne = () => {
     inhalt.innerHTML = "";
     const alle = punkte.concat(eigene);
-    zaehler.textContent = alle.filter((p) => stand[p]).length + "/" + alle.length;
+    const zaehlbar = alle.filter((p) => !String(p).startsWith("## ")
+      && !String(p).startsWith("%%"));
+    zaehler.textContent = zaehlbar.filter((p) => stand[p]).length + "/" + zaehlbar.length;
 
     alle.forEach((p, i) => {
+      /* "## Titel" wird zur Zwischenüberschrift, "%%Text" zur Legende – beide ohne Kästchen. */
+      if (String(p).startsWith("## ")) {
+        inhalt.appendChild(el("div", { class: "hakengruppe" }, p.slice(3)));
+        return;
+      }
+      if (String(p).startsWith("%%")) {
+        inhalt.appendChild(el("div", { class: "hakenlegende" }, p.slice(2)));
+        return;
+      }
       const selbst = i >= punkte.length;
       const zeile = el("div", {
         class: "hakenzeile" + (i === wichtig && wichtig > 0 ? " trennlinie" : ""),
@@ -2436,8 +2526,12 @@ const hakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig = 0
         },
           el("span", { class: "box" + (stand[p] ? " an" : "") },
             stand[p] ? svg("check", 13, "#fff", 3) : null),
-          el("span", { class: "hakentext" + (i < wichtig && !stand[p] ? " wichtig" : ""),
-            html: p })));
+          p.includes(" ~ ")
+            ? el("span", { class: "hakentext" },
+                p.split(" ~ ")[0],
+                el("span", { class: "hakenzone" }, " " + p.split(" ~ ")[1]))
+            : el("span", { class: "hakentext" + (i < wichtig && !stand[p] ? " wichtig" : ""),
+                html: p })));
 
       if (selbst) {
         zeile.appendChild(el("button", {
@@ -2873,11 +2967,11 @@ const seiteStart = () => {
 
   return el("div", {},
     wochenende() ? el("div", {},
-      el("div", { class: "gruppentitel abstandoben klein3" }, "Wochenroutine"),
+      el("div", { class: "gruppentitel abstandoben klein3" }, "Wochenende"),
       el("div", { class: "wochenende" },
         hakenliste("Dieses Wochenende", WOCHE.slice(0, WOCHE_WICHTIG), "woche", true)),
       el("button", { class: "textknopf mehrwoche", onclick: () => gehe("heute", "woche") },
-        "Ganze Wochenroutine öffnen")) : null,
+        "Ganze Liste öffnen")) : null,
 
     termineBlock(),
 
@@ -2896,22 +2990,49 @@ const seiteHeute = () => {
     wrap.appendChild(band);
   };
 
-  gruppe("Unterwegs", [
-    faltHakenliste("Ankunft im Hostel →", ANKUNFT, "ankunft", true),
+  /* Was zu tun ist – getrennt von dem, was mitkommt.
+     Der Vorbereitungsteil steht oben und fällt nach dem Abflug weg. */
+  /* Ist die Vorbereitung erledigt, rutscht sie ans Ende – weg ist sie nie. */
+  const erledigt = (schluessel, punkte) => {
+    const stand = hole("haken:" + schluessel, {});
+    const alle = punkte.concat(hole("eigene:" + schluessel, []));
+    return alle.every((p) => stand[p]);
+  };
+  const vorbereitungFertig = erledigt("vorreise", VOR_REISE) && erledigt("abflug", VOR_ABFLUG);
+
+  if (!vorbereitungFertig) {
+    gruppe("To do vor der Reise", [
+      faltHakenliste("Wochen vorher", VOR_REISE, "vorreise"),
+      faltHakenliste("Am Abflugtag", VOR_ABFLUG, "abflug"),
+    ]);
+  }
+
+  gruppe("To do", [
+    faltHakenliste("→ Ankunft Hostel", ANKUNFT, "ankunft", true),
     faltHakenliste("← Hostel verlassen", VOR_DER_TOUR, "tour:vorher", true),
     faltHakenliste("Tour", VOR_TOUR, "tour:tour", true),
-    faltHakenliste("Tagesrucksack", TAGESRUCKSACK, "tour:rucksack", true),
     faltHakenliste("Ortswechsel", ORTSWECHSEL, "ortswechsel", true),
-    faltHakenliste("Wochenroutine", WOCHE, "woche", true, WOCHE_WICHTIG),
+    faltHakenliste("Wochenende", WOCHE, "woche", true, WOCHE_WICHTIG),
   ]);
 
-  gruppe("Vor der Reise", [
-    faltHakenliste("Wochen vorher erledigen", VOR_REISE, "vorreise"),
-    ...PACKLISTE.map(([t, p]) => faltHakenliste("Packliste · " + t, p, "pack:" + t)),
-    faltHakenliste("Vor dem Abflug", VOR_ABFLUG, "abflug"),
+  gruppe("Packordnung", [
+    faltHakenliste("Inland", PACK_INLAND, "pack:inland", true),
+    faltHakenliste("Flug", PACK_FLUG, "pack:flug", true),
+  ]);
+
+  gruppe("Gepäckaufstellung", [
+    ...PACKLISTE.map(([t, p]) => faltHakenliste(t, p, "pack:" + t)),
+    faltHakenliste("Tagesrucksack", TAGESRUCKSACK, "tour:rucksack", true),
   ]);
 
   gruppe("Nach der Reise", [faltHakenliste("Rückkehr", RUECKKEHR, "rueckkehr")]);
+
+  if (vorbereitungFertig) {
+    gruppe("Erledigt vor der Reise", [
+      faltHakenliste("Wochen vorher", VOR_REISE, "vorreise"),
+      faltHakenliste("Am Abflugtag", VOR_ABFLUG, "abflug"),
+    ]);
+  }
 
   return wrap;
 };
@@ -3032,11 +3153,13 @@ const seiteNotfall = () => {
   const stationsinhalt = (S) => {
     const box = el("div", { class: "stationsinhalt" });
     const LISTEN = {
-      "abflug": ["Vor dem Abflug", VOR_ABFLUG],
-      "vorreise": ["Wochen vorher erledigen", VOR_REISE],
-      "ankunft": ["Ankunft im Hostel →", ANKUNFT],
+      "abflug": ["Am Abflugtag", VOR_ABFLUG],
+      "vorreise": ["Wochen vorher", VOR_REISE],
+      "ankunft": ["→ Ankunft Hostel", ANKUNFT],
       "ortswechsel": ["Ortswechsel", ORTSWECHSEL],
-      "woche": ["Wochenroutine", WOCHE],
+      "pack:inland": ["Packordnung Inland", PACK_INLAND],
+      "pack:flug": ["Packordnung Flug", PACK_FLUG],
+      "woche": ["Wochenende", WOCHE],
       "tour:rucksack": ["Tagesrucksack", TAGESRUCKSACK],
       "tour:vorher": ["← Hostel verlassen", VOR_DER_TOUR],
       "tour:tour": ["Tour", VOR_TOUR],
@@ -3306,11 +3429,13 @@ const seiteRoute = () => {
   const stationsinhalt = (S) => {
     const box = el("div", { class: "stationsinhalt" });
     const LISTEN = {
-      "abflug": ["Vor dem Abflug", VOR_ABFLUG],
-      "vorreise": ["Wochen vorher erledigen", VOR_REISE],
-      "ankunft": ["Ankunft im Hostel →", ANKUNFT],
+      "abflug": ["Am Abflugtag", VOR_ABFLUG],
+      "vorreise": ["Wochen vorher", VOR_REISE],
+      "ankunft": ["→ Ankunft Hostel", ANKUNFT],
       "ortswechsel": ["Ortswechsel", ORTSWECHSEL],
-      "woche": ["Wochenroutine", WOCHE],
+      "pack:inland": ["Packordnung Inland", PACK_INLAND],
+      "pack:flug": ["Packordnung Flug", PACK_FLUG],
+      "woche": ["Wochenende", WOCHE],
       "tour:rucksack": ["Tagesrucksack", TAGESRUCKSACK],
       "tour:vorher": ["← Hostel verlassen", VOR_DER_TOUR],
       "tour:tour": ["Tour", VOR_TOUR],
