@@ -1890,11 +1890,15 @@ const LAENDER = {
       ]],
       ["Chicken-Busse", [
         "Alte US-Schulbusse, das Hauptverkehrsmittel zwischen den Orten. Günstig, voll, laut.",
+        "<b>Den richtigen finden:</b> Das Ziel steht auf der Frontscheibe, dazu ruft ein Helfer es aus. Im Zweifel den Ortsnamen sagen – man wird zum richtigen Bus gebracht.",
+        "<b>Kein Fahrplan.</b> Der Bus fährt, wenn er voll ist. Zwischen den grösseren Orten alle 15 bis 30 Minuten.",
+        "<b>Umsteigen ist normal.</b> Längere Strecken laufen über einen Knotenpunkt, etwa Chimaltenango. Beim Einsteigen das Endziel nennen, dann sagt der Helfer, wo du wechselst.",
+        "<b>Bezahlt wird im Bus</b>, beim Kassierer, meist erst unterwegs. Kleine Scheine bereithalten – auf 100 Quetzales gibt es selten Wechselgeld.",
+        "Eine Bank ist für drei Personen gedacht. Rucksack auf dem Schoss, nie unter dem Sitz.",
+        "<b>Grosser Rucksack aufs Dach:</b> zusehen, wer ihn hinaufreicht, und beim Aussteigen darauf bestehen, dass er heruntergeholt wird, bevor du bezahlst.",
         "<b>Nie nachts fahren.</b> Nach Einbruch der Dunkelheit nur Shuttle oder Uber.",
-        "Grosser Rucksack aufs Dach – zusehen, wer ihn hinaufreicht und herunterholt.",
-        "Tagesrucksack auf dem Schoss, nie unter dem Sitz.",
-        "Handy nicht sichtbar. Bezahlt wird beim Kassierer im Bus.",
-        "Für längere Strecken den Shuttle nehmen – teurer, direkter, mit Gepäckraum.",
+        "Handy nicht sichtbar. Taschen vorne tragen, nicht im Gang stehen lassen.",
+        "<b>Für längere Strecken den Shuttle</b> – teurer, direkter, mit Gepäckraum und ohne Umsteigen.",
       ]],
       ["Sicherheit", [
         "Keine Nachtfahrten – der grösste einzelne Sicherheitsgewinn auf dieser Route.",
@@ -2304,7 +2308,7 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "247 · 31.08.2026";
+const VERSION = "249 · 31.08.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
@@ -2609,7 +2613,23 @@ const hakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig = 0
           return;
         }
         if (e[0] === "hostels") {
-          (LAENDER[e[1]].hostels || []).forEach((h) => band.appendChild(hostelKarte(h)));
+          /* In der Station nur die ersten zwei – der Rest hinter einer Zeile. */
+          const alle = LAENDER[e[1]].hostels || [];
+          alle.slice(0, 2).forEach((h) => band.appendChild(hostelKarte(h)));
+          if (alle.length > 2) {
+            const rest = el("div", { class: "faltinhalt" });
+            alle.slice(2).forEach((h) => rest.appendChild(hostelKarte(h)));
+            const pf = el("span", { class: "faltpfeil" }, svg("chevron", 18, "#B65A3C", 2.2));
+            band.appendChild(el("div", { class: "karte faltkarte" },
+              el("button", { class: "faltkopf", onclick: () => {
+                const auf = rest.classList.toggle("offen");
+                pf.classList.toggle("auf", auf);
+              } },
+                el("span", { class: "blocktitel ohneabstand" },
+                  (alle.length - 2) + " weitere Häuser"),
+                pf),
+              rest));
+          }
           return;
         }
         holeBlock(e).forEach((b) => {
@@ -3375,7 +3395,23 @@ const seiteNotfall = () => {
           return;
         }
         if (e[0] === "hostels") {
-          (LAENDER[e[1]].hostels || []).forEach((h) => band.appendChild(hostelKarte(h)));
+          /* In der Station nur die ersten zwei – der Rest hinter einer Zeile. */
+          const alle = LAENDER[e[1]].hostels || [];
+          alle.slice(0, 2).forEach((h) => band.appendChild(hostelKarte(h)));
+          if (alle.length > 2) {
+            const rest = el("div", { class: "faltinhalt" });
+            alle.slice(2).forEach((h) => rest.appendChild(hostelKarte(h)));
+            const pf = el("span", { class: "faltpfeil" }, svg("chevron", 18, "#B65A3C", 2.2));
+            band.appendChild(el("div", { class: "karte faltkarte" },
+              el("button", { class: "faltkopf", onclick: () => {
+                const auf = rest.classList.toggle("offen");
+                pf.classList.toggle("auf", auf);
+              } },
+                el("span", { class: "blocktitel ohneabstand" },
+                  (alle.length - 2) + " weitere Häuser"),
+                pf),
+              rest));
+          }
           return;
         }
         holeBlock(e).forEach((b) => {
@@ -3667,7 +3703,23 @@ const seiteRoute = () => {
           return;
         }
         if (e[0] === "hostels") {
-          (LAENDER[e[1]].hostels || []).forEach((h) => band.appendChild(hostelKarte(h)));
+          /* In der Station nur die ersten zwei – der Rest hinter einer Zeile. */
+          const alle = LAENDER[e[1]].hostels || [];
+          alle.slice(0, 2).forEach((h) => band.appendChild(hostelKarte(h)));
+          if (alle.length > 2) {
+            const rest = el("div", { class: "faltinhalt" });
+            alle.slice(2).forEach((h) => rest.appendChild(hostelKarte(h)));
+            const pf = el("span", { class: "faltpfeil" }, svg("chevron", 18, "#B65A3C", 2.2));
+            band.appendChild(el("div", { class: "karte faltkarte" },
+              el("button", { class: "faltkopf", onclick: () => {
+                const auf = rest.classList.toggle("offen");
+                pf.classList.toggle("auf", auf);
+              } },
+                el("span", { class: "blocktitel ohneabstand" },
+                  (alle.length - 2) + " weitere Häuser"),
+                pf),
+              rest));
+          }
           return;
         }
         holeBlock(e).forEach((b) => {
