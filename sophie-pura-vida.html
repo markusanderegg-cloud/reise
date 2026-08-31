@@ -1556,14 +1556,7 @@ const STATIONEN = [
           "WLAN-Name und Adresse des Hostels notieren – für Formulare und Taxis.",
         ]],
       ]],
-      ["Chicken-Busse", [
-        "Alte US-Schulbusse, das Hauptverkehrsmittel zwischen den Orten. Günstig, voll, laut.",
-        "<b>Nie nachts fahren.</b> Nach Einbruch der Dunkelheit nur Shuttle oder Uber.",
-        "Grosser Rucksack aufs Dach – zusehen, wer ihn hinaufreicht und wer ihn herunterholt.",
-        "Tagesrucksack auf dem Schoss, nie unter dem Sitz.",
-        "Handy und Kamera nicht sichtbar. Bezahlt wird beim Kassierer im Bus.",
-        "Für längere Strecken den Shuttle nehmen – teurer, direkter, mit Gepäckraum.",
-      ]],
+      ["Chicken-Busse", [["land", "guatemala", "Chicken-Busse"]]],
       ["Sicherheit", [["land", "guatemala", "Sicherheit"]]],
       ["Geld", [["land", "guatemala", "Geld"]]],
       ["Klima", [["land", "guatemala", "Klima im Oktober"]]],
@@ -2311,7 +2304,7 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "246 · 31.08.2026";
+const VERSION = "247 · 31.08.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
