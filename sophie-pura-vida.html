@@ -801,6 +801,11 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .hostelort { display: block; font-size: var(--ebene6); color: var(--grau); margin-top: 2px; }
 .faltkopf .ortlabel { display: block; margin-bottom: 3px; }
 
+/* Gesamtliste der To-dos: Tätigkeit links, Datum und Lead klein darunter */
+.todozeile .hakentext { display: block; }
+.todometa { display: block; font-size: var(--ebene6); color: var(--grau); margin-top: 1px; }
+.todozeile.ab .todometa { color: #A9A296; }
+
 </style>
 </head>
 <body>
@@ -929,52 +934,51 @@ const ABFLUG = "2026-09-29";
 
 const TERMINE_VORHER = [
 
-  ["29. Aug", "Optiker und Yallo-App", [
-    "<b>Optiker:</b> Linsen für fünf Monate klären – Menge, Haltbarkeit in den Tropen, Peroxid-Behälter mit Platinkatalysator. Tageslinsen für Touren prüfen. Rezept als PDF mitnehmen.",
-    "<b>Yallo-App:</b> installieren und Anmeldung testen, solange ihr beisammen seid.",
+  ["erledigt", "Gebucht und bezahlt", [
+    "31. Aug · Tour bei Globetrotter",
+    "3. Sep · Flug Guatemala",
+    "5. Sep · Flug Costa Rica",
+    "5. Sep · Bus nach Nicaragua",
+    "5. Sep · Rechnung Globetrotter",
+    "8. Sep · Hotel und Transfer",
   ]],
 
-  ["3. Sep", "Tour buchen", [
-    "<b>Intrepid über Globetrotter Basel.</b> Startdatum schriftlich bestätigen lassen – der Flug richtet sich danach.",
-    "<b>Heart of Guatemala, 1. bis 7. Oktober</b> – Start und Ende in Antigua, Reisecode QBSG.",
-    "Bestätigung als PDF ablegen.",
+  ["offen", "Flugnummern melden", [
+    "An Marco bei Globetrotter. Er braucht sie für Transfer und Tourstart.",
   ]],
 
-  ["5. Sep", "Tagesrucksack und Yallo", [
-    "<b>Tagesrucksack:</b> Patagonia Terravia 24 L bei Transa – früh bestellen, zeitweise Lieferrückstand.",
-    "<b>Yallo:</b> Zweit-SIM auf derselben Nummer für das Ersatzhandy?",
+  ["bis 26. Sep", "Erste Nacht buchen", [
+    "Wird bei der Einreise verlangt. Booking mit Gratisstornierung genügt.",
+    "Bestätigung als PDF, offline speichern.",
   ]],
 
-  ["6. Sep", "Flüge, Bus, Hostel und Transfer", [
-    "<b>Flug Schweiz → Guatemala-Stadt.</b> Geplante Ankunft 28. September 2026, One-Way, 23 kg.",
-    "<b>Flug Guatemala-Stadt → San José</b> buchen und ausdrucken – zugleich Ausreisenachweis für Guatemala.",
-    "<b>Busticket San José → Nicaragua</b> buchen und ausdrucken – Ausreisenachweis für Costa Rica.",
-    "<b>Unterkunft in Antigua:</b> Maya Papaya für die Nächte vor der Tour – günstiger, besser bewertet, nur fünf Minuten vom Starthotel.",
-    "<b>Flughafentransfer</b> für die Ankunft buchen.",
-    "Alle Bestätigungen als PDF ablegen und offline speichern.",
+  ["20. Sep", "Sprachschule", [
+    "Direkt buchen, nicht über eine Agentur.",
+    "Studentenwohnheim, Gastfamilie als zweite Wahl.",
+    "Adresse notieren – wird bei der Einreise verlangt.",
   ]],
 
-  ["6. Sep", "Revolut, Scans, iCloud", [
-    "<b>Revolut:</b> vollständig einrichten und einmal testen.",
-    "<b>Ablage:</b> Dokumente scannen, iCloud-Struktur anlegen, die fünf Ordner teilen.",
+  ["29. Aug", "Optiker und Yallo", [
+    "Linsen für fünf Monate, Peroxid-Behälter, Rezept als PDF.",
+    "Yallo-App installieren und Anmeldung testen.",
   ]],
 
-  ["8. Sep", "Vacanza-Prämie einzahlen", [
-    "Ohne Zahlung keine Deckung – der wichtigste Termin im September.",
+  ["5. Sep", "Tagesrucksack", [
+    "Patagonia Terravia 24 L bei Transa. Früh bestellen.",
   ]],
 
-  ["12. Sep", "Busticket", [
-    "<b>Busticket:</b> San José nach Nicaragua oder Panama, als Ausreisenachweis für Costa Rica.",
-      ]],
+  ["6. Sep", "Revolut und Ablage", [
+    "Revolut einrichten und einmal testen.",
+    "Dokumente scannen, iCloud-Ordner teilen.",
+  ]],
 
-  ["20. Sep", "Sprachschule Heredia", [
-    "<b>Kurs:</b> direkt buchen, nicht über eine Agentur – das spart 300 bis 500 Franken.",
-    "<b>Unterkunft:</b> Studentenwohnheim – Gastfamilie als zweite Wahl.",
+  ["8. Sep", "Vacanza-Prämie", [
+    "Ohne Zahlung keine Deckung.",
   ]],
 
   ["Ab 14 Tage vorher", "Reiseerklärung Guatemala", [
-    "<b>Hinflug:</b> online ausfüllen, QR-Code als Screenshot sichern.",
-    "<b>Weiterflug:</b> ein zweites Mal vor dem Flug nach San José.",
+    "Vor dem Hinflug ausfüllen, QR-Code sichern.",
+    "Vor dem Flug nach San José ein zweites Mal.",
   ]],
 ];
 
@@ -2245,6 +2249,49 @@ const WOCHE = [
 
 const WOCHE_WICHTIG = 3;
 
+const TODO_ALLE = [
+  ["Tour bei Globetrotter buchen", "31. Aug", "Markus", true],
+  ["Flug nach Guatemala buchen", "3. Sep", "Sophie", true],
+  ["Flug nach Costa Rica buchen", "5. Sep", "Sophie", true],
+  ["Bus nach Nicaragua buchen", "5. Sep", "Sophie", true],
+  ["Rechnung Globetrotter bezahlen", "5. Sep", "Sophie", true],
+  ["Hotel und Transfer bezahlen", "8. Sep", "Sophie", true],
+  ["Tagesrucksack bestellen", "5. Sep", "Markus", false],
+  ["Vacanza-Prämie einzahlen", "8. Sep", "Markus", false],
+  ["Flugnummern an Marco melden", "8. Sep", "Markus", false],
+  ["Revolut einrichten und testen", "8. Sep", "Sophie", false],
+  ["Dokumente scannen, iCloud teilen", "10. Sep", "beide", false],
+  ["Kontrollzentrum im Sperrbildschirm aus", "12. Sep", "Sophie", false],
+  ["„Wo ist?“ vollständig aktivieren", "12. Sep", "Sophie", false],
+  ["Schutz für gestohlene Geräte ein", "12. Sep", "Sophie", false],
+  ["Packing Cubes, Netzteil, Elektrotasche, RFID-Box", "12. Sep", "Markus", false],
+  ["Englische Deckungsbestätigung Visana", "15. Sep", "Markus", false],
+  ["Sprachschule direkt buchen", "20. Sep", "Sophie", false],
+  ["Adresse der Schule notieren", "20. Sep", "Sophie", false],
+  ["Erste Nacht buchen, Bestätigung offline", "26. Sep", "Sophie", false],
+  ["Reiseerklärung Guatemala ausfüllen", "ab 14. Sep", "Sophie", false],
+  ["Notfallblatt ausfüllen und ausdrucken", "20. Sep", "beide", false],
+  ["Kurzdossier drucken und falten", "20. Sep", "Markus", false],
+  ["Offline-Karten und Ordner laden", "25. Sep", "Sophie", false],
+  ["Rucksack wiegen – Ziel 10 kg", "27. Sep", "Sophie", false],
+  ["Zweite Reiseerklärung vorbereiten", "vor Weiterflug", "Sophie", false],
+];
+
+const NACH_DATUM = [
+  "<b>8. Sep</b> Vacanza-Prämie einzahlen",
+  "<b>8. Sep</b> Flugnummern an Marco bei Globetrotter melden",
+  "<b>12. Sep</b> Kontrollzentrum im Sperrbildschirm ausschalten",
+  "<b>12. Sep</b> „Wo ist?“ vollständig aktivieren",
+  "<b>12. Sep</b> Schutz für gestohlene Geräte einschalten",
+  "<b>12. Sep</b> Packing Cubes, US-Netzteil, Elektrotasche, RFID-Box kaufen",
+  "<b>20. Sep</b> Sprachschule direkt buchen",
+  "<b>20. Sep</b> Adresse der Schule notieren – wird bei der Einreise verlangt",
+  "<b>26. Sep</b> Erste Nacht buchen, Bestätigung offline sichern",
+  "<b>ab 14. Sep</b> Reiseerklärung Guatemala ausfüllen, QR-Code sichern",
+  "<b>vor Abflug</b> Zweite Reiseerklärung für den Weiterflug vorbereiten",
+  "<b>vor Abflug</b> Rucksack wiegen – Ziel 10 kg",
+];
+
 const VOR_ABFLUG = [
   "Alle drei Tickets gebucht und ausgedruckt",
   "Erste Nacht und Flughafentransfer gebucht",
@@ -2309,7 +2356,7 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "250 · 31.08.2026";
+const VERSION = "253 · 31.08.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
@@ -3088,6 +3135,26 @@ const wannText = (datum) => {
   return datum;
 };
 
+const todoTabelle = () => {
+  /* Alle Aufgaben auf einen Blick: Tätigkeit, Datum, Lead. */
+  const stand = hole("haken:alle", {});
+  const box = el("div", { class: "blockband" });
+
+  TODO_ALLE.forEach(([was, datum, lead, fix]) => {
+    const ab = fix || stand[was];
+    const zeile = el("button", {
+      class: "haken todozeile" + (ab ? " ab" : ""),
+      onclick: () => { stand[was] = !stand[was]; merke("haken:alle", stand); zeichnen(); },
+    },
+      el("span", { class: "box" + (ab ? " an" : "") }, ab ? svg("check", 12, "#fff", 3) : null),
+      el("span", { class: "min0" },
+        el("span", { class: "hakentext", html: was }),
+        el("span", { class: "todometa" }, datum + " · " + lead)));
+    box.appendChild(zeile);
+  });
+  return box;
+};
+
 const termineBlock = () => {
   const behaelter = el("div", { class: "abstandoben" });
   const kopf = el("div", { class: "gruppenzeile" });
@@ -3198,6 +3265,11 @@ const seiteStart = () => {
     el("p", { class: "version" }, "Fassung " + VERSION));
 };
 
+const vorbereitungFertigOben = () => {
+  const stand = hole("haken:alle", {});
+  return TODO_ALLE.every(([was, , , fix]) => fix || stand[was]);
+};
+
 const seiteHeute = () => {
   const wrap = el("div");
   wrap.appendChild(kopf("Heute", "Antippen öffnet eine Liste – die Haken bleiben gespeichert.", null));
@@ -3220,8 +3292,19 @@ const seiteHeute = () => {
   };
   const vorbereitungFertig = erledigt("vorreise", VOR_REISE) && erledigt("abflug", VOR_ABFLUG);
 
+  /* Die Gesamtliste zuerst: alles auf einen Blick. */
+  if (!vorbereitungFertigOben()) {
+    wrap.appendChild(el("div", { class: "gruppentitel abstandoben klein3" },
+      "Alle To-dos · Tätigkeit, Datum, Lead"));
+    wrap.appendChild(todoTabelle());
+  }
+
+  /* Termine mit Erklärung – dieselbe Liste wie auf der Startseite. */
+  wrap.appendChild(termineBlock());
+
   if (!vorbereitungFertig) {
     gruppe("To do vor der Reise", [
+      faltHakenliste("Nach Datum", NACH_DATUM, "nachdatum", true),
       faltHakenliste("Wochen vorher", VOR_REISE, "vorreise"),
       faltHakenliste("Am Abflugtag", VOR_ABFLUG, "abflug"),
     ]);
