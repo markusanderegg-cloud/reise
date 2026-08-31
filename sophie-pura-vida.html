@@ -801,10 +801,60 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .hostelort { display: block; font-size: var(--ebene6); color: var(--grau); margin-top: 2px; }
 .faltkopf .ortlabel { display: block; margin-bottom: 3px; }
 
-/* Gesamtliste der To-dos: Tätigkeit links, Datum und Lead klein darunter */
-.todozeile .hakentext { display: block; }
-.todometa { display: block; font-size: var(--ebene6); color: var(--grau); margin-top: 1px; }
-.todozeile.ab .todometa { color: #A9A296; }
+/* Gesamtliste der To-dos – vier Spalten, die durchgehend fluchten */
+.todoliste {
+  background: var(--karte); border: 1px solid var(--linie);
+  border-radius: 14px; overflow: hidden; margin-top: 4px;
+}
+.todozeile {
+  display: grid;
+  grid-template-columns: 22px 1fr 50px 60px;
+  align-items: center; column-gap: 10px;
+  width: 100%; text-align: left;
+  padding: 0 12px;
+}
+.todokopf {
+  /* Titel und Zähler sitzen mittig im Band, gleicher Rand wie die Zeilen. */
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  width: 100%; min-height: 32px;
+  padding: 6px 12px;
+  background: var(--sand-tief);
+  border-bottom: 1px solid var(--linie);
+}
+.todokopf span {
+  font-size: var(--ebene7); letter-spacing: .04em;
+  text-transform: uppercase; color: var(--grau);
+}
+.todokopf .todogruppe {
+  font-size: var(--ebene6); font-weight: 600;
+  color: var(--navy); letter-spacing: .02em;
+}
+.todokopf + .todokopf { border-top: 1px solid var(--linie); }
+.todozeile {
+  min-height: 34px; padding-top: 5px; padding-bottom: 5px;
+  border-bottom: 1px solid #F0EBE2;
+}
+.todozeile:last-child { border-bottom: 0; }
+/* Themenwechsel am selben Tag – etwas Luft und eine kräftigere Linie */
+.todozeile.bruch { border-top: 1px solid var(--linie); margin-top: 3px; padding-top: 8px; }
+.todozeile .box {
+  width: 18px; height: 18px; flex-shrink: 0;
+  border: 1.6px solid #B8A99A; border-radius: 5px;
+  background: var(--karte);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.todozeile .box.an { background: var(--terra); border-color: var(--terra); }
+.todotext {
+  font-size: var(--ebene5); color: var(--ink); line-height: 1.3;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.todolead { font-size: var(--ebene6); color: var(--grau); white-space: nowrap; }
+.tododatum {
+  font-size: var(--ebene6); color: var(--grau);
+  white-space: nowrap; text-align: right;
+}
+.todozeile.ab .todotext { color: var(--grau); text-decoration: line-through; }
+.todozeile.ab .todolead, .todozeile.ab .tododatum { color: #A9A296; }
 
 </style>
 </head>
@@ -934,22 +984,20 @@ const ABFLUG = "2026-09-29";
 
 const TERMINE_VORHER = [
 
-  ["erledigt", "Gebucht und bezahlt", [
-    "31. Aug · Tour bei Globetrotter",
-    "3. Sep · Flug Guatemala",
-    "5. Sep · Flug Costa Rica",
-    "5. Sep · Bus nach Nicaragua",
-    "5. Sep · Rechnung Globetrotter",
-    "8. Sep · Hotel und Transfer",
+  ["erledigt", "Gebucht", [
+    "31. Aug · Tour Intrepid bei Globetrotter Basel.",
+    "Flughafentransfer für die Ankunft – über Globetrotter, Rechnung folgt.",
   ]],
 
-  ["offen", "Flugnummern melden", [
-    "An Marco bei Globetrotter. Er braucht sie für Transfer und Tourstart.",
+
+  ["4. Sep", "Flugnummern melden", [
+    "An Marco bei Globetrotter – er braucht sie für Transfer und Tourstart.",
   ]],
 
-  ["bis 26. Sep", "Erste Nacht buchen", [
-    "Wird bei der Einreise verlangt. Booking mit Gratisstornierung genügt.",
-    "Bestätigung als PDF, offline speichern.",
+  ["bis 26. Sep", "Bestätigung der ersten Nacht", [
+    "Wird bei der Einreise verlangt – Guatemala und Costa Rica.",
+    "Geplant: Casa Florencia ab 29. September, das Hotel der Tour.",
+    "Bestätigung als PDF sichern, offline auf dem Handy.",
   ]],
 
   ["20. Sep", "Sprachschule", [
@@ -967,13 +1015,20 @@ const TERMINE_VORHER = [
     "Patagonia Terravia 24 L bei Transa. Früh bestellen.",
   ]],
 
+  ["12. Sep", "iPhone einrichten", [
+    "Kontrollzentrum im Sperrbildschirm aus, „Wo ist?“ vollständig ein, Diebstahlschutz ein.",
+    "Zwei-Faktor prüfen, IMEI und Seriennummern notieren, Apps testen.",
+  ]],
+
   ["6. Sep", "Revolut und Ablage", [
-    "Revolut einrichten und einmal testen.",
+    "Auf beiden iPhones einrichten, vier Konten anlegen, einmal testen.",
+    "Währungsrechner einrichten und zeigen.",
     "Dokumente scannen, iCloud-Ordner teilen.",
   ]],
 
-  ["8. Sep", "Vacanza-Prämie", [
-    "Ohne Zahlung keine Deckung.",
+  ["4. Sep", "Vacanza-Rechnung", [
+    "Die QR-Rechnung ist nicht gekommen – bei Visana nachfragen.",
+    "Ohne Zahlung keine Deckung. Einzahlen bis 6. September.",
   ]],
 
   ["Ab 14 Tage vorher", "Reiseerklärung Guatemala", [
@@ -2250,43 +2305,56 @@ const WOCHE = [
 const WOCHE_WICHTIG = 3;
 
 const TODO_ALLE = [
-  ["Tour bei Globetrotter buchen", "31. Aug", "Markus", true],
-  ["Flug nach Guatemala buchen", "3. Sep", "Sophie", true],
-  ["Flug nach Costa Rica buchen", "5. Sep", "Sophie", true],
-  ["Bus nach Nicaragua buchen", "5. Sep", "Sophie", true],
-  ["Rechnung Globetrotter bezahlen", "5. Sep", "Sophie", true],
-  ["Hotel und Transfer bezahlen", "8. Sep", "Sophie", true],
-  ["Tagesrucksack bestellen", "5. Sep", "Markus", false],
-  ["Vacanza-Prämie einzahlen", "8. Sep", "Markus", false],
-  ["Flugnummern an Marco melden", "8. Sep", "Markus", false],
-  ["Revolut einrichten und testen", "8. Sep", "Sophie", false],
-  ["Dokumente scannen, iCloud teilen", "10. Sep", "beide", false],
-  ["Kontrollzentrum im Sperrbildschirm aus", "12. Sep", "Sophie", false],
-  ["„Wo ist?“ vollständig aktivieren", "12. Sep", "Sophie", false],
-  ["Schutz für gestohlene Geräte ein", "12. Sep", "Sophie", false],
-  ["Packing Cubes, Netzteil, Elektrotasche, RFID-Box", "12. Sep", "Markus", false],
-  ["Englische Deckungsbestätigung Visana", "15. Sep", "Markus", false],
-  ["Sprachschule direkt buchen", "20. Sep", "Sophie", false],
-  ["Adresse der Schule notieren", "20. Sep", "Sophie", false],
-  ["Erste Nacht buchen, Bestätigung offline", "26. Sep", "Sophie", false],
-  ["Reiseerklärung Guatemala ausfüllen", "ab 14. Sep", "Sophie", false],
-  ["Notfallblatt ausfüllen und ausdrucken", "20. Sep", "beide", false],
-  ["Kurzdossier drucken und falten", "20. Sep", "Markus", false],
-  ["Offline-Karten und Ordner laden", "25. Sep", "Sophie", false],
-  ["Rucksack wiegen – Ziel 10 kg", "27. Sep", "Sophie", false],
-  ["Zweite Reiseerklärung vorbereiten", "vor Weiterflug", "Sophie", false],
+  ["Reisedossier durchlesen", "bis 6. Sep", "Sophie", false],
+  ["Flug Guatemala buchen", "4. Sep", "Sophie", false],
+  ["Flug-Nr. an Marco melden", "4. Sep", "Sophie", false],
+  ["Hotel/Transfer bei Marco melden", "4. Sep", "Sophie", false],
+  ["Vacanza-Rechnung nachfragen", "4. Sep", "Markus", false],
+  ["Flug Costa Rica buchen", "5. Sep", "Sophie", false],
+  ["Bus Nicaragua buchen", "5. Sep", "Sophie", false],
+  ["Rechn. Tour GT einzahlen", "5. Sep", "Sophie", false],
+  ["Rechn. Hotel/Transfer einzahlen", "6. Sep", "Sophie", false],
+  ["Vacanza-Prämie einzahlen", "6. Sep", "Markus", false],
+
+  ["eSIM auf beiden Geräten", "10. Sep", "beide", false],
+  ["Dokumente scannen", "10. Sep", "beide", false],
+  ["iPhone einrichten und sichern", "10. Sep", "Sophie", false],
+  ["Fehlende Artikel einkaufen", "bis 11. Sep", "Sophie", false],
+  ["Deckung englisch Visana", "10. Sep", "Markus", false],
+  ["Sprachschule buchen", "20. Sep", "Sophie", false],
+  ["Schuladresse notieren", "20. Sep", "Sophie", false],
+  ["Bestätigung 1. Nacht sichern", "26. Sep", "Sophie", false],
+  ["1. Nacht Costa Rica buchen", "20. Okt", "Sophie", false],
+  ["Reiseerklärung Guatemala", "20. Sep", "Sophie", false],
+  ["Notfallblatt ausfüllen", "20. Sep", "beide", false],
+  ["Kurzdossier drucken", "20. Sep", "Markus", false],
+  ["Offline-Karten laden", "26. Sep", "Sophie", false],
+  ["Linsenmittel besorgen", "5. Sep", "Markus", false],
+  ["Tageslinsen abklären", "5. Sep", "Sophie", false],
+  ["Yallo-App testen", "6. Sep", "Sophie", false],
+  ["Gepäck und Material testen", "5. Sep", "Sophie", false],
+  ["Revolut einrichten und testen", "6. Sep", "Sophie", false],
+  ["Währungsrechner erklären", "6. Sep", "beide", false],
+  ["EDA registrieren", "20. Sep", "Sophie", false],
+  ["Scans in die iCloud", "20. Sep", "beide", false],
+  ["Ordner offline setzen", "26. Sep", "Sophie", false],
+  ["Rucksack wiegen", "26. Sep", "Sophie", false],
+  ["Reiseerklärung Ausreise GT", "vor Weiterflug", "Sophie", false],
 ];
 
 const NACH_DATUM = [
-  "<b>8. Sep</b> Vacanza-Prämie einzahlen",
-  "<b>8. Sep</b> Flugnummern an Marco bei Globetrotter melden",
+  "<b>4. Sep</b> Vacanza-Rechnung nachfragen – ist nicht gekommen",
+  "<b>6. Sep</b> Vacanza-Prämie einzahlen",
+  "<b>4. Sep</b> Flugnummern an Marco bei Globetrotter melden",
   "<b>12. Sep</b> Kontrollzentrum im Sperrbildschirm ausschalten",
   "<b>12. Sep</b> „Wo ist?“ vollständig aktivieren",
   "<b>12. Sep</b> Schutz für gestohlene Geräte einschalten",
   "<b>12. Sep</b> Packing Cubes, US-Netzteil, Elektrotasche, RFID-Box kaufen",
   "<b>20. Sep</b> Sprachschule direkt buchen",
   "<b>20. Sep</b> Adresse der Schule notieren – wird bei der Einreise verlangt",
-  "<b>26. Sep</b> Erste Nacht buchen, Bestätigung offline sichern",
+  "<b>26. Sep</b> Erste Nacht Guatemala buchen, Bestätigung offline",
+  "<b>20. Okt</b> Erste Nacht Costa Rica buchen – für den Ankunftstag",
+  "<b>14. Sep</b> Englische Deckungsbestätigung anfordern und ausdrucken",
   "<b>ab 14. Sep</b> Reiseerklärung Guatemala ausfüllen, QR-Code sichern",
   "<b>vor Abflug</b> Zweite Reiseerklärung für den Weiterflug vorbereiten",
   "<b>vor Abflug</b> Rucksack wiegen – Ziel 10 kg",
@@ -2356,7 +2424,7 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "253 · 31.08.2026";
+const VERSION = "297 · 31.08.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
@@ -3136,21 +3204,110 @@ const wannText = (datum) => {
 };
 
 const todoTabelle = () => {
-  /* Alle Aufgaben auf einen Blick: Tätigkeit, Datum, Lead. */
+  /* Eine Zeile je Aufgabe: Haken, Tätigkeit, Lead, Datum.
+     Gruppiert nach diese Woche, nächste Woche, später – sonst sind es zu viele. */
   const stand = hole("haken:alle", {});
-  const box = el("div", { class: "blockband" });
+  const box = el("div", { class: "todoliste" });
 
-  TODO_ALLE.forEach(([was, datum, lead, fix]) => {
-    const ab = fix || stand[was];
-    const zeile = el("button", {
-      class: "haken todozeile" + (ab ? " ab" : ""),
-      onclick: () => { stand[was] = !stand[was]; merke("haken:alle", stand); zeichnen(); },
-    },
-      el("span", { class: "box" + (ab ? " an" : "") }, ab ? svg("check", 12, "#fff", 3) : null),
-      el("span", { class: "min0" },
-        el("span", { class: "hakentext", html: was }),
-        el("span", { class: "todometa" }, datum + " · " + lead)));
-    box.appendChild(zeile);
+  const MONATE = { Sep: 8, Okt: 9, Nov: 10, Dez: 11, Jan: 0, Feb: 1, Aug: 7 };
+  const heute = new Date();
+  heute.setHours(0, 0, 0, 0);
+  /* Montag dieser Woche */
+  const montag = new Date(heute);
+  montag.setDate(heute.getDate() - ((heute.getDay() + 6) % 7));
+  const naechsteWoche = new Date(montag); naechsteWoche.setDate(montag.getDate() + 7);
+  const uebernaechste = new Date(montag); uebernaechste.setDate(montag.getDate() + 14);
+
+  const wann = (text) => {
+    const m = text.match(/(\d{1,2})\.\s*([A-Za-zä]{3})/);
+    if (!m) return 2;                       // ohne Datum: später
+    const jahr = heute.getFullYear() + (MONATE[m[2]] < heute.getMonth() ? 1 : 0);
+    const d = new Date(jahr, MONATE[m[2]], parseInt(m[1], 10));
+    if (d < naechsteWoche) return 0;
+    if (d < uebernaechste) return 1;
+    return 2;
+  };
+
+  /* Nach Datum sortieren – Einträge ohne Datum ans Ende. */
+  const tag = (text) => {
+    const m = text.match(/(\d{1,2})\.\s*([A-Za-zä]{3})/);
+    if (!m) return 9e9;   // "vor Weiterflug" und Ähnliches ans Ende
+    const jahr = heute.getFullYear() + (MONATE[m[2]] < heute.getMonth() ? 1 : 0);
+    return new Date(jahr, MONATE[m[2]], parseInt(m[1], 10)).getTime();
+  };
+  /* Am selben Tag stehen verwandte Aufgaben beieinander. */
+  const THEMEN = [
+    [/Vacanza|Deckung|Versicher/, 0],                                               // Versicherung
+    [/Flug|Bus |Tour|Transfer|Marco|Nacht|Sprachschule|Reiseerklärung|Adresse/, 1],  // Reise
+    [/Revolut|Währung|Karten/, 2],                                                  // Geld
+    [/iPhone|eSIM|IMEI|Wo ist|Kontrollzentrum|Geräte|Apps|Yallo/, 3],               // Handy
+    [/iCloud|Scans|Ordner|Dossier|Notfallblatt|EDA|Karten laden/, 4],               // Ablage
+  ];
+  const thema = (was) => {
+    for (const [muster, nr] of THEMEN) if (muster.test(was)) return nr;
+    return 5;
+  };
+  const sortiert = TODO_ALLE.slice().sort((a, b) =>
+    tag(a[1]) - tag(b[1]) || thema(a[0]) - thema(b[0]));
+
+  /* Je Woche eine Gruppe – so bleiben auch die späteren Aufgaben übersichtlich. */
+  const MONATSNAME = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun",
+                      "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"];
+  const WOCHE = 7 * 24 * 3600 * 1000;
+
+  /* Wochentag davor – "Sa 5. Sep" liest sich schneller als "5. Sep". */
+  const TAGE = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
+  const mitTag = (text) => {
+    const t = tag(text);
+    if (t === 9e9) return text;
+    return TAGE[new Date(t).getDay()] + " " + text;
+  };
+
+  const gruppen = [];
+  const finde = (titel) => {
+    let g = gruppen.find((x) => x[0] === titel);
+    if (!g) { g = [titel, []]; gruppen.push(g); }
+    return g;
+  };
+
+  const ohneDatum = [];
+  sortiert.forEach((eintrag) => {
+    const t = tag(eintrag[1]);
+    if (t === 9e9) { ohneDatum.push(eintrag); return; }
+    const nr = Math.floor((t - montag.getTime()) / WOCHE);
+    let titel;
+    if (nr <= 0) titel = "Diese Woche";
+    else if (nr === 1) titel = "Nächste Woche";
+    else {
+      const start = new Date(montag.getTime() + nr * WOCHE);
+      titel = "Woche ab " + start.getDate() + ". " + MONATSNAME[start.getMonth()];
+    }
+    finde(titel)[1].push(eintrag);
+  });
+  if (ohneDatum.length) gruppen.push(["Unterwegs", ohneDatum]);
+
+  gruppen.forEach(([titel, eintraege], i) => {
+    if (!eintraege.length) return;
+    const offen = eintraege.filter(([w]) => !stand[w]).length;
+    box.appendChild(el("div", { class: "todokopf" },
+      el("span", { class: "todogruppe" }, titel),
+      el("span", {}, offen ? offen + " offen" : "fertig")));
+    let vorherTag = null, vorherThema = null;
+    eintraege.forEach(([was, datum, lead]) => {
+      const ab = stand[was];
+      /* Wechselt am selben Tag das Thema, trennt eine feine Linie. */
+      const bruch = vorherTag === datum && vorherThema !== thema(was);
+      vorherTag = datum; vorherThema = thema(was);
+      box.appendChild(el("button", {
+        class: "todozeile" + (ab ? " ab" : "") + (bruch ? " bruch" : ""),
+        onclick: () => { stand[was] = !stand[was]; merke("haken:alle", stand); zeichnen(); },
+      },
+        el("span", { class: "box klein" + (ab ? " an" : "") },
+          ab ? svg("check", 11, "#fff", 3) : null),
+        el("span", { class: "todotext", html: was }),
+        el("span", { class: "todolead" }, lead),
+        el("span", { class: "tododatum" }, mitTag(datum))));
+    });
   });
   return box;
 };
@@ -3267,7 +3424,7 @@ const seiteStart = () => {
 
 const vorbereitungFertigOben = () => {
   const stand = hole("haken:alle", {});
-  return TODO_ALLE.every(([was, , , fix]) => fix || stand[was]);
+  return TODO_ALLE.every(([was]) => stand[was]);
 };
 
 const seiteHeute = () => {
@@ -3294,8 +3451,7 @@ const seiteHeute = () => {
 
   /* Die Gesamtliste zuerst: alles auf einen Blick. */
   if (!vorbereitungFertigOben()) {
-    wrap.appendChild(el("div", { class: "gruppentitel abstandoben klein3" },
-      "Alle To-dos · Tätigkeit, Datum, Lead"));
+    wrap.appendChild(el("div", { class: "gruppentitel abstandoben klein3" }, "Alle To-dos"));
     wrap.appendChild(todoTabelle());
   }
 
