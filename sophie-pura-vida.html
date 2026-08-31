@@ -912,12 +912,13 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .pfeilrechts { transform: rotate(-90deg); }
 
 /* Die Route sitzt in der Mitte und trägt einen Kreis – der Hauptweg der App */
+/* Route ist das Herzstück – ein feiner Kreis, aktiv in Terracotta. */
 .tabkreis {
-  width: 34px; height: 34px; border-radius: 17px; margin-top: -5px;
+  width: 30px; height: 30px; border-radius: 15px; margin-top: -3px;
   display: inline-flex; align-items: center; justify-content: center;
-  border: 1px solid #E0C4B8; background: #FBF2EE;
+  border: 1px solid #E3D8C6; background: transparent;
 }
-.tabkreis.an { background: var(--terra); border-color: var(--terra); }
+.tabkreis.an { border-color: #E0C4B8; background: #FCF4F0; }
 .tab.wichtig { gap: 2px; }
 
 /* Abgearbeitete Gruppen: nur noch eine Zeile am Fuss der Liste */
@@ -1032,7 +1033,6 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   font-size: 10.5px; color: #A9A296; background: #F3EEE6;
   border-radius: 20px; padding: 1px 6px;
 }
-.tabkreis { display: contents; }
 .tab.wichtig { gap: 3px; }
 
 /* Trefferflächen nach Apple: mindestens 44 Punkte */
@@ -2864,7 +2864,7 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "391 · 31.08.2026";
+const VERSION = "392 · 31.08.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
@@ -4666,7 +4666,10 @@ function leiste() {
         class: "tab" + (aktiv ? " an" : "") + (wichtig ? " wichtig" : ""),
         onclick: () => gehe(k),
       },
-        svg(ikon, 21, farbe, wichtig ? 2 : 1.8),
+        wichtig
+          ? el("span", { class: "tabkreis" + (aktiv ? " an" : "") },
+              svg(ikon, 20, aktiv ? "#B65A3C" : "#8B8175", aktiv ? 2 : 1.8))
+          : svg(ikon, 21, farbe, 1.8),
         el("span", { style: "color:" + farbe }, l));
     }));
 }
