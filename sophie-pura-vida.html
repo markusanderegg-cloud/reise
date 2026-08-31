@@ -1621,6 +1621,7 @@ const STATIONEN = [
           "<b>Nur tagsüber fahren.</b> Keine Nachtfahrten in Guatemala.",
           "Am Lago de Atitlán fahren Lanchas ohne Fahrplan – sie legen ab, wenn sie voll sind.",
         ]],
+        ["land", "guatemala", "Chicken-Busse"],
       ]],
       ["Wohin", [["land", "guatemala", "Weitere Standorte"]]],
       ["Unterkunft", [
@@ -2308,7 +2309,7 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "249 · 31.08.2026";
+const VERSION = "250 · 31.08.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
