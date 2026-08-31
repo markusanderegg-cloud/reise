@@ -417,7 +417,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 /* ── Kopfbild mit Titel darunter ── */
 .held {
   background: var(--karte); border: 1px solid var(--linie); border-radius: 14px;
-  overflow: hidden; contain: content; margin: 22px 0 16px;
+  overflow: hidden; contain: content; margin: 18px 0 16px;
 }
 .held img { display: block; width: 100%; height: auto; aspect-ratio: 21 / 9; }
 .heldtext {
@@ -760,10 +760,10 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 /* Tourismusportal – schmale farbige Zeile in der Route */
 .portalzeile {
   display: flex; align-items: center; justify-content: space-between; gap: 10px;
-  background: var(--karte); border: 1px solid var(--linie); border-radius: 12px;
-  padding: 11px 13px; margin: 0 0 14px;
+  background: transparent; border: 0; border-radius: 0;
+  padding: 2px 2px 10px; margin: 0 0 8px;
 }
-.portaltext { font-size: var(--ebene5); color: #211C18; }
+.portaltext { font-size: var(--ebene6); color: var(--grau); }
 
 /* Buchen – der einzige Weg nach aussen, deshalb kräftig */
 .karte.buchenkarte {
@@ -913,12 +913,13 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 
 /* Die Route sitzt in der Mitte und trägt einen Kreis – der Hauptweg der App */
 /* Route ist das Herzstück – ein feiner Kreis, aktiv in Terracotta. */
+/* Route ist das Herzstück – Kreis immer da, aktiv gefüllt. */
 .tabkreis {
-  width: 30px; height: 30px; border-radius: 15px; margin-top: -3px;
+  width: 34px; height: 34px; border-radius: 17px; margin-top: -4px;
   display: inline-flex; align-items: center; justify-content: center;
-  border: 1px solid #E3D8C6; background: transparent;
+  border: 1px solid #E7CFC4; background: #FCF4F0;
 }
-.tabkreis.an { border-color: #E0C4B8; background: #FCF4F0; }
+.tabkreis.an { border-color: var(--terra); background: var(--terra); }
 .tab.wichtig { gap: 2px; }
 
 /* Abgearbeitete Gruppen: nur noch eine Zeile am Fuss der Liste */
@@ -982,9 +983,9 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 .routenkachel {
   display: flex; align-items: center; justify-content: center;
-  gap: 5px; min-height: 36px; padding: 6px 8px;
-  background: var(--karte); border: 1px solid #E6DCCB; border-radius: 10px;
-  font-size: var(--ebene7); color: var(--ink); text-align: center; line-height: 1.2;
+  gap: 5px; min-height: 34px; padding: 5px 8px;
+  background: transparent; border: 1px solid #E6DCCB; border-radius: 10px;
+  font-size: var(--ebene7); color: var(--grau); text-align: center; line-height: 1.2;
 }
 .routenkachel .ikon { flex-shrink: 0; }
 
@@ -997,6 +998,9 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   display: flex; align-items: center; gap: 10px;
   padding: 11px 13px; border-bottom: 1px solid #F0EBE2;
 }
+.buchenzeile .min0 { flex: 1; min-width: 0; }
+.buchenzeile .faltpfeil { flex-shrink: 0; }
+.linkzeile .min0 { flex: 1; min-width: 0; }
 .buchenliste .buchenzeile:last-child { border-bottom: 0; }
 .buchenname { display: block; font-size: var(--ebene5); color: var(--ink); }
 .buchenzeile .hinweis { display: block; margin-top: 1px; }
@@ -1085,6 +1089,37 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 
 /* Zeichen vor der Sofortmassnahme */
 .dringendikon { flex-shrink: 0; display: inline-flex; align-items: center; }
+
+/* Externe Verweise – ruhige Zeile mit feiner Linie */
+.linkzeile {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 2px; margin: 0;
+  border-bottom: 1px solid #F0EBE2;
+}
+.linkzeile:last-child { border-bottom: 0; }
+.linktitel { display: block; font-size: var(--ebene5); color: #211C18; }
+.linkzeile .hinweis { display: block; margin-top: 1px; }
+
+/* Länder klar über den Stationen */
+.landmarke { padding-bottom: 2px; }
+.landname { font-size: var(--ebene3); }
+.landpfeil { opacity: .9; }
+
+/* Land als Einstieg: Name kräftig, Chevron in Terracotta deutlich sichtbar */
+.landmarke { cursor: pointer; }
+.landname { font-weight: 600; }
+.landpfeil { opacity: 1; }
+.landmarke .landzeit, .landmarke .landtext .hinweis { color: var(--grau); }
+
+/* 5 Geöffnete Station: mehr Kontrast zur geschlossenen */
+.etappeknopf.auf { background: #F6EFE6; }
+.stationsinhalt { border-left-width: 2.5px; }
+
+/* Etwas Luft zwischen Kopflinie und erstem Inhalt (nicht auf der Route) */
+#app > div > .todoliste:first-child,
+#app > div > .gruppentitel:first-child,
+#app > div > .block:first-child,
+#app > div > .kopf:first-child { margin-top: 6px; }
 
 </style>
 </head>
@@ -2864,7 +2899,7 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "392 · 31.08.2026";
+const VERSION = "397 · 31.08.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
@@ -3002,16 +3037,13 @@ const anrufZeile = ({ label, nr, speicherKey, hinweis }) => {
 /* Zeichen für „braucht Internet“ – steht nur bei externen Adressen. */
 const netzzeichen = () => el("span", { class: "netz" }, svg("link", 12, "currentColor", 2));
 
-const linkZeile = ({ label, url, hinweis }) => {
-  const sichtbar = url.replace(/^https?:\/\//, "").replace(/\/$/, "");
-  return el("a", { href: url, target: "_blank", rel: "noopener", class: "block" },
-    el("div", { class: "aktionsfeld" },
-      el("div", { class: "min0" },
-        el("div", { class: "klein" }, label, netzzeichen()),
-        el("div", { class: "aktionswert brechen" }, sichtbar),
-        hinweis ? el("div", { class: "hinweis" }, hinweis) : null),
-      el("span", { class: "rundknopf klein" }, svg("link", 16, "#fff", 2.2))));
-};
+/* Externer Verweis: tertiär – schmale Zeile, kein farbiger Kasten. */
+const linkZeile = ({ label, url, hinweis }) =>
+  el("a", { href: url, target: "_blank", rel: "noopener", class: "linkzeile" },
+    el("span", { class: "min0" },
+      el("span", { class: "linktitel" }, label),
+      hinweis ? el("span", { class: "hinweis" }, hinweis) : null),
+    svg("link", 15, "#B65A3C", 1.9));
 
 /* Blöcke mit Sofortmassnahmen bekommen einen roten Rand und hellen Grund. */
 const DRINGEND = ["sperren", "gestohlen", "verloren", "Notfall", "Denuncia", "Diebstahl"];
@@ -4612,7 +4644,7 @@ const seiteRoute = () => {
             href: "https://de.visitcostarica.com/", target: "_blank", class: "portalzeile" },
             el("span", { class: "portaltext" },
               "Visit Costa Rica · offizielles Tourismusportal"),
-            svg("link", 15, "#B65A3C", 1.9)));
+            svg("link", 14, "#B65A3C", 1.8)));
         }
         strang = el("div", { class: "strang" });
         inhalt.appendChild(strang);
@@ -4668,7 +4700,7 @@ function leiste() {
       },
         wichtig
           ? el("span", { class: "tabkreis" + (aktiv ? " an" : "") },
-              svg(ikon, 20, aktiv ? "#B65A3C" : "#8B8175", aktiv ? 2 : 1.8))
+              svg(ikon, 19, aktiv ? "#fff" : "#B65A3C", 1.9))
           : svg(ikon, 21, farbe, 1.8),
         el("span", { style: "color:" + farbe }, l));
     }));
@@ -4695,7 +4727,7 @@ function zeichnen() {
     /* Auf der Route hängen drei Wege direkt unter der Kopfzeile – beides klebt. */
     const schnellkachel = (ikon, titel, wohin, param2) =>
       el("button", { class: "routenkachel", onclick: () => gehe(wohin, param2) },
-        svg(ikon, 14, "#B65A3C", 1.9), el("span", {}, titel));
+        svg(ikon, 14, "#A08C7D", 1.8), el("span", {}, titel));
 
     const kacheln = seite === "route"
       ? el("div", { class: "routenkacheln" },
