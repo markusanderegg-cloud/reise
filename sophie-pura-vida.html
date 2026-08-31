@@ -797,6 +797,10 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 .netz svg { display: block; }
 
+/* Hostelzeile: Name gross, Ort klein darunter */
+.hostelort { display: block; font-size: var(--ebene6); color: var(--grau); margin-top: 2px; }
+.faltkopf .ortlabel { display: block; margin-bottom: 3px; }
+
 </style>
 </head>
 <body>
@@ -2307,7 +2311,7 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "244 · 31.08.2026";
+const VERSION = "246 · 31.08.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
@@ -3551,42 +3555,44 @@ const seiteBuchen = () =>
         + "wieder." })));
 
 const hostelKarte = (h) => {
-  const details = el("div", { class: "verborgen" });
+  /* Zeile mit Name und Ort; alles Weitere erst beim Antippen. */
+  const koerper = el("div", { class: "faltinhalt" });
+
+  if (h.note) koerper.appendChild(el("div", { class: "notiz" }, h.note));
+
   if (h.gut) {
-    details.appendChild(el("div", { class: "klein" }, "Dafür spricht"));
-    h.gut.forEach((g) => details.appendChild(el("div", { class: "prozeile" },
-      svg("check", 14, "#4E6B52", 2.5), el("span", {}, g))));
+    koerper.appendChild(el("div", { class: "klein" }, "Dafür spricht"));
+    h.gut.forEach((g) => koerper.appendChild(el("div", { class: "prozeile" },
+      svg("check", 14, "#4E6B52", 2.5), el("span", { html: g }))));
   }
   if (h.schlecht) {
-    details.appendChild(el("div", { class: "klein abstandoben" }, "Dagegen spricht"));
-    h.schlecht.forEach((x) => details.appendChild(el("div", { class: "prozeile" },
-      el("span", { class: "minus" }, "–"), el("span", {}, x))));
+    koerper.appendChild(el("div", { class: "klein abstandoben" }, "Dagegen spricht"));
+    h.schlecht.forEach((x) => koerper.appendChild(el("div", { class: "prozeile" },
+      el("span", { class: "minus" }, "–"), el("span", { html: x }))));
   }
-  const knopf = (h.gut || h.schlecht)
-    ? el("button", {
-      class: "textknopf abstandoben",
-      onclick: (e) => {
-        const auf = details.classList.toggle("offen");
-        e.target.textContent = auf ? "Weniger" : "Was Gäste schreiben";
-      },
-    }, "Was Gäste schreiben") : null;
 
-  return el("div", { class: "karte" + (h.tipp ? " tipp" : "") },
-    el("div", { class: "zeile luecke" },
-      el("div", { class: "min0" },
-        h.tipp ? el("div", { class: "ortlabel" }, h.tipp) : null,
-        el("div", { class: "kacheltitel klein2" }, h.name),
-        el("div", { class: "hinweis" }, h.ort),
-        h.note ? el("div", { class: "notiz" }, h.note) : null),
-      el("div", { class: "knopfreihe" },
-        el("a", { href: telLink(h.tel), class: "rundknopf" }, svg("phone", 16, "#fff", 2.2)),
-        h.web ? el("a", { href: h.web, target: "_blank", rel: "noopener", class: "rundknopf hell" },
-          svg("link", 16, "#B65A3C", 2.2)) : null,
-        el("a", {
-          href: "https://www.hostelworld.com/search?search_keywords=" + encodeURIComponent(h.name),
-          target: "_blank", rel: "noopener", class: "rundknopf hell",
-        }, svg("bed", 16, "#B65A3C", 2)))),
-    knopf, details);
+  koerper.appendChild(el("div", { class: "knopfreihe abstandoben" },
+    h.tel ? el("a", { href: telLink(h.tel), class: "rundknopf" },
+      svg("phone", 16, "#fff", 2.2)) : null,
+    h.web ? el("a", { href: h.web, target: "_blank", rel: "noopener", class: "rundknopf hell" },
+      svg("link", 16, "#B65A3C", 2.2)) : null,
+    el("a", {
+      href: "https://www.hostelworld.com/search?search_keywords=" + encodeURIComponent(h.name),
+      target: "_blank", rel: "noopener", class: "rundknopf hell",
+    }, svg("bed", 16, "#B65A3C", 2))));
+
+  const pfeil = el("span", { class: "faltpfeil" }, svg("chevron", 18, "#B65A3C", 2.2));
+  const knopf = el("button", { class: "faltkopf", onclick: () => {
+    const auf = koerper.classList.toggle("offen");
+    pfeil.classList.toggle("auf", auf);
+  } },
+    el("span", { class: "min0" },
+      h.tipp ? el("span", { class: "ortlabel" }, h.tipp) : null,
+      el("span", { class: "blocktitel ohneabstand" }, h.name),
+      el("span", { class: "hostelort" }, h.ort)),
+    pfeil);
+
+  return el("div", { class: "karte faltkarte" + (h.tipp ? " tipp" : "") }, knopf, koerper);
 };
 
 const seiteRoute = () => {
@@ -3710,6 +3716,17 @@ const seiteRoute = () => {
         const band = el("div", { class: "blockband" });
         L.hostels.forEach((h) => band.appendChild(hostelKarte(h)));
         inhalt.appendChild(band);
+      }
+      /* Zweiter Ort mit eigener Liste, etwa Panajachel am Atitlán. */
+      if (L.hostels2 && L.hostels2.liste && L.hostels2.liste.length) {
+        inhalt.appendChild(el("div", { class: "gruppentitel abstandoben klein3" },
+          L.hostels2.ort));
+        const band2 = el("div", { class: "blockband" });
+        L.hostels2.liste.forEach((h) => band2.appendChild(hostelKarte(h)));
+        inhalt.appendChild(band2);
+        if (L.hostels2.hostelworld) {
+          inhalt.appendChild(linkZeile(L.hostels2.hostelworld));
+        }
       }
       return;
     }
