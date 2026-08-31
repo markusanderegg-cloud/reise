@@ -51,8 +51,9 @@
 html, body {
   margin: 0; padding: 0;
   width: 100%; max-width: 100%;
-  overflow-x: clip;
+  /* Kein overflow auf html/body – sonst klebt nichts mehr beim Scrollen. */
 }
+
 
 body {
   background: var(--sand);
@@ -113,9 +114,9 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 /* ── Kopfbereich ── */
 
 .kopfzeile {
-  position: sticky; top: 0; z-index: 50;
+  position: sticky; top: 0; z-index: 60;
   max-width: 480px; margin: 0 auto;
-  display: flex; align-items: center; justify-content: space-between;
+  display: block;
   padding-top: 12px; padding-bottom: 10px;
   padding-left: max(20px, env(safe-area-inset-left));
   padding-right: max(20px, env(safe-area-inset-right));
@@ -123,6 +124,17 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   border-bottom: 1px solid rgba(43, 39, 35, .08);
 }
 .platzhalter { width: 40px; flex-shrink: 0; }
+/* Beim Scrollen sichtbar: auf welchem Bildschirm man ist */
+.seitenname {
+  display: inline-flex; align-items: center; gap: 7px;
+  min-width: 40px; flex-shrink: 0;
+  font-size: var(--ebene4); font-weight: 600; color: #211C18;
+  letter-spacing: -.01em;
+}
+/* Ohne grossen Titel: die Zeile darunter beginnt höher */
+.kopf.ohnetitel { margin-top: 0; margin-bottom: 18px; }
+#app > div > *:first-child { margin-top: 6px; }
+.kopf.ohnetitel .unter { margin-top: 0; }
 .notknopf {
   display: inline-flex; align-items: center; gap: 6px;
   background: var(--alarm-hell); border: 1px solid #EBC6C0;
@@ -137,7 +149,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 
 .kopf { margin-bottom: 24px; margin-top: 6px; }
 .kopf h1 {
-  font-weight: 700; font-size: var(--ebene2); line-height: 1.1; margin: 0; color: var(--ink); }
+  font-weight: 600; font-size: var(--ebene3); line-height: 1.15; margin: 0; color: #211C18; }
 .kopf .unter { font-size: var(--ebene5); color: var(--grau); margin: 8px 0 0; line-height: 1.55; }
 .zurueck {
   display: inline-flex; align-items: center; gap: 4px;
@@ -293,20 +305,48 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 /* ── Route ── */
 
 .zeitstrahl { position: relative; padding-left: 26px; }
-.strang { position: relative; padding-left: 30px; }
+/* Die Zeitachse steht auf weisser Fläche wie alle anderen Inhalte. */
+.strang {
+  position: relative; padding: 16px 14px 4px 44px;
+  background: var(--karte); border: 1px solid var(--linie); border-radius: 14px;
+  margin-bottom: 16px;
+}
 .strang::before {
-  content: ""; position: absolute; left: 9px; top: 10px; bottom: 22px;
+  content: ""; position: absolute; left: 23px; top: 26px; bottom: 26px;
   width: 2px; background: var(--sand-tief);
 }
-.etappe { position: relative; margin-bottom: 20px; }
+.etappe { position: relative; margin-bottom: 16px; }
+.etappe:last-child { margin-bottom: 12px; }
+
+/* In der weissen Zeitachse brauchen die Blöcke eine eigene Tönung,
+   sonst verschwimmen weisse Karten auf weissem Grund. */
+.strang .blockband {
+  background: var(--sand); border-color: #E0D5C2;
+}
+.strang .karte:not(.faltkarte):not(.dringend):not(.zusatz) {
+  background: var(--sand); border-color: #E0D5C2;
+}
+.stationsinhalt .gruppentitel.klein3 { margin-top: 16px; }
+
+/* Geöffnete Station: eigene Fläche, damit man sieht, wozu die Liste gehört */
+.etappeknopf.auf {
+  background: var(--sand); border-radius: 12px;
+  margin-left: -10px; margin-right: -6px; padding: 8px 10px 10px;
+  margin-bottom: 4px;
+}
+.etappeknopf.auf .punkt { left: -20px; }
+.stationsinhalt {
+  border-left: 2px solid var(--terra);
+  margin: 0 0 18px 2px; padding-left: 12px;
+}
 .etappe .punkt {
-  position: absolute; left: -30px; top: 3px; width: 21px; height: 21px; border-radius: 11px;
+  position: absolute; left: -29px; top: 4px; width: 19px; height: 19px; border-radius: 10px;
   background: var(--terra); border: 2px solid var(--terra);
-  color: #fff; font-size: var(--ebene7); font-weight: 600; line-height: 17px; text-align: center;
+  color: #fff; font-size: 10.5px; font-weight: 600; line-height: 16px; text-align: center;
 }
 .etappe .punkt.offen { background: var(--sand); border-color: var(--grau); color: var(--grau); }
 .etappenort {
-  font-weight: 600; font-size: var(--ebene4); margin: 3px 0 4px; }
+  font-weight: 500; font-size: var(--ebene4); color: #211C18; margin: 3px 0 4px; }
 
 
 /* ── Aufklappbare Blöcke: leichte Zeilen statt Karten ── */
@@ -354,7 +394,8 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .ruecksetzen { display: none; margin-top: 12px; font-size: var(--ebene6); color: var(--grau); }
 
 .gruppenzeile {
-  display: flex; align-items: center; justify-content: space-between; margin: -8px 0 8px;
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin: 2px 0 8px;
 }
 .gruppentitel {
   font-size: var(--ebene7); color: var(--grau); letter-spacing: .08em; text-transform: uppercase;
@@ -364,7 +405,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
    Eine Überschrift ist nie kleiner als das, was unter ihr steht. */
 .gruppentitel.klein3 {
   font-size: var(--ebene4); letter-spacing: 0;
-  text-transform: none; color: var(--navy); font-weight: 600;
+  text-transform: none; color: #211C18; font-weight: 600;
   margin: 0 0 7px 3px;
 }
 .zuknopf { font-size: var(--ebene6); color: var(--terra); }
@@ -383,12 +424,14 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   padding: 18px; box-shadow: inset 0 1px 0 rgba(0,0,0,.06);
   display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
 }
+/* Der Titel trägt die Hausfarbe, der Untertitel bleibt warmes Grau. */
 .heldtitel {
-  font-weight: 700; font-size: var(--ebene1); color: #211C18; line-height: 1.15; }
+  font-weight: 700; font-size: var(--ebene1); color: var(--terra); line-height: 1.15; }
 .heldunter { font-size: var(--ebene5); line-height: 1.5; color: #5A524C; margin-top: 8px; }
 .heldlupe {
-  width: 40px; height: 40px; border-radius: 20px; flex-shrink: 0; margin-top: 29px;
-  background: var(--sand); border: 1px solid var(--linie);
+  /* 44 Punkte Trefferfläche, sichtbarer Kreis 34 Punkte. */
+  width: 44px; height: 44px; border-radius: 22px; flex-shrink: 0; margin-top: 21px;
+  position: relative; background: transparent; border: 0;
   display: flex; align-items: center; justify-content: center;
 }
 
@@ -406,7 +449,8 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
   font-size: var(--ebene7); padding: 3px 0;
 }
-.tab.an span { font-weight: 600; }
+/* Alle Reiter gleich – die aktive Seite zeigt sich nur über die Farbe. */
+.tab span { font-weight: 400; }
 #app { padding-bottom: calc(84px + env(safe-area-inset-bottom)); }
 
 .termindatum {
@@ -450,7 +494,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 .ruecksetzen.sichtbar { display: block; }
 
-.version { font-size: var(--ebene7); color: var(--grau); opacity: .7; margin-top: 10px; }
+.version { display: none; }
 
 /* Startseite: Bild und Notfall bleiben oben, nur die Termine scrollen. */
 .startkopf {
@@ -459,7 +503,8 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 
 /* Schmale Notfallleiste auf der Startseite */
-.notfallzeile { display: flex; justify-content: flex-end; margin-top: 46px; margin-bottom: 4px; }
+/* Hero, Notfall und Termine als eine Gruppe – enger beieinander. */
+.notfallzeile { display: flex; justify-content: flex-end; margin-top: 20px; margin-bottom: 2px; }
 .notfallleiste {
   display: inline-flex; align-items: center; gap: 10px;
   background: var(--alarm-hell); border: 1px solid #EBC6C0;
@@ -618,7 +663,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .landmarke {
   display: flex; align-items: center; gap: 10px;
   font-size: var(--ebene3); letter-spacing: -0.01em;
-  margin: 26px 0 10px; padding: 0;
+  margin: 21px 0 10px; padding: 0;
 }
 .landmarke:first-child { margin-top: 2px; }
 .landmarke.gt { color: #7A6A4F; }
@@ -668,7 +713,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 
 /* Einträge in einer Gruppe: kleiner und in Navy, damit der Titel führt */
 .blockband .faltkopf .blocktitel {
-  font-size: var(--ebene5); font-weight: 600; color: var(--ink);
+  font-size: var(--ebene5); font-weight: 500; color: var(--ink);
 }
 
 
@@ -688,7 +733,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 
 
 /* Aufgeklappte Station in der Zeitachse */
-.stationsinhalt { margin: 2px 0 22px; }
+.stationsinhalt { margin: 2px 0 20px 2px; }
 .etappeknopf.auf .etappenort { color: var(--terra); }
 .etappepfeil.auf { transform: rotate(180deg); }
 
@@ -702,9 +747,8 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .landzeile { display: flex; align-items: center; gap: 9px; }
 .landname {
   font-weight: 600; font-size: var(--ebene3); line-height: 1.1; }
-.landname.gt { color: #7A6A4F; }
-.landname.cr { color: #4E6B52; }
-.landname.pe { color: #A33; }
+/* Ein Ton für alle Länder – die Flagge unterscheidet. */
+.landname.gt, .landname.cr, .landname.pe { color: #211C18; }
 .landzeit { font-size: var(--ebene6); color: var(--grau); margin: 3px 0 2px; }
 .landpfeil { display: inline-flex; transform: rotate(-90deg); margin-top: 6px; }
 
@@ -716,10 +760,10 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 /* Tourismusportal – schmale farbige Zeile in der Route */
 .portalzeile {
   display: flex; align-items: center; justify-content: space-between; gap: 10px;
-  background: #E8EFE7; border: 1px solid #CBDAC7; border-radius: 10px;
-  padding: 8px 12px; margin: 0 0 14px;
+  background: var(--karte); border: 1px solid var(--linie); border-radius: 12px;
+  padding: 11px 13px; margin: 0 0 14px;
 }
-.portaltext { font-size: var(--ebene6); color: #3E5A42; }
+.portaltext { font-size: var(--ebene5); color: #211C18; }
 
 /* Buchen – der einzige Weg nach aussen, deshalb kräftig */
 .karte.buchenkarte {
@@ -808,53 +852,239 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 .todozeile {
   display: grid;
-  grid-template-columns: 22px 1fr 50px 60px;
+  grid-template-columns: 22px 1fr 34px 66px;
   align-items: center; column-gap: 10px;
   width: 100%; text-align: left;
   padding: 0 12px;
 }
 .todokopf {
-  /* Titel und Zähler sitzen mittig im Band, gleicher Rand wie die Zeilen. */
-  display: flex; align-items: center; justify-content: space-between; gap: 10px;
-  width: 100%; min-height: 32px;
-  padding: 6px 12px;
-  background: var(--sand-tief);
-  border-bottom: 1px solid var(--linie);
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; min-height: 42px;
+  padding: 10px 14px 10px 13px;
+  background: transparent;
+  border-bottom: 1px solid #F0EBE2;
+  border-top: 1px solid #F0EBE2;
 }
+.todoliste > .todokopf:first-of-type { border-top: 0; }
 .todokopf span {
   font-size: var(--ebene7); letter-spacing: .04em;
   text-transform: uppercase; color: var(--grau);
 }
 .todokopf .todogruppe {
-  font-size: var(--ebene6); font-weight: 600;
-  color: var(--navy); letter-spacing: .02em;
+  font-size: var(--ebene5); font-weight: 600;
+  color: #211C18; letter-spacing: 0; text-transform: none;
+}
+.todokopf .todozahl {
+  font-size: var(--ebene6); color: #A9A296;
+  text-transform: none; letter-spacing: 0;
 }
 .todokopf + .todokopf { border-top: 1px solid var(--linie); }
 .todozeile {
-  min-height: 34px; padding-top: 5px; padding-bottom: 5px;
-  border-bottom: 1px solid #F0EBE2;
+  min-height: 37px; padding-top: 6.5px; padding-bottom: 6.5px;
+  border-bottom: 1px solid #F5F0E8;
 }
 .todozeile:last-child { border-bottom: 0; }
-/* Themenwechsel am selben Tag – etwas Luft und eine kräftigere Linie */
-.todozeile.bruch { border-top: 1px solid var(--linie); margin-top: 3px; padding-top: 8px; }
+/* Alle Zeilen gleich – die Sortierung nach Thema genügt als Ordnung. */
 .todozeile .box {
-  width: 18px; height: 18px; flex-shrink: 0;
-  border: 1.6px solid #B8A99A; border-radius: 5px;
+  width: 19px; height: 19px; flex-shrink: 0;
+  border: 1.5px solid #CBBFAF; border-radius: 6px;
   background: var(--karte);
   display: inline-flex; align-items: center; justify-content: center;
 }
 .todozeile .box.an { background: var(--terra); border-color: var(--terra); }
 .todotext {
-  font-size: var(--ebene5); color: var(--ink); line-height: 1.3;
+  font-size: var(--ebene5); color: #211C18; line-height: 1.35;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.todolead { font-size: var(--ebene6); color: var(--grau); white-space: nowrap; }
+.todolead { font-size: var(--ebene7); color: #B3AA9C; white-space: nowrap; }
 .tododatum {
-  font-size: var(--ebene6); color: var(--grau);
+  font-size: var(--ebene6); color: #A9A296;
   white-space: nowrap; text-align: right;
 }
 .todozeile.ab .todotext { color: var(--grau); text-decoration: line-through; }
 .todozeile.ab .todolead, .todozeile.ab .tododatum { color: #A9A296; }
+
+/* Verweis auf die vollständige To-do-Liste – gleiche Anmutung wie eine Zeile */
+.allezeile {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  width: 100%; text-align: left; padding: 13px 14px; margin-top: 10px;
+}
+.pfeilrechts { transform: rotate(-90deg); }
+
+/* Die Route sitzt in der Mitte und trägt einen Kreis – der Hauptweg der App */
+.tabkreis {
+  width: 34px; height: 34px; border-radius: 17px; margin-top: -5px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid #E0C4B8; background: #FBF2EE;
+}
+.tabkreis.an { background: var(--terra); border-color: var(--terra); }
+.tab.wichtig { gap: 2px; }
+
+/* Abgearbeitete Gruppen: nur noch eine Zeile am Fuss der Liste */
+.todokopf.fertigkopf { background: var(--karte); border-bottom: 0; border-top: 1px solid var(--linie); }
+.todokopf.fertigkopf .todogruppe { color: var(--grau); }
+
+/* Wochen- und Monatsgruppen klappen auf – nur die erste steht offen */
+.todogruppeninhalt { display: none; }
+.todogruppeninhalt.offen { display: block; }
+.todokopf { gap: 8px; }
+.todozahl { margin-left: auto; }
+
+/* Bemerkung unter einer App – kleiner und grau */
+.appnote { display: block; font-size: var(--ebene6); color: var(--grau); margin-top: 3px; line-height: 1.45; }
+
+/* App-Tabelle: Zeichen links, Name, Zweck und Bemerkung rechts */
+.appliste {
+  background: var(--karte); border: 1px solid var(--linie);
+  border-radius: 14px; overflow: hidden; margin-top: 4px; margin-bottom: 14px;
+}
+.appzeile {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 14px 10px 13px; border-bottom: 1px solid #F0EBE2;
+}
+.appzeile:last-child { border-bottom: 0; }
+.appikon { flex-shrink: 0; margin-top: 2px; }
+.appname { font-size: var(--ebene5); font-weight: 600; color: var(--ink); }
+.appzweck { font-size: var(--ebene5); color: var(--ink); }
+.appname::after { content: " · "; color: var(--grau); font-weight: 400; }
+
+/* Spalte rechts: Haken wenn installiert, sonst Kreuz */
+.appzeile { width: 100%; text-align: left; }
+.appstand {
+  flex-shrink: 0; margin-top: 1px; width: 18px;
+  display: flex; align-items: center; justify-content: flex-end;
+}
+/* Noch nicht installiert: leerer Kreis, kein Kreuz */
+.appleer {
+  width: 16px; height: 16px; border-radius: 8px;
+  border: 1.5px solid #D8CEBF; display: inline-block;
+}
+.appzeile.da .appname, .appzeile.da .appzweck { color: var(--grau); }
+
+/* Als Frau unterwegs – eigene, ruhige Farbe */
+.karte.faltkarte.frau {
+  background: #FBEFF0; border: 1px solid #E9CDD1; border-radius: 12px;
+  margin: 4px 0 14px;
+}
+.karte.faltkarte.frau .faltkopf { padding: 13px 14px; }
+.karte.faltkarte.frau .faltinhalt { padding: 0 14px 14px; }
+.karte.faltkarte.frau .blocktitel { color: #8E3A4A; }
+
+/* Drei kleine Kacheln nebeneinander, mit Luft zum ersten Land */
+.kopfreihe { display: flex; align-items: center; justify-content: space-between; }
+.routenkacheln {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px;
+  margin: 10px 0 0;
+  /* Kleben direkt an der Kopfzeile – der Grund reicht bis über den oberen Rand,
+     damit beim Scrollen nichts durchscheint. */
+
+}
+.routenkachel {
+  display: flex; align-items: center; justify-content: center;
+  gap: 5px; min-height: 36px; padding: 6px 8px;
+  background: var(--karte); border: 1px solid #E6DCCB; border-radius: 10px;
+  font-size: var(--ebene7); color: var(--ink); text-align: center; line-height: 1.2;
+}
+.routenkachel .ikon { flex-shrink: 0; }
+
+/* Buchen: leichte Zeilen statt Kästen */
+.buchenliste {
+  background: var(--karte); border: 1px solid var(--linie);
+  border-radius: 12px; overflow: hidden; margin: 4px 0 16px;
+}
+.buchenzeile {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 13px; border-bottom: 1px solid #F0EBE2;
+}
+.buchenliste .buchenzeile:last-child { border-bottom: 0; }
+.buchenname { display: block; font-size: var(--ebene5); color: var(--ink); }
+.buchenzeile .hinweis { display: block; margin-top: 1px; }
+
+/* Feinschliff Startseite */
+/* 4 Notfall kompakter, weniger Fläche */
+.notfallleiste {
+  padding: 6px 6px 6px 13px; gap: 9px; border-radius: 20px;
+  margin: 0 0 8px auto; width: max-content;
+  background: #FCF1EF; border: 1px solid #F0DAD5;
+}
+.notfallleiste .rundknopf.alarm { width: 28px; height: 28px; }
+.notfallwort { font-size: var(--ebene6); }
+
+/* 5 Termine: ruhige Hierarchie, feine Linien */
+.terminkarte { padding: 4px 16px; }
+.terminwann { font-size: var(--ebene7); color: #8B8175; letter-spacing: .06em; }
+.terminwas { font-size: var(--ebene5); color: #211C18; }
+.terminzeile.mitlinie { border-top: 1px solid #F0EBE2; }
+.terminzeile { padding: 11px 0; }
+
+/* 6 Alle To-dos: gleiche Innenabstände wie die Terminkarte */
+.allezeile { padding: 14px 16px; margin-top: 10px; }
+
+/* 9 Gemeinsame Kante und gleicher Rhythmus */
+.karte, .terminkarte, .allezeile { margin-left: 0; margin-right: 0; }
+.gruppenzeile { margin: 10px 0 8px; }
+.terminkarte { border-radius: 14px; }
+.allezeile { border-radius: 14px; }
+.held { margin-bottom: 0; }
+
+/* Feinschliff: Statuszahlen zurücknehmen, Leiste ohne Kreis */
+.terminstand {
+  font-size: 10.5px; color: #A9A296; background: #F3EEE6;
+  border-radius: 20px; padding: 1px 6px;
+}
+.tabkreis { display: contents; }
+.tab.wichtig { gap: 3px; }
+
+/* Trefferflächen nach Apple: mindestens 44 Punkte */
+.heldlupe::after {
+  content: ""; position: absolute; top: 5px; left: 5px; width: 34px; height: 34px;
+  border: 1px solid #E3D8C6; border-radius: 17px;
+}
+.heldlupe .ikon { position: relative; z-index: 1; }
+.terminknopf { min-height: 44px; display: flex; flex-direction: column; justify-content: center; }
+.todokopf { min-height: 38px; }
+
+/* Lead als Kürzel – S kursiv */
+.todolead i { font-style: italic; }
+
+/* Spaltenbeschriftung der To-do-Liste */
+.todospalten {
+  display: grid; grid-template-columns: 22px 1fr 34px 66px;
+  align-items: center; column-gap: 10px;
+  padding: 7px 14px 5px 13px;
+  border-bottom: 0;
+}
+.todospalten span {
+  font-size: 10px; color: #BFB6A8;
+  letter-spacing: .05em; text-transform: uppercase;
+}
+
+/* Checklisten und Packen: Zähler zurückgenommen */
+.blockband .zaehler, .faltkopf .zaehler { color: #A9A296; font-size: var(--ebene6); }
+
+/* Geld-Übersicht: Zeichen links, Chevron rechts */
+.geldzeile { display: flex; align-items: center; gap: 12px; width: 100%; }
+.geldzeile .min0 { flex: 1; min-width: 0; }
+.geldzeile .faltpfeil { flex-shrink: 0; margin-left: 4px; }
+.geldzeile .hinweis { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.geldikon { flex-shrink: 0; }
+.geldzeile .kacheltitel { display: block; }
+.geldzeile .hinweis { display: block; margin-top: 2px; }
+
+/* Detailansicht ruhiger */
+.kopf h1 { font-weight: 600; }
+.karte.faltkarte.dringend .blocktitel { font-weight: 600; }
+
+/* Sofortmassnahme in der Detailansicht: flacher */
+.karte.faltkarte.dringend .faltkopf {
+  padding: 8px 14px; gap: 9px; justify-content: flex-start;
+}
+.karte.faltkarte.dringend .faltkopf .blocktitel { flex: 1; }
+.karte.faltkarte.dringend { margin: 2px 0 16px; }
+.karte.faltkarte.dringend .blocktitel { color: #B65A3C; font-size: var(--ebene5); }
+
+/* Zeichen vor der Sofortmassnahme */
+.dringendikon { flex-shrink: 0; display: inline-flex; align-items: center; }
 
 </style>
 </head>
@@ -963,7 +1193,8 @@ const VERLUST = [
       "<b>Die ersten 24 Stunden:</b> keine Anstrengung, kein Alkohol, leicht essen, viel trinken oder Mate de Coca.",
       "Zeichen: Kopfschmerz, Übelkeit, Schwindel, Schlaflosigkeit.",
       "<b>Wird es am nächsten Tag nicht besser, hilft nur Absteigen.</b> Warten macht es schlimmer.",
-      "In peruanischen Apotheken gibt es „Sorojchi Pills“ gegen die Kopfschmerzen.",
+      "In peruanischen Apotheken gibt es „Sorojchi Pills“ gegen die Kopfschmerzen – rezeptfrei, wirken gegen die Beschwerden, nicht gegen die Ursache.",
+      "<b>Acetazolamid (Diamox)</b> beugt vor, ist in der Schweiz rezeptpflichtig. Falls Peru feststeht: rechtzeitig mit der Hausärztin besprechen.",
       "Am Acatenango langsam gehen, auch wenn die Gruppe zieht – der Guide gibt das Tempo vor.",
     ],
   },
@@ -984,10 +1215,6 @@ const ABFLUG = "2026-09-29";
 
 const TERMINE_VORHER = [
 
-  ["erledigt", "Gebucht", [
-    "31. Aug · Tour Intrepid bei Globetrotter Basel.",
-    "Flughafentransfer für die Ankunft – über Globetrotter, Rechnung folgt.",
-  ]],
 
 
   ["4. Sep", "Flugnummern melden", [
@@ -996,7 +1223,7 @@ const TERMINE_VORHER = [
 
   ["bis 26. Sep", "Bestätigung der ersten Nacht", [
     "Wird bei der Einreise verlangt – Guatemala und Costa Rica.",
-    "Geplant: Casa Florencia ab 29. September, das Hotel der Tour.",
+    "Casa Florencia ab 29. September – das Hotel der Tour.",
     "Bestätigung als PDF sichern, offline auf dem Handy.",
   ]],
 
@@ -1011,9 +1238,6 @@ const TERMINE_VORHER = [
     "Yallo-App installieren und Anmeldung testen.",
   ]],
 
-  ["5. Sep", "Tagesrucksack", [
-    "Patagonia Terravia 24 L bei Transa. Früh bestellen.",
-  ]],
 
   ["12. Sep", "iPhone einrichten", [
     "Kontrollzentrum im Sperrbildschirm aus, „Wo ist?“ vollständig ein, Diebstahlschutz ein.",
@@ -1031,7 +1255,7 @@ const TERMINE_VORHER = [
     "Ohne Zahlung keine Deckung. Einzahlen bis 6. September.",
   ]],
 
-  ["Ab 14 Tage vorher", "Reiseerklärung Guatemala", [
+  ["20. Sep", "Reiseerklärung Guatemala", [
     "Vor dem Hinflug ausfüllen, QR-Code sichern.",
     "Vor dem Flug nach San José ein zweites Mal.",
   ]],
@@ -1073,8 +1297,78 @@ const TERMINE = new Date() < new Date(ABFLUG) ? TERMINE_VORHER : TERMINE_UNTERWE
 const TERMINE_TITEL = new Date() < new Date(ABFLUG)
   ? "Was als Nächstes ansteht" : "Termine unterwegs";
 
+const APPS = [
+  ["Geld", [
+    ["wallet", "Revolut", "Alltagskarte, Konten, Wechselkurs",
+     "App-Sperre einschalten – sonst hat jeder mit dem entsperrten Handy Kontozugriff."],
+    ["wallet", "BKB one", "Reservekarte sperren und freigeben",
+     "Gratis und in Sekunden. Immer zuerst hier sperren, nicht anrufen."],
+    ["wallet", "Währungsrechner", "Quetzal, Colón, Sol umrechnen",
+     "Kurse vor dem Abflug laden, dann offline nutzbar."],
+  ]],
+  ["Unterwegs", [
+    ["map", "Google Maps", "Karten, Öffnungszeiten, Bewertungen",
+     "Antigua, Atitlán, San José, Heredia und Sámara vorher herunterladen."],
+    ["map", "Organic Maps", "Wanderwege und Pfade ohne Netz",
+     "Kein Konto, keine Werbung. Zeigt Pfade, die bei Google fehlen."],
+    ["map", "AllTrails", "Wanderungen mit Länge und Höhenmetern",
+     "Offline-Karten kosten. Zum Planen zu Hause gut."],
+    ["map", "Uber", "Fahrdienst mit Preis im Voraus",
+     "San José, Heredia, Alajuela, Cartago, Liberia. In Guatemala nur die Hauptstadt."],
+    ["map", "DiDi", "Alternative zu Uber im Zentraltal",
+     "Oft etwas günstiger, aber weniger Fahrer."],
+    ["map", "Moovit", "Busverbindungen im Grossraum San José",
+     "Zeigt Linien und Haltestellen, die sonst nirgends stehen."],
+    ["map", "Waze", "Fahrzeiten und Strassenlage",
+     "In Costa Rica verbreiteter als Google Maps."],
+    ["map", "Rome2Rio", "Wie komme ich von A nach B, mit Preisen",
+     "Gut für die grobe Planung, die Zeiten stimmen nicht immer."],
+  ]],
+  ["Unterkunft und Touren", [
+    ["bed", "Hostelworld", "Betten, Bewertungen, Chat",
+     "Nur Bewertungen der letzten drei Monate lesen."],
+    ["bed", "Booking", "Zimmer mit Gratisstornierung",
+     "Die Bestätigung gilt als Unterkunftsnachweis bei der Einreise."],
+    ["bed", "Worldpackers, Workaway", "Kost und Logis gegen Mitarbeit",
+     "Jahresbeitrag. Erst zahlen, wenn der Dezember feststeht."],
+    ["star", "GetYourGuide", "Touren vergleichen und buchen",
+     "Im Hostel ist dasselbe oft günstiger – zuerst fragen."],
+    ["map", "Explore Costa Rica", "Touren, Strände, Wasserfälle",
+     "Nach Provinzen sortiert. Verzeichnis der Anbieter, kein neutraler Führer."],
+  ]],
+  ["Sicherheit und Behörden", [
+    ["shield", "Emergencias 9-1-1 CR", "Notruf Costa Rica",
+     "Sendet den Standort automatisch mit, auch stumm. Vorher öffnen und Standort freigeben."],
+    ["shield", "Travel Admin", "Reise beim EDA registrieren",
+     "Damit weiss das EDA im Krisenfall, dass du im Land bist."],
+    ["map", "SINAC", "Eintritt für die Nationalparks",
+     "Viele Parks lassen niemanden ohne Voranmeldung hinein."],
+    ["phone", "Wo ist?", "Geräte orten und sperren",
+     "Auf beiden iPhones einrichten. Niemals löschen, solange ein Fall läuft."],
+    ["phone", "yallo", "Dein Abo: Roaming und Datenpakete",
+     "Anmeldung vor der Abreise testen."],
+    ["phone", "Saily, Airalo, Nomad", "eSIM als Rückfallebene",
+     "Konto jetzt anlegen, Paket erst bei Bedarf. Ohne Netz geht keine Neuanmeldung."],
+    ["shield", "VPN", "Schützt dich im offenen WLAN",
+     "Proton VPN gratis, NordVPN oder Surfshark bezahlt. Immer einschalten, bevor du im Hostel-WLAN Banking machst."],
+  ]],
+  ["Alltag", [
+    ["phone", "WhatsApp", "Hostels, Schule, Fahrer, Familie",
+     "In Mittelamerika läuft fast alles darüber, auch Buchungen."],
+    ["phone", "Google Übersetzer", "Spanisch, auch über die Kamera",
+     "Sprachpaket herunterladen, sonst geht nichts ohne Netz."],
+    ["book", "Duolingo, Birlingo", "Spanisch üben",
+     "Für Busfahrten und Wartezeiten. Birlingo ist alltagsnäher."],
+    ["star", "Merlin Bird ID", "Vögel am Gesang erkennen",
+     "Regionspaket Mittelamerika laden, dann offline. Kostenlos, ohne Werbung."],
+    ["book", "Fotos in die iCloud", "Automatische Sicherung",
+     "Nur über WLAN sichern lassen, sonst ist das Datenpaket weg."],
+  ]],
+];
+
 const BUCHEN = [
   ["Unterkunft", [
+    { label: "Booking.com", url: "https://www.booking.com/", hinweis: "Zimmer mit Gratisstornierung – gilt als Unterkunftsnachweis" },
     { label: "Hostelworld – Hostels weltweit", url: "https://www.hostelworld.com/de/", hinweis: "Preise, freie Betten, Bewertungen" },
     { label: "Hostels in Antigua", url: "https://www.hostelworld.com/hostels/north-america/guatemala/antigua/" },
     { label: "Hostels in Panajachel", url: "https://www.hostelworld.com/hostels/north-america/guatemala/panajachel/" },
@@ -1103,10 +1397,20 @@ const BUCHEN = [
     { label: "Reise beim EDA registrieren", url: "https://www.eda.admin.ch/de/travel-admin-app" },
   ]],
   ["Nachschlagen", [
+    { label: "Caroline Rose – Alleinreisen als Frau", url: "https://carolinerosetravel.com/solo-travel/",
+      hinweis: "Blog: Sicherheit, Leute treffen, allein wandern" },
+    { label: "Karodelmar – La Fortuna", url: "https://karodelmar.com/la-fortuna-geheimtipps-sehenswuerdigkeiten/",
+      hinweis: "Sehenswürdigkeiten, Preise, Tagesplanung" },
+    { label: "Karodelmar – Atitlán und Acatenango", url: "https://karodelmar.com/lake-atitlan-schoenste-orte/",
+      hinweis: "Guatemala: Orte am See, Tourbericht" },
     { label: "Visit Costa Rica – Tourismusportal", url: "https://de.visitcostarica.com/", hinweis: "Auf Deutsch" },
     { label: "Reisehinweise EDA Guatemala", url: "https://www.eda.admin.ch/eda/de/home/vertretungen-und-reisehinweise/guatemala.html" },
     { label: "Reisehinweise EDA Costa Rica", url: "https://www.eda.admin.ch/eda/de/home/vertretungen-und-reisehinweise/costa-rica.html" },
     { label: "Yallo Kundenkonto", url: "https://yallo.ch" },
+    { label: "Airalo – eSIM", url: "https://www.airalo.com/", hinweis: "Konto vorher anlegen, Paket bei Bedarf" },
+    { label: "Nomad – eSIM", url: "https://www.getnomad.app/", hinweis: "Oft günstiger für Mittelamerika" },
+    { label: "SINAC – Nationalparks Costa Rica", url: "https://www.sinac.go.cr/", hinweis: "Eintritt vorab buchen" },
+    { label: "Proton VPN", url: "https://protonvpn.com/", hinweis: "Gratis, ohne Datenlimit" },
   ]],
 ];
 
@@ -1178,6 +1482,16 @@ const DOKUMENTE = [
     id: "sicherheit", titel: "Sicherheit unterwegs",
     kurz: "Ernstfall, Dorm, Bus, abends allein, digital",
     bloecke: [
+      ["** Als Frau unterwegs", [
+        "<b>Nie nachts allein an den Strand.</b> In Costa Rica wird es ganzjährig gegen 18 Uhr dunkel, die Strände sind dann unbeleuchtet und leer.",
+        "<b>Vor 18 Uhr ankommen.</b> Fahrten so legen, dass du bei Tageslicht da bist – Busbahnhöfe in San José sind abends ungemütlich.",
+        "<b>Im Bus alles Wichtige bei dir</b>: Pass, Geld, Handy in den Tagesrucksack zu deinen Füssen, nie ins Gepäckfach.",
+        "<b>Kein Handy in der Hand auf der Strasse.</b> Zum Navigieren in ein Geschäft treten oder mit dem Rücken zur Wand stehen.",
+        "<b>Taxis:</b> rote Taxis mit gelbem Dreieck oder Uber – nie ein Auto von der Strasse.",
+        "<b>Geld nur an Automaten in Bankfilialen</b> abheben, nicht auf der Strasse.",
+        "<b>Entlegene Nationalparks nur mit Guide</b> – Corcovado etwa. In Manuel Antonio genügt der Weg allein.",
+      ]],
+
       ["Die ersten Minuten im Ernstfall", [
         { sprung: "notfall", param: "ablauf", label: "Vollständig im Notfall-Bereich" },
         "Reihenfolge vor Vollständigkeit: erst stoppen, was Geld kostet, dann dokumentieren, dann ersetzen.",
@@ -1219,11 +1533,19 @@ const DOKUMENTE = [
         "Ankunftsorte erst posten, wenn der Ort wieder verlassen ist.",
         "App-Sperre für Revolut – sonst hat jeder mit deinem entsperrten Handy vollen Kontozugriff.",
       ]],
+
+      ["Sicher Leute kennenlernen", [
+        "<b>Sámara</b> gilt als ruhig und freundlich – ein guter erster Ort allein.",
+        "<b>Santa Teresa und Puerto Viejo</b>: viele Alleinreisende, Surf- und Yogaszene, schnell Anschluss.",
+        "<b>La Fortuna</b>: Vulkan, Hängebrücken, gut ausgebaute Infrastruktur.",
+        "<b>Mehr Vorsicht</b> in San José nachts sowie in Limón und Jacó – vor allem Taschendiebstahl.",
+        "In Hostels an Gruppenaktivitäten teilnehmen, das ist der einfachste Weg zu Reisebekanntschaften.",
+      ]],
     ],
   },
   {
     id: "versicherung", titel: "Versicherungen",
-    kurz: "Wer zahlt was, krank oder verletzt, Karten sperren",
+    kurz: "Wer zahlt was, krank oder verletzt",
     bloecke: [
       ["Karten sperren", [
         "<b>Zuerst selbst sperren – beide in der App:</b> Revolut einfrieren, BKB in „one“. Gratis und in Sekunden. Telefonisch nur ohne Internet.",
@@ -1438,6 +1760,10 @@ const DOKUMENTE = [
         "<b>Peru fällt heraus</b> (Gruppe B). Dort nach der Landung eine Daten-eSIM kaufen, etwa über Airalo – 5 bis 10 Franken für einige Gigabyte.",
         "Vor dem Abflug: Datenroaming aktivieren und die Ländergruppe im Kundenkonto prüfen.",
         { label: "Yallo Kundenkonto", url: "https://yallo.ch" },
+    { label: "Airalo – eSIM", url: "https://www.airalo.com/", hinweis: "Konto vorher anlegen, Paket bei Bedarf" },
+    { label: "Nomad – eSIM", url: "https://www.getnomad.app/", hinweis: "Oft günstiger für Mittelamerika" },
+    { label: "SINAC – Nationalparks Costa Rica", url: "https://www.sinac.go.cr/", hinweis: "Eintritt vorab buchen" },
+    { label: "Proton VPN", url: "https://protonvpn.com/", hinweis: "Gratis, ohne Datenlimit" },
       ]],
       ["Dein Setup", [
         { begriff: "Hauptgerät mit eSIM", text: "Eine eSIM kann niemand herausnehmen. Das Gerät bleibt eingebucht und ortbar, solange es eingeschaltet ist." },
@@ -1500,6 +1826,85 @@ const DOKUMENTE = [
     ],
   },
   {
+    id: "apps", titel: "Apps",
+    kurz: "Revolut, Maps, Uber, WhatsApp",
+    bloecke: [
+      ["!! Vor dem Abflug installieren und einmal öffnen", [
+        "Jede App braucht ein Konto und einen Test, solange du noch WLAN und Zeit hast.",
+        "<b>Alle Karten offline laden</b> – Guatemala, Costa Rica, allenfalls Peru.",
+      ]],
+
+      ["Geld", [
+        "<b>Revolut</b> – deine Alltagskarte: Konten, Wechselkurs, Sperren."
+        + "<span class='appnote'>App-Sperre einschalten. Wer dein entsperrtes Handy hat, hat sonst Zugriff aufs Konto.</span>",
+        "<b>BKB one</b> – die Reservekarte sperren und wieder freigeben."
+        + "<span class='appnote'>Gratis und in Sekunden – deshalb immer zuerst hier sperren, nicht anrufen.</span>",
+        "<b>Währungsrechner</b> – Quetzal, Colón und Sol umrechnen."
+        + "<span class='appnote'>Kurse vor dem Abflug laden, dann läuft es offline.</span>",
+      ]],
+
+      ["Unterwegs", [
+        "<b>Google Maps</b> – Karten, Öffnungszeiten, Bewertungen."
+        + "<span class='appnote'>Gebiete vorher herunterladen: Antigua, Atitlán, San José, Heredia, Sámara.</span>",
+        "<b>Organic Maps</b> – Wanderwege und Pfade, die bei Google fehlen."
+        + "<span class='appnote'>Kein Konto, keine Werbung, funktioniert ganz ohne Netz.</span>",
+        "<b>AllTrails</b> – Wanderungen mit Länge, Höhenmetern und Berichten."
+        + "<span class='appnote'>Offline-Karten kosten. Zum Planen zu Hause gut, unterwegs Organic Maps daneben.</span>",
+        "<b>Uber</b> – Fahrdienst mit Preis im Voraus."
+        + "<span class='appnote'>Costa Rica: San José, Heredia, Alajuela, Cartago, Liberia. Guatemala nur in der Hauptstadt. Am Flughafen SJO keine offizielle Abholzone.</span>",
+        "<b>DiDi</b> – Alternative zu Uber im Zentraltal."
+        + "<span class='appnote'>Oft etwas günstiger, aber weniger Fahrer und längere Wartezeit.</span>",
+        "<b>Moovit</b> – Busverbindungen im Grossraum San José."
+        + "<span class='appnote'>Zeigt Linien und Haltestellen, die sonst nirgends stehen.</span>",
+        "<b>Waze</b> – Fahrzeiten und Strassenlage."
+        + "<span class='appnote'>In Costa Rica verbreiteter als Google Maps, auch für Busfahrten nützlich.</span>",
+        "<b>Rome2Rio</b> – wie komme ich von A nach B, mit Preisen."
+        + "<span class='appnote'>Gut für die grobe Planung, die Zeiten stimmen nicht immer.</span>",
+      ]],
+
+      ["Unterkunft und Touren", [
+        "<b>Hostelworld</b> – Betten, Bewertungen, Chat mit anderen Reisenden."
+        + "<span class='appnote'>Bewertungen der letzten drei Monate lesen, ältere sagen wenig.</span>",
+        "<b>Booking</b> – Zimmer und Hostels, oft mit Gratisstornierung."
+        + "<span class='appnote'>Die Bestätigung gilt als Unterkunftsnachweis bei der Einreise.</span>",
+        "<b>Worldpackers oder Workaway</b> – Kost und Logis gegen Mitarbeit."
+        + "<span class='appnote'>Beide kosten einen Jahresbeitrag. Erst zahlen, wenn Dezember feststeht.</span>",
+        "<b>GetYourGuide</b> – Touren vergleichen und buchen."
+        + "<span class='appnote'>Vor Ort im Hostel ist dasselbe oft günstiger – zuerst fragen.</span>",
+        "<b>Explore Costa Rica</b> – lokale App für Touren, Strände und Wasserfälle."
+        + "<span class='appnote'>Nach Provinzen sortiert. Ein Verzeichnis der Anbieter, kein neutraler Führer.</span>",
+      ]],
+
+      ["Sicherheit und Behörden", [
+        "<b>Emergencias 9-1-1 CR</b> – die offizielle Notruf-App Costa Ricas."
+        + "<span class='appnote'>Sendet deinen Standort automatisch mit, auch ohne zu sprechen. Vorher öffnen und Standort freigeben.</span>",
+        "<b>Travel Admin (EDA)</b> – Reise registrieren, Reisehinweise, Botschaften."
+        + "<span class='appnote'>Registrierung heisst: Das EDA weiss im Krisenfall, dass du im Land bist.</span>",
+        "<b>SINAC</b> – Eintritt für die Nationalparks in Costa Rica."
+        + "<span class='appnote'>Viele Parks lassen niemanden ohne Voranmeldung hinein.</span>",
+        "<b>Wo ist?</b> – Geräte orten und sperren."
+        + "<span class='appnote'>Auf beiden iPhones einrichten und einmal testen. Niemals löschen, solange ein Fall läuft.</span>",
+        "<b>yallo</b> – dein Abo: Roaming, Datenpakete, Rechnungen."
+        + "<span class='appnote'>Anmeldung vor der Abreise testen, solange ihr beisammen seid.</span>",
+        "<b>Saily, Airalo oder Nomad</b> – eSIM als Rückfallebene."
+        + "<span class='appnote'>Konto jetzt anlegen, Paket erst bei Bedarf kaufen. Ohne Internet lässt sich kein Konto mehr eröffnen.</span>",
+      ]],
+
+      ["Alltag", [
+        "<b>WhatsApp</b> – Hostels, Schule, Fahrer und Familie."
+        + "<span class='appnote'>In Mittelamerika läuft fast alles darüber, auch Buchungen.</span>",
+        "<b>Google Übersetzer</b> – Spanisch, auch über die Kamera."
+        + "<span class='appnote'>Sprachpaket herunterladen, sonst geht nichts ohne Netz.</span>",
+        "<b>Duolingo oder Birlingo</b> – Spanisch üben."
+        + "<span class='appnote'>Für Busfahrten und Wartezeiten. Birlingo ist alltagsnäher.</span>",
+        "<b>Merlin Bird ID</b> – erkennt Vögel am Gesang und am Bild."
+        + "<span class='appnote'>Regionspaket Mittelamerika vorher laden, dann offline nutzbar. Kostenlos, ohne Werbung.</span>",
+        "<b>Fotos in die iCloud</b> – automatische Sicherung."
+        + "<span class='appnote'>Nur über WLAN sichern lassen, sonst ist das Datenpaket weg.</span>",
+      ]],
+    ],
+  },
+  {
     id: "ablage", titel: "Deine Ablage",
     kurz: "Was geteilt ist und was du selbst ablegst",
     bloecke: [
@@ -1546,12 +1951,12 @@ const DOKUMENTE = [
 const STATIONEN = [
   {
     id: "hinflug", nummer: "1", kurzname: "Hinflug", titel: "Hinflug nach Guatemala", land: "guatemala",
-    zeit: "Ankunft 28. September", kurz: "One-Way, mit Nachweisen im Gepäck",
+    zeit: "Ankunft 29. September", kurz: "One-Way, mit Nachweisen im Gepäck",
     abschnitte: [
       ["Der Flug", [
         ["eigen", "Was gebucht ist", [
           "One-Way Schweiz → Guatemala-Stadt, 23 kg Aufgabegepäck.",
-          "<b>Geplante Ankunft: 28. September 2026</b>, drei Tage vor dem Start der Tour.",
+          "<b>Geplante Ankunft: 29. September 2026</b>, zwei Tage vor dem Start der Tour.",
           "Landung vor 18 Uhr – damit der Transfer bei Tageslicht fährt.",
           "Buchungsbestätigung offline auf dem Handy und ausgedruckt.",
         ]],
@@ -1583,7 +1988,7 @@ const STATIONEN = [
   },
   {
     id: "ankunft-gt", nummer: "2", kurzname: "Ankunft", titel: "Ankunft Guatemala",
-    land: "guatemala", zeit: "28. September", kurz: "Vom Flughafen bis ins Hostel",
+    land: "guatemala", zeit: "29. September", kurz: "Vom Flughafen bis ins Hotel",
     abschnitte: [
       ["Am Flughafen", [
         ["eigen", "Schritt für Schritt", [
@@ -1604,9 +2009,8 @@ const STATIONEN = [
       ["Unterkunft", [
         ["hostels", "guatemala"],
         ["eigen", "Wo du zuerst schläfst", [
-          "<b>Casa Florencia Hotel</b>, 7a Avenida Norte 100 – dort startet die Tour am 1. Oktober.",
-          "Die Nächte vom 28. bis 30. September im <b>Maya Papaya</b>, 1a Calle Poniente 20.",
-          "<b>Zwischen beiden liegen 300 Meter</b>, rund fünf Minuten zu Fuss.",
+          "<b>Casa Florencia Hotel</b>, 7a Avenida Norte 100 – ab dem 29. September, dort startet auch die Tour am 1. Oktober.",
+          "<b>Ein Haus für alle Nächte</b> – kein Wechsel vor dem Tourstart.",
           "Die Adresse wird bei der Einreise verlangt – vor dem Anstehen bereithalten.",
         ]],
         ["eigen", "Die ersten Handgriffe", [
@@ -1738,9 +2142,8 @@ const STATIONEN = [
       ["Einreise", [["land", "costarica", "Einreise"]]],
       ["Im Quartier", [
         ["eigen", "Wo du zuerst schläfst", [
-          "<b>Casa Florencia Hotel</b>, 7a Avenida Norte 100 – dort startet die Tour am 1. Oktober.",
-          "Die Nächte vom 28. bis 30. September im <b>Maya Papaya</b>, 1a Calle Poniente 20.",
-          "<b>Zwischen beiden liegen 300 Meter</b>, rund fünf Minuten zu Fuss.",
+          "<b>Casa Florencia Hotel</b>, 7a Avenida Norte 100 – ab dem 29. September, dort startet auch die Tour am 1. Oktober.",
+          "<b>Ein Haus für alle Nächte</b> – kein Wechsel vor dem Tourstart.",
           "Die Adresse wird bei der Einreise verlangt – vor dem Anstehen bereithalten.",
         ]],
         ["eigen", "Die ersten Handgriffe", [
@@ -1986,17 +2389,17 @@ const LAENDER = {
       {
         name: "Casa Florencia Hotel", ort: "7a Avenida Norte 100, Antigua",
         tel: "+502 7832 0261", web: "http://www.cflorencia.net/", note: "4.5 · 102 Bewertungen",
-        tipp: "Starthotel der Intrepid-Tour",
+        tipp: "Gebucht ab 29. September",
         gut: ["Hier beginnt die Rundreise – das Willkommenstreffen findet im Hotel statt",
               "Ruhig, etwas nördlich des Zentrums, sicheres Tor"],
         schlecht: ["Gäste berichten von fehlendem Warmwasser und dunklen Zimmern im Erdgeschoss",
                    "Kein Frühstück im Haus",
-                   "<b>Nur 300 m vom Maya Papaya entfernt – fünf Minuten zu Fuss.</b> Die Nächte davor lohnen sich dort eher"],
+                   "Kein Dorm – dafür ein eigenes Zimmer schon am Ankunftstag"],
       },
       {
         name: "Maya Papaya", ort: "1a Calle Poniente 20, Antigua", tel: "+502 5825 7586",
         web: "https://www.hostelworld.com/hostels/p/278452/maya-papaya/", note: "4.7 · 446 Bewertungen",
-        tipp: "1. Wahl – für die Ankunft",
+        tipp: "Falls du länger bleibst",
         gut: ["Echtes Frauen-Dorm mit Vorhang vor dem Bett, Licht, Steckdose und Schliessfach",
               "Rezeption rund um die Uhr besetzt – eine Ankunft um 00:30 ist dort Normalfall",
               "Arbeitet mit offiziellen Fahrern zusammen: Transfer mit Namensschild, 40–45 USD",
@@ -2099,18 +2502,14 @@ const LAENDER = {
       },
     },
     empfehlung: {
-      titel: "Für die ersten Nächte: Maya Papaya",
-      text: "Drei Gründe. Erstens ein echtes Frauen-Dorm mit Vorhang vor dem Bett – "
-        + "Privatsphäre, nicht nur ein Schild an der Tür. Zweitens ist die Ankunft um 00:30 dort "
-        + "unproblematisch: Die Rezeption ist durchgehend besetzt und das Haus arbeitet mit "
-        + "offiziellen Fahrern zusammen. Drittens die Mischung – tagsüber sozial genug, um Leute "
-        + "fürs Acatenango-Trekking kennenzulernen, ab 22 Uhr aber Ruhe.\n\n"
-        + "Von Socialtel Antigua, dem früheren Selina, würde ich für die ersten Nächte abraten: "
-        + "Nach einem so langen Flug nachts vor verschlossener Tür zu stehen ist ein vermeidbares "
-        + "Risiko.\n\n"
-        + "Wenn du länger bleibst, ist The Purpose die zweite Wahl – Frauen-Dorm, ruhige Nächte "
-        + "und Gepäckdepot während Acatenango. Die Tour selbst kannst du unabhängig vom Hostel "
-        + "bei Tropicana buchen.",
+      titel: "Gebucht: Casa Florencia ab 29. September",
+      text: "Du bleibst von der Ankunft bis zum Tourstart im selben Haus – kein Wechsel, "
+        + "kein zweites Einchecken. Das Willkommenstreffen der Intrepid-Tour findet am "
+        + "1. Oktober dort statt.\n\n"
+        + "Die anderen Häuser stehen für die Wochen danach, wenn du allein unterwegs bist. "
+        + "Maya Papaya ist dann die erste Wahl: echtes Frauen-Dorm mit Vorhang vor dem Bett, "
+        + "Rezeption rund um die Uhr, tagsüber sozial genug, um Leute fürs Acatenango-Trekking "
+        + "kennenzulernen.",
     },
   },
   costarica: {
@@ -2148,6 +2547,26 @@ const LAENDER = {
         { label: "Karten aller Regionen", url: "https://de.visitcostarica.com/where-to-go/costa-rica-maps" },
         { label: "Karibikküste – Region im Detail", url: "https://de.visitcostarica.com/where-to-go/caribbean" },
       ]],
+      ["La Fortuna – Vulkan Arenal", [
+        "<b>Anreise:</b> Bus ab San José, Terminal 7-10, rund vier Stunden. Die günstigste Art hinzukommen.",
+        "<b>Zwei bis drei Tage</b> genügen für das Wichtigste.",
+        "<b>La Fortuna Wasserfall</b> – 480 Stufen hinunter, Baden möglich. Eintritt 18 USD.",
+        "<b>Místico Hängebrücken</b> – früh am Morgen, dann ist es ruhig. Eintritt 35 USD.",
+        "<b>Nationalpark Arenal</b> – Lavafelder und Aussicht auf den Vulkan. Eintritt 18 USD.",
+        "<b>Rio Celeste im Tenorio-Nationalpark</b> – türkisblauer Fluss, Tagesausflug, 12 USD.",
+        "<b>Thermalquellen:</b> El Choyín ist gratis und natürlich. Die Resorts kosten 12 bis 80 USD.",
+        "<b>November:</b> kurze Schauer am Nachmittag, Vormittage meist trocken.",
+      ]],
+
+      ["Apps für Costa Rica", [
+        "<b>Uber</b> – in San José und Heredia statt Strassentaxi. Preis steht vorher fest.",
+        "<b>WhatsApp</b> – Hostels, Schule und Vermieter antworten fast nur darüber.",
+        "<b>Moovit</b> – Busverbindungen im Grossraum San José.",
+        "<b>Waze</b> – im Land verbreiteter als Google Maps.",
+        "<b>Maps.me oder Google Maps offline</b> – Karten vor der Abreise herunterladen.",
+        "<b>SINAC</b> – Eintritt für die Nationalparks vorab buchen, sonst kein Zutritt.",
+        "<b>Hostelworld und Booking</b> – Betten kurzfristig, mit Gratisstornierung.",
+      ]],
       ["Unterkunft gegen Mitarbeit", [
         "Worldpackers, Workaway und HelpX – Hostel-Volunteering ist die grösste Kategorie: Rezeption, Reinigung, Social Media, Aktivitäten.",
         "Typische Orte: Puerto Viejo, Santa Teresa, Tamarindo, La Fortuna, San José.",
@@ -2169,6 +2588,18 @@ const LAENDER = {
       { name: "Woodstock Hostel", ort: "Sámara, Guanacaste", tel: "+506 7049 6706" },
       { name: "Hotel Hojarascas", ort: "Av. 8, Heredia", tel: "+506 2260 7781" },
       { name: "Costa Rica Backpackers", ort: "Avenida 6, San José", tel: "+506 2221 6191" },
+      { name: "Viajero San José", ort: "Barrio Otoya, Avenida 9, San José",
+        tel: "+506 8896 6265", web: "https://www.viajerohostels.com/en/destinations/costa-rica",
+        note: "Für den ersten Abend: sicheres Quartier, viele Reisende." },
+      { name: "Nativus Art Hostel", ort: "Avenida 5, Paseo Colón, San José",
+        tel: "+506 8777 7600", web: "https://www.nativusarthostelcr.com/",
+        note: "Ruhig, stilvoll, sauber." },
+      { name: "Casa Pandora Hostel", ort: "Barrio Escalante, Calle 33, San José",
+        tel: "+506 8579 5000", web: "https://hostalcasapandora.com/",
+        note: "Nur für Frauen." },
+      { name: "Morada Kampos", ort: "Santa Bárbara, Heredia",
+        tel: "+506 8379 5866",
+        note: "Familiär und ruhig, nahe am Flughafen. Buchung über Booking." },
     ],
     empfehlung: {
       titel: "Noch nicht geprüft",
@@ -2324,8 +2755,9 @@ const TODO_ALLE = [
   ["Sprachschule buchen", "20. Sep", "Sophie", false],
   ["Schuladresse notieren", "20. Sep", "Sophie", false],
   ["Bestätigung 1. Nacht sichern", "26. Sep", "Sophie", false],
-  ["1. Nacht Costa Rica buchen", "20. Okt", "Sophie", false],
+  ["Erste Tage Costa Rica buchen", "20. Okt", "Sophie", false],
   ["Reiseerklärung Guatemala", "20. Sep", "Sophie", false],
+  ["Alle Reise-Apps installieren und testen", "20. Sep", "Sophie", false],
   ["Notfallblatt ausfüllen", "20. Sep", "beide", false],
   ["Kurzdossier drucken", "20. Sep", "Markus", false],
   ["Offline-Karten laden", "26. Sep", "Sophie", false],
@@ -2339,7 +2771,15 @@ const TODO_ALLE = [
   ["Scans in die iCloud", "20. Sep", "beide", false],
   ["Ordner offline setzen", "26. Sep", "Sophie", false],
   ["Rucksack wiegen", "26. Sep", "Sophie", false],
-  ["Reiseerklärung Ausreise GT", "vor Weiterflug", "Sophie", false],
+  ["Letzte Kontrolle – Liste Vor dem Abflugtag", "27. Sep", "Sophie", false],
+  ["Reiseerklärung Ausreise GT", "20. Okt", "Sophie", false],
+  ["Unterkünfte für Oktober buchen", "10. Okt", "Sophie", false],
+  ["Work-Exchange für Dezember suchen", "25. Okt", "Sophie", false],
+  ["Sprachschule Restzahlung", "5. Nov", "Sophie", false],
+  ["Peru entscheiden", "5. Dez", "beide", false],
+  ["Höhe vorbereiten – Sorojchi, 24 h Ruhe", "20. Dez", "Sophie", false],
+  ["Rückflug buchen", "8. Jan", "Sophie", false],
+  ["Restbargeld ausgeben, Stempel prüfen", "1. Feb", "Sophie", false],
 ];
 
 const NACH_DATUM = [
@@ -2424,7 +2864,7 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "297 · 31.08.2026";
+const VERSION = "391 · 31.08.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
@@ -2449,7 +2889,7 @@ const el = (tag, attrs = {}, ...kinder) => {
 
 const rein = (t) => String(t).replace(/<[^>]+>/g, "");
 /* Steuerzeichen aus Blocktiteln: "## " Gruppe, "!! " Zusatzinformation. */
-const ohneMarker = (t) => String(t).replace(/^(##|!!) /, "");
+const ohneMarker = (t) => String(t).replace(/^(##|!!|\*\*) /, "");
 
 /* Zerlegt "<b>Titel:</b> Erklärung" in zwei Zeilen – alle Listen gleich aufgebaut. */
 const zerlege = (p) => {
@@ -2477,6 +2917,12 @@ const ICON = {
   edit: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
   chevron: '<path d="m6 9 6 6 6-6"/>',
   home: '<path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>',
+  kreuz: '<rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M12 10v5M9.5 12.5h5"/>',
+  ordner: '<path d="M3 7.5a2 2 0 0 1 2-2h4l2 2.5h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+  ticket: '<path d="M4 8.5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/><path d="M13 7v11"/>',
+  globus: '<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.6 2.4 14.4 0 17M12 3.5c-2.4 2.6-2.4 14.4 0 17"/>',
+  smartphone: '<rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18.5h2"/>',
+  grid: '<rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/>',
   wallet: '<path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h15a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5"/><path d="M17 13h.01"/>',
   map: '<path d="m9 4-6 3v13l6-3 6 3 6-3V4l-6 3z"/><path d="M9 4v13"/><path d="M15 7v13"/>',
   book: '<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22z"/><path d="M20 16H6.5a2.5 2.5 0 0 0-2.5 2.5"/>',
@@ -2508,10 +2954,10 @@ const karte = (inhalt, ton = "weiss") =>
   el("div", { class: "karte " + ton }, inhalt);
 
 const kopf = (titel, unter, zurueck, zurueckText = "Übersicht") =>
-  el("div", { class: "kopf" },
+  el("div", { class: "kopf" + (titel ? "" : " ohnetitel") },
     zurueck ? el("button", { class: "zurueck", onclick: zurueck },
       svg("back", 17, "currentColor", 2), zurueckText) : null,
-    el("h1", {}, titel),
+    titel ? el("h1", {}, titel) : null,
     unter ? el("p", { class: "unter" }, unter) : null);
 
 const anrufKarte = ({ label, nr, zeige, hint, ton = "weiss", nummerZuerst = false }) => {
@@ -2550,7 +2996,7 @@ const anrufZeile = ({ label, nr, speicherKey, hinweis }) => {
         el("div", { class: "klein" }, label),
         el("div", { class: "aktionswert" }, zeige),
         hinweis ? el("div", { class: "hinweis" }, hinweis) : null),
-      el("span", { class: "rundknopf klein" }, svg("phone", 16, "#fff", 2.2))));
+      el("span", { class: "rundknopf klein" }, svg("phone", 14, "#fff", 2.2))));
 };
 
 /* Zeichen für „braucht Internet“ – steht nur bei externen Adressen. */
@@ -2592,6 +3038,7 @@ const bloeckeMit = (bloecke) => {
     if (t.startsWith("## ")) { neuesBand(t.slice(3)); return; }
     const block = faltblock(t, p, false);
     /* Rot und Gelb stehen für sich, alles andere sammelt sich in seiner weissen Fläche. */
+    if (t.startsWith("** ")) { teile.push(block); band = null; return; }
     if (t.startsWith("!! ") || istDringend(t)) { teile.push(block); band = null; return; }
     if (!band) neuesBand(null);
     band.appendChild(block);
@@ -2612,13 +3059,18 @@ const faltblock = (titel, punkte, offenStart = false) => {
   const pfeil = el("span", { class: "faltpfeil" + (offenStart ? " auf" : "") },
     svg("chevron", 18, "#B65A3C", 2.2));
   const zusatz = titel.startsWith("!! ");
-  const reinTitel = zusatz ? titel.slice(3) : titel;
+  const reinTitel = ohneMarker(titel);
   const knopf = el("button", { class: "faltkopf", onclick: () => {
     const auf = koerper.classList.toggle("offen");
     pfeil.classList.toggle("auf", auf);
-  } }, el("span", { class: "blocktitel ohneabstand" }, reinTitel), pfeil);
+  } },
+    istDringend(reinTitel)
+      ? el("span", { class: "dringendikon" }, svg("wallet", 16, "#B65A3C", 1.9))
+      : null,
+    el("span", { class: "blocktitel ohneabstand" }, reinTitel), pfeil);
   return el("div", { class: "karte faltkarte"
-    + (istDringend(reinTitel) ? " dringend" : "") + (zusatz ? " zusatz" : "") },
+    + (istDringend(reinTitel) ? " dringend" : "") + (zusatz ? " zusatz" : "")
+    + (String(titel).startsWith("** ") ? " frau" : "") },
     knopf, koerper);
 };
 
@@ -3167,7 +3619,7 @@ const seiteSuche = () => {
 
   wrap.appendChild(kopf("Suchen", null, () => gehe(vorSuche)));
   wrap.appendChild(el("div", { class: "suchzeile" },
-    svg("search", 18, "#B65A3C", 2), eingabe));
+    svg("search", 16, "#B65A3C", 1.9), eingabe));
   wrap.appendChild(ergebnis);
   zeichne("");
   setTimeout(() => eingabe.focus(), 60);
@@ -3208,6 +3660,12 @@ const todoTabelle = () => {
      Gruppiert nach diese Woche, nächste Woche, später – sonst sind es zu viele. */
   const stand = hole("haken:alle", {});
   const box = el("div", { class: "todoliste" });
+  /* Spaltenbeschriftung über der ersten Gruppe. */
+  box.appendChild(el("div", { class: "todospalten" },
+    el("span", {}, ""),
+    el("span", {}, "To-do"),
+    el("span", {}, "Wer"),
+    el("span", { class: "tododatum" }, "Datum")));
 
   const MONATE = { Sep: 8, Okt: 9, Nov: 10, Dez: 11, Jan: 0, Feb: 1, Aug: 7 };
   const heute = new Date();
@@ -3257,10 +3715,20 @@ const todoTabelle = () => {
 
   /* Wochentag davor – "Sa 5. Sep" liest sich schneller als "5. Sep". */
   const TAGE = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
+  /* S für Sophie, MA für Markus, alle für beide – S kursiv. */
+  const KURZ = { Sophie: "S", Markus: "M", beide: "alle" };
+  const leadZeichen = (lead) => {
+    const k = KURZ[lead] || lead;
+    return k === "S" ? el("i", {}, k) : el("span", {}, k);
+  };
+
   const mitTag = (text) => {
     const t = tag(text);
     if (t === 9e9) return text;
-    return TAGE[new Date(t).getDay()] + " " + text;
+    const d = new Date(t);
+    const kurz = d.getDate() + "." + (d.getMonth() + 1) + ".";
+    const vorsatz = /^bis/i.test(text) ? "bis " : "";
+    return vorsatz + TAGE[d.getDay()] + " " + kurz;
   };
 
   const gruppen = [];
@@ -3275,40 +3743,83 @@ const todoTabelle = () => {
     const t = tag(eintrag[1]);
     if (t === 9e9) { ohneDatum.push(eintrag); return; }
     const nr = Math.floor((t - montag.getTime()) / WOCHE);
+    const VOLL = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli",
+                  "August", "September", "Oktober", "November", "Dezember"];
     let titel;
     if (nr <= 0) titel = "Diese Woche";
-    else if (nr === 1) titel = "Nächste Woche";
-    else {
+    else if (nr <= 4) {
       const start = new Date(montag.getTime() + nr * WOCHE);
       titel = "Woche ab " + start.getDate() + ". " + MONATSNAME[start.getMonth()];
+    } else {
+      /* Weiter weg genügt der Monat – sonst zerfällt die Liste in viele Wochen. */
+      const d = new Date(t);
+      titel = VOLL[d.getMonth()];
     }
     finde(titel)[1].push(eintrag);
   });
   if (ohneDatum.length) gruppen.push(["Unterwegs", ohneDatum]);
 
-  gruppen.forEach(([titel, eintraege], i) => {
+  /* Fertige Gruppen verschwinden – die Liste wird kürzer, während man arbeitet.
+     Zuunterst steht, wie viele Gruppen schon erledigt sind. */
+  const fertigeGruppen = gruppen.filter(([, e]) => e.every(([w]) => stand[w]));
+  const offeneGruppen = gruppen.filter(([, e]) => !e.every(([w]) => stand[w]));
+
+  offeneGruppen.forEach(([titel, eintraege], i) => {
     if (!eintraege.length) return;
     const offen = eintraege.filter(([w]) => !stand[w]).length;
-    box.appendChild(el("div", { class: "todokopf" },
+
+    /* Nur die erste Gruppe steht offen – der Rest klappt auf Wunsch auf. */
+    const zeilen = el("div", { class: "todogruppeninhalt" + (i === 0 ? " offen" : "") });
+    const pfeil = el("span", { class: "faltpfeil" + (i === 0 ? " auf" : "") },
+      svg("chevron", 16, "#B65A3C", 2.2));
+    box.appendChild(el("button", { class: "todokopf", onclick: () => {
+      const auf = zeilen.classList.toggle("offen");
+      pfeil.classList.toggle("auf", auf);
+    } },
       el("span", { class: "todogruppe" }, titel),
-      el("span", {}, offen ? offen + " offen" : "fertig")));
-    let vorherTag = null, vorherThema = null;
+      el("span", { class: "todozahl" }, offen ? offen + " offen" : "fertig"),
+      pfeil));
+    box.appendChild(zeilen);
     eintraege.forEach(([was, datum, lead]) => {
       const ab = stand[was];
-      /* Wechselt am selben Tag das Thema, trennt eine feine Linie. */
-      const bruch = vorherTag === datum && vorherThema !== thema(was);
-      vorherTag = datum; vorherThema = thema(was);
-      box.appendChild(el("button", {
-        class: "todozeile" + (ab ? " ab" : "") + (bruch ? " bruch" : ""),
+      zeilen.appendChild(el("button", {
+        class: "todozeile" + (ab ? " ab" : ""),
         onclick: () => { stand[was] = !stand[was]; merke("haken:alle", stand); zeichnen(); },
       },
         el("span", { class: "box klein" + (ab ? " an" : "") },
           ab ? svg("check", 11, "#fff", 3) : null),
         el("span", { class: "todotext", html: was }),
-        el("span", { class: "todolead" }, lead),
+        el("span", { class: "todolead" }, leadZeichen(lead)),
         el("span", { class: "tododatum" }, mitTag(datum))));
     });
   });
+
+  /* Erledigte Gruppen: eine Zeile am Fuss, die sich öffnen lässt. */
+  if (fertigeGruppen.length) {
+    const anzahl = fertigeGruppen.reduce((n, [, e]) => n + e.length, 0);
+    const fertigZeilen = el("div", { class: "todogruppeninhalt" });
+    fertigeGruppen.forEach(([, eintraege]) => {
+      eintraege.forEach(([was, datum, lead]) => {
+        fertigZeilen.appendChild(el("button", {
+          class: "todozeile ab",
+          onclick: () => { delete stand[was]; merke("haken:alle", stand); zeichnen(); },
+        },
+          el("span", { class: "box klein an" }, svg("check", 11, "#fff", 3)),
+          el("span", { class: "todotext", html: was }),
+          el("span", { class: "todolead" }, leadZeichen(lead)),
+          el("span", { class: "tododatum" }, mitTag(datum))));
+      });
+    });
+    const pf = el("span", { class: "faltpfeil" }, svg("chevron", 16, "#8B8175", 2.2));
+    box.appendChild(el("button", { class: "todokopf fertigkopf", onclick: () => {
+      const auf = fertigZeilen.classList.toggle("offen");
+      pf.classList.toggle("auf", auf);
+    } },
+      el("span", { class: "todogruppe" }, "Erledigt"),
+      el("span", { class: "todozahl" }, anzahl + " Aufgaben"),
+      pf));
+    box.appendChild(fertigZeilen);
+  }
   return box;
 };
 
@@ -3317,12 +3828,17 @@ const termineBlock = () => {
   const kopf = el("div", { class: "gruppenzeile" });
   const inhalt = termineKarte((alle) => {
     kopf.innerHTML = "";
-    kopf.appendChild(el("span", { class: "gruppentitel" }, TERMINE_TITEL));
-    kopf.appendChild(el("button", { class: "zuknopf", onclick: () => inhalt.umschalten() },
-      alle ? "nur die nächsten" : "alle " + TERMINE.length));
+    kopf.appendChild(el("span", { class: "gruppentitel klein3" }, "Die nächsten Termine"));
   });
   behaelter.appendChild(kopf);
   behaelter.appendChild(inhalt);
+  /* Wie eine Zeile der Liste selbst – weisse Fläche, Pfeil rechts. */
+  behaelter.appendChild(el("button", {
+    class: "karte allezeile", onclick: () => gehe("heute"),
+  },
+    el("span", { class: "blocktitel ohneabstand" }, "Alle To-dos"),
+    el("span", { class: "faltpfeil pfeilrechts" },
+      svg("chevron", 17, "#B65A3C", 2.2))));
   return behaelter;
 };
 
@@ -3336,10 +3852,17 @@ const termineKarte = (kopfNeu) => {
   const aufgaben = (text) => (Array.isArray(text) ? text : [text]);
   const fertig = ([, titel, text]) => aufgaben(text).every((z) => stand[titel + "|" + z]);
 
+  /* Nach Datum sortiert – "bis 26. Sep" und Ähnliches zählt ab dem genannten Tag. */
+  const sortiert = TERMINE.slice().sort((a, b) => {
+    const x = alsTage(a[0].replace(/^\D+/, ""));
+    const y = alsTage(b[0].replace(/^\D+/, ""));
+    return (x === null ? 9e9 : x) - (y === null ? 9e9 : y);
+  });
+
   const zeichne = () => {
     behaelter.innerHTML = "";
-    const offeneTermine = TERMINE.filter((t) => !fertig(t));
-    const zeigen = alle ? TERMINE : offeneTermine.slice(0, 3);
+    const offeneTermine = sortiert.filter((t) => !fertig(t));
+    const zeigen = alle ? sortiert : offeneTermine.slice(0, 3);
 
     const karteEl = el("div", { class: "karte terminkarte" });
     zeigen.forEach(([datum, titel, text], i) => {
@@ -3401,13 +3924,13 @@ const seiteStart = () => {
         el("button", {
           class: "heldlupe", "aria-label": "Suchen",
           onclick: () => { vorSuche = "start"; seite = "suche"; zeichnen(); window.scrollTo(0, 0); },
-        }, svg("search", 18, "#B65A3C", 2)))),
+        }, svg("search", 16, "#B65A3C", 1.9)))),
 
     el("div", { class: "notfallzeile" },
       el("button", { class: "notfallleiste", onclick: () => gehe("notfall") },
         svg("shield", 19, "#A8322A", 2),
         el("span", { class: "notfallwort" }, "Notfall"),
-        el("span", { class: "rundknopf alarm klein" }, svg("phone", 16, "#fff", 2.2))))), app);
+        el("span", { class: "rundknopf alarm klein" }, svg("phone", 14, "#fff", 2.2))))), app);
 
   return el("div", {},
     wochenende() ? el("div", {},
@@ -3419,7 +3942,7 @@ const seiteStart = () => {
 
     termineBlock(),
 
-    el("p", { class: "version" }, "Fassung " + VERSION));
+    null);
 };
 
 const vorbereitungFertigOben = () => {
@@ -3429,7 +3952,6 @@ const vorbereitungFertigOben = () => {
 
 const seiteHeute = () => {
   const wrap = el("div");
-  wrap.appendChild(kopf("Heute", "Antippen öffnet eine Liste – die Haken bleiben gespeichert.", null));
 
   /* Jede Gruppe kommt in eine eigene weisse Fläche – wie in den Themen. */
   const gruppe = (titel, listen) => {
@@ -3447,48 +3969,32 @@ const seiteHeute = () => {
     const alle = punkte.concat(hole("eigene:" + schluessel, []));
     return alle.every((p) => stand[p]);
   };
-  const vorbereitungFertig = erledigt("vorreise", VOR_REISE) && erledigt("abflug", VOR_ABFLUG);
+  const vorbereitungFertig = erledigt("abflug", VOR_ABFLUG);
 
   /* Die Gesamtliste zuerst: alles auf einen Blick. */
   if (!vorbereitungFertigOben()) {
-    wrap.appendChild(el("div", { class: "gruppentitel abstandoben klein3" }, "Alle To-dos"));
     wrap.appendChild(todoTabelle());
   }
 
-  /* Termine mit Erklärung – dieselbe Liste wie auf der Startseite. */
-  wrap.appendChild(termineBlock());
-
-  if (!vorbereitungFertig) {
-    gruppe("To do vor der Reise", [
-      faltHakenliste("Nach Datum", NACH_DATUM, "nachdatum", true),
-      faltHakenliste("Wochen vorher", VOR_REISE, "vorreise"),
-      faltHakenliste("Am Abflugtag", VOR_ABFLUG, "abflug"),
-    ]);
-  }
-
-  gruppe("To do", [
+  gruppe("Checklisten", [
+    faltHakenliste("Vor dem Abflugtag", VOR_ABFLUG, "abflug"),
     faltHakenliste("→ Ankunft Hostel", ANKUNFT, "ankunft", true),
     faltHakenliste("← Hostel verlassen", VOR_DER_TOUR, "tour:vorher", true),
     faltHakenliste("Tour", VOR_TOUR, "tour:tour", true),
     faltHakenliste("Ortswechsel", ORTSWECHSEL, "ortswechsel", true),
     faltHakenliste("Wochenende", WOCHE, "woche", true, WOCHE_WICHTIG),
+    faltHakenliste("Rückkehr", RUECKKEHR, "rueckkehr"),
   ]);
 
-  gruppe("Packordnung", [
-    faltHakenliste("Inland", PACK_INLAND, "pack:inland", true),
-    faltHakenliste("Flug", PACK_FLUG, "pack:flug", true),
-  ]);
-
-  gruppe("Gepäckaufstellung", [
-    ...PACKLISTE.map(([t, p]) => faltHakenliste(t, p, "pack:" + t)),
+  gruppe("Packen", [
+    faltHakenliste("Packordnung Flug", PACK_FLUG, "pack:flug", true),
+    faltHakenliste("Packordnung Bus", PACK_INLAND, "pack:inland", true),
     faltHakenliste("Tagesrucksack", TAGESRUCKSACK, "tour:rucksack", true),
+    ...PACKLISTE.map(([t, p]) => faltHakenliste(t, p, "pack:" + t)),
   ]);
 
-  gruppe("Nach der Reise", [faltHakenliste("Rückkehr", RUECKKEHR, "rueckkehr")]);
-
-  if (vorbereitungFertig) {
+  if (false) {
     gruppe("Erledigt vor der Reise", [
-      faltHakenliste("Wochen vorher", VOR_REISE, "vorreise"),
       faltHakenliste("Am Abflugtag", VOR_ABFLUG, "abflug"),
     ]);
   }
@@ -3757,8 +4263,8 @@ const seiteNotfall = () => {
 
 /* Dieselbe Reihenfolge und Nummerierung wie die Register im Dossier. */
 const WISSEN_REIHE = [
-  ["01", "sicherheit"], ["02", "gesundheit"], ["05", "ablage"],
-  ["06", "fluege"], ["06", "eda"],
+  ["shield", "sicherheit"], ["kreuz", "gesundheit"], ["ordner", "ablage"],
+  ["ticket", "fluege"], ["globus", "eda"],
 ];
 
 const seiteWissen = () => {
@@ -3774,49 +4280,106 @@ const seiteWissen = () => {
     .map(([nr, id]) => [nr, DOKUMENTE.find((d) => d.id === id)])
     .filter(([, d]) => d);
   return el("div", {},
-    kopf("Wissen", "Einmal lesen, dann kennt man es.", null),
     el("div", { class: "spalten" },
+      liste.map(([ikon, d]) =>
+        el("button", { class: "block", onclick: () => gehe("wissen", d.id) },
+          karte(el("div", { class: "geldzeile" },
+            el("span", { class: "geldikon" }, svg(ikon, 19, "#B65A3C", 1.8)),
+            el("span", { class: "min0" },
+              el("span", { class: "kacheltitel klein2" }, d.titel),
+              el("span", { class: "hinweis" }, d.kurz)),
+            el("span", { class: "faltpfeil pfeilrechts" },
+              svg("chevron", 16, "#B65A3C", 2.2)))))),
+    /* Buchen ist der Aktionsbereich – bewusst als farbige Karte. */
     el("button", { class: "block", onclick: () => gehe("buchen") },
       el("div", { class: "karte buchenkarte" },
         el("div", { class: "kacheltitel klein2" }, "Buchen"),
         el("div", { class: "buchenunter" }, "Hostels, Busse, Schule, Formulare",
           netzzeichen()),
-        el("span", { class: "buchenpfeil" }, svg("chevron", 16, "#fff", 2)))),
-      liste.map(([nr, d]) =>
-        el("button", { class: "block", onclick: () => gehe("wissen", d.id) },
-          karte(el("div", {},
-            el("div", { class: "registernr" }, "Register " + nr),
-            el("div", { class: "kacheltitel klein2" }, d.titel),
-            el("div", { class: "hinweis" }, d.kurz)))))));
+        el("span", { class: "buchenpfeil" }, svg("chevron", 16, "#fff", 2))))));
 };
 
-const GELD_REIHE = [["03", "geld"], ["02", "versicherung"], ["04", "handy"]];
+const GELD_REIHE = [["wallet", "geld"], ["shield", "versicherung"],
+                    ["smartphone", "handy"], ["grid", "apps"]];
+
+const appTabelle = () => {
+  /* Alles auf einen Blick: Zeichen, Name, wofür, Bemerkung. */
+  const wrap = el("div", {});
+  wrap.appendChild(el("div", { class: "karte dringend" },
+    el("div", { class: "blocktitel ohneabstand" }, "Vor dem Abflug installieren"),
+    el("div", { class: "text" },
+      "Jede App braucht ein Konto und einen Test, solange du WLAN hast. "
+      + "Karten und Sprachpakete vorher herunterladen.")));
+
+  /* Rechts eine schmale Spalte: grüner Haken, sobald die App installiert ist. */
+  const stand = hole("haken:apps", {});
+
+  APPS.forEach(([gruppe, zeilen]) => {
+    const offen = zeilen.filter(([, name]) => !stand[name]).length;
+    wrap.appendChild(el("div", { class: "gruppenzeile abstandoben" },
+      el("span", { class: "gruppentitel klein3" }, gruppe),
+      el("span", { class: "hinweis" }, offen ? offen + " fehlen" : "alle da")));
+    const box = el("div", { class: "appliste" });
+    zeilen.forEach(([ikon, name, zweck, bemerkung]) => {
+      const da = stand[name];
+      box.appendChild(el("button", {
+        class: "appzeile" + (da ? " da" : ""),
+        onclick: () => { stand[name] = !stand[name]; merke("haken:apps", stand); zeichnen(); },
+      },
+        el("span", { class: "appikon" }, svg(ikon, 17, "#B65A3C", 1.9)),
+        el("span", { class: "min0" },
+          el("span", { class: "appname" }, name),
+          el("span", { class: "appzweck" }, zweck),
+          el("span", { class: "appnote" }, bemerkung)),
+        el("span", { class: "appstand" },
+          da ? svg("check", 16, "#4E6B52", 2.6) : el("span", { class: "appleer" }))));
+    });
+    wrap.appendChild(box);
+  });
+  return wrap;
+};
 
 const seiteGeld = () => {
   const offen = typeof param === "string" ? DOKUMENTE.find((d) => d.id === param) : null;
+  if (offen && offen.id === "apps") {
+    return el("div", {},
+      kopf("Apps", null, () => gehe("geld"), "Geld"),
+      appTabelle());
+  }
   if (offen) {
     return el("div", {},
-      kopf(offen.titel, null, () => gehe("geld"), "Geld, Police & Handy"),
+      kopf(offen.titel, null, () => gehe("geld"), "Geld"),
       bloeckeMit(offen.bloecke));
   }
   const liste = GELD_REIHE
     .map(([nr, id]) => [nr, DOKUMENTE.find((d) => d.id === id)])
     .filter(([, d]) => d);
   return el("div", {},
-    kopf("Geld, Police & Handy", "Karten, Konten, Budget, Versicherung, Gerät.", null),
-    liste.map(([nr, d]) =>
+    liste.map(([ikon, d]) =>
       el("button", { class: "block", onclick: () => gehe("geld", d.id) },
-        karte(el("div", {},
-          el("div", { class: "registernr" }, "Register " + nr),
-          el("div", { class: "kacheltitel klein2" }, d.titel),
-          el("div", { class: "hinweis" }, d.kurz))))));
+        karte(el("div", { class: "geldzeile" },
+          el("span", { class: "geldikon" }, svg(ikon, 19, "#B65A3C", 1.8)),
+          el("span", { class: "min0" },
+            el("span", { class: "kacheltitel klein2" }, d.titel),
+            el("span", { class: "hinweis" }, d.kurz)),
+          el("span", { class: "faltpfeil pfeilrechts" },
+            svg("chevron", 16, "#B65A3C", 2.2)))))));
 };
+
+/* Schmale Zeile: Name, Zweck, Netzzeichen – kein Kasten je Eintrag. */
+const buchenZeile = ({ label, url, hinweis }) =>
+  el("a", { href: url, target: "_blank", rel: "noopener", class: "buchenzeile" },
+    el("span", { class: "min0" },
+      el("span", { class: "buchenname" }, label, netzzeichen()),
+      hinweis ? el("span", { class: "hinweis" }, hinweis) : null),
+    el("span", { class: "faltpfeil pfeilrechts" }, svg("chevron", 15, "#B65A3C", 2.2)));
 
 const seiteBuchen = () =>
   el("div", {},
-    kopf("Buchen", "Alle Plattformen an einem Ort. Öffnet die Seite im Browser.",
-      () => gehe("wissen"), "Wissen"),
-    el("div", { class: "spalten" }, BUCHEN.map(([t, p]) => block(t, p))),
+    kopf("Buchen", null, () => gehe("wissen"), "Wissen"),
+    BUCHEN.map(([t, p]) => el("div", {},
+      el("div", { class: "gruppentitel abstandoben klein3" }, t),
+      el("div", { class: "buchenliste" }, p.map(buchenZeile)))),
     el("div", { class: "karte terra" },
       el("div", { class: "text", html:
         "<b>Nach jeder Buchung:</b> die Bestätigung als PDF in 04-02_Buchungsbestaetigungen "
@@ -3842,7 +4405,7 @@ const hostelKarte = (h) => {
 
   koerper.appendChild(el("div", { class: "knopfreihe abstandoben" },
     h.tel ? el("a", { href: telLink(h.tel), class: "rundknopf" },
-      svg("phone", 16, "#fff", 2.2)) : null,
+      svg("phone", 14, "#fff", 2.2)) : null,
     h.web ? el("a", { href: h.web, target: "_blank", rel: "noopener", class: "rundknopf hell" },
       svg("link", 16, "#B65A3C", 2.2)) : null,
     el("a", {
@@ -4017,9 +4580,6 @@ const seiteRoute = () => {
     }
 
     /* Die Route als Zeitachse */
-    inhalt.appendChild(el("div", { class: "hinweis abstandunten" },
-      "Nur was feststeht. Antippen öffnet alles, was für diese Station gilt."));
-
     let letztes = null;
     let strang = null;
     STATIONEN.forEach((S) => {
@@ -4051,8 +4611,8 @@ const seiteRoute = () => {
           inhalt.appendChild(el("a", {
             href: "https://de.visitcostarica.com/", target: "_blank", class: "portalzeile" },
             el("span", { class: "portaltext" },
-              "Visit Costa Rica – Tourismusportal auf Deutsch"),
-            svg("link", 14, "#4E6B52", 1.8)));
+              "Visit Costa Rica · offizielles Tourismusportal"),
+            svg("link", 15, "#B65A3C", 1.9)));
         }
         strang = el("div", { class: "strang" });
         inhalt.appendChild(strang);
@@ -4072,7 +4632,6 @@ const seiteRoute = () => {
     });
   };
 
-  wrap.appendChild(kopf("Route", "Von der Anreise bis zur Rückkehr", null));
   wrap.appendChild(inhalt);
   zeichne();
   return wrap;
@@ -4082,9 +4641,9 @@ const seiteRoute = () => {
 /* ── Navigation ────────────────────────────────────────────────── */
 
 const BEREICHE = [
-  ["start", "Start", "home"],
-  ["route", "Route", "map", true],
-  ["heute", "Heute", "check"],
+  ["start", "Home", "home"],
+  ["heute", "To-dos", "check"],
+  ["route", "Route", "map", true],     // Mitte: der Hauptweg
   ["geld", "Geld", "wallet"],
   ["wissen", "Wissen", "book"],
 ];
@@ -4101,14 +4660,14 @@ function leiste() {
   return el("nav", { class: "tableiste" },
     BEREICHE.map(([k, l, ikon, wichtig]) => {
       const aktiv = seite === k || (seite === "suche" && vorSuche === k);
-      /* Die Route ist der Hauptweg – sie bleibt auch inaktiv farbig. */
-      /* Terracotta bleibt der Route vorbehalten – die aktive Seite wird dunkler. */
-      const farbe = wichtig ? "#B65A3C" : (aktiv ? "#2B2723" : "#8B8175");
+      /* Aktiv in Terracotta, alles Übrige warmgrau. */
+      const farbe = aktiv ? "#B65A3C" : "#8B8175";
       return el("button", {
         class: "tab" + (aktiv ? " an" : "") + (wichtig ? " wichtig" : ""),
         onclick: () => gehe(k),
-      }, svg(ikon, wichtig ? 23 : 21, farbe, aktiv ? 2.2 : (wichtig ? 2.2 : 1.7)),
-         el("span", { style: "color:" + farbe }, l));
+      },
+        svg(ikon, 21, farbe, wichtig ? 2 : 1.8),
+        el("span", { style: "color:" + farbe }, l));
     }));
 }
 
@@ -4123,15 +4682,39 @@ function zeichnen() {
     buchen: seiteBuchen, route: seiteRoute, geld: seiteGeld, wissen: seiteWissen,
   };
   if (seite !== "start" && seite !== "suche") {
-    document.body.insertBefore(el("div", { class: "kopfzeile", id: "topbar" },
-      el("span", { class: "platzhalter" }),
+    /* Dasselbe Zeichen wie unten in der Leiste – oben nur kleiner. */
+    const SEITENNAME = {
+      heute: ["To-dos", "check"], route: ["Route", "map"], geld: ["Geld", "wallet"],
+      wissen: ["Wissen", "book"], notfall: ["Notfall", "shield"],
+      buchen: ["Buchen", "map"],
+    };
+    const [name, ikon] = SEITENNAME[seite] || ["", null];
+    /* Auf der Route hängen drei Wege direkt unter der Kopfzeile – beides klebt. */
+    const schnellkachel = (ikon, titel, wohin, param2) =>
+      el("button", { class: "routenkachel", onclick: () => gehe(wohin, param2) },
+        svg(ikon, 14, "#B65A3C", 1.9), el("span", {}, titel));
+
+    const kacheln = seite === "route"
+      ? el("div", { class: "routenkacheln" },
+          schnellkachel("shield", "EDA", "wissen", "eda"),
+          schnellkachel("check", "Sicherheit", "wissen", "sicherheit"),
+          schnellkachel("bed", "Buchen", "buchen"))
+      : null;
+
+    document.body.insertBefore(el("div", { class: "kopfzeile" + (kacheln ? " mitkacheln" : ""),
+      id: "topbar" },
+      el("div", { class: "kopfreihe" },
+      el("span", { class: "seitenname" },
+        ikon ? svg(ikon, 16, "#B65A3C", 2) : null,
+        el("span", {}, name)),
       seite === "notfall" ? el("span") : el("button", {
         class: "notknopf", onclick: () => gehe("notfall"),
       }, svg("shield", 17, "#A8322A", 2), el("span", {}, "Notfall")),
       el("button", {
         class: "lupe", "aria-label": "Suchen",
         onclick: () => { vorSuche = seite; seite = "suche"; zeichnen(); window.scrollTo(0, 0); },
-      }, svg("search", 18, "#B65A3C", 2))), app);
+      }, svg("search", 16, "#B65A3C", 1.9))),
+      kacheln), app);
   }
   app.appendChild((seiten[seite] || seiteStart)());
   app.appendChild(leiste());
