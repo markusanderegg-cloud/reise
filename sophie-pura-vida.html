@@ -336,8 +336,8 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 .etappeknopf.auf .punkt { left: -20px; }
 .stationsinhalt {
-  border-left: 2px solid var(--terra);
-  margin: 0 0 18px 2px; padding-left: 12px;
+  /* Ohne Linie – die sandfarbene Kopfzeile zeigt schon, wozu der Inhalt gehört. */
+  margin: 0 0 18px; padding-left: 0;
 }
 .etappe .punkt {
   position: absolute; left: -29px; top: 4px; width: 19px; height: 19px; border-radius: 10px;
@@ -1146,8 +1146,8 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 .schrittblock:first-of-type { border-top: 0; }
 .schrittzeit {
-  font-size: var(--ebene6); font-weight: 600; color: var(--terra);
-  letter-spacing: .01em; margin-bottom: 5px;
+  font-size: var(--ebene4); font-weight: 600; color: var(--terra);
+  letter-spacing: -.01em; margin-bottom: 7px;
 }
 .schrittblock .punkte.offenblock { margin: 0 0 6px; padding-left: 16px; }
 .schrittblock .punkte.offenblock li { margin-bottom: 7px; }
@@ -2129,36 +2129,73 @@ const STATIONEN = [
   {
     id: "hinflug", nummer: "1", kurzname: "Hinflug", titel: "Hinflug nach Guatemala", land: "guatemala",
     zeit: "Dienstag, 29. September", kurz: "One-Way, mit Nachweisen im Gepäck",
+    datum: "2026-09-29",
+    jetzt: [
+      ["vor", 30, "Weiterreisenachweise buchen",
+       [["Copa Airlines", "https://www.copaair.com/"],
+        ["Tica Bus", "https://ticabus.com/"]]],
+      ["vor", 14, "Reiseerklärung Guatemala ausfüllen",
+       [["Reiseerklärung öffnen", "https://declaracion.igm.gob.gt/"]]],
+      ["vor", 7, "Reise beim EDA registrieren",
+       [["Travel Admin", "https://www.eda.admin.ch/de/travel-admin-app"]]],
+      ["vortag", 0, "Packen, laden, alles offline sichern", []],
+      ["tag", 0, "Papiere in den Bodybag", []],
+      ["nach", 0, "Transfer nach Antigua", []],
+    ],
     abschnitte: [
-      ["Der Flug", [
-        ["eigen", "Was gebucht ist", [
-          "One-Way Schweiz → Guatemala-Stadt, 23 kg Aufgabegepäck.",
-          "<b>Geplante Ankunft: 29. September 2026</b>, zwei Tage vor dem Start der Tour.",
-          "Landung vor 18 Uhr – damit der Transfer bei Tageslicht fährt.",
-          "Buchungsbestätigung offline auf dem Handy und ausgedruckt.",
+      [">> 2 Tage vor Abflug", [
+        ["eigen", "", [
+          { punkt: "<b>Nachweise bereitlegen</b> – Regionalflug nach San José<br>Busticket nach Nicaragua.",
+            sprung: "wissen", param: "fluege" },
+          { punkt: "<b>Reiseerklärung Guatemala</b> – elektronisch, ab 14 Tage vorher<br>QR-Code sichern und ausdrucken.",
+            sprung: "wissen", param: "djrv" },
+          { punkt: "<b>Reise beim EDA registrieren</b> – vor dem Abflug erledigen.",
+            sprung: "wissen", param: "eda" },
+          { punkt: "<b>Online einchecken</b> – ab 24 h vorher<br>Sitzplatz und Gepäck prüfen.",
+            sprung: "wissen", param: "fluege" },
         ]],
       ]],
-      ["Nachweise, die mitfliegen", [
-        ["eigen", "Weiterreise ab Guatemala", [
-          "Guatemala verlangt bei der Einreise einen Nachweis, dass du das Land wieder verlässt.",
-          "<b>Das ist der Regionalflug nach San José</b> – vor dem Hinflug buchen, sonst fehlt er am Schalter.",
-        ]],
-        ["eigen", "Ausreise ab Costa Rica", [
-          "Costa Rica verlangt dasselbe – schon beim Einchecken in Zürich kann danach gefragt werden.",
-          "<b>Busticket nach Nicaragua</b> genügt, rund 25 bis 40 Dollar bei Tica Bus oder Transnica.",
-          "Beide Tickets als PDF im Ordner und offline auf dem Handy.",
-          { label: "Tica Bus – Costa Rica nach Nicaragua", url: "https://ticabus.com/" },
-          { label: "Transnica", url: "https://transnica.com/" },
-          { label: "Copa Airlines – Regionalflüge", url: "https://www.copaair.com/" },
-        ]],
-      ]],
-      ["Beim Check-in in Zürich", [
-        ["eigen", "Was verlangt wird", [
-          "Regionalflug und Busticket werden verlangt – beides ausgedruckt bereithalten.",
-          "Kontrolliert wird von der Airline, nicht vom Grenzbeamten: <b>sie haftet</b>, wenn du am Ziel abgewiesen wirst.",
-          "Nicht diskutieren, einfach vorzeigen.",
+
+      [">> 1 Tag vor Abflug", [
+        ["eigen", "", [
+          { punkt: "<b>Reiserucksack packen</b> – Osprey Fairview Trek 70<br>23 kg sind erlaubt, 10 kg ist das Ziel.",
+            sprung: "heute", param: "packen|pack:flug" },
+          { punkt: "<b>Tagesrucksack packen</b> – Patagonia Terravia 24 L<br>Elektrotasche, iPad, Nackenkissen.",
+            sprung: "heute", param: "packen|tour:rucksack" },
+          "<b>iPhones und Powerbank laden</b> – beide Geräte über Nacht.",
+          { punkt: "<b>Offline abspeichern</b> – Ticket, Hotel, Reiseerklärung<br>Karten und Sprachpaket herunterladen.",
+            sprung: "wissen", param: "ablage" },
+          "<b>Wecker stellen</b> – mit genug Vorlauf zum Flughafen.",
         ]],
       ]],
+
+      [">> Am Flugtag", [
+        ["eigen", "", [
+          { punkt: "<b>In den Bodybag</b> – Pass, Geld, Karte, Ticket<br>Reiseerklärung und Adresse auch auf Papier.",
+            sprung: "heute", param: "packen|pack:flug" },
+          { punkt: "<b>Am Schalter in Zürich</b> – beide Nachweise vorzeigen<br><span class='warnung'>Ohne sie kein Einsteigen.</span>",
+            sprung: "wissen", param: "fluege" },
+          "<b>Nicht diskutieren</b> – die Airline haftet, nicht der Grenzbeamte.",
+          "<b>Bei der Kontrolle</b> – Powerbank und iPad heraus<br>Trinkflasche leer.",
+        ]],
+      ]],
+
+      [">> Nach der Landung", [
+        ["eigen", "", [
+          { punkt: "<b>Einreiseformular Guatemala</b> – der QR-Code wird gescannt.",
+            sprung: "wissen", param: "djrv" },
+          { punkt: "<b>Adresse bereithalten</b> – Casa Florencia, Antigua<br>wird bei der Einreise verlangt.",
+            sprung: "wissen", param: "ablage" },
+          "<b>Stempel gleich lesen</b> – reicht die Dauer bis zur Ausreise?",
+          { punkt: "<b>Quetzal abheben</b> – Geldautomat in der Ankunftshalle<br>100 bis 150 Franken, Landeswährung wählen.",
+            sprung: "geld", param: "geld" },
+          { punkt: "<b>eSIM aktivieren</b> – zuerst WLAN am Flughafen.",
+            sprung: "geld", param: "handy" },
+          "<b>Transfer nach Antigua</b> – vorbestellt, Fahrer mit Namensschild<br>rund 1 h, Landung vor 18 Uhr eingeplant.",
+          "<b>Zu Hause melden</b> – kurz genügt.",
+        ]],
+      ]],
+
       ["Einreiseformular", [["thema", "djrv"]]],
       ["Checkliste", [["liste", "pack:flug"], ["liste", "abflug"]]],
     ],
@@ -3265,7 +3302,7 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "496 · 01.09.2026";
+const VERSION = "499 · 01.09.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
