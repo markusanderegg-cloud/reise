@@ -789,7 +789,8 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .hakenlegende { font-size: var(--ebene6); color: var(--grau); margin: 2px 0 6px; }
 /* Zone links, Inhalt rechts – ohne Linien */
 /* Ort direkt hinter dem Artikel, in Grau */
-.hakenzone { color: #A39A8D; margin-left: 6px; }
+/* Der Zusatz nach " ~ " steht auf einer eigenen Zeile. */
+.hakenzone { display: block; color: #A39A8D; margin-left: 0; margin-top: 2px; }
 
 /* Aufklappbare Zeilen: Pfeil deutlich, Fläche als Fläche erkennbar */
 .blockband > .faltkarte + .faltkarte > .faltkopf { border-top: 1px solid var(--linie); }
@@ -1238,6 +1239,13 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   background: none; border: 0; display: flex; align-items: center;
 }
 .hakensprung .ikon { transform: rotate(-90deg); }
+
+/* Warnung in einer Zeile – gelb hinterlegt wie die Zusatzkarten */
+.warnung {
+  background: #FBF3DC; color: #7A6320;
+  padding: 1px 6px; border-radius: 5px;
+  box-decoration-break: clone; -webkit-box-decoration-break: clone;
+}
 
 </style>
 </head>
@@ -2345,15 +2353,15 @@ const STATIONEN = [
     abschnitte: [
       [">> 2 Tage vor Abflug", [
         ["eigen", "", [
-          { punkt: "<b>Nächte in Heredia buchen</b> – bis die Schule beginnt, mit Gratisstornierung.",
+          { punkt: "<b>Nächte in Heredia buchen</b> – bis die Schule beginnt<br>mit Gratisstornierung.",
             sprung: "buchen", param: "Unterkunft" },
-          { punkt: "<b>Danach Wohnheim</b> – läuft über die Schule, bei der Anmeldung wählen.",
+          { punkt: "<b>Danach Wohnheim</b> – läuft über die Schule<br>bei der Anmeldung wählen.",
             sprung: "wissen", param: "schule" },
           { punkt: "<b>Reiseerklärung Ausreise</b> – Guatemala, elektronisch. QR-Code sichern und ausdrucken.",
             sprung: "wissen", param: "djrv" },
-          { punkt: "<b>Busticket Nicaragua</b> – Weiterreisenachweis, ohne ihn kein Einsteigen.",
+          { punkt: "<b>Busticket Nicaragua</b> – Weiterreisenachweis<br><span class='warnung'>Ohne ihn kein Einsteigen.</span>",
             sprung: "wissen", param: "fluege" },
-          { punkt: "<b>Online einchecken</b> – ab 24 h vorher, Sitzplatz und Gepäck prüfen.",
+          { punkt: "<b>Online einchecken</b> – ab 24 h vorher<br>Sitzplatz und Gepäck prüfen.",
             sprung: "wissen", param: "fluege" },
         ]],
       ]],
@@ -2363,7 +2371,7 @@ const STATIONEN = [
           { punkt: "<b>Shuttle organisieren</b> – über das Hostel, 12 bis 20 USD.",
             sprung: "buchen", param: "Transport vor Ort" },
           "<b>3 h vor Abflug am Flughafen</b> – ab Antigua 1 h Fahrt, morgens mehr.",
-          "<b>Flughafen Guatemala-Stadt</b> – La Aurora GUA, 9 Avenida 14-75, Zona 13.",
+          "<b>Flughafen Guatemala-Stadt</b> – La Aurora GUA<br>9 Avenida 14-75, Zona 13.",
           { punkt: "<b>Quetzal loswerden</b> – in Costa Rica wertlos.",
             sprung: "geld", param: "geld" },
           { punkt: "<b>Reiserucksack packen</b> – Osprey Fairview Trek 70, keine Elektronik hinein.",
@@ -2383,7 +2391,7 @@ const STATIONEN = [
             sprung: "heute", param: "packen|pack:flug" },
           { punkt: "<b>Am Schalter</b> – Busticket zeigen, wenn verlangt.",
             sprung: "wissen", param: "fluege" },
-          "<b>Bei der Kontrolle</b> – Powerbank und iPad heraus, Flasche leer.",
+          "<b>Bei der Kontrolle</b> – Powerbank und iPad heraus<br>Trinkflasche leer.",
           { punkt: "<b>Ausreisestempel prüfen</b> – vor dem Gate.",
             sprung: "route", param: { tab: "land", land: "guatemala", block: "Einreise" } },
           "<b>Flug nach San José</b> – Copa, 2 h.",
@@ -2400,14 +2408,13 @@ const STATIONEN = [
             sprung: "route", param: { tab: "land", land: "costarica", block: "Einreise" } },
           { punkt: "<b>Zuerst WLAN, dann eSIM</b> – ohne Netz kein Uber, keine Karte.",
             sprung: "geld", param: "handy" },
-          { punkt: "<b>Colón abheben</b> – Automat in der Halle, Landeswährung wählen.",
+          { punkt: "<b>Colón abheben</b> – Geldautomat in der Flughafenhalle<br>50 bis 100 Franken genügen, in Costa Rica zahlst du fast überall mit Karte.",
             sprung: "geld", param: "geld" },
-          "<b>Der Flughafen liegt in Alajuela</b> – nicht in San José. Nach Heredia 20 Min.",
+          "<b>Der Flughafen liegt in Alajuela</b> – nicht in San José<br>nach Heredia 20 Min.",
           { punkt: "<b>Orange Taxis oder Uber</b> – 20 bis 30 USD, keine Abholzone: Strasse hinter dem Parkplatz.",
             sprung: "buchen", param: "Transport vor Ort" },
           "<b>Vor 18 Uhr im Quartier</b> – dann wird es dunkel.",
-          { punkt: "<b>Zu Hause melden</b> – kurz genügt.",
-            sprung: "heute", param: "checklisten" },
+          "<b>Zu Hause melden</b> – kurz genügt.",
         ]],
       ]],
 
@@ -3258,7 +3265,7 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "484 · 01.09.2026";
+const VERSION = "496 · 01.09.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
@@ -3655,7 +3662,7 @@ const hakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig = 0
                       ? el("span", { html: teil })
                       : el("span", {},
                           el("b", { class: "begriff" }, teil.begriff),
-                          el("span", { class: "unterzeile" }, teil.text));
+                          el("span", { class: "unterzeile", html: teil.text }));
                     return el("li", { class: "punktsprung" },
                       el("button", { class: "punktknopf",
                         onclick: () => gehe(r.sprung, r.param, true) },
@@ -4772,7 +4779,7 @@ const seiteNotfall = () => {
                       ? el("span", { html: teil })
                       : el("span", {},
                           el("b", { class: "begriff" }, teil.begriff),
-                          el("span", { class: "unterzeile" }, teil.text));
+                          el("span", { class: "unterzeile", html: teil.text }));
                     return el("li", { class: "punktsprung" },
                       el("button", { class: "punktknopf",
                         onclick: () => gehe(r.sprung, r.param, true) },
@@ -5244,7 +5251,7 @@ const seiteRoute = () => {
                       ? el("span", { html: teil })
                       : el("span", {},
                           el("b", { class: "begriff" }, teil.begriff),
-                          el("span", { class: "unterzeile" }, teil.text));
+                          el("span", { class: "unterzeile", html: teil.text }));
                     return el("li", { class: "punktsprung" },
                       el("button", { class: "punktknopf",
                         onclick: () => gehe(r.sprung, r.param, true) },
