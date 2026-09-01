@@ -2763,7 +2763,8 @@ const PACKLISTE = [
   ["Kleidung", ["Hardshell-Regenjacke", "Fleece oder dünner Hoodie", "Dünnes Langarmshirt", "Merino-Longsleeve", "Trekkinghose", "Leichthose oder Leggings", "2× Shorts", "3× T-Shirts oder Tops", "Sarong", "Buff", "Cap", "Merinomütze", "5× Unterwäsche", "3× Socken, davon 1 Paar Wandersocken", "Bikini", "Ein schickeres Teil für Abende"]],
   ["Schuhe", ["Salomon Wanderschuh", "Sandalen mit Fersenriemen"]],
   ["Kulturbeutel", ["Festes Shampoo und Seife", "Zahnbürste und -pasta", "Sonnencreme LSF 50, riff-verträglich", "DEET 50 % für den Dschungel", "Icaridin für den Alltag", "Mikrofaser-Handtuch L", "Reisewaschmittel", "Wäscheleine und Klammern", "Nagelknipser und Schere", "Alaunstein", "Monatshygiene", "Handdesinfektion", "Digitales Thermometer"]],
-  ["Elektronik", ["Smartphone<i>am Körper im Bodybag</i>", "Zweites iPhone als Backup<i>Handgepäck – deine Rückfallebene</i>", "Powerbank 10'000–20'000 mAh<i>Handgepäck ist Vorschrift, im Gepäck verboten</i>", "In-Ear-Kopfhörer<i>Handgepäck, für den Flug</i>", "iPad mini A17 Pro, falls es mitkommt<i>Handgepäck, nie in den aufgegebenen Rucksack</i>", "Apple Pencil Pro – passt nur zum mini A17 Pro<i>Handgepäck</i>", "Smart Folio als Schutzhülle", "2 Ladekabel<i>eines im Handgepäck, eines im Rucksack</i>", "US-Netzteil mit USB-Ports", "CH→US-Adapter als Reserve", "Tasche für Elektrozubehör"]],
+  ["Elektronik", ["Smartphone<i>am Körper im Bodybag</i>", "Zweites iPhone als Backup<i>Handgepäck – deine Rückfallebene</i>", "Powerbank 10'000–20'000 mAh<i>Handgepäck ist Vorschrift, im Gepäck verboten</i>", "Kabelkopfhörer<i>Lightning für das iPhone 12 – ohne Akku, ohne Koppeln</i>", "iPad mini A17 Pro, falls es mitkommt<i>Handgepäck, nie in den aufgegebenen Rucksack</i>", "Apple Pencil Pro – passt nur zum mini A17 Pro<i>Handgepäck</i>", "Smart Folio als Schutzhülle", "Ladekabel USB-C für das iPhone 17<i>auch für iPad und Powerbank</i>",
+    "Ladekabel Lightning für das iPhone 12<i>anderer Anschluss – ohne dieses Kabel bleibt das Ersatzgerät leer</i>", "US-Netzteil mit USB-Ports", "CH→US-Adapter als Reserve", "Elektrotasche für Kabel und Kleinteile"]],
   ["Rucksack und Hostel", ["Patagonia Terravia 24 L", "Schlafbeutel: Seidenschlafsack, Schlafkleidung, Schlafmaske, Ohropax, Stirnlampe", "Filter-Trinkflasche", "Wasserdichte Handyhülle", "Stossfeste Hülle und Handykordel", "2–3 Dry Bags", "2 Karabiner", "Zip-Beutel", "ABUS-Schloss für den Locker", "Zweites Zahlenschloss als Reserve", "Zipper-Schloss", "3× Packing Cubes (2× M, 1× S)", "Geruchsdichter Wäschebeutel", "Bodybag für Pass, Handy, Karte",
     "Karteikarten-Box mit RFID-Schutz"]],
   ["Brille und Linsen", ["Ersatzbrille im harten Etui", "Sonnenbrille mit Sehstärke", "Rezept und Linsenwerte als PDF", "Monatslinsen mit Reserve", "Zwei Linsenbehälter für Peroxid", "Befeuchtende Augentropfen", "Lensy Care 4 – Peroxidlösung"]],
@@ -2772,7 +2773,7 @@ const PACKLISTE = [
 ];
 
 const TAGESRUCKSACK = [
-  "Bodybag am Körper<br><span class='unterzeile'>Pass oder Passkopie, Revolut-Karte, Bargeld, Handy</span>",
+  "Bodybag am Körper<br><span class='unterzeile'>Pass oder Passkopie, Revolut-Karte, Bargeld, Handy, Adresse der Unterkunft auf Papier</span>",
   "Dry Bag im Rucksack<br><span class='unterzeile'>Notfallblatt laminiert, Powerbank, was trocken bleiben muss</span>",
   "Mini-Apotheke<br><span class='unterzeile'>Medikamente, Elektrolyte, Teebaumöl, Correct-X, Pflaster, Tageslinsen als Reserve</span>",
   "Trinkflasche",
@@ -2829,15 +2830,17 @@ const PACK_FLUG = [
   "Sackmesser & grosse Flaschen ~ vorne",
   "Regenhülle, Gurte eingezogen ~ aussen",
   "## Patagonia Terravia 24 L – Handgepäck",
-  "Powerbank & zweites iPhone",
+  "Elektrotasche ~ iPhone 12, Powerbank, Kabelkopfhörer, beide Ladekabel",
   "iPad mini, Pencil Pro & Folio",
-  "Kopfhörer & ein Ladekabel",
   "Nackenkissen, Schlafmaske, Ohropax",
   "Apotheke & Linsenlösung unter 100 ml",
   "Eine Garnitur Kleidung, Buff",
   "## Bodybag am Körper",
   "Pass, Geld & Revolut-Karte",
-  "Handy, Ticket & QR-Code",
+  "Handy, Flugticket & QR-Code",
+  "Reiseerklärung ausgedruckt",
+  "Adresse Casa Florencia auf Papier",
+  "Tourbestätigung Intrepid ausgedruckt",
 ];
 
 const PACK_INLAND = [
@@ -3020,7 +3023,7 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "425 · 01.09.2026";
+const VERSION = "429 · 01.09.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
