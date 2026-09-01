@@ -1096,8 +1096,8 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 /* Externe Verweise – ruhige Zeile mit feiner Linie */
 .linkzeile {
   display: flex; align-items: center; gap: 10px;
-  padding: 10px 2px; margin: 0;
-  border-bottom: 1px solid #F0EBE2;
+  padding: 8px 2px; margin: 0;
+  border-bottom: 1px solid #F5F0E8;
 }
 .linkzeile:last-child { border-bottom: 0; }
 .linktitel { display: block; font-size: var(--ebene5); color: #211C18; }
@@ -1136,6 +1136,55 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 /* Gewählter Bereich in der Kachelreihe */
 .routenkachel.an {
   background: #FCF4F0; border-color: #E7CFC4; color: var(--terra);
+}
+
+/* Ablaufschritt: offen sichtbar, mit Zeitmarke – kein Aufklappen */
+.schrittblock {
+  position: relative; margin: 0; padding: 12px 0 10px;
+  border-top: 1px solid #F0EBE2;
+}
+.schrittblock:first-of-type { border-top: 0; }
+.schrittzeit {
+  font-size: var(--ebene6); font-weight: 600; color: var(--terra);
+  letter-spacing: .01em; margin-bottom: 5px;
+}
+.schrittblock .punkte.offenblock { margin: 0 0 6px; padding-left: 16px; }
+.schrittblock .punkte.offenblock li { margin-bottom: 7px; }
+
+/* Zeitstatus im geöffneten Stopp */
+.stopstatus {
+  font-size: var(--ebene6); color: var(--grau);
+  margin: 2px 0 12px;
+}
+.stopstatus.nah { color: var(--terra); font-weight: 600; }
+
+/* Jetzt erledigen – kompakte Aktionszone */
+.jetzttitel { margin-top: 0; margin-bottom: 6px; }
+.jetztliste {
+  background: var(--karte); border: 1px solid var(--linie);
+  border-radius: 12px; overflow: hidden; margin-bottom: 16px;
+}
+.jetztzeile {
+  display: flex; align-items: flex-start; gap: 9px;
+  padding: 10px 13px; border-bottom: 1px solid #F5F0E8;
+}
+.jetztzeile:last-child { border-bottom: 0; }
+.jetztpunkt {
+  width: 7px; height: 7px; border-radius: 4px; margin-top: 7px; flex-shrink: 0;
+  border: 1.5px solid var(--terra);
+}
+.jetzttext { display: block; font-size: var(--ebene5); color: #211C18; }
+.jetztlinks { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 5px; }
+.aktionslink {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: var(--ebene6); color: var(--terra); font-weight: 500;
+  padding: 3px 0;
+}
+
+/* Der Abschnitt, der jetzt an der Reihe ist */
+.schrittblock.jetzt {
+  background: #FBF6EF; border-radius: 10px;
+  margin: 0 -10px; padding-left: 10px; padding-right: 10px;
 }
 
 </style>
@@ -2006,11 +2055,6 @@ const STATIONEN = [
     zeit: "Dienstag, 29. September", kurz: "One-Way, mit Nachweisen im Gepäck",
     abschnitte: [
       ["Der Flug", [
-        ["eigen", "Warum Donnerstag der 22.", [
-          "<b>Guatemala ist günstiger als Costa Rica</b> – jeder Tag mehr dort spart Geld.",
-          "<b>Drei Tage vor Kursstart in Heredia:</b> Donnerstag ankommen, Freitag und Samstag die Stadt kennenlernen, Sonntag ausruhen, Montag Schulbeginn.",
-          "<b>Dienstag bis Donnerstag sind die günstigsten Flugtage</b>, Freitag und Sonntag die teuersten.",
-        ]],
         ["eigen", "Was gebucht ist", [
           "One-Way Schweiz → Guatemala-Stadt, 23 kg Aufgabegepäck.",
           "<b>Geplante Ankunft: 29. September 2026</b>, zwei Tage vor dem Start der Tour.",
@@ -2194,22 +2238,75 @@ const STATIONEN = [
   {
     id: "abflug-cr", nummer: "6", kurzname: "Abflug", titel: "Abflug nach Costa Rica",
     land: "guatemala", zeit: "Donnerstag, 22. Oktober", kurz: "Idee · Ausreise Guatemala, Regionalflug",
+    datum: "2026-10-22",
+    jetzt: [
+      ["vor", 14, "Reiseerklärung Guatemala ausfüllen",
+       [["Reiseerklärung öffnen", "https://declaracion.igm.gob.gt/"]]],
+      ["vor", 30, "Unterkunft Costa Rica buchen",
+       [["Booking.com", "https://www.booking.com/"],
+        ["Hostelworld", "https://www.hostelworld.com/"],
+        ["Hostels Costa Rica", "https://www.hostelworld.com/hostels/north-america/costa-rica/"]]],
+      ["vor", 1, "Flug einchecken", [["Copa Airlines", "https://www.copaair.com/"]]],
+      ["vor", 3, "Busticket Nicaragua bereitlegen", []],
+      ["vortag", 0, "Shuttle zum Flughafen bestätigen", []],
+      ["vortag", 0, "Geräte laden, Dokumente offline", []],
+      ["tag", 0, "Pass, Geld, Ticket in den Bodybag", []],
+      ["tag", 0, "Ausreisestempel prüfen", []],
+      ["nach", 0, "Fahrt nach Heredia", [["Uber", "https://www.uber.com/cr/de/"]]],
+    ],
     abschnitte: [
-      ["Der Flug", [
-        ["eigen", "Was zu tun ist", [
-          "<b>Reiseerklärung Guatemala ein zweites Mal ausfüllen</b> – auch für die Ausreise, ab 14 Tage vorher.",
-          "Regionalflug mit Copa nach San José, rund zwei Stunden.",
-          "Ausreisestempel im Pass kontrollieren, bevor du das Gate suchst.",
-          { label: "Copa Airlines", url: "https://www.copaair.com/" },
+      [">> Zwei Tage vorher · Dienstag", [
+        ["eigen", "", [
+          "<b>Reiseerklärung Ausreise</b> – QR-Code sichern und ausdrucken.",
+          "<b>Erste Nacht buchen</b> – Bestätigung als PDF, offline.",
+          "<b>Busticket Nicaragua heraussuchen</b> – ohne Nachweis kein Einsteigen.",
+          "<b>Online einchecken</b> – ab 24 Stunden vorher.",
+          { label: "Reiseerklärung Guatemala", url: "https://declaracion.igm.gob.gt/" },
+          { label: "Booking.com", url: "https://www.booking.com/" },
+          { label: "Hostelworld", url: "https://www.hostelworld.com/" },
+          { label: "Hostels in Costa Rica", url: "https://www.hostelworld.com/hostels/north-america/costa-rica/" },
+          { label: "Copa Airlines – Check-in", url: "https://www.copaair.com/" },
         ]],
       ]],
-      ["Nachweise, die mitfliegen", [
-        ["eigen", "Für die Einreise in Costa Rica", [
-          "<b>Adresse der ersten Unterkunft</b> – die der Sprachschule oder des Wohnheims.",
-          "<b>Weiterreisenachweis</b> – das Busticket nach Nicaragua, schon vor dem Hinflug gebucht.",
+
+      [">> Am Vortag · Mittwoch", [
+        ["eigen", "Mittwoch", [
+          "<b>Shuttle buchen</b> – über das Hostel, ab Antigua eine Stunde.",
+          "<b>Drei Stunden Vorlauf</b> – morgens mehr.",
+          "<b>Quetzal loswerden</b> – in Costa Rica wertlos.",
+          "<b>Packen</b> – Powerbank, iPad, Ersatzhandy ins Handgepäck.",
+          "<b>Alles laden</b> – beide Handys, Powerbank.",
         ]],
       ]],
+
+      [">> Am Flugtag · Donnerstag", [
+        ["eigen", "Donnerstag", [
+          "<b>In den Bodybag</b> – Pass, Geld, Karte, Ticket, Reiseerklärung, Adresse. Auch auf Papier.",
+          "<b>Am Schalter</b> – Busticket zeigen, wenn verlangt.",
+          "<b>Ausreisestempel prüfen</b> – vor dem Gate.",
+          "Copa nach San José, zwei Stunden.",
+        ]],
+      ]],
+
+      [">> Nach der Landung · San José", [
+        ["eigen", "In San José", [
+          "<b>Einreiseformular</b> – wird im Flugzeug verteilt.",
+          "<b>Adresse bereithalten</b> – wird verlangt.",
+          "<b>Stempel lesen</b> – reicht die Dauer bis zur Ausreise?",
+          "<b>Nach Heredia</b> – Uber oder Transfer, 30 Minuten.",
+          "<b>Vor 18 Uhr ankommen</b> – dann wird es dunkel.",
+          { label: "Uber", url: "https://www.uber.com/cr/de/" },
+        ]],
+      ]],
+
       ["Einreiseformular", [["thema", "djrv"]]],
+      ["Warum dieser Tag", [
+        ["eigen", "Die Überlegung dahinter", [
+          "<b>Guatemala ist günstiger</b> – jeder Tag mehr dort spart Geld.",
+          "<b>Drei Tage vor Kursstart</b> – Donnerstag ankommen, Freitag und Samstag Heredia kennenlernen, Sonntag ausruhen.",
+          "<b>Dienstag bis Donnerstag</b> sind die günstigsten Flugtage.",
+        ]],
+      ]],
       ["Checkliste", [["liste", "pack:flug"], ["liste", "ortswechsel"]]],
     ],
   },
@@ -3023,7 +3120,7 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "429 · 01.09.2026";
+const VERSION = "442 · 01.09.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
@@ -3333,7 +3430,79 @@ const hakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig = 0
       "tour:tour": ["Tour", VOR_TOUR],
     };
 
+    /* Zeitstatus und die Aufgaben, die jetzt anstehen. */
+    if (S.datum && S.jetzt) {
+      const heute = new Date(); heute.setHours(0, 0, 0, 0);
+      const ziel = new Date(S.datum + "T00:00:00");
+      const tage = Math.round((ziel - heute) / 86400000);
+
+      const status = tage < 0 ? "Erledigt"
+        : tage === 0 ? "Heute"
+        : tage === 1 ? "Morgen"
+        : tage === 2 ? "Übermorgen"
+        : "Noch " + tage + " Tage";
+
+      /* Welche Phase gilt jetzt? */
+      const phase = tage < 0 ? "nach" : tage === 0 ? "tag" : tage === 1 ? "vortag" : "vor";
+      const dran = S.jetzt.filter(([wann, ab]) =>
+        wann === phase && (wann !== "vor" || tage <= (ab || 99))).slice(0, 4);
+
+      box.appendChild(el("div", { class: "stopstatus" + (tage <= 1 ? " nah" : "") }, status));
+
+      if (!dran.length && tage > 0) {
+        box.appendChild(el("div", { class: "hinweis abstandunten" },
+          "Noch nichts zu tun – die Vorbereitung beginnt einen Monat vorher."));
+      }
+
+      if (dran.length) {
+        box.appendChild(el("div", { class: "gruppentitel klein3 jetzttitel" }, "Jetzt erledigen"));
+        const kasten = el("div", { class: "jetztliste" });
+        dran.forEach(([, , was, links]) => {
+          kasten.appendChild(el("div", { class: "jetztzeile" },
+            el("span", { class: "jetztpunkt" }),
+            el("span", { class: "min0" },
+              el("span", { class: "jetzttext" }, was),
+              (links || []).length
+                ? el("span", { class: "jetztlinks" },
+                    links.map(([name, url], i) =>
+                      el("a", { href: url, target: "_blank", rel: "noopener",
+                                class: "aktionslink" },
+                        name, svg("link", 12, "#B65A3C", 2))))
+                : null)));
+        });
+        box.appendChild(kasten);
+      }
+    }
+
     S.abschnitte.forEach(([titel, eintraege]) => {
+      /* Ein Titel mit ">> " ist ein Ablaufschritt: offen, ohne Aufklappen. */
+      const ablauf = String(titel).startsWith(">> ");
+      const reinT = ablauf ? titel.slice(3) : titel;
+
+      if (ablauf) {
+        /* Der Abschnitt, der jetzt gilt, wird ganz leicht hervorgehoben. */
+        const phasenwort = { vor: "Zwei Tage", vortag: "Am Vortag",
+                             tag: "Am Flugtag", nach: "Nach der Landung" };
+        const jetztPhase = S.datum ? (() => {
+          const h = new Date(); h.setHours(0, 0, 0, 0);
+          const t = Math.round((new Date(S.datum + "T00:00:00") - h) / 86400000);
+          return t < 0 ? "nach" : t === 0 ? "tag" : t === 1 ? "vortag" : "vor";
+        })() : null;
+        const istJetzt = jetztPhase && reinT.startsWith(phasenwort[jetztPhase]);
+
+        box.appendChild(el("div", { class: "schrittblock" + (istJetzt ? " jetzt" : "") },
+          el("div", { class: "schrittzeit" }, reinT),
+          ...eintraege.map((e) =>
+            el("ul", { class: "punkte offenblock" },
+              (e[2] || []).map((roh) => {
+                const p = zerlege(roh);
+                if (typeof p === "string") return el("li", { html: p });
+                if (p.begriff) return begriffZeile(p);
+                return el("li", { class: "ohnepunkt" }, p.url ? linkZeile(p) : anrufZeile(p));
+              })))));
+        return;
+      }
+
       box.appendChild(el("div", { class: "gruppentitel abstandoben klein3" }, titel));
       const band = el("div", { class: "blockband" });
       eintraege.forEach((e) => {
@@ -4320,7 +4489,79 @@ const seiteNotfall = () => {
       "tour:tour": ["Tour", VOR_TOUR],
     };
 
+    /* Zeitstatus und die Aufgaben, die jetzt anstehen. */
+    if (S.datum && S.jetzt) {
+      const heute = new Date(); heute.setHours(0, 0, 0, 0);
+      const ziel = new Date(S.datum + "T00:00:00");
+      const tage = Math.round((ziel - heute) / 86400000);
+
+      const status = tage < 0 ? "Erledigt"
+        : tage === 0 ? "Heute"
+        : tage === 1 ? "Morgen"
+        : tage === 2 ? "Übermorgen"
+        : "Noch " + tage + " Tage";
+
+      /* Welche Phase gilt jetzt? */
+      const phase = tage < 0 ? "nach" : tage === 0 ? "tag" : tage === 1 ? "vortag" : "vor";
+      const dran = S.jetzt.filter(([wann, ab]) =>
+        wann === phase && (wann !== "vor" || tage <= (ab || 99))).slice(0, 4);
+
+      box.appendChild(el("div", { class: "stopstatus" + (tage <= 1 ? " nah" : "") }, status));
+
+      if (!dran.length && tage > 0) {
+        box.appendChild(el("div", { class: "hinweis abstandunten" },
+          "Noch nichts zu tun – die Vorbereitung beginnt einen Monat vorher."));
+      }
+
+      if (dran.length) {
+        box.appendChild(el("div", { class: "gruppentitel klein3 jetzttitel" }, "Jetzt erledigen"));
+        const kasten = el("div", { class: "jetztliste" });
+        dran.forEach(([, , was, links]) => {
+          kasten.appendChild(el("div", { class: "jetztzeile" },
+            el("span", { class: "jetztpunkt" }),
+            el("span", { class: "min0" },
+              el("span", { class: "jetzttext" }, was),
+              (links || []).length
+                ? el("span", { class: "jetztlinks" },
+                    links.map(([name, url], i) =>
+                      el("a", { href: url, target: "_blank", rel: "noopener",
+                                class: "aktionslink" },
+                        name, svg("link", 12, "#B65A3C", 2))))
+                : null)));
+        });
+        box.appendChild(kasten);
+      }
+    }
+
     S.abschnitte.forEach(([titel, eintraege]) => {
+      /* Ein Titel mit ">> " ist ein Ablaufschritt: offen, ohne Aufklappen. */
+      const ablauf = String(titel).startsWith(">> ");
+      const reinT = ablauf ? titel.slice(3) : titel;
+
+      if (ablauf) {
+        /* Der Abschnitt, der jetzt gilt, wird ganz leicht hervorgehoben. */
+        const phasenwort = { vor: "Zwei Tage", vortag: "Am Vortag",
+                             tag: "Am Flugtag", nach: "Nach der Landung" };
+        const jetztPhase = S.datum ? (() => {
+          const h = new Date(); h.setHours(0, 0, 0, 0);
+          const t = Math.round((new Date(S.datum + "T00:00:00") - h) / 86400000);
+          return t < 0 ? "nach" : t === 0 ? "tag" : t === 1 ? "vortag" : "vor";
+        })() : null;
+        const istJetzt = jetztPhase && reinT.startsWith(phasenwort[jetztPhase]);
+
+        box.appendChild(el("div", { class: "schrittblock" + (istJetzt ? " jetzt" : "") },
+          el("div", { class: "schrittzeit" }, reinT),
+          ...eintraege.map((e) =>
+            el("ul", { class: "punkte offenblock" },
+              (e[2] || []).map((roh) => {
+                const p = zerlege(roh);
+                if (typeof p === "string") return el("li", { html: p });
+                if (p.begriff) return begriffZeile(p);
+                return el("li", { class: "ohnepunkt" }, p.url ? linkZeile(p) : anrufZeile(p));
+              })))));
+        return;
+      }
+
       box.appendChild(el("div", { class: "gruppentitel abstandoben klein3" }, titel));
       const band = el("div", { class: "blockband" });
       eintraege.forEach((e) => {
@@ -4685,7 +4926,79 @@ const seiteRoute = () => {
       "tour:tour": ["Tour", VOR_TOUR],
     };
 
+    /* Zeitstatus und die Aufgaben, die jetzt anstehen. */
+    if (S.datum && S.jetzt) {
+      const heute = new Date(); heute.setHours(0, 0, 0, 0);
+      const ziel = new Date(S.datum + "T00:00:00");
+      const tage = Math.round((ziel - heute) / 86400000);
+
+      const status = tage < 0 ? "Erledigt"
+        : tage === 0 ? "Heute"
+        : tage === 1 ? "Morgen"
+        : tage === 2 ? "Übermorgen"
+        : "Noch " + tage + " Tage";
+
+      /* Welche Phase gilt jetzt? */
+      const phase = tage < 0 ? "nach" : tage === 0 ? "tag" : tage === 1 ? "vortag" : "vor";
+      const dran = S.jetzt.filter(([wann, ab]) =>
+        wann === phase && (wann !== "vor" || tage <= (ab || 99))).slice(0, 4);
+
+      box.appendChild(el("div", { class: "stopstatus" + (tage <= 1 ? " nah" : "") }, status));
+
+      if (!dran.length && tage > 0) {
+        box.appendChild(el("div", { class: "hinweis abstandunten" },
+          "Noch nichts zu tun – die Vorbereitung beginnt einen Monat vorher."));
+      }
+
+      if (dran.length) {
+        box.appendChild(el("div", { class: "gruppentitel klein3 jetzttitel" }, "Jetzt erledigen"));
+        const kasten = el("div", { class: "jetztliste" });
+        dran.forEach(([, , was, links]) => {
+          kasten.appendChild(el("div", { class: "jetztzeile" },
+            el("span", { class: "jetztpunkt" }),
+            el("span", { class: "min0" },
+              el("span", { class: "jetzttext" }, was),
+              (links || []).length
+                ? el("span", { class: "jetztlinks" },
+                    links.map(([name, url], i) =>
+                      el("a", { href: url, target: "_blank", rel: "noopener",
+                                class: "aktionslink" },
+                        name, svg("link", 12, "#B65A3C", 2))))
+                : null)));
+        });
+        box.appendChild(kasten);
+      }
+    }
+
     S.abschnitte.forEach(([titel, eintraege]) => {
+      /* Ein Titel mit ">> " ist ein Ablaufschritt: offen, ohne Aufklappen. */
+      const ablauf = String(titel).startsWith(">> ");
+      const reinT = ablauf ? titel.slice(3) : titel;
+
+      if (ablauf) {
+        /* Der Abschnitt, der jetzt gilt, wird ganz leicht hervorgehoben. */
+        const phasenwort = { vor: "Zwei Tage", vortag: "Am Vortag",
+                             tag: "Am Flugtag", nach: "Nach der Landung" };
+        const jetztPhase = S.datum ? (() => {
+          const h = new Date(); h.setHours(0, 0, 0, 0);
+          const t = Math.round((new Date(S.datum + "T00:00:00") - h) / 86400000);
+          return t < 0 ? "nach" : t === 0 ? "tag" : t === 1 ? "vortag" : "vor";
+        })() : null;
+        const istJetzt = jetztPhase && reinT.startsWith(phasenwort[jetztPhase]);
+
+        box.appendChild(el("div", { class: "schrittblock" + (istJetzt ? " jetzt" : "") },
+          el("div", { class: "schrittzeit" }, reinT),
+          ...eintraege.map((e) =>
+            el("ul", { class: "punkte offenblock" },
+              (e[2] || []).map((roh) => {
+                const p = zerlege(roh);
+                if (typeof p === "string") return el("li", { html: p });
+                if (p.begriff) return begriffZeile(p);
+                return el("li", { class: "ohnepunkt" }, p.url ? linkZeile(p) : anrufZeile(p));
+              })))));
+        return;
+      }
+
       box.appendChild(el("div", { class: "gruppentitel abstandoben klein3" }, titel));
       const band = el("div", { class: "blockband" });
       eintraege.forEach((e) => {
