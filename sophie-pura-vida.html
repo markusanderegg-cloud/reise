@@ -419,7 +419,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   background: var(--karte); border: 1px solid var(--linie); border-radius: 14px;
   overflow: hidden; contain: content; margin: 18px 0 16px;
 }
-.held img { display: block; width: 100%; height: auto; aspect-ratio: 21 / 9; }
+.held img { display: block; width: 100%; height: auto; aspect-ratio: 11 / 5; }
 .heldtext {
   padding: 18px; box-shadow: inset 0 1px 0 rgba(0,0,0,.06);
   display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
@@ -749,7 +749,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .landname {
   font-weight: 600; font-size: var(--ebene3); line-height: 1.1; }
 /* Ein Ton für alle Länder – die Flagge unterscheidet. */
-.landname.gt, .landname.cr, .landname.pe { color: #211C18; }
+.landname.gt, .landname.cr, .landname.pe, .landname.ch { color: #211C18; }
 .landzeit { font-size: var(--ebene6); color: var(--grau); margin: 3px 0 2px; }
 .landpfeil { display: inline-flex; transform: rotate(-90deg); margin-top: 6px; }
 
@@ -1373,6 +1373,27 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .blickkachel:first-child::before { display: none; }
 .blickwas { font-size: var(--ebene4); color: #211C18; }
 .blickzahl { font-size: var(--ebene6); color: var(--grau); }
+
+/* Aufgaben, die an einer anderen hängen: grau und gesperrt. */
+.todozeile.wartet { opacity: .55; }
+.todozeile.wartet .tododatum { color: var(--grau); font-size: var(--ebene7); }
+.terminhinweis {
+  font-size: var(--ebene5); color: #5A524C; line-height: 1.55; margin: 6px 0 0;
+}
+
+/* Abhängige Aufgaben stehen klein unter der Aufgabe, an der sie hängen. */
+.danachzeile {
+  font-size: var(--ebene7); color: #A9A296; line-height: 1.5;
+  margin: 4px 0 2px; letter-spacing: .4px;
+}
+.danachpunkt {
+  display: block; font-size: var(--ebene6); color: var(--grau);
+  letter-spacing: 0; line-height: 1.6; margin-left: 10px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* Listentitel sind die Einstiegspunkte – etwas mehr Gewicht als der Zähler. */
+.blockband .faltkopf .blocktitel { font-size: 15px; }
 
 </style>
 </head>
@@ -2419,7 +2440,7 @@ const STATIONEN = [
           "Optional und vor Ort zu zahlen: Kochkurs 60 USD, Thermalquellen 45 USD.",
         ]],
       ]],
-      ["Checkliste", [["liste", "tour:tour"], ["liste", "tour:rucksack"]]],
+      ["Checkliste", [["liste", "tour"], ["liste", "tour:rucksack"]]],
     ],
   },
   {
@@ -2448,12 +2469,6 @@ const STATIONEN = [
         ["land", "guatemala", "Chicken-Busse"],
       ]],
       ["Wohin", [["land", "guatemala", "Weitere Standorte"]]],
-      ["Flug und Tour", [
-    { label: "Copa Airlines – Check-in", url: "https://www.copaair.com/", hinweis: "Regionalflug Guatemala → San José" },
-    { label: "Google Flights", url: "https://www.google.com/travel/flights", hinweis: "Preise vergleichen, Termine verschieben" },
-    { label: "Intrepid – Heart of Guatemala", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161", hinweis: "Die gebuchte Tour" },
-    { label: "Intrepid – Essential Trip Information", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161/tripnotes", hinweis: "Treffpunkt, Gepäck, Ablauf" },
-  ]],
   ["Unterkunft", [["hostels", "guatemala"]]],
       ["Checkliste", [["liste", "pack:inland"], ["liste", "ortswechsel"]]],
     ],
@@ -2482,12 +2497,6 @@ const STATIONEN = [
         ]],
       ]],
       ["Transport", [["land", "guatemala", "Chicken-Busse"]]],
-      ["Flug und Tour", [
-    { label: "Copa Airlines – Check-in", url: "https://www.copaair.com/", hinweis: "Regionalflug Guatemala → San José" },
-    { label: "Google Flights", url: "https://www.google.com/travel/flights", hinweis: "Preise vergleichen, Termine verschieben" },
-    { label: "Intrepid – Heart of Guatemala", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161", hinweis: "Die gebuchte Tour" },
-    { label: "Intrepid – Essential Trip Information", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161/tripnotes", hinweis: "Treffpunkt, Gepäck, Ablauf" },
-  ]],
   ["Unterkunft", [["hostels", "guatemala"]]],
       ["Sicherheit", [["land", "guatemala", "Sicherheit"]]],
       ["Checkliste", [["liste", "pack:inland"], ["liste", "ortswechsel"]]],
@@ -2605,9 +2614,9 @@ const STATIONEN = [
       ["Einreise", [["land", "costarica", "Einreise"]]],
       ["Im Quartier", [
         ["eigen", "Wo du zuerst schläfst", [
-          "<b>Casa Florencia Hotel</b>, 7a Avenida Norte 100 – ab dem 29. September, dort startet auch die Tour am 1. Oktober.",
-          "<b>Ein Haus für alle Nächte</b> – kein Wechsel vor dem Tourstart.",
-          "Die Adresse wird bei der Einreise verlangt – vor dem Anstehen bereithalten.",
+          "<b>Heredia, vier Nächte</b> – vom 22. bis zum Schulstart am 26. Oktober.",
+          "<b>Nahe der Schule buchen</b>, mit Gratisstornierung – der Ankunftstag kann sich verschieben.",
+          "Die Adresse wird bei der Einreise verlangt – vor dem Anstehen bereithalten, auch auf Papier.",
         ]],
         ["eigen", "Die ersten Handgriffe", [
           "Adresse und WLAN-Name notieren.",
@@ -2641,12 +2650,6 @@ const STATIONEN = [
         ]],
         ["thema", "schule"],
       ]],
-      ["Flug und Tour", [
-    { label: "Copa Airlines – Check-in", url: "https://www.copaair.com/", hinweis: "Regionalflug Guatemala → San José" },
-    { label: "Google Flights", url: "https://www.google.com/travel/flights", hinweis: "Preise vergleichen, Termine verschieben" },
-    { label: "Intrepid – Heart of Guatemala", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161", hinweis: "Die gebuchte Tour" },
-    { label: "Intrepid – Essential Trip Information", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161/tripnotes", hinweis: "Treffpunkt, Gepäck, Ablauf" },
-  ]],
   ["Unterkunft", [
         ["eigen", "Studentenwohnheim", [
           "Läuft über die Schule und wird bei der Anmeldung gewählt.",
@@ -2678,12 +2681,6 @@ const STATIONEN = [
         ]],
         ["thema", "schule"],
       ]],
-      ["Flug und Tour", [
-    { label: "Copa Airlines – Check-in", url: "https://www.copaair.com/", hinweis: "Regionalflug Guatemala → San José" },
-    { label: "Google Flights", url: "https://www.google.com/travel/flights", hinweis: "Preise vergleichen, Termine verschieben" },
-    { label: "Intrepid – Heart of Guatemala", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161", hinweis: "Die gebuchte Tour" },
-    { label: "Intrepid – Essential Trip Information", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161/tripnotes", hinweis: "Treffpunkt, Gepäck, Ablauf" },
-  ]],
   ["Unterkunft", [
         ["eigen", "Noch nicht entschieden", [
           "Intercultura erlaubt den Wechsel innerhalb desselben Kurses, ohne Aufpreis.",
@@ -2706,12 +2703,6 @@ const STATIONEN = [
         ]],
         ["thema", "fluege", "Wo du buchst"],
       ]],
-      ["Flug und Tour", [
-    { label: "Copa Airlines – Check-in", url: "https://www.copaair.com/", hinweis: "Regionalflug Guatemala → San José" },
-    { label: "Google Flights", url: "https://www.google.com/travel/flights", hinweis: "Preise vergleichen, Termine verschieben" },
-    { label: "Intrepid – Heart of Guatemala", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161", hinweis: "Die gebuchte Tour" },
-    { label: "Intrepid – Essential Trip Information", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161/tripnotes", hinweis: "Treffpunkt, Gepäck, Ablauf" },
-  ]],
   ["Unterkunft", [["hostels", "costarica"]]],
       ["Sicherheit", [
         ["eigen", "Im Bus", [
@@ -2726,14 +2717,22 @@ const STATIONEN = [
     id: "workexchange", nummer: "11", kurzname: "Mitarbeit", titel: "Kost und Logis gegen Mitarbeit",
     land: "costarica", zeit: "Dezember", kurz: "Worldpackers oder Workaway",
     abschnitte: [
-      ["Flug und Tour", [
-    { label: "Copa Airlines – Check-in", url: "https://www.copaair.com/", hinweis: "Regionalflug Guatemala → San José" },
-    { label: "Google Flights", url: "https://www.google.com/travel/flights", hinweis: "Preise vergleichen, Termine verschieben" },
-    { label: "Intrepid – Heart of Guatemala", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161", hinweis: "Die gebuchte Tour" },
-    { label: "Intrepid – Essential Trip Information", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161/tripnotes", hinweis: "Treffpunkt, Gepäck, Ablauf" },
-  ]],
-  ["Unterkunft", [["land", "costarica", "Unterkunft gegen Mitarbeit"]]],
-      ["Checkliste", [["liste", "woche"]]],
+      ["Der Ablauf", [
+        ["eigen", "Schritt für Schritt", [
+          "<b>1</b> Vier bis sechs Wochen vorher suchen – gute Plätze sind früh weg.",
+          "<b>2</b> Nur Gastgeber mit vielen neuen Bewertungen anschreiben, ältere als ein Jahr zählen nicht.",
+          "<b>3</b> Schriftlich klären: Stunden pro Tag, freie Tage, was Kost und Logis genau umfasst.",
+          "<b>4</b> Nach dem eigenen Zimmer oder Schlafsaal fragen, nach Schloss und Anschluss ans Netz.",
+          "<b>5</b> Erst eine oder zwei Wochen zusagen, verlängern kannst du vor Ort.",
+          "<b>6</b> Adresse und Telefon nach Hause schicken, bevor du hinfährst.",
+        ]],
+        ["eigen", "Wann du gehst", [
+          "<b>Nicht bleiben</b>, wenn Stunden, Unterkunft oder Ton nicht dem entsprechen, was abgemacht war.",
+          "Immer genug Bargeld für zwei Nächte im Hostel und die Weiterfahrt dabeihaben.",
+        ]],
+      ]],
+      ["Unterkunft", [["land", "costarica", "Unterkunft gegen Mitarbeit"]]],
+      ["Checkliste", [["liste", "ankunft"], ["liste", "woche"]]],
     ],
   },
   {
@@ -2747,6 +2746,36 @@ const STATIONEN = [
       ["Handy", [["thema", "handy", "Abo und Roaming"]]],
       ["Geld", [["land", "peru", "Geld"]]],
       ["Checkliste", [["liste", "pack:flug"], ["liste", "ortswechsel"]]],
+    ],
+  },
+  {
+    id: "rueckreise", nummer: "13", kurzname: "Rückreise", titel: "Rückreise in die Schweiz",
+    land: "schweiz", zeit: "Januar bis Februar", kurz: "Rückflug buchen, ausreisen, ankommen",
+    abschnitte: [
+      ["Der Ablauf", [
+        ["eigen", "Vier bis sechs Wochen vorher", [
+          "<b>Rückflug buchen</b> – Preise steigen kurzfristig stark.",
+          "<b>Versicherung prüfen</b> – Vacanza läuft acht Monate ab Abreise.",
+          "Falls Peru: Rückflug ab Lima oder Anschluss nach San José einplanen.",
+        ]],
+        ["eigen", "Letzte Woche", [
+          "<b>Geld leeren</b> – Landeswährung ausgeben, Währungskonto in Revolut auf null.",
+          "<b>Ausreisegebühr Costa Rica</b> bereithalten, falls sie nicht im Ticket steckt.",
+          "Reiseerklärung für die Ausreise ausfüllen, QR-Code sichern.",
+          "Adressen und Kontakte sichern, Fotos ins gute WLAN hochladen.",
+        ]],
+        ["eigen", "Am Flughafen", [
+          "<b>Drei Stunden vorher</b> dort sein, Interkontinentalflug.",
+          "<b>Ausreisestempel im Pass kontrollieren</b>, bevor du den Schalter verlässt.",
+          "Sackmesser und Flüssigkeiten über 100 ml in den aufgegebenen Rucksack.",
+        ]],
+        ["eigen", "Zu Hause", [
+          "Versicherungsfälle einreichen, Belege beilegen.",
+          "Revolut-Abo zurückstufen.",
+          "Nachkontrolle beim Tropenarzt, auch ohne Beschwerden.",
+        ]],
+      ]],
+      ["Checkliste", [["liste", "rueckkehr"], ["liste", "pack:flug"]]],
     ],
   },
 ];
@@ -2798,6 +2827,28 @@ const ORTE = {
 
 
 const LAENDER = {
+  schweiz: {
+    name: "Heimreise", zeit: "Januar bis Februar",
+    kurz: "Rückflug, Ausreise, Ankommen",
+    farbe: "#B65A3C",
+    bloecke: [
+      ["Bevor du fliegst", [
+        "<b>Rückflug vier bis sechs Wochen vorher buchen</b> – kurzfristig wird es teuer.",
+        "Versicherung prüfen: Vacanza läuft acht Monate ab Abreise.",
+        "Reiseerklärung für die Ausreise ausfüllen, QR-Code sichern.",
+      ]],
+      ["Am Flughafen", [
+        "<b>Drei Stunden vorher</b> dort sein, Interkontinentalflug.",
+        "<b>Ausreisestempel im Pass kontrollieren</b>, bevor du den Schalter verlässt.",
+        "Sackmesser und Flüssigkeiten über 100 ml in den aufgegebenen Rucksack.",
+      ]],
+      ["Zu Hause", [
+        "Versicherungsfälle einreichen, Belege beilegen.",
+        "Revolut-Abo zurückstufen, Währungskonten schliessen.",
+        "Nachkontrolle beim Tropenarzt, auch ohne Beschwerden.",
+      ]],
+    ],
+  },
   peru: {
     name: "Peru", zeit: "Januar · optional",
     kurz: "Einreise, Höhe, Busse, Geld",
@@ -3156,16 +3207,16 @@ const LAENDER = {
 
 
 const PACKLISTE = [
-  ["Kleidung", ["Hardshell-Regenjacke", "Fleece oder dünner Hoodie", "Dünnes Langarmshirt", "Merino-Longsleeve", "Trekkinghose", "Leichthose oder Leggings", "2× Shorts", "3× T-Shirts oder Tops", "Sarong", "Buff", "Cap", "Merinomütze", "5× Unterwäsche", "3× Socken, davon 1 Paar Wandersocken", "Bikini", "Ein schickeres Teil für Abende"]],
-  ["Schuhe", ["Salomon Wanderschuh", "Sandalen mit Fersenriemen"]],
-  ["Kulturbeutel", ["Festes Shampoo und Seife", "Zahnbürste und -pasta", "Sonnencreme LSF 50, riff-verträglich", "DEET 50 % für den Dschungel", "Icaridin für den Alltag", "Mikrofaser-Handtuch L", "Reisewaschmittel", "Wäscheleine und Klammern", "Nagelknipser und Schere", "Alaunstein", "Monatshygiene", "Handdesinfektion", "Digitales Thermometer"]],
+  ["Kleidung", ["Hardshell-Regenjacke", "Fleece oder dünner Hoodie", "Dünnes Langarmshirt", "Merino-Longsleeve", "Trekkinghose", "Leichthose oder Leggings", "2× Shorts", "3× T-Shirts oder Tops", "Sarong", "Buff", "Cap", "Merinomütze", "Leichte Daunen- oder Primaloftjacke<i>für Cusco und kalte Nachtbusse</i>", "Dünne Handschuhe", "5× Unterwäsche", "3× Socken, davon 1 Paar Wandersocken", "Bikini", "Ein schickeres Teil für Abende"]],
+  ["Schuhe", ["Salomon Wanderschuh", "Sandalen mit Fersenriemen", "Duschschlappen<i>fünf Monate Gemeinschaftsduschen</i>"]],
+  ["Kulturbeutel", ["Festes Shampoo und Seife", "Zahnbürste und -pasta", "Sonnencreme LSF 50, riff-verträglich", "Lippenbalsam mit Lichtschutz", "DEET 50 % für den Dschungel", "Icaridin für den Alltag", "Mikrofaser-Handtuch L", "Reisewaschmittel", "Wäscheleine und Klammern", "Nagelknipser und Schere", "Kleines Nähset", "Feuchttücher und eine Rolle Klopapier<i>viele Toiletten haben keines</i>", "Alaunstein", "Monatshygiene", "Handdesinfektion", "Digitales Thermometer"]],
   ["Elektronik", ["Smartphone<i>am Körper im Bodybag</i>", "Zweites iPhone als Backup<i>Handgepäck – deine Rückfallebene</i>", "Powerbank 10'000–20'000 mAh<i>Handgepäck ist Vorschrift, im Gepäck verboten</i>", "Kabelkopfhörer<i>Lightning für das iPhone 12 – ohne Akku, ohne Koppeln</i>", "iPad mini A17 Pro, falls es mitkommt<i>Handgepäck, nie in den aufgegebenen Rucksack</i>", "Apple Pencil Pro – passt nur zum mini A17 Pro<i>Handgepäck</i>", "Smart Folio als Schutzhülle", "Ladekabel USB-C für das iPhone 17<i>auch für iPad und Powerbank</i>",
     "Ladekabel Lightning für das iPhone 12<i>anderer Anschluss – ohne dieses Kabel bleibt das Ersatzgerät leer</i>", "US-Netzteil mit USB-Ports", "CH→US-Adapter als Reserve", "Elektrotasche für Kabel und Kleinteile"]],
-  ["Rucksack und Hostel", ["Patagonia Terravia 24 L", "Schlafbeutel: Seidenschlafsack, Schlafkleidung, Schlafmaske, Ohropax, Stirnlampe", "Filter-Trinkflasche", "Wasserdichte Handyhülle", "Stossfeste Hülle und Handykordel", "2–3 Dry Bags", "2 Karabiner", "Zip-Beutel", "ABUS-Schloss für den Locker", "Zweites Zahlenschloss als Reserve", "Zipper-Schloss", "3× Packing Cubes (2× M, 1× S)", "Geruchsdichter Wäschebeutel", "Bodybag für Pass, Handy, Karte",
+  ["Rucksack und Hostel", ["Patagonia Terravia 24 L", "Regenhülle für den grossen Rucksack", "Schlafbeutel: Seidenschlafsack, Schlafkleidung, Schlafmaske, Ohropax, Stirnlampe", "Filter-Trinkflasche", "Wasserdichte Handyhülle", "Stossfeste Hülle und Handykordel", "2–3 Dry Bags", "2 Karabiner", "Stahlkabel zum Anschliessen<i>ohne Kabel nützt das Schloss im Bus und im Hostel nichts</i>", "Zip-Beutel", "ABUS-Schloss für den Locker", "Zweites Zahlenschloss als Reserve", "Zipper-Schloss", "3× Packing Cubes (2× M, 1× S)", "Geruchsdichter Wäschebeutel", "Bodybag für Pass, Handy, Karte",
     "Karteikarten-Box mit RFID-Schutz"]],
   ["Brille und Linsen", ["Ersatzbrille im harten Etui", "Sonnenbrille mit Sehstärke", "Rezept und Linsenwerte als PDF", "Monatslinsen mit Reserve", "Zwei Linsenbehälter für Peroxid", "Befeuchtende Augentropfen", "Lensy Care 4 – Peroxidlösung"]],
-  ["Wertsachen-Box", ["Pass im Zip-Beutel", "BKB-Karte", "150 USD in kleinen Scheinen", "Impfausweis", "Ersatzbrille", "Zweites iPhone", "Papierkopie Notfallblatt", "Zweite laminierte Passkopie"]],
-  ["Reiseapotheke", ["Ibuprofen und Paracetamol", "Imodium akut", "Elektrolytpulver", "Kohletabletten", "Antihistaminikum-Gel", "Hydrocortison 0.5 %", "Bepanthen Wundspray", "Kleine Flasche Betadine", "Pflasterset", "Elastische Binde und Leukotape", "Blasenpflaster", "Vomex gegen Reiseübelkeit", "Ärztliche Bescheinigung auf Englisch"]],
+  ["Wertsachen-Box", ["Pass im Zip-Beutel", "BKB-Karte", "150 USD in kleinen Scheinen", "Impfausweis", "Zwei Passfotos für Ausweise unterwegs", "Ersatzbrille", "Zweites iPhone", "Papierkopie Notfallblatt", "Zweite laminierte Passkopie"]],
+  ["Reiseapotheke", ["Ibuprofen und Paracetamol", "Imodium akut", "Elektrolytpulver", "Kohletabletten", "Antihistaminikum-Gel", "Hydrocortison 0.5 %", "Bepanthen Wundspray", "Kleine Flasche Betadine", "Pflasterset", "Pinzette für Splitter und Zecken", "Elastische Binde und Leukotape", "Blasenpflaster", "Vomex gegen Reiseübelkeit", "Ärztliche Bescheinigung auf Englisch"]],
 ];
 
 const TAGESRUCKSACK = [
@@ -3183,22 +3234,21 @@ const TAGESRUCKSACK = [
   "Badesachen und Mikrofaser-Handtuch (bei Bedarf)",
 ];
 
-const VOR_DER_TOUR = [
+const TOUR = [
+  "## Sachen sichern",
   "Spind abgeschlossen",
   "Rucksack gesichert & angeschlossen",
   "Wertsachen-Box im Spind",
   "Ladestation kontrolliert",
-  "Handy geladen, Offline-Karte da",
   "Jemandem gesagt, wohin du gehst",
-];
-
-const VOR_TOUR = [
+  "## Mitnehmen",
   "Tagesrucksack gepackt >> heute|packen|tour:rucksack",
-  "Guide nach Wetter und Kleidung gefragt",
+  "Handy geladen, Offline-Karte da",
   "Feste Schuhe und warme Schicht",
   "Regenschutz dabei",
-  "Rückweg geklärt",
   "Znüni und genug Wasser",
+  "Guide nach Wetter und Kleidung gefragt",
+  "Rückweg geklärt",
 ];
 
 const ANKUNFT = [
@@ -3261,27 +3311,23 @@ const PACK_INLAND = [
 ];
 
 const ORTSWECHSEL = [
-  "## Schlafen",
-  "Unterkunft am Zielort gebucht, mit Gratisstornierung >> buchen|Unterkunft",
+  "## Vor der Abfahrt",
   "Bestätigung offline gespeichert, Adresse notiert >> wissen|ablage",
-  "## Fahren",
-  "Transport gebucht – Bus, Shuttle oder Flug >> buchen|Transport vor Ort",
-  "Nur tagsüber unterwegs, Ankunft vor Einbruch der Dunkelheit >> wissen|sicherheit",
   "Weg vom Bahnhof oder Flughafen geklärt",
-  "## Papiere",
+  "Nur tagsüber unterwegs, Ankunft vor Einbruch der Dunkelheit >> wissen|sicherheit",
+  "## Papiere und Geld",
   "Bei Landeswechsel: Aus- und Einreiseformular erledigt >> wissen|djrv",
   "Weiterreisenachweis griffbereit >> wissen|fluege",
   "Adresse der Unterkunft auch auf Papier",
-  "## Netz und Geld",
   "Bargeld für die Ankunft geholt >> geld|geld",
   "Landeswährung stimmt – altes Geld ausgegeben >> geld|geld",
-  "iPhones und Powerbank geladen",
   "## Packen und los",
+  "iPhones und Powerbank geladen",
   "Spind und Zimmer zweimal kontrolliert",
   "Wertsachen in den Tagesrucksack >> heute|packen|tour:rucksack",
-  "Linsenmittel-Vorrat reicht",
   "Zu Hause gesagt, wohin du fährst",
 ];
+
 
 const WOCHE = [
   "Zu Hause anrufen, nicht nur schreiben",
@@ -3289,7 +3335,8 @@ const WOCHE = [
   "Ausgaben der Woche anschauen",
   "Belege fotografiert und abgelegt >> wissen|ablage",
   "Wäsche gemacht oder abgegeben",
-  "Vorräte geprüft >> heute|packen|pack:Reiseapotheke",
+  "Nächsten Ortswechsel buchen – Unterkunft mit Gratisstornierung, Transport >> buchen|Unterkunft",
+  "Vorräte geprüft – auch Linsenmittel >> heute|packen|pack:Reiseapotheke",
   "Fotos gesichert im guten WLAN",
 ];
 
@@ -3298,9 +3345,14 @@ const WOCHE_WICHTIG = 3;
 const TODO_ALLE = [
   ["Reisedossier durchlesen", "bis 6. Sep", "Sophie", false],
   ["Flug Guatemala buchen", "4. Sep", "Sophie", false],
-  ["Flug-Nr. an Marco melden", "4. Sep", "Sophie", false],
-  ["Hotel/Transfer bei Marco melden", "4. Sep", "Sophie", false],
-  ["Vacanza-Rechnung nachfragen", "4. Sep", "Markus", false],
+  ["Flug-Nr. an Marco melden", "4. Sep", "Sophie", false,
+   ["An Marco bei Globetrotter – er braucht sie für Transfer und Tourstart."],
+   "Flug Guatemala buchen"],
+  ["Hotel/Transfer bei Marco melden", "4. Sep", "Sophie", false, [],
+   "Flug Guatemala buchen"],
+  ["Vacanza-Rechnung nachfragen", "4. Sep", "Markus", false,
+   ["Die QR-Rechnung ist nicht gekommen – bei Visana nachfragen.",
+    "Ohne Zahlung keine Deckung. Einzahlen bis 6. September."]],
   ["Flug Costa Rica buchen", "5. Sep", "Sophie", false],
   ["Bus Nicaragua buchen", "5. Sep", "Sophie", false],
   ["Rechn. Tour GT einzahlen", "5. Sep", "Sophie", false],
@@ -3309,39 +3361,73 @@ const TODO_ALLE = [
 
   ["eSIM auf beiden Geräten", "10. Sep", "beide", false],
   ["Dokumente scannen", "10. Sep", "beide", false],
-  ["iPhone einrichten und sichern", "10. Sep", "Sophie", false],
+  ["iPhone einrichten und sichern", "10. Sep", "Sophie", false,
+   ["Kontrollzentrum im Sperrbildschirm aus, „Wo ist?“ vollständig ein, Diebstahlschutz ein.",
+    "Zwei-Faktor prüfen, IMEI und Seriennummern notieren, Apps testen."]],
   ["Fehlende Artikel einkaufen", "bis 11. Sep", "Sophie", false],
   ["Deckung englisch Visana", "10. Sep", "Markus", false],
-  ["Sprachschule buchen – Start Mo 26. Okt", "20. Sep", "Sophie", false],
+  ["Sprachschule buchen – Start Mo 26. Okt", "20. Sep", "Sophie", false,
+   ["Direkt buchen, nicht über eine Agentur.",
+    "Studentenwohnheim, Gastfamilie als zweite Wahl.",
+    "Adresse notieren – wird bei der Einreise verlangt.",
+    "Zwei bis drei Wochen Vorlauf genügen. Nur den Kurs buchen, nicht die Unterkunft."]],
   ["Schuladresse notieren", "20. Sep", "Sophie", false],
-  ["Bestätigung 1. Nacht sichern", "26. Sep", "Sophie", false],
+  ["Bestätigung 1. Nacht sichern", "26. Sep", "Sophie", false,
+   ["Wird bei der Einreise verlangt – Guatemala und Costa Rica.",
+    "Casa Florencia ab 29. September – das Hotel der Tour.",
+    "Bestätigung als PDF sichern, offline auf dem Handy."]],
   ["Unterkunft Heredia buchen – 4 Nächte", "12. Okt", "Sophie", false],
-  ["Reiseerklärung Guatemala", "20. Sep", "Sophie", false],
+  ["Reiseerklärung Guatemala", "20. Sep", "Sophie", false,
+   ["Vor dem Hinflug ausfüllen, QR-Code sichern."]],
   ["Alle Reise-Apps installieren und testen", "20. Sep", "Sophie", false],
   ["Notfallblatt ausfüllen", "20. Sep", "beide", false],
+  ["Passgültigkeit prüfen – sechs Monate über die Rückreise hinaus", "6. Sep", "Sophie", false],
   ["Kurzdossier drucken", "20. Sep", "Markus", false],
   ["Offline-Karten laden", "26. Sep", "Sophie", false],
-  ["Linsenmittel besorgen", "5. Sep", "Markus", false],
+  ["Linsenmittel besorgen", "5. Sep", "Markus", false,
+   ["Linsen für fünf Monate, Peroxid-Behälter, Rezept als PDF."]],
   ["Tageslinsen abklären", "5. Sep", "Sophie", false],
-  ["Yallo-App testen", "6. Sep", "Sophie", false],
-  ["Gepäck und Material testen", "5. Sep", "Sophie", false],
+  ["Yallo-App testen", "6. Sep", "Sophie", false,
+   ["Yallo-App installieren und Anmeldung testen."]],
+  ["Gepäck und Material testen", "5. Sep", "Sophie", false,
+   ["Neue Schuhe einlaufen, bevor sie in den Rucksack kommen."]],
+  ["Bankkarten: Ablaufdatum und Reisemeldung", "6. Sep", "beide", false,
+   ["Laufen die Karten über den Februar hinaus?",
+    "Reise bei BKB und Revolut melden – sonst sperrt der Geoblocking-Schutz die Karte."]],
   ["iPad mini A17 Pro, Pencil Pro, Folio prüfen", "8. Sep", "beide", false],
-  ["Revolut einrichten und testen", "6. Sep", "Sophie", false],
+  ["Revolut einrichten und testen", "6. Sep", "Sophie", false,
+   ["Auf beiden iPhones einrichten, vier Konten anlegen, einmal testen.",
+    "Währungsrechner einrichten und zeigen."]],
   ["Währungsrechner erklären", "6. Sep", "beide", false],
   ["EDA registrieren", "20. Sep", "Sophie", false],
-  ["Scans in die iCloud", "20. Sep", "beide", false],
+  ["Scans in die iCloud", "20. Sep", "beide", false,
+   ["Dokumente scannen, iCloud-Ordner teilen."]],
   ["Ordner offline setzen", "26. Sep", "Sophie", false],
   ["Nackenkissen und Flugsachen bereitlegen", "26. Sep", "Sophie", false],
   ["Rucksack wiegen", "26. Sep", "Sophie", false],
   ["Letzte Kontrolle – Liste Vor dem Abflugtag", "27. Sep", "Sophie", false],
-  ["Reiseerklärung Ausreise GT", "12. Okt", "Sophie", false],
-  ["Unterkünfte für Oktober buchen", "8. Okt", "Sophie", false],
-  ["Work-Exchange für Dezember suchen", "25. Okt", "Sophie", false],
+  ["Reiseerklärung Ausreise GT", "12. Okt", "Sophie", false,
+   ["Vor dem Flug nach San José nochmals ausfüllen – ab 14 Tage vorher möglich."]],
+  ["Unterkünfte für Oktober buchen", "30. Sep", "Sophie", false,
+   ["Die Wochen buchen, in denen du allein unterwegs bist – ab 7. Oktober.",
+    "Vor dem Tourstart erledigen, während der Tour hast du kaum Zeit."]],
+  ["Work-Exchange für Dezember suchen", "25. Okt", "Sophie", false,
+   ["Worldpackers oder Workaway."]],
   ["Sprachschule Restzahlung", "5. Nov", "Sophie", false],
-  ["Peru entscheiden", "5. Dez", "beide", false],
-  ["Höhe vorbereiten – Sorojchi, 24 h Ruhe", "20. Dez", "Sophie", false],
-  ["Rückflug buchen", "8. Jan", "Sophie", false],
-  ["Restbargeld ausgeben, Stempel prüfen", "1. Feb", "Sophie", false],
+  ["Peru entscheiden", "5. Dez", "beide", false,
+   ["<b>Falls ja:</b> Flug San José nach Lima buchen.",
+    "<b>Versicherung:</b> Vacanza läuft acht Monate ab Abreise – Dauer prüfen."]],
+  ["Höhe vorbereiten – Sorojchi, 24 h Ruhe", "20. Dez", "Sophie", false,
+   ["<b>Cusco liegt auf 3400 m.</b> Erste 24 Stunden keine Anstrengung, kein Alkohol, viel trinken oder Mate de Coca.",
+    "In der Apotheke <b>Sorojchi Pills</b> kaufen, bevor du hochfährst.",
+    "<b>Atemnot oder starker Schwindel: absteigen</b>, nicht abwarten."]],
+  ["Rückflug buchen", "8. Jan", "Sophie", false,
+   ["Vier bis sechs Wochen Vorlauf einplanen."]],
+  ["Restbargeld ausgeben, Stempel prüfen", "1. Feb", "Sophie", false,
+   ["<b>Geld:</b> Landeswährung ausgeben, Währungskonto leeren.",
+    "<b>Stempel:</b> Ausreisestempel im Pass kontrollieren, bevor du den Schalter verlässt."]],
+  ["Passseite nach jeder Einreise kopieren", "laufend", "Sophie", false,
+   ["Die Seite mit dem Stempel kopieren und laminiert mitführen."]],
 ];
 
 const NACH_DATUM = [
@@ -3363,19 +3449,16 @@ const NACH_DATUM = [
 ];
 
 const VOR_ABFLUG = [
-  "Am Körper: Pass, Bargeld, eine Karte, Flugticket, Reiseerklärung, Tourbestätigung, Hoteladresse, Handy",
-  "Im Handgepäck griffbereit: Kopfhörer, Powerbank mit Kabel, Nackenkissen, Schlafmaske, Ohropax",
-  "Leere Trinkflasche, Pullover, Zahnbürste, Linsenmittel, etwas zu essen",
-  "Alle drei Tickets gebucht und ausgedruckt",
-  "Erste Nacht und Flughafentransfer gebucht",
+  "Nach Packordnung „Im Flugzeug“ gepackt<i>Bodybag, Handgepäck, Rucksack – Gewicht unter dem Limit der Airline</i> >> heute|packen|pack:flug",
+  "Alle Tickets gebucht und ausgedruckt",
+  "Erste Nacht und Transfer gebucht",
   "Reiseerklärung ausgefüllt, QR-Code gespeichert",
   "Notfallblatt ausgefüllt und ausgedruckt",
-  "Register 01, 05, 07 offline auf beiden Geräten",
+  "Wichtige Register offline auf beiden Geräten",
   "Offline-Karten und Spanisch-Sprachpaket geladen",
   "Karten getestet, PIN auswendig",
   "Ersatzhandy eingerichtet",
   "Offline-Test bestanden",
-  "Rucksack gepackt und gewogen (rund 10 kg)",
 ];
 
 const VOR_REISE = [
@@ -3429,7 +3512,7 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "528 · 01.09.2026";
+const VERSION = "542 · 01.09.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
@@ -3737,16 +3820,16 @@ const hakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig = 0
   const stationsinhalt = (S) => {
     const box = el("div", { class: "stationsinhalt" });
     const LISTEN = {
-      "abflug": ["Am Abflugtag", VOR_ABFLUG],
+      "abflug": ["Vor dem Abflugtag", VOR_ABFLUG],
       "vorreise": ["Wochen vorher", VOR_REISE],
-      "ankunft": ["→ Ankunft Hostel", ANKUNFT],
-      "ortswechsel": ["Ortswechsel", ORTSWECHSEL],
+      "ankunft": ["Angekommen", ANKUNFT],
+      "ortswechsel": ["Weiterreise", ORTSWECHSEL],
       "pack:inland": ["Packordnung Inland", PACK_INLAND],
       "pack:flug": ["Packordnung Flug", PACK_FLUG],
-      "woche": ["Wochenende", WOCHE],
+      "woche": ["Jede Woche", WOCHE],
       "tour:rucksack": ["Tagesrucksack", TAGESRUCKSACK],
-      "tour:vorher": ["← Hostel verlassen", VOR_DER_TOUR],
-      "tour:tour": ["Tour", VOR_TOUR],
+      "tour": ["Tagsüber weg", TOUR],
+      "rueckkehr": ["Rückkehr", RUECKKEHR],
     };
 
     /* Zeitstatus und die Aufgaben, die jetzt anstehen. */
@@ -3892,7 +3975,11 @@ const hakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig = 0
     const alle = punkte.concat(eigene);
     const zaehlbar = alle.filter((p) => !String(p).startsWith("## ")
       && !String(p).startsWith("%%"));
-    zaehler.textContent = zaehlbar.filter((p) => stand[p]).length + "/" + zaehlbar.length;
+    /* Was offen ist, interessiert – nicht was schon abgehakt wurde. */
+    const nochOffen = zaehlbar.filter((p) => !stand[p]).length;
+    zaehler.textContent = nochOffen === 0 ? "fertig"
+      : nochOffen === zaehlbar.length ? zaehlbar.length + " Punkte"
+      : nochOffen + " von " + zaehlbar.length + " offen";
 
     alle.forEach((p, i) => {
       /* "## Titel" wird zur Zwischenüberschrift, "%%Text" zur Legende – beide ohne Kästchen. */
@@ -4212,9 +4299,9 @@ const INDEX = (() => {
     ziel: { seite: "heute", param: "pack" },
   })));
   [["Tagestour · Rucksack", TAGESRUCKSACK, "tour"],
-   ["Tagestour · Bevor du losgehst", VOR_DER_TOUR, "tour"],
-   ["Ankunft am neuen Ort", ANKUNFT, "ankunft"],
-   ["Vor dem Ortswechsel", ORTSWECHSEL, "ortswechsel"],
+   ["Tagsüber weg", TOUR, "tour"],
+   ["Angekommen", ANKUNFT, "ankunft"],
+   ["Weiterreise", ORTSWECHSEL, "ortswechsel"],
    ["Jede Woche", WOCHE, "woche"]].forEach(([ort, liste, tab]) =>
     liste.forEach((pt) => idx.push({ ort, titel: pt, text: "",
       ziel: { seite: "heute", param: tab } })));
@@ -4504,17 +4591,25 @@ const todoTabelle = () => {
       el("span", { class: "todozahl" }, offen ? offen + " offen" : "fertig"),
       pfeil));
     box.appendChild(zeilen);
-    eintraege.forEach(([was, datum, lead]) => {
+    eintraege.forEach((eintrag) => {
+      const [was, datum, lead] = eintrag;
       const ab = stand[was];
-      zeilen.appendChild(el("button", {
-        class: "todozeile" + (ab ? " ab" : ""),
-        onclick: () => { stand[was] = !stand[was]; merke("haken:alle", stand); zeichnen(); },
-      },
+      /* Hängt die Aufgabe an einer anderen, bleibt sie grau und gesperrt. */
+      const wartet = ab ? null : gesperrtDurch(eintrag, stand);
+      const zeilenAttr = {
+        class: "todozeile" + (ab ? " ab" : "") + (wartet ? " wartet" : ""),
+        onclick: () => {
+          if (wartet) return;
+          stand[was] = !stand[was]; merke("haken:alle", stand); zeichnen();
+        },
+      };
+      if (wartet) zeilenAttr.disabled = "disabled";
+      zeilen.appendChild(el("button", zeilenAttr,
         el("span", { class: "box klein" + (ab ? " an" : "") },
           ab ? svg("check", 11, "#fff", 3) : null),
         el("span", { class: "todolead" }, leadZeichen(lead)),
         el("span", { class: "todotext", html: was }),
-        el("span", { class: "tododatum" }, mitTag(datum))));
+        el("span", { class: "tododatum" }, wartet ? "wartet" : mitTag(datum))));
     });
   });
 
@@ -4568,53 +4663,68 @@ const seiteStart = () => {
   return el("div", {}, termineBlock(), null);
 };
 
+const gesperrtDurch = (eintrag, stand) => {
+  /* Eine Aufgabe kann an einer anderen hängen: erst buchen, dann melden. */
+  const vor = eintrag[5];
+  return vor && !stand[vor] ? vor : null;
+};
+
+const naechsteAufgaben = () => {
+  /* Nach Datum, innerhalb eines Tages in der Reihenfolge der To-do-Liste. */
+  const stand = hole("haken:alle", {});
+  const sortiert = TODO_ALLE.map((e, i) => [e, i])
+    .sort((a, b) => (alsTage(a[0][1]) ?? 9e9) - (alsTage(b[0][1]) ?? 9e9) || a[1] - b[1])
+    .map(([e]) => e);
+  const offene = sortiert.filter(([was]) => !stand[was]);
+  /* Was noch an einer anderen Aufgabe hängt, wartet – es steht nicht oben. */
+  return { stand, offene, machbar: offene.filter((e) => !gesperrtDurch(e, stand)) };
+};
+
 const termineKarte = (kopfNeu) => {
-  /* Die nächsten offenen Termine – eine Zeile je Termin, aufklappbar. */
+  /* Die zwei nächsten offenen To-dos – aufklappbar, Quelle ist die To-do-Liste. */
   const karteEl = el("div", { class: "terminkarte" });
-  let alle = false;
   let offen = null;
 
   const zeichne = () => {
     karteEl.innerHTML = "";
-    const stand = hole("termine", {});
-    const sortiert = TERMINE.slice()
-      .sort((a, b) => (alsTage(a[0]) ?? 9e9) - (alsTage(b[0]) ?? 9e9));
-    const offeneTermine = sortiert.filter(([datum, titel, liste]) => {
-      const s = hole("haken:termin:" + titel, {});
-      return !liste.every((p) => s[p]);
-    });
-    const zeigen = alle ? sortiert : offeneTermine.slice(0, 2);
-    if (kopfNeu) kopfNeu(alle);
+    const { stand, machbar } = naechsteAufgaben();
+    if (kopfNeu) kopfNeu(false);
 
-    zeigen.forEach(([datum, titel, liste], i) => {
-      const s = hole("haken:termin:" + titel, {});
-      const erledigt = liste.filter((p) => s[p]).length;
-      const ganz = erledigt === liste.length;
-      const dringend = alsTage(datum) <= 3;
+    machbar.slice(0, 2).forEach((eintrag, i) => {
+      const [was, datum, , , punkte] = eintrag;
+      const detail = punkte || [];
+      const dringend = (alsTage(datum) ?? 9e9) <= 3;
 
       const zeile = el("div", { class: "terminzeile" + (i ? " mitlinie" : "") });
       zeile.appendChild(el("button", {
         class: "terminknopf",
-        onclick: () => { offen = offen === titel ? null : titel; zeichne(); },
+        onclick: () => { offen = offen === was ? null : was; zeichne(); },
       },
-        el("span", { class: "terminwas" + (ganz ? " ab" : "") },
-          titel + (offen === titel ? "" : " …"),
-          liste.length > 1
-            ? el("span", { class: "terminstand" }, erledigt + "/" + liste.length)
-            : null),
-        el("span", { class: "terminwann" + (dringend ? " bald" : "") }, wannText(datum))));
+        el("span", { class: "terminwas" },
+          was + (detail.length && offen !== was ? " …" : "")),
+        el("span", { class: "terminwann" + (dringend ? " bald" : "") },
+          wannText(datum))));
 
-      if (offen === titel) {
+      /* Was an dieser Aufgabe hängt, steht klein darunter – dann ist die
+         Reihenfolge sichtbar, ohne dass die Karte voll wird. */
+      const danach = TODO_ALLE.filter((e) => e[5] === was && !stand[e[0]]);
+      if (danach.length) {
+        zeile.appendChild(el("div", { class: "danachzeile" }, "danach",
+          danach.map((e) => el("span", { class: "danachpunkt" }, e[0]))));
+      }
+
+      if (offen === was) {
         const block = el("div", { class: "terminaufgaben" });
-        liste.forEach((p) => {
-          block.appendChild(el("button", {
-            class: "haken" + (s[p] ? " ab" : ""),
-            onclick: () => { s[p] = !s[p]; merke("haken:termin:" + titel, s); zeichne(); },
+        detail.forEach((p) => block.appendChild(
+          el("div", { class: "terminhinweis", html: p })));
+        block.appendChild(el("button", {
+          class: "haken",
+          onclick: () => {
+            stand[was] = true; merke("haken:alle", stand); offen = null; zeichnen();
           },
-            el("span", { class: "box" + (s[p] ? " an" : "") },
-              s[p] ? svg("check", 13, "#fff", 3) : null),
-            el("span", { class: "termintext", html: p })));
-        });
+        },
+          el("span", { class: "box" }),
+          el("span", { class: "termintext" }, "Erledigt")));
         zeile.appendChild(block);
       }
       karteEl.appendChild(zeile);
@@ -4622,6 +4732,7 @@ const termineKarte = (kopfNeu) => {
   };
 
   zeichne();
+
   return karteEl;
 };
 
@@ -4666,7 +4777,7 @@ const termineBlock = () => {
     "Alles im Blick"));
   behaelter.appendChild(el("div", { class: "blickreihe" },
     kachel("check", "To-dos", offeneTodos + " offen", "todos"),
-    kachel("book", "Checklisten", "7 Listen", "checklisten"),
+    kachel("book", "Checklisten", "6 Listen", "checklisten"),
     kachel("rucksack", "Packen", packStand, "packen"),
     wochenende() ? kachel("star", "Wochenende", wochenStand, "woche") : null));
   return behaelter;
@@ -4712,15 +4823,27 @@ const seiteHeute = () => {
     wrap.appendChild(todoTabelle());
   }
 
-  if (bereichHeute === "checklisten") gruppe("Checklisten", [
-    faltHakenliste("Vor dem Abflugtag", VOR_ABFLUG, "abflug"),
-    faltHakenliste("→ Ankunft Hostel", ANKUNFT, "ankunft", true),
-    faltHakenliste("← Hostel verlassen", VOR_DER_TOUR, "tour:vorher", true),
-    faltHakenliste("Tour", VOR_TOUR, "tour:tour", true),
-    faltHakenliste("Ortswechsel", ORTSWECHSEL, "ortswechsel", true),
-    faltHakenliste("Wochenende", WOCHE, "woche", true, WOCHE_WICHTIG),
-    faltHakenliste("Rückkehr", RUECKKEHR, "rueckkehr"),
-  ]);
+  if (bereichHeute === "checklisten") {
+    /* Was sie ständig braucht, steht oben; was einmal gilt, darunter.
+       Bis zum Abflug ist der Abflugtag die Ausnahme und kommt zuoberst. */
+    const immer = () => [
+      faltHakenliste("Angekommen", ANKUNFT, "ankunft", true),
+      faltHakenliste("Tagsüber weg", TOUR, "tour", true),
+      faltHakenliste("Weiterreise", ORTSWECHSEL, "ortswechsel", true),
+      faltHakenliste("Jede Woche", WOCHE, "woche", true, WOCHE_WICHTIG),
+    ];
+    if (new Date() < new Date(ABFLUG)) {
+      gruppe("Jetzt", [faltHakenliste("Vor dem Abflugtag", VOR_ABFLUG, "abflug")]);
+      gruppe("Immer wieder", immer());
+      gruppe("Am Schluss", [faltHakenliste("Rückkehr", RUECKKEHR, "rueckkehr")]);
+    } else {
+      gruppe("Immer wieder", immer());
+      gruppe("Einmal", [
+        faltHakenliste("Vor dem Abflugtag", VOR_ABFLUG, "abflug"),
+        faltHakenliste("Rückkehr", RUECKKEHR, "rueckkehr"),
+      ]);
+    }
+  }
 
   if (bereichHeute === "packen") gruppe("Packordnung", [
     faltHakenliste("Im Flugzeug", PACK_FLUG, "pack:flug", true, 0, offeneListe === "pack:flug"),
@@ -4860,16 +4983,16 @@ const seiteNotfall = () => {
   const stationsinhalt = (S) => {
     const box = el("div", { class: "stationsinhalt" });
     const LISTEN = {
-      "abflug": ["Am Abflugtag", VOR_ABFLUG],
+      "abflug": ["Vor dem Abflugtag", VOR_ABFLUG],
       "vorreise": ["Wochen vorher", VOR_REISE],
-      "ankunft": ["→ Ankunft Hostel", ANKUNFT],
-      "ortswechsel": ["Ortswechsel", ORTSWECHSEL],
+      "ankunft": ["Angekommen", ANKUNFT],
+      "ortswechsel": ["Weiterreise", ORTSWECHSEL],
       "pack:inland": ["Packordnung Inland", PACK_INLAND],
       "pack:flug": ["Packordnung Flug", PACK_FLUG],
-      "woche": ["Wochenende", WOCHE],
+      "woche": ["Jede Woche", WOCHE],
       "tour:rucksack": ["Tagesrucksack", TAGESRUCKSACK],
-      "tour:vorher": ["← Hostel verlassen", VOR_DER_TOUR],
-      "tour:tour": ["Tour", VOR_TOUR],
+      "tour": ["Tagsüber weg", TOUR],
+      "rueckkehr": ["Rückkehr", RUECKKEHR],
     };
 
     /* Zeitstatus und die Aufgaben, die jetzt anstehen. */
@@ -5283,7 +5406,7 @@ const seiteRoute = () => {
   offeneStation = station;
   let land = (param && param.land) || "guatemala";
 
-  const farbe = { guatemala: "gt", costarica: "cr" };
+  const farbe = { guatemala: "gt", costarica: "cr", schweiz: "ch" };
 
   /* Flaggen als Vektorgrafik – auf jedem Gerät gleich. */
   const flagge = (schluessel) => {
@@ -5303,6 +5426,11 @@ const seiteRoute = () => {
         + '<rect x="7" width="7" height="14" fill="#fff"/>'
         + '<rect x="14" width="7" height="14" fill="#4997D0"/>'
         + '<circle cx="10.5" cy="7" r="2.1" fill="none" stroke="#4E6B52" stroke-width=".7"/>');
+    }
+    if (schluessel === "schweiz") {
+      return rahmen('<rect width="21" height="14" fill="#D52B1E"/>'
+        + '<rect x="8.6" y="3" width="3.8" height="8" fill="#fff"/>'
+        + '<rect x="6.5" y="5.1" width="8" height="3.8" fill="#fff"/>');
     }
     if (schluessel === "costarica") {
       return rahmen('<rect width="21" height="14" fill="#002B7F"/>'
@@ -5332,16 +5460,16 @@ const seiteRoute = () => {
   const stationsinhalt = (S) => {
     const box = el("div", { class: "stationsinhalt" });
     const LISTEN = {
-      "abflug": ["Am Abflugtag", VOR_ABFLUG],
+      "abflug": ["Vor dem Abflugtag", VOR_ABFLUG],
       "vorreise": ["Wochen vorher", VOR_REISE],
-      "ankunft": ["→ Ankunft Hostel", ANKUNFT],
-      "ortswechsel": ["Ortswechsel", ORTSWECHSEL],
+      "ankunft": ["Angekommen", ANKUNFT],
+      "ortswechsel": ["Weiterreise", ORTSWECHSEL],
       "pack:inland": ["Packordnung Inland", PACK_INLAND],
       "pack:flug": ["Packordnung Flug", PACK_FLUG],
-      "woche": ["Wochenende", WOCHE],
+      "woche": ["Jede Woche", WOCHE],
       "tour:rucksack": ["Tagesrucksack", TAGESRUCKSACK],
-      "tour:vorher": ["← Hostel verlassen", VOR_DER_TOUR],
-      "tour:tour": ["Tour", VOR_TOUR],
+      "tour": ["Tagsüber weg", TOUR],
+      "rueckkehr": ["Rückkehr", RUECKKEHR],
     };
 
     /* Zeitstatus und die Aufgaben, die jetzt anstehen. */
