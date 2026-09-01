@@ -505,7 +505,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 
 /* Schmale Notfallleiste auf der Startseite */
 /* Hero, Notfall und Termine als eine Gruppe – enger beieinander. */
-.notfallzeile { display: flex; justify-content: flex-end; margin-top: 20px; margin-bottom: 2px; }
+.notfallzeile { display: flex; justify-content: flex-end; margin-top: 14px; margin-bottom: 0; }
 .notfallleiste {
   display: inline-flex; align-items: center; gap: 10px;
   background: var(--alarm-hell); border: 1px solid #EBC6C0;
@@ -769,6 +769,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 /* Buchen – der einzige Weg nach aussen, deshalb kräftig */
 .karte.buchenkarte {
   position: relative;
+  display: block;
   background: var(--terra); border-color: var(--terra);
 }
 .karte.buchenkarte .kacheltitel { color: #fff; }
@@ -1048,7 +1049,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 .heldlupe .ikon { position: relative; z-index: 1; }
 .terminknopf {
-  min-height: 48px; display: flex; align-items: center; gap: 10px; width: 100%;
+  min-height: 38px; display: flex; align-items: center; gap: 10px; width: 100%;
 }
 .terminknopf .terminwas { flex: 1; min-width: 0; }
 .terminknopf .terminwann { margin-left: auto; flex-shrink: 0; }
@@ -1252,14 +1253,126 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 
 /* Drei Listenwege auf der Startseite – eine Karte, feine Linien */
-.startlisten { margin-top: 10px; padding: 0 16px; }
+.startlisten { margin-top: 0; padding: 0 16px; }
 .listenzeile {
   display: flex; align-items: center; gap: 10px; width: 100%;
-  min-height: 48px; padding: 0; background: none; border: 0;
-  border-bottom: 1px solid #F0EBE2; text-align: left;
+  min-height: 40px; padding: 0; background: none; border: 0;
+  border-bottom: 1px solid #F5F0E8; text-align: left;
 }
 .startlisten .listenzeile:last-child { border-bottom: 0; }
 .listenzahl { margin-left: auto; font-size: var(--ebene6); color: #A9A296; }
+
+/* Termine und Listen teilen sich eine Karte */
+.karte.startkarte { padding: 4px 0; border-radius: 16px; }
+.karte.startkarte .terminkarte { padding: 0 16px; }
+.karte.startkarte .startlisten .listenzeile:first-child { border-top: 1px solid #F0EBE2; }
+
+/* ══ Pura Vida Flow – freier Home-Bereich ══════════════════════ */
+.flowbereich { margin-top: 14px; }
+
+.flowtitel {
+  font-size: var(--ebene4); font-weight: 600; color: #211C18;
+  margin: 0 2px 10px;
+}
+
+/* Termine frei auf dem Sand, ohne Karte */
+.flowtermin {
+  display: flex; align-items: baseline; gap: 10px; width: 100%;
+  min-height: 44px; padding: 4px 2px; background: none; border: 0;
+  text-align: left;
+}
+.flowtermin.versetzt { padding-left: 22px; }
+.flowaufgabe { flex: 1; min-width: 0; font-size: var(--ebene5); color: #211C18; }
+.flowwann {
+  flex-shrink: 0; font-size: var(--ebene6); color: var(--terra);
+  display: inline-flex; align-items: baseline; gap: 7px;
+}
+.flowstand {
+  font-size: 10.5px; color: #A9A296; background: #F3EEE6;
+  border-radius: 20px; padding: 1px 6px;
+}
+
+/* Die Kurve und die drei Wege darum herum */
+.flow { position: relative; height: 210px; margin: 14px 0 4px; }
+.flowlinie { position: absolute; inset: 0; }
+.flowlinie svg { width: 100%; height: 100%; display: block; }
+
+.flowweg {
+  position: absolute; display: flex; align-items: center; gap: 9px;
+  min-height: 44px; padding: 6px 4px; background: none; border: 0;
+  text-align: left;
+}
+.flowweg.obenlinks   { left: 2px;   top: 2px; }
+.flowweg.untenmitte  { left: 4px;   top: 92px; }
+.flowweg.obenrechts  { right: 6px;  top: 156px; }
+
+.flowikon { flex-shrink: 0; }
+.flowwegtitel { display: block; font-size: var(--ebene5); font-weight: 600; color: #211C18; }
+.flowwegzahl { display: block; font-size: var(--ebene6); color: #A9A296; margin-top: 1px; }
+
+/* Wochenende erscheint nur samstags und sonntags, unter der Kurve */
+.flowweg.wochenzeile { position: static; margin-top: 4px; }
+
+/* ══ Eine Welle: das Bild endet in einem organischen Bogen ═════ */
+/* Darunter nur Ruhe – die Fläche geht ton in ton in den Sand über. */
+.heldtext {
+  margin: -66px calc(-1 * max(20px, env(safe-area-inset-left))) 0
+          calc(-1 * max(20px, env(safe-area-inset-left)));   /* bis an beide Ränder */
+  padding: 64px 38px 22px;
+  box-shadow: none;
+  position: relative;
+  display: block;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFFDFA 34%, #FAF4EA 68%, var(--sand) 100%);
+  -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 66" preserveAspectRatio="none"><path d="M0 46.5 C 80 43, 150 10, 240 10 C 320 10, 362 18.7, 400 27.4 L400 66 L0 66 Z" fill="%23000"/></svg>'), linear-gradient(#000, #000);
+  -webkit-mask-size: 100% 66px, 100% calc(100% - 66px);
+  -webkit-mask-position: left top, left 66px;
+  -webkit-mask-repeat: no-repeat, no-repeat;
+  mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 66" preserveAspectRatio="none"><path d="M0 46.5 C 80 43, 150 10, 240 10 C 320 10, 362 18.7, 400 27.4 L400 66 L0 66 Z" fill="%23000"/></svg>'), linear-gradient(#000, #000);
+  mask-size: 100% 66px, 100% calc(100% - 66px);
+  mask-position: left top, left 66px;
+  mask-repeat: no-repeat, no-repeat;
+}
+/* Die Karte selbst ist unsichtbar – sichtbar sind Bild und Fläche. */
+.held { background: none; border: 0; border-radius: 0; overflow: visible; contain: none; }
+.held img { border-radius: 14px 14px 0 0; }
+.heldtext .min0 { padding-right: 52px; }   /* Platz für die Lupe */
+.heldlupe { position: absolute; right: 24px; top: 60px; margin-top: 0; }
+/* Der Notfallknopf steht links unter der Länderzeile, nicht mehr allein rechts. */
+.startkopf .notfallzeile { justify-content: flex-end; margin-top: 12px; }
+.startkopf .notfallleiste { margin-bottom: 0; }
+
+/* Termine und Wege ohne Rahmen, direkt auf dem Sand */
+.offenfeld { background: none; border: 0; padding: 0; }
+.offenfeld .terminkarte { padding: 0; }
+.offenfeld .terminzeile { padding: 0; }
+.offenfeld .terminzeile.mitlinie { border-top: 1px solid #EBE3D6; }
+.offenfeld .listenzeile { padding: 0; border-bottom: 1px solid #EBE3D6; }
+.offenfeld .listenzeile:last-child { border-bottom: 0; }
+.listenikon { flex-shrink: 0; margin-right: 10px; display: inline-flex; }
+
+.offenfeld.termine { margin-bottom: 6px; }
+.offenfeld .terminknopf { padding: 4px 0; }
+
+
+
+/* ══ Alles im Blick: drei Kacheln auf dem Sand ═════════════════ */
+.blickreihe {
+  display: grid; grid-auto-flow: column; grid-auto-columns: 1fr;
+  margin: 2px 0 4px;
+}
+.blickkachel {
+  display: flex; flex-direction: column; align-items: center; gap: 7px;
+  min-height: 44px; padding: 14px 4px 16px;
+  background: none; border: 0; text-align: center; position: relative;
+}
+/* Die Trennlinie ist kurz und hell – sie ordnet, ohne aufzufallen. */
+.blickkachel::before {
+  content: ""; position: absolute; left: 0; top: 24%; height: 52%;
+  width: 1px; background: #EBE3D6;
+}
+.blickkachel:first-child::before { display: none; }
+.blickwas { font-size: var(--ebene4); color: #211C18; }
+.blickzahl { font-size: var(--ebene6); color: var(--grau); }
 
 </style>
 </head>
@@ -1555,7 +1668,7 @@ const BUCHEN = [
     { label: "Hostels in Panajachel", url: "https://www.hostelworld.com/hostels/north-america/guatemala/panajachel/" },
     { label: "Hostels in Costa Rica", url: "https://www.hostelworld.com/hostels/north-america/costa-rica/" },
     { label: "Casa Florencia Antigua", url: "http://www.cflorencia.net/", hinweis: "Gebucht ab 29. September" },
-    { label: "Maya Papaya Antigua", url: "https://www.hostelworld.com/hostels/p/278452/maya-papaya/", hinweis: "Für die Wochen danach" },
+    { label: "Maya Papaya Antigua", url: "https://direct-book.com/properties/mayapapayadirect", hinweis: "Direkt buchen – für die Wochen danach" },
   ]],
   ["Transport vor Ort", [
     { label: "Uber", url: "https://www.uber.com/cr/de/", hinweis: "Costa Rica: San José, Heredia, Alajuela, Cartago, Liberia" },
@@ -2792,7 +2905,7 @@ const LAENDER = {
       },
       {
         name: "Maya Papaya", ort: "1a Calle Poniente 20, Antigua", tel: "+502 5825 7586",
-        web: "https://www.hostelworld.com/hostels/p/278452/maya-papaya/", note: "4.7 · 446 Bewertungen",
+        web: "https://direct-book.com/properties/mayapapayadirect", note: "4.7 · 446 Bewertungen",
         tipp: "Falls du länger bleibst",
         gut: ["Echtes Frauen-Dorm mit Vorhang vor dem Bett, Licht, Steckdose und Schliessfach",
               "Rezeption rund um die Uhr besetzt – eine Ankunft um 00:30 ist dort Normalfall",
@@ -3316,7 +3429,7 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "505 · 01.09.2026";
+const VERSION = "528 · 01.09.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
@@ -3375,6 +3488,7 @@ const ICON = {
   back: '<path d="m15 18-6-6 6-6"/>',
   check: '<path d="M20 6 9 17l-5-5"/>',
   star: '<path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/>',
+  rucksack: '<path d="M5 11.5A5.5 5.5 0 0 1 10.5 6h3A5.5 5.5 0 0 1 19 11.5V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/><path d="M10 6V5a2 2 0 0 1 4 0v1"/><path d="M9.5 21v-4.5a2.5 2.5 0 0 1 5 0V21"/>',
   bed: '<path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/>',
   shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
   edit: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
@@ -4242,7 +4356,8 @@ const MONATE = { jan: 0, feb: 1, mrz: 2, apr: 3, mai: 4, jun: 5, jul: 6, aug: 7,
                  sep: 8, okt: 9, nov: 10, dez: 11 };
 
 const alsTage = (datum) => {
-  const m = datum.match(/^(\d{1,2})\.\s*([A-Za-zäöü]{3})/);
+  /* "bis 26. Sep" und "ab 4. Sep" zählen wie das reine Datum. */
+  const m = String(datum).match(/(\d{1,2})\.\s*([A-Za-zäöü]{3})/);
   if (!m) return null;
   const monat = MONATE[m[2].toLowerCase().slice(0, 3)];
   if (monat === undefined) return null;
@@ -4432,76 +4547,52 @@ const todoTabelle = () => {
   return box;
 };
 
-const termineBlock = () => {
-  const behaelter = el("div", { class: "abstandoben" });
-  const kopf = el("div", { class: "gruppenzeile" });
-  const inhalt = termineKarte((alle) => {
-    kopf.innerHTML = "";
-    kopf.appendChild(el("span", { class: "gruppentitel klein3" }, "Die nächsten Termine"));
-  });
-  behaelter.appendChild(kopf);
-  behaelter.appendChild(inhalt);
-  /* Drei Wege in die Listen – mit Zähler, damit man sieht, wo etwas offen ist. */
-  const offeneTodos = (() => {
-    const stand = hole("haken:alle", {});
-    return TODO_ALLE.filter(([was]) => !stand[was]).length;
-  })();
-  const packStand = (() => {
-    let ab = 0, alle = 0;
-    PACKLISTE.forEach(([t, p]) => {
-      const s = hole("haken:pack:" + t, {});
-      p.forEach((x) => { alle++; if (s[x]) ab++; });
-    });
-    return ab + " von " + alle;
-  })();
+const seiteStart = () => {
+  document.body.insertBefore(el("div", { class: "startkopf", id: "startkopf" },
+    el("div", { class: "held" },
+      el("img", { src: BANNER, alt: "Tukan im Regenwald", width: "900", height: "386" }),
+      el("div", { class: "heldtext" },
+        el("div", { class: "min0" },
+          el("div", { class: "heldtitel" }, "Sophie Pura Vida"),
+          el("div", { class: "heldunter" }, "Guatemala · Costa Rica · Peru")),
+        el("button", {
+          class: "heldlupe", "aria-label": "Suchen",
+          onclick: () => { vorSuche = "start"; seite = "suche"; zeichnen(); window.scrollTo(0, 0); },
+        }, svg("search", 16, "#B65A3C", 1.9)),
+        el("div", { class: "notfallzeile" },
+          el("button", { class: "notfallleiste", onclick: () => gehe("notfall") },
+            svg("shield", 19, "#A8322A", 2),
+            el("span", { class: "notfallwort" }, "Notfall"),
+            el("span", { class: "rundknopf alarm klein" }, svg("phone", 14, "#fff", 2.2))))))), app);
 
-  /* Eine Karte, drei Zeilen – wie die Termine darüber. */
-  const zeile = (titel, zahl, ziel, bereich) =>
-    el("button", { class: "listenzeile", onclick: () => gehe(ziel, bereich) },
-      el("span", { class: "blocktitel ohneabstand" }, titel),
-      el("span", { class: "listenzahl" }, zahl),
-      el("span", { class: "faltpfeil pfeilrechts" },
-        svg("chevron", 16, "#B65A3C", 2.2)));
-
-  const listen = el("div", { class: "karte startlisten" },
-    zeile("To-dos", offeneTodos + " offen", "heute", "todos"),
-    zeile("Checklisten", "7 Listen", "heute", "checklisten"),
-    zeile("Packen", packStand, "heute", "packen"));
-  behaelter.appendChild(listen);
-  return behaelter;
+  return el("div", {}, termineBlock(), null);
 };
 
 const termineKarte = (kopfNeu) => {
-  const stand = hole("termine", {});
-  let offen = null;
+  /* Die nächsten offenen Termine – eine Zeile je Termin, aufklappbar. */
+  const karteEl = el("div", { class: "terminkarte" });
   let alle = false;
-  const behaelter = el("div");
-
-  /* Ein Termin gilt als erledigt, wenn alle seine Aufgaben abgehakt sind. */
-  const aufgaben = (text) => (Array.isArray(text) ? text : [text]);
-  const fertig = ([, titel, text]) => aufgaben(text).every((z) => stand[titel + "|" + z]);
-
-  /* Nach Datum sortiert – "bis 26. Sep" und Ähnliches zählt ab dem genannten Tag. */
-  const sortiert = TERMINE.slice().sort((a, b) => {
-    const x = alsTage(a[0].replace(/^\D+/, ""));
-    const y = alsTage(b[0].replace(/^\D+/, ""));
-    return (x === null ? 9e9 : x) - (y === null ? 9e9 : y);
-  });
+  let offen = null;
 
   const zeichne = () => {
-    behaelter.innerHTML = "";
-    const offeneTermine = sortiert.filter((t) => !fertig(t));
+    karteEl.innerHTML = "";
+    const stand = hole("termine", {});
+    const sortiert = TERMINE.slice()
+      .sort((a, b) => (alsTage(a[0]) ?? 9e9) - (alsTage(b[0]) ?? 9e9));
+    const offeneTermine = sortiert.filter(([datum, titel, liste]) => {
+      const s = hole("haken:termin:" + titel, {});
+      return !liste.every((p) => s[p]);
+    });
     const zeigen = alle ? sortiert : offeneTermine.slice(0, 2);
+    if (kopfNeu) kopfNeu(alle);
 
-    const karteEl = el("div", { class: "karte terminkarte" });
-    zeigen.forEach(([datum, titel, text], i) => {
-      const tage = alsTage(datum);
-      const liste = aufgaben(text);
-      const erledigt = liste.filter((z) => stand[titel + "|" + z]).length;
+    zeigen.forEach(([datum, titel, liste], i) => {
+      const s = hole("haken:termin:" + titel, {});
+      const erledigt = liste.filter((p) => s[p]).length;
       const ganz = erledigt === liste.length;
-      const dringend = tage !== null && tage <= 3 && !ganz;
-      const zeile = el("div", { class: "terminzeile" + (i ? " mitlinie" : "") });
+      const dringend = alsTage(datum) <= 3;
 
+      const zeile = el("div", { class: "terminzeile" + (i ? " mitlinie" : "") });
       zeile.appendChild(el("button", {
         class: "terminknopf",
         onclick: () => { offen = offen === titel ? null : titel; zeichne(); },
@@ -4515,63 +4606,70 @@ const termineKarte = (kopfNeu) => {
 
       if (offen === titel) {
         const block = el("div", { class: "terminaufgaben" });
-        liste.forEach((z) => {
-          const k = titel + "|" + z;
+        liste.forEach((p) => {
           block.appendChild(el("button", {
-            class: "haken" + (stand[k] ? " ab" : ""),
-            onclick: () => { stand[k] = !stand[k]; merke("termine", stand); zeichne(); },
+            class: "haken" + (s[p] ? " ab" : ""),
+            onclick: () => { s[p] = !s[p]; merke("haken:termin:" + titel, s); zeichne(); },
           },
-            el("span", { class: "box klein" + (stand[k] ? " an" : "") },
-              stand[k] ? svg("check", 10, "#fff", 3) : null),
-            el("span", { class: "termintext", html: z })));
+            el("span", { class: "box" + (s[p] ? " an" : "") },
+              s[p] ? svg("check", 13, "#fff", 3) : null),
+            el("span", { class: "termintext", html: p })));
         });
         zeile.appendChild(block);
       }
       karteEl.appendChild(zeile);
     });
-
-    if (!zeigen.length) {
-      karteEl.appendChild(el("div", { class: "text" },
-        "Alles erledigt. Der nächste Termin erscheint, sobald du einen Haken entfernst."));
-    }
-    behaelter.appendChild(karteEl);
-    if (kopfNeu) kopfNeu(alle);
   };
+
   zeichne();
-  behaelter.umschalten = () => { alle = !alle; zeichne(); };
-  return behaelter;
+  return karteEl;
 };
 
-const seiteStart = () => {
-  document.body.insertBefore(el("div", { class: "startkopf", id: "startkopf" },
-    el("div", { class: "held" },
-      el("img", { src: BANNER, alt: "Tukan im Regenwald", width: "900", height: "386" }),
-      el("div", { class: "heldtext" },
-        el("div", { class: "min0" },
-          el("div", { class: "heldtitel" }, "Sophie Pura Vida"),
-          el("div", { class: "heldunter" }, "Guatemala · Costa Rica · Peru")),
-        el("button", {
-          class: "heldlupe", "aria-label": "Suchen",
-          onclick: () => { vorSuche = "start"; seite = "suche"; zeichnen(); window.scrollTo(0, 0); },
-        }, svg("search", 16, "#B65A3C", 1.9)))),
+const termineBlock = () => {
+  const behaelter = el("div", { class: "abstandoben" });
+  const kopf = el("div", { class: "gruppenzeile" });
+  const inhalt = termineKarte((alle) => {
+    kopf.innerHTML = "";
+    kopf.appendChild(el("span", { class: "gruppentitel klein3" }, "Als Nächstes"));
+  });
+  behaelter.appendChild(kopf);
+  const eineKarte = el("div", { class: "karte startkarte" });
+  eineKarte.appendChild(inhalt);
+  behaelter.appendChild(eineKarte);
 
-    el("div", { class: "notfallzeile" },
-      el("button", { class: "notfallleiste", onclick: () => gehe("notfall") },
-        svg("shield", 19, "#A8322A", 2),
-        el("span", { class: "notfallwort" }, "Notfall"),
-        el("span", { class: "rundknopf alarm klein" }, svg("phone", 14, "#fff", 2.2))))), app);
+  /* Drei Wege in die Listen – mit Zähler, damit man sieht, wo etwas offen ist. */
+  const offeneTodos = (() => {
+    const stand = hole("haken:alle", {});
+    return TODO_ALLE.filter(([was]) => !stand[was]).length;
+  })();
+  const packStand = (() => {
+    let ab = 0, alle = 0;
+    PACKLISTE.forEach(([t, p]) => {
+      const s = hole("haken:pack:" + t, {});
+      p.forEach((x) => { alle++; if (s[x]) ab++; });
+    });
+    return ab + " von " + alle;
+  })();
+  const wochenStand = (() => {
+    const s = hole("haken:woche", {});
+    return WOCHE.filter((x) => s[x]).length + " von " + WOCHE.length;
+  })();
 
-  return el("div", {},
-    wochenende() ? el("div", {},
-      el("div", { class: "gruppentitel abstandoben klein3" }, "Wochenende"),
-      el("div", { class: "wochenende" },
-        hakenliste("Dieses Wochenende", WOCHE.slice(0, WOCHE_WICHTIG), "woche", true)),
-      el("button", { class: "textknopf mehrwoche", onclick: () => gehe("heute", "woche") },
-        "Ganze Liste öffnen")) : null,
+  /* Alles im Blick: drei Kacheln nebeneinander, direkt auf dem Sand. */
+  const kachel = (ikon, titel, zahl, bereich) =>
+    el("button", { class: "blickkachel", onclick: () => gehe("heute", bereich) },
+      svg(ikon, 24, "#B65A3C", 1.8),
+      el("span", { class: "blickwas" }, titel),
+      el("span", { class: "blickzahl" }, zahl));
 
-    termineBlock(),
-
-    null);
+  behaelter.appendChild(el("div", { class: "gruppentitel abstandoben klein3" },
+    "Alles im Blick"));
+  behaelter.appendChild(el("div", { class: "blickreihe" },
+    kachel("check", "To-dos", offeneTodos + " offen", "todos"),
+    kachel("book", "Checklisten", "7 Listen", "checklisten"),
+    kachel("rucksack", "Packen", packStand, "packen"),
+    wochenende() ? kachel("star", "Wochenende", wochenStand, "woche") : null));
+  return behaelter;
 };
 
 const vorbereitungFertigOben = () => {
@@ -5600,7 +5698,7 @@ function zeichnen() {
       ? el("div", { class: "routenkacheln" },
           bereichkachel("check", "To-dos", "todos"),
           bereichkachel("book", "Checklisten", "checklisten"),
-          bereichkachel("bed", "Packen", "packen"))
+          bereichkachel("rucksack", "Packen", "packen"))
       : null;
 
     document.body.insertBefore(el("div", { class: "kopfzeile" + (kacheln ? " mitkacheln" : ""),
