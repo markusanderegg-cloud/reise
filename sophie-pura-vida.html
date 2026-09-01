@@ -1534,8 +1534,6 @@ const BUCHEN = [
     { label: "Hostels in Costa Rica", url: "https://www.hostelworld.com/hostels/north-america/costa-rica/" },
     { label: "Casa Florencia Antigua", url: "http://www.cflorencia.net/", hinweis: "Gebucht ab 29. September" },
     { label: "Maya Papaya Antigua", url: "https://www.hostelworld.com/hostels/p/278452/maya-papaya/", hinweis: "Für die Wochen danach" },
-    { label: "Casa Florencia Antigua", url: "http://www.cflorencia.net/", hinweis: "Gebucht ab 29. September" },
-    { label: "Maya Papaya Antigua", url: "https://www.hostelworld.com/hostels/p/278452/maya-papaya/", hinweis: "Für die Wochen danach" },
   ]],
   ["Transport vor Ort", [
     { label: "Uber", url: "https://www.uber.com/cr/de/", hinweis: "Costa Rica: San José, Heredia, Alajuela, Cartago, Liberia" },
@@ -1893,7 +1891,7 @@ const DOKUMENTE = [
         "Seite öffnen, Sprache wählen – Spanisch oder Englisch.",
         "<b>E-Mail-Adresse (email)</b> eingeben, auf die du auch unterwegs zugreifst.",
         "<b>Nationalität (nationality)</b> und <b>Passnummer (passport number)</b> genau wie im Pass.",
-        "<b>Flugnummer (flight number)</b>, Datum, Ankunfts- oder Abflughafen.",
+        "<b>Flugnummer (flight number)</b> – Datum, Ankunfts- oder Abflughafen.",
         "<b>Gepäck (luggage)</b>: Anzahl Stücke. Persönliche Kleidung und Reiseausrüstung gelten als persönliches Gepäck.",
         "<b>Wert mitgeführter Waren (value of goods other than luggage)</b> und Bargeld über 10'000 USD: bei einer Rucksackreise überall Nein oder 0.",
         "Angaben kontrollieren – ein Tippfehler in der Passnummer macht die Erklärung ungültig.",
@@ -1958,7 +1956,7 @@ const DOKUMENTE = [
     kurz: "Intercultura Heredia und Sámara",
     bloecke: [
       ["Was gebucht ist", [
-        "<b>Intercultura</b>, vier Lektionen pro Vormittag, Nachmittage frei.",
+        "<b>Intercultura</b> – vier Lektionen pro Vormittag, Nachmittage frei.",
         "<b>Heredia</b> im Zentraltal, 20 Minuten von San José.",
         "<b>Sámara</b> am Pazifik – Wechsel innerhalb desselben Kurses möglich, ohne Aufpreis.",
         "Unterkunft über die Schule: Studentenwohnheim, sonst Gastfamilie.",
@@ -2348,10 +2346,10 @@ const STATIONEN = [
       [">> 2 Tage vor Abflug", [
         ["eigen", "", [
           { punkt: "<b>Nächte in Heredia buchen</b> – bis die Schule beginnt, mit Gratisstornierung.",
-            sprung: "buchen" },
+            sprung: "buchen", param: "Unterkunft" },
           { punkt: "<b>Danach Wohnheim</b> – läuft über die Schule, bei der Anmeldung wählen.",
             sprung: "wissen", param: "schule" },
-          { punkt: "<b>Reiseerklärung Guatemala für die Ausreise</b> – elektronisch, QR-Code sichern und ausdrucken.",
+          { punkt: "<b>Reiseerklärung Ausreise</b> – Guatemala, elektronisch. QR-Code sichern und ausdrucken.",
             sprung: "wissen", param: "djrv" },
           { punkt: "<b>Busticket Nicaragua</b> – Weiterreisenachweis, ohne ihn kein Einsteigen.",
             sprung: "wissen", param: "fluege" },
@@ -2362,10 +2360,10 @@ const STATIONEN = [
 
       [">> 1 Tag vor Abflug", [
         ["eigen", "", [
-          { punkt: "<b>Shuttle zum Flughafen</b> – über das Hostel, 12 bis 20 USD.",
-            sprung: "buchen" },
+          { punkt: "<b>Shuttle organisieren</b> – über das Hostel, 12 bis 20 USD.",
+            sprung: "buchen", param: "Transport vor Ort" },
           "<b>3 h vor Abflug am Flughafen</b> – ab Antigua 1 h Fahrt, morgens mehr.",
-          "<b>Ziel:</b> La Aurora GUA, 9 Avenida 14-75, Zona 13.",
+          "<b>Flughafen Guatemala-Stadt</b> – La Aurora GUA, 9 Avenida 14-75, Zona 13.",
           { punkt: "<b>Quetzal loswerden</b> – in Costa Rica wertlos.",
             sprung: "geld", param: "geld" },
           { punkt: "<b>Reiserucksack packen</b> – Osprey Fairview Trek 70, keine Elektronik hinein.",
@@ -2373,7 +2371,7 @@ const STATIONEN = [
           { punkt: "<b>Tagesrucksack packen</b> – Patagonia Terravia 24 L, Elektrotasche und iPad.",
             sprung: "heute", param: "packen|tour:rucksack" },
           "<b>iPhones und Powerbank laden</b> – beide Geräte über Nacht.",
-          { punkt: "<b>Bestätigungen offline speichern</b> – Ticket, Unterkunft, Reiseerklärung.",
+          { punkt: "<b>Offline abspeichern</b> – Ticket, Unterkunft, Reiseerklärung.",
             sprung: "wissen", param: "ablage" },
           "<b>Wecker stellen</b> – mit genug Vorlauf für den Shuttle.",
         ]],
@@ -2387,26 +2385,26 @@ const STATIONEN = [
             sprung: "wissen", param: "fluege" },
           "<b>Bei der Kontrolle</b> – Powerbank und iPad heraus, Flasche leer.",
           { punkt: "<b>Ausreisestempel prüfen</b> – vor dem Gate.",
-            sprung: "route", param: { tab: "land", land: "guatemala" } },
+            sprung: "route", param: { tab: "land", land: "guatemala", block: "Einreise" } },
           "<b>Flug nach San José</b> – Copa, 2 h.",
         ]],
       ]],
 
       [">> Nach der Landung", [
         ["eigen", "", [
-          { punkt: "<b>Einreiseformular</b> – wird im Flugzeug verteilt.",
-            sprung: "wissen", param: "djrv" },
-          { punkt: "<b>Adresse der Unterkunft bereithalten</b> – wird verlangt.",
+          { punkt: "<b>Einreiseformular Costa Rica</b> – wird im Flugzeug verteilt.",
+            sprung: "route", param: { tab: "land", land: "costarica", block: "Einreise" } },
+          { punkt: "<b>Adresse bereithalten</b> – die der Unterkunft, wird bei der Einreise verlangt.",
             sprung: "wissen", param: "ablage" },
           { punkt: "<b>Stempel gleich lesen</b> – reicht die Dauer bis zur Ausreise?",
-            sprung: "route", param: { tab: "land", land: "costarica" } },
+            sprung: "route", param: { tab: "land", land: "costarica", block: "Einreise" } },
           { punkt: "<b>Zuerst WLAN, dann eSIM</b> – ohne Netz kein Uber, keine Karte.",
             sprung: "geld", param: "handy" },
           { punkt: "<b>Colón abheben</b> – Automat in der Halle, Landeswährung wählen.",
             sprung: "geld", param: "geld" },
           "<b>Der Flughafen liegt in Alajuela</b> – nicht in San José. Nach Heredia 20 Min.",
           { punkt: "<b>Orange Taxis oder Uber</b> – 20 bis 30 USD, keine Abholzone: Strasse hinter dem Parkplatz.",
-            sprung: "buchen" },
+            sprung: "buchen", param: "Transport vor Ort" },
           "<b>Vor 18 Uhr im Quartier</b> – dann wird es dunkel.",
           { punkt: "<b>Zu Hause melden</b> – kurz genügt.",
             sprung: "heute", param: "checklisten" },
@@ -3093,10 +3091,10 @@ const PACK_INLAND = [
 
 const ORTSWECHSEL = [
   "## Schlafen",
-  "Unterkunft am Zielort gebucht, mit Gratisstornierung >> buchen",
+  "Unterkunft am Zielort gebucht, mit Gratisstornierung >> buchen|Unterkunft",
   "Bestätigung offline gespeichert, Adresse notiert >> wissen|ablage",
   "## Fahren",
-  "Transport gebucht – Bus, Shuttle oder Flug >> buchen",
+  "Transport gebucht – Bus, Shuttle oder Flug >> buchen|Transport vor Ort",
   "Nur tagsüber unterwegs, Ankunft vor Einbruch der Dunkelheit >> wissen|sicherheit",
   "Weg vom Bahnhof oder Flughafen geklärt",
   "## Papiere",
@@ -3260,11 +3258,12 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "473 · 01.09.2026";
+const VERSION = "484 · 01.09.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
 let zurueckZu = null;   // woher der letzte Sprung kam
+let offeneStation = null;   // welche Station in der Route offen ist
 let bereichHeute = "todos";   // todos · checklisten · packen
 
 /* ── kleine Helfer ─────────────────────────────────────────────── */
@@ -3426,7 +3425,12 @@ const istDringend = (titel) => {
 };
 
 /* Zeichnet die Blöcke eines Themas – "## Titel" wird zur Zwischenüberschrift. */
+/* Kurze Themen zeigen alles offen – Aufklappen lohnt sich erst ab zwölf Punkten. */
+const KURZ_OFFEN = 20;
+
 const bloeckeMit = (bloecke) => {
+  const gesamt = bloecke.reduce((n, b) => n + ((b[1] && b[1].length) || 0), 0);
+  const alleOffen = gesamt <= KURZ_OFFEN;
   const teile = [];
   let band = null;
 
@@ -3439,7 +3443,7 @@ const bloeckeMit = (bloecke) => {
 
   bloecke.forEach(([t, p]) => {
     if (t.startsWith("## ")) { neuesBand(t.slice(3)); return; }
-    const block = faltblock(t, p, false);
+    const block = faltblock(t, p, alleOffen);
     /* Rot und Gelb stehen für sich, alles andere sammelt sich in seiner weissen Fläche. */
     if (t.startsWith("** ")) { teile.push(block); band = null; return; }
     if (t.startsWith("!! ") || istDringend(t)) { teile.push(block); band = null; return; }
@@ -3590,11 +3594,8 @@ const hakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig = 0
       const dran = S.jetzt.filter(([wann, ab]) =>
         wann === phase && (wann !== "vor" || tage <= (ab || 99))).slice(0, 4);
 
-      box.appendChild(el("div", { class: "stopstatus" + (tage <= 1 ? " nah" : "") }, status));
-
-      if (!dran.length && tage > 0) {
-        box.appendChild(el("div", { class: "hinweis abstandunten" },
-          "Noch nichts zu tun – die Vorbereitung beginnt einen Monat vorher."));
+      if (tage <= 7) {
+        box.appendChild(el("div", { class: "stopstatus" + (tage <= 1 ? " nah" : "") }, status));
       }
 
       if (dran.length) {
@@ -3706,7 +3707,7 @@ const hakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig = 0
         }
         holeBlock(e).forEach((b) => {
           if (String(b[0]).startsWith("## ")) return;
-          band.appendChild(faltblock(ohneMarker(b[0]), b[1], false));
+          band.appendChild(faltblock(ohneMarker(b[0]), b[1], alleOffen));
         });
       });
       box.appendChild(band);
@@ -4127,9 +4128,23 @@ const seiteSuche = () => {
       return treffer * 4 + imRegister + (BEREICHSGEWICHT[e.ziel.seite] ?? 0);
     };
 
-    const treffer = INDEX
-      .map((e) => ({ e, p: bewerte(e) }))
-      .filter((x) => x.p > 0)
+    let bewertet = INDEX.map((e) => ({ e, p: bewerte(e) })).filter((x) => x.p > 0);
+
+    /* Finden alle Wörter zusammen fast nichts, zählt jedes Wort für sich. */
+    if (bewertet.length < 3 && woerter.length > 1) {
+      bewertet = INDEX.map((e) => {
+        const alles = flach(`${e.titel} ${e.text} ${e.ort}`);
+        const dabei = woerter.filter((w) => alles.includes(w)).length;
+        if (!dabei) return null;
+        const register = flach(String(e.ort).split("·")[0]);
+        const imRegister = woerter.some((w) => register.includes(w)) ? 6 : 0;
+        const imTitel = woerter.filter((w) => flach(e.titel).includes(w)).length;
+        return { e, p: dabei * 4 + imTitel * 3 + imRegister
+                     + (BEREICHSGEWICHT[e.ziel.seite] ?? 0) };
+      }).filter(Boolean);
+    }
+
+    const treffer = bewertet
       .sort((a, b) => b.p - a.p)
       .slice(0, 30)
       .map((x) => x.e);
@@ -4696,11 +4711,8 @@ const seiteNotfall = () => {
       const dran = S.jetzt.filter(([wann, ab]) =>
         wann === phase && (wann !== "vor" || tage <= (ab || 99))).slice(0, 4);
 
-      box.appendChild(el("div", { class: "stopstatus" + (tage <= 1 ? " nah" : "") }, status));
-
-      if (!dran.length && tage > 0) {
-        box.appendChild(el("div", { class: "hinweis abstandunten" },
-          "Noch nichts zu tun – die Vorbereitung beginnt einen Monat vorher."));
+      if (tage <= 7) {
+        box.appendChild(el("div", { class: "stopstatus" + (tage <= 1 ? " nah" : "") }, status));
       }
 
       if (dran.length) {
@@ -5024,17 +5036,25 @@ const buchenZeile = ({ label, url, hinweis }) =>
       hinweis ? el("span", { class: "hinweis" }, hinweis) : null),
     el("span", { class: "faltpfeil pfeilrechts" }, svg("chevron", 15, "#B65A3C", 2.2)));
 
-const seiteBuchen = () =>
-  el("div", {},
-    kopf("Buchen", null, () => gehe("wissen"), "Wissen"),
-    BUCHEN.map(([t, p]) => el("div", {},
-      el("div", { class: "gruppentitel abstandoben klein3" }, t),
+const seiteBuchen = () => {
+  /* Mit Parameter nur eine Rubrik zeigen – etwa gehe("buchen", "Unterkunft"). */
+  const nur = typeof param === "string" ? param : null;
+  const liste = nur ? BUCHEN.filter(([t]) => t === nur) : BUCHEN;
+  return el("div", {},
+    kopf(nur || "Buchen", null, () => gehe("wissen"), "Wissen"),
+    liste.map(([t, p]) => el("div", {},
+      nur ? null : el("div", { class: "gruppentitel abstandoben klein3" }, t),
       el("div", { class: "buchenliste" }, p.map(buchenZeile)))),
+    nur ? el("button", { class: "sprung abstandoben",
+      onclick: () => gehe("buchen") },
+      el("span", { class: "sprungtext" }, "Alle Buchungsseiten"),
+      el("span", { class: "sprungpfeil" }, svg("chevron", 15, "#B65A3C", 2))) : null,
     el("div", { class: "karte terra" },
       el("div", { class: "text", html:
         "<b>Nach jeder Buchung:</b> die Bestätigung als PDF in 04-02_Buchungsbestaetigungen "
         + "ablegen. Dann sieht sie deine Mutter auch – und du findest sie ohne Mailsuche "
         + "wieder." })));
+};
 
 const hostelKarte = (h) => {
   /* Zeile mit Name und Ort; alles Weitere erst beim Antippen. */
@@ -5082,6 +5102,7 @@ const seiteRoute = () => {
   const inhalt = el("div");
   let tab = (param && param.tab) || "etappen";
   let station = (param && param.station) || null;
+  offeneStation = station;
   let land = (param && param.land) || "guatemala";
 
   const farbe = { guatemala: "gt", costarica: "cr" };
@@ -5162,11 +5183,8 @@ const seiteRoute = () => {
       const dran = S.jetzt.filter(([wann, ab]) =>
         wann === phase && (wann !== "vor" || tage <= (ab || 99))).slice(0, 4);
 
-      box.appendChild(el("div", { class: "stopstatus" + (tage <= 1 ? " nah" : "") }, status));
-
-      if (!dran.length && tage > 0) {
-        box.appendChild(el("div", { class: "hinweis abstandunten" },
-          "Noch nichts zu tun – die Vorbereitung beginnt einen Monat vorher."));
+      if (tage <= 7) {
+        box.appendChild(el("div", { class: "stopstatus" + (tage <= 1 ? " nah" : "") }, status));
       }
 
       if (dran.length) {
@@ -5309,7 +5327,15 @@ const seiteRoute = () => {
           hinweis: "Auf Deutsch, vom Tourismusinstitut ICT",
         }));
       }
+      const zielBlock = param && param.block;
       bloeckeMit(L.bloecke).forEach((x) => inhalt.appendChild(x));
+      if (zielBlock) {
+        setTimeout(() => {
+          const kopf = Array.from(document.querySelectorAll(".faltkopf"))
+            .find((e) => e.textContent.trim().startsWith(zielBlock));
+          if (kopf) { kopf.click(); kopf.scrollIntoView({ block: "start" }); }
+        }, 30);
+      }
       if (L.hostels && L.hostels.length) {
         inhalt.appendChild(el("div", { class: "gruppentitel abstandoben klein3" }, "Hostels"));
         const band = el("div", { class: "blockband" });
@@ -5372,7 +5398,7 @@ const seiteRoute = () => {
       const unbestimmt = /offen|noch nicht/i.test(S.zeit + S.kurz);
       const auf = station === S.id;
       strang.appendChild(el("button", { class: "etappe etappeknopf" + (auf ? " auf" : ""),
-        onclick: () => { station = auf ? null : S.id; zeichne(); } },
+        onclick: () => { station = auf ? null : S.id; offeneStation = station; zeichne(); } },
         el("span", { class: "punkt" + (unbestimmt ? " offen" : "") }, S.nummer),
         el("div", { class: "etappenort" }, S.titel),
         el("div", { class: "etappenzeit" }, S.zeit),
@@ -5400,11 +5426,19 @@ const BEREICHE = [
 ];
 
 function gehe(ziel, p = null, merken = false) {
-  if (merken) zurueckZu = { seite, param };
+  if (merken) {
+    /* Die offene Station und die Scrollhöhe mitnehmen, sonst landet man oben. */
+    const zurueckParam = (seite === "route" && offeneStation)
+      ? { station: offeneStation } : param;
+    zurueckZu = { seite, param: zurueckParam, hoehe: window.scrollY || 0 };
+  }
   else if (ziel !== "zurueck") zurueckZu = null;
   if (ziel === "zurueck" && zurueckZu) {
     const z = zurueckZu; zurueckZu = null;
-    seite = z.seite; param = z.param; zeichnen(); window.scrollTo(0, 0); return;
+    seite = z.seite; param = z.param; zeichnen();
+    window.scrollTo(0, z.hoehe || 0);
+    setTimeout(() => window.scrollTo(0, z.hoehe || 0), 40);
+    return;
   }
   if (seite !== "suche") vorSuche = seite;
   seite = ziel;
