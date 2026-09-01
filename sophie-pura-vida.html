@@ -1190,7 +1190,8 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 /* Verweise am Ende eines Ablaufschritts – leicht abgesetzt */
 .linkblock {
   background: #F7F2EA; border-radius: 10px;
-  padding: 2px 12px; margin: 8px 0 2px;
+  padding: 2px 12px; margin: 10px 0 2px;
+  border-top: 2px solid var(--karte);
 }
 .linkblock .linkzeile { border-bottom: 1px solid #EDE6DA; }
 .linkblock .linkzeile:last-child { border-bottom: 0; }
@@ -1206,6 +1207,37 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .blockband.flach .faltinhalt { padding: 0 0 10px; }
 .blockband.flach > .faltkarte + .faltkarte { border-top: 1px solid #F5F0E8; }
 .stopptitel { margin-top: 16px; }
+
+/* Sprung mitten im Ablauf – schmaler als eine eigene Karte */
+.schrittblock .sprung { margin: 2px 0 4px; padding: 8px 11px; }
+
+/* Ablaufpunkt, der zu einer Liste führt – wie ein normaler Punkt, aber antippbar */
+/* Sprungpunkt: identisch zu den anderen Punkten, nur mit Pfeil rechts */
+.punktsprung { margin-bottom: 7px; }
+.punktknopf {
+  display: flex; align-items: flex-start; gap: 10px; width: 100%;
+  text-align: left; padding: 0; background: none; border: 0;
+  font: inherit; color: inherit;
+}
+.punktknopf .min0 { flex: 1; min-width: 0; }
+.punktknopf .faltpfeil { flex-shrink: 0; margin-top: 1px; }
+
+/* Abschnittstitel im Stopp – eine Stufe unter dem Stationstitel */
+.gruppentitel.stopptitel { font-size: var(--ebene5); }
+
+/* Rückweg nach einem Sprung aus der Route */
+.zurueckpfad {
+  display: flex; align-items: center; gap: 7px;
+  padding: 10px 2px 12px; margin: 0;
+  font-size: var(--ebene5); color: var(--terra); background: none; border: 0;
+}
+
+/* Sprungpfeil an einer Checklistenzeile */
+.hakensprung {
+  flex-shrink: 0; padding: 6px 2px 6px 8px;
+  background: none; border: 0; display: flex; align-items: center;
+}
+.hakensprung .ikon { transform: rotate(-90deg); }
 
 </style>
 </head>
@@ -1488,12 +1520,28 @@ const APPS = [
 ];
 
 const BUCHEN = [
+  ["Flug und Tour", [
+    { label: "Copa Airlines – Check-in", url: "https://www.copaair.com/", hinweis: "Regionalflug Guatemala → San José" },
+    { label: "Google Flights", url: "https://www.google.com/travel/flights", hinweis: "Preise vergleichen, Termine verschieben" },
+    { label: "Intrepid – Heart of Guatemala", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161", hinweis: "Die gebuchte Tour" },
+    { label: "Intrepid – Essential Trip Information", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161/tripnotes", hinweis: "Treffpunkt, Gepäck, Ablauf" },
+  ]],
   ["Unterkunft", [
     { label: "Booking.com", url: "https://www.booking.com/", hinweis: "Zimmer mit Gratisstornierung – gilt als Unterkunftsnachweis" },
     { label: "Hostelworld – Hostels weltweit", url: "https://www.hostelworld.com/de/", hinweis: "Preise, freie Betten, Bewertungen" },
     { label: "Hostels in Antigua", url: "https://www.hostelworld.com/hostels/north-america/guatemala/antigua/" },
     { label: "Hostels in Panajachel", url: "https://www.hostelworld.com/hostels/north-america/guatemala/panajachel/" },
     { label: "Hostels in Costa Rica", url: "https://www.hostelworld.com/hostels/north-america/costa-rica/" },
+    { label: "Casa Florencia Antigua", url: "http://www.cflorencia.net/", hinweis: "Gebucht ab 29. September" },
+    { label: "Maya Papaya Antigua", url: "https://www.hostelworld.com/hostels/p/278452/maya-papaya/", hinweis: "Für die Wochen danach" },
+    { label: "Casa Florencia Antigua", url: "http://www.cflorencia.net/", hinweis: "Gebucht ab 29. September" },
+    { label: "Maya Papaya Antigua", url: "https://www.hostelworld.com/hostels/p/278452/maya-papaya/", hinweis: "Für die Wochen danach" },
+  ]],
+  ["Transport vor Ort", [
+    { label: "Uber", url: "https://www.uber.com/cr/de/", hinweis: "Costa Rica: San José, Heredia, Alajuela, Cartago, Liberia" },
+    { label: "DiDi", url: "https://web.didiglobal.com/", hinweis: "Alternative im Zentraltal, oft günstiger" },
+    { label: "Moovit – Busverbindungen", url: "https://moovitapp.com/", hinweis: "Linien und Haltestellen im Grossraum San José" },
+    { label: "Interbus – Shuttles Costa Rica", url: "https://www.interbusonline.com/", hinweis: "Tür zu Tür zwischen den Touristenorten" },
   ]],
   ["Bus und Ausreisenachweis", [
     { label: "Tica Bus – internationale Busse", url: "https://ticabus.com", hinweis: "San José → Nicaragua oder Panama" },
@@ -1532,6 +1580,7 @@ const BUCHEN = [
     { label: "Nomad – eSIM", url: "https://www.getnomad.app/", hinweis: "Oft günstiger für Mittelamerika" },
     { label: "SINAC – Nationalparks Costa Rica", url: "https://www.sinac.go.cr/", hinweis: "Eintritt vorab buchen" },
     { label: "Proton VPN", url: "https://protonvpn.com/", hinweis: "Gratis, ohne Datenlimit" },
+    { label: "AIG – Diebstahl und Verlust melden", url: "https://www.aigtheftandloss.ch", hinweis: "Handyversicherung über die Karte" },
   ]],
 ];
 
@@ -1885,6 +1934,7 @@ const DOKUMENTE = [
     { label: "Nomad – eSIM", url: "https://www.getnomad.app/", hinweis: "Oft günstiger für Mittelamerika" },
     { label: "SINAC – Nationalparks Costa Rica", url: "https://www.sinac.go.cr/", hinweis: "Eintritt vorab buchen" },
     { label: "Proton VPN", url: "https://protonvpn.com/", hinweis: "Gratis, ohne Datenlimit" },
+    { label: "AIG – Diebstahl und Verlust melden", url: "https://www.aigtheftandloss.ch", hinweis: "Handyversicherung über die Karte" },
       ]],
       ["Dein Setup", [
         { begriff: "Hauptgerät mit eSIM", text: "Eine eSIM kann niemand herausnehmen. Das Gerät bleibt eingebucht und ortbar, solange es eingeschaltet ist." },
@@ -2127,7 +2177,13 @@ const STATIONEN = [
         ]],
       ]],
       ["Einreise", [["land", "guatemala", "Einreise"]]],
-      ["Unterkunft", [
+      ["Flug und Tour", [
+    { label: "Copa Airlines – Check-in", url: "https://www.copaair.com/", hinweis: "Regionalflug Guatemala → San José" },
+    { label: "Google Flights", url: "https://www.google.com/travel/flights", hinweis: "Preise vergleichen, Termine verschieben" },
+    { label: "Intrepid – Heart of Guatemala", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161", hinweis: "Die gebuchte Tour" },
+    { label: "Intrepid – Essential Trip Information", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161/tripnotes", hinweis: "Treffpunkt, Gepäck, Ablauf" },
+  ]],
+  ["Unterkunft", [
         ["hostels", "guatemala"],
         ["eigen", "Wo du zuerst schläfst", [
           "<b>Casa Florencia Hotel</b>, 7a Avenida Norte 100 – ab dem 29. September, dort startet auch die Tour am 1. Oktober.",
@@ -2222,7 +2278,13 @@ const STATIONEN = [
         ["land", "guatemala", "Chicken-Busse"],
       ]],
       ["Wohin", [["land", "guatemala", "Weitere Standorte"]]],
-      ["Unterkunft", [["hostels", "guatemala"]]],
+      ["Flug und Tour", [
+    { label: "Copa Airlines – Check-in", url: "https://www.copaair.com/", hinweis: "Regionalflug Guatemala → San José" },
+    { label: "Google Flights", url: "https://www.google.com/travel/flights", hinweis: "Preise vergleichen, Termine verschieben" },
+    { label: "Intrepid – Heart of Guatemala", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161", hinweis: "Die gebuchte Tour" },
+    { label: "Intrepid – Essential Trip Information", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161/tripnotes", hinweis: "Treffpunkt, Gepäck, Ablauf" },
+  ]],
+  ["Unterkunft", [["hostels", "guatemala"]]],
       ["Checkliste", [["liste", "pack:inland"], ["liste", "ortswechsel"]]],
     ],
   },
@@ -2250,7 +2312,13 @@ const STATIONEN = [
         ]],
       ]],
       ["Transport", [["land", "guatemala", "Chicken-Busse"]]],
-      ["Unterkunft", [["hostels", "guatemala"]]],
+      ["Flug und Tour", [
+    { label: "Copa Airlines – Check-in", url: "https://www.copaair.com/", hinweis: "Regionalflug Guatemala → San José" },
+    { label: "Google Flights", url: "https://www.google.com/travel/flights", hinweis: "Preise vergleichen, Termine verschieben" },
+    { label: "Intrepid – Heart of Guatemala", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161", hinweis: "Die gebuchte Tour" },
+    { label: "Intrepid – Essential Trip Information", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161/tripnotes", hinweis: "Treffpunkt, Gepäck, Ablauf" },
+  ]],
+  ["Unterkunft", [["hostels", "guatemala"]]],
       ["Sicherheit", [["land", "guatemala", "Sicherheit"]]],
       ["Checkliste", [["liste", "pack:inland"], ["liste", "ortswechsel"]]],
     ],
@@ -2260,82 +2328,91 @@ const STATIONEN = [
     land: "guatemala", zeit: "Donnerstag, 22. Oktober", kurz: "Idee · Ausreise Guatemala, Regionalflug",
     datum: "2026-10-22",
     jetzt: [
-      ["vor", 14, "Reiseerklärung Guatemala ausfüllen",
-       [["Reiseerklärung öffnen", "https://declaracion.igm.gob.gt/"]]],
-      ["vor", 30, "Unterkunft Costa Rica buchen",
+      ["vor", 30, "Unterkunft am Zielort buchen",
        [["Booking.com", "https://www.booking.com/"],
         ["Hostelworld", "https://www.hostelworld.com/"],
         ["Hostels Costa Rica", "https://www.hostelworld.com/hostels/north-america/costa-rica/"]]],
+      ["vor", 14, "Reiseerklärung Guatemala ausfüllen",
+       [["Reiseerklärung öffnen", "https://declaracion.igm.gob.gt/"]]],
+      ["vor", 3, "Weiterreisenachweis bereitlegen", []],
       ["vor", 1, "Flug einchecken", [["Copa Airlines", "https://www.copaair.com/"]]],
-      ["vor", 3, "Busticket Nicaragua bereitlegen", []],
       ["vortag", 0, "Shuttle zum Flughafen bestätigen", []],
-      ["vortag", 0, "Geräte laden, Dokumente offline", []],
-      ["tag", 0, "Pass, Geld, Ticket in den Bodybag", []],
+      ["vortag", 0, "Packen, laden, Bestätigungen offline", []],
+      ["tag", 0, "Papiere in den Bodybag", []],
       ["tag", 0, "Ausreisestempel prüfen", []],
-      ["nach", 0, "Fahrt nach Heredia", [["Uber", "https://www.uber.com/cr/de/"]]],
+      ["nach", 0, "eSIM, Bargeld, Fahrt nach Heredia",
+       [["Uber", "https://www.uber.com/cr/de/"]]],
     ],
+
     abschnitte: [
-      [">> Zwei Tage vorher", [
+      [">> 2 Tage vor Abflug", [
         ["eigen", "", [
-          "<b>Reiseerklärung Ausreise</b> – QR-Code sichern und ausdrucken.",
-          "<b>Erste Nacht buchen</b> – Bestätigung als PDF, offline.",
-          "<b>Busticket Nicaragua heraussuchen</b> – ohne Nachweis kein Einsteigen.",
-          "<b>Online einchecken</b> – ab 24 Stunden vorher.",
-          "<b>Sitzplatz und Gepäck prüfen</b> – ist ein Koffer inbegriffen?",
-          { label: "Reiseerklärung Guatemala", url: "https://declaracion.igm.gob.gt/" },
-          { label: "Booking.com", url: "https://www.booking.com/" },
-          { label: "Hostelworld", url: "https://www.hostelworld.com/" },
-          { label: "Hostels in Costa Rica", url: "https://www.hostelworld.com/hostels/north-america/costa-rica/" },
-          { label: "Copa Airlines – Check-in", url: "https://www.copaair.com/" },
+          { punkt: "<b>Nächte in Heredia buchen</b> – bis die Schule beginnt, mit Gratisstornierung.",
+            sprung: "buchen" },
+          { punkt: "<b>Danach Wohnheim</b> – läuft über die Schule, bei der Anmeldung wählen.",
+            sprung: "wissen", param: "schule" },
+          { punkt: "<b>Reiseerklärung Guatemala für die Ausreise</b> – elektronisch, QR-Code sichern und ausdrucken.",
+            sprung: "wissen", param: "djrv" },
+          { punkt: "<b>Busticket Nicaragua</b> – Weiterreisenachweis, ohne ihn kein Einsteigen.",
+            sprung: "wissen", param: "fluege" },
+          { punkt: "<b>Online einchecken</b> – ab 24 h vorher, Sitzplatz und Gepäck prüfen.",
+            sprung: "wissen", param: "fluege" },
         ]],
       ]],
 
-      [">> Am Vortag", [
-        ["eigen", "Mittwoch", [
-          "<b>Shuttle buchen</b> – über das Hostel, ab Antigua eine Stunde.",
-          "<b>Drei Stunden Vorlauf</b> – morgens mehr.",
-          "<b>Quetzal loswerden</b> – in Costa Rica wertlos.",
-          "<b>Reiserucksack packen</b> – nach Packordnung Flug, Elektronik nicht hinein.",
-          "<b>Tagesrucksack packen</b> – Elektrotasche, iPad, Nackenkissen, Apotheke.",
-          { sprung: "heute", param: "packen", label: "Zu den Packlisten" },
+      [">> 1 Tag vor Abflug", [
+        ["eigen", "", [
+          { punkt: "<b>Shuttle zum Flughafen</b> – über das Hostel, 12 bis 20 USD.",
+            sprung: "buchen" },
+          "<b>3 h vor Abflug am Flughafen</b> – ab Antigua 1 h Fahrt, morgens mehr.",
+          "<b>Ziel:</b> La Aurora GUA, 9 Avenida 14-75, Zona 13.",
+          { punkt: "<b>Quetzal loswerden</b> – in Costa Rica wertlos.",
+            sprung: "geld", param: "geld" },
+          { punkt: "<b>Reiserucksack packen</b> – Osprey Fairview Trek 70, keine Elektronik hinein.",
+            sprung: "heute", param: "packen|pack:flug" },
+          { punkt: "<b>Tagesrucksack packen</b> – Patagonia Terravia 24 L, Elektrotasche und iPad.",
+            sprung: "heute", param: "packen|tour:rucksack" },
           "<b>iPhones und Powerbank laden</b> – beide Geräte über Nacht.",
-          "<b>Bestätigungen offline</b> – Ticket, Unterkunft, Reiseerklärung.",
+          { punkt: "<b>Bestätigungen offline speichern</b> – Ticket, Unterkunft, Reiseerklärung.",
+            sprung: "wissen", param: "ablage" },
           "<b>Wecker stellen</b> – mit genug Vorlauf für den Shuttle.",
         ]],
       ]],
 
       [">> Am Flugtag", [
-        ["eigen", "Donnerstag", [
-          "<b>In den Bodybag</b> – Pass, Geld, Karte, Ticket, Reiseerklärung, Adresse. Auch auf Papier.",
-          "<b>Am Schalter</b> – Busticket zeigen, wenn verlangt.",
-          "<b>Ausreisestempel prüfen</b> – vor dem Gate.",
-          "<b>Bei der Kontrolle</b> – Powerbank und Laptopfach heraus, Flasche leer.",
-          "Copa nach San José, zwei Stunden.",
+        ["eigen", "", [
+          { punkt: "<b>In den Bodybag</b> – Pass, Geld, Karte, Ticket, Papiere. Auch auf Papier.",
+            sprung: "heute", param: "packen|pack:flug" },
+          { punkt: "<b>Am Schalter</b> – Busticket zeigen, wenn verlangt.",
+            sprung: "wissen", param: "fluege" },
+          "<b>Bei der Kontrolle</b> – Powerbank und iPad heraus, Flasche leer.",
+          { punkt: "<b>Ausreisestempel prüfen</b> – vor dem Gate.",
+            sprung: "route", param: { tab: "land", land: "guatemala" } },
+          "<b>Flug nach San José</b> – Copa, 2 h.",
         ]],
       ]],
 
       [">> Nach der Landung", [
-        ["eigen", "In San José", [
-          "<b>Einreiseformular</b> – wird im Flugzeug verteilt.",
-          "<b>Adresse bereithalten</b> – wird verlangt.",
-          "<b>Stempel lesen</b> – reicht die Dauer bis zur Ausreise?",
-          "<b>Nach Heredia</b> – Uber oder Transfer, 30 Minuten.",
-          "<b>eSIM aktivieren</b> – noch am Flughafen, solange WLAN da ist.",
-          "<b>Colón abheben</b> – Automat in der Ankunftshalle, Landeswährung wählen.",
-          "<b>Vor 18 Uhr ankommen</b> – dann wird es dunkel.",
-          "<b>Zu Hause melden</b> – kurz genügt.",
-          { label: "Uber", url: "https://www.uber.com/cr/de/" },
+        ["eigen", "", [
+          { punkt: "<b>Einreiseformular</b> – wird im Flugzeug verteilt.",
+            sprung: "wissen", param: "djrv" },
+          { punkt: "<b>Adresse der Unterkunft bereithalten</b> – wird verlangt.",
+            sprung: "wissen", param: "ablage" },
+          { punkt: "<b>Stempel gleich lesen</b> – reicht die Dauer bis zur Ausreise?",
+            sprung: "route", param: { tab: "land", land: "costarica" } },
+          { punkt: "<b>Zuerst WLAN, dann eSIM</b> – ohne Netz kein Uber, keine Karte.",
+            sprung: "geld", param: "handy" },
+          { punkt: "<b>Colón abheben</b> – Automat in der Halle, Landeswährung wählen.",
+            sprung: "geld", param: "geld" },
+          "<b>Der Flughafen liegt in Alajuela</b> – nicht in San José. Nach Heredia 20 Min.",
+          { punkt: "<b>Orange Taxis oder Uber</b> – 20 bis 30 USD, keine Abholzone: Strasse hinter dem Parkplatz.",
+            sprung: "buchen" },
+          "<b>Vor 18 Uhr im Quartier</b> – dann wird es dunkel.",
+          { punkt: "<b>Zu Hause melden</b> – kurz genügt.",
+            sprung: "heute", param: "checklisten" },
         ]],
       ]],
 
-      ["Einreiseformular", [["thema", "djrv"]]],
-      ["Warum dieser Tag", [
-        ["eigen", "Die Überlegung dahinter", [
-          "<b>Guatemala ist günstiger</b> – jeder Tag mehr dort spart Geld.",
-          "<b>Drei Tage vor Kursstart</b> – Donnerstag ankommen, Freitag und Samstag Heredia kennenlernen, Sonntag ausruhen.",
-          "<b>Dienstag bis Donnerstag</b> sind die günstigsten Flugtage.",
-        ]],
-      ]],
       ["Checkliste", [["liste", "pack:flug"], ["liste", "ortswechsel"]]],
     ],
   },
@@ -2395,7 +2472,13 @@ const STATIONEN = [
         ]],
         ["thema", "schule"],
       ]],
-      ["Unterkunft", [
+      ["Flug und Tour", [
+    { label: "Copa Airlines – Check-in", url: "https://www.copaair.com/", hinweis: "Regionalflug Guatemala → San José" },
+    { label: "Google Flights", url: "https://www.google.com/travel/flights", hinweis: "Preise vergleichen, Termine verschieben" },
+    { label: "Intrepid – Heart of Guatemala", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161", hinweis: "Die gebuchte Tour" },
+    { label: "Intrepid – Essential Trip Information", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161/tripnotes", hinweis: "Treffpunkt, Gepäck, Ablauf" },
+  ]],
+  ["Unterkunft", [
         ["eigen", "Studentenwohnheim", [
           "Läuft über die Schule und wird bei der Anmeldung gewählt.",
           "Mehr Freiheit und schneller Anschluss an andere Reisende.",
@@ -2426,7 +2509,13 @@ const STATIONEN = [
         ]],
         ["thema", "schule"],
       ]],
-      ["Unterkunft", [
+      ["Flug und Tour", [
+    { label: "Copa Airlines – Check-in", url: "https://www.copaair.com/", hinweis: "Regionalflug Guatemala → San José" },
+    { label: "Google Flights", url: "https://www.google.com/travel/flights", hinweis: "Preise vergleichen, Termine verschieben" },
+    { label: "Intrepid – Heart of Guatemala", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161", hinweis: "Die gebuchte Tour" },
+    { label: "Intrepid – Essential Trip Information", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161/tripnotes", hinweis: "Treffpunkt, Gepäck, Ablauf" },
+  ]],
+  ["Unterkunft", [
         ["eigen", "Noch nicht entschieden", [
           "Intercultura erlaubt den Wechsel innerhalb desselben Kurses, ohne Aufpreis.",
           "<b>Entscheidung fällt vor Ort</b>, nicht jetzt.",
@@ -2448,7 +2537,13 @@ const STATIONEN = [
         ]],
         ["thema", "fluege", "Wo du buchst"],
       ]],
-      ["Unterkunft", [["hostels", "costarica"]]],
+      ["Flug und Tour", [
+    { label: "Copa Airlines – Check-in", url: "https://www.copaair.com/", hinweis: "Regionalflug Guatemala → San José" },
+    { label: "Google Flights", url: "https://www.google.com/travel/flights", hinweis: "Preise vergleichen, Termine verschieben" },
+    { label: "Intrepid – Heart of Guatemala", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161", hinweis: "Die gebuchte Tour" },
+    { label: "Intrepid – Essential Trip Information", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161/tripnotes", hinweis: "Treffpunkt, Gepäck, Ablauf" },
+  ]],
+  ["Unterkunft", [["hostels", "costarica"]]],
       ["Sicherheit", [
         ["eigen", "Im Bus", [
           "Tagesrucksack auf dem Schoss, nie in der Ablage.",
@@ -2462,7 +2557,13 @@ const STATIONEN = [
     id: "workexchange", nummer: "11", kurzname: "Mitarbeit", titel: "Kost und Logis gegen Mitarbeit",
     land: "costarica", zeit: "Dezember", kurz: "Worldpackers oder Workaway",
     abschnitte: [
-      ["Unterkunft", [["land", "costarica", "Unterkunft gegen Mitarbeit"]]],
+      ["Flug und Tour", [
+    { label: "Copa Airlines – Check-in", url: "https://www.copaair.com/", hinweis: "Regionalflug Guatemala → San José" },
+    { label: "Google Flights", url: "https://www.google.com/travel/flights", hinweis: "Preise vergleichen, Termine verschieben" },
+    { label: "Intrepid – Heart of Guatemala", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161", hinweis: "Die gebuchte Tour" },
+    { label: "Intrepid – Essential Trip Information", url: "https://www.intrepidtravel.com/ch/guatemala/heart-guatemala-166161/tripnotes", hinweis: "Treffpunkt, Gepäck, Ablauf" },
+  ]],
+  ["Unterkunft", [["land", "costarica", "Unterkunft gegen Mitarbeit"]]],
       ["Checkliste", [["liste", "woche"]]],
     ],
   },
@@ -2991,16 +3092,26 @@ const PACK_INLAND = [
 ];
 
 const ORTSWECHSEL = [
-  "Bargeld geholt",
+  "## Schlafen",
+  "Unterkunft am Zielort gebucht, mit Gratisstornierung >> buchen",
+  "Bestätigung offline gespeichert, Adresse notiert >> wissen|ablage",
+  "## Fahren",
+  "Transport gebucht – Bus, Shuttle oder Flug >> buchen",
+  "Nur tagsüber unterwegs, Ankunft vor Einbruch der Dunkelheit >> wissen|sicherheit",
+  "Weg vom Bahnhof oder Flughafen geklärt",
+  "## Papiere",
+  "Bei Landeswechsel: Aus- und Einreiseformular erledigt >> wissen|djrv",
+  "Weiterreisenachweis griffbereit >> wissen|fluege",
+  "Adresse der Unterkunft auch auf Papier",
+  "## Netz und Geld",
+  "Bargeld für die Ankunft geholt >> geld|geld",
+  "Landeswährung stimmt – altes Geld ausgegeben >> geld|geld",
+  "iPhones und Powerbank geladen",
+  "## Packen und los",
   "Spind und Zimmer zweimal kontrolliert",
-  "Nächste Unterkunft gebucht, Adresse offline",
-  "Bestätigung abgelegt",
-  "Weiterreise am Tag geplant",
-  "Zu Hause gesagt, wohin du fährst",
-  "Handy und Powerbank geladen",
-  "Wertsachen in den Tagesrucksack",
-  "Am Busbahnhof Uber oder offizielles Taxi",
+  "Wertsachen in den Tagesrucksack >> heute|packen|tour:rucksack",
   "Linsenmittel-Vorrat reicht",
+  "Zu Hause gesagt, wohin du fährst",
 ];
 
 const WOCHE = [
@@ -3035,7 +3146,7 @@ const TODO_ALLE = [
   ["Sprachschule buchen – Start Mo 26. Okt", "20. Sep", "Sophie", false],
   ["Schuladresse notieren", "20. Sep", "Sophie", false],
   ["Bestätigung 1. Nacht sichern", "26. Sep", "Sophie", false],
-  ["Erste Tage Costa Rica buchen", "12. Okt", "Sophie", false],
+  ["Unterkunft Heredia buchen – 4 Nächte", "12. Okt", "Sophie", false],
   ["Reiseerklärung Guatemala", "20. Sep", "Sophie", false],
   ["Alle Reise-Apps installieren und testen", "20. Sep", "Sophie", false],
   ["Notfallblatt ausfüllen", "20. Sep", "beide", false],
@@ -3149,10 +3260,11 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "449 · 01.09.2026";
+const VERSION = "473 · 01.09.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
+let zurueckZu = null;   // woher der letzte Sprung kam
 let bereichHeute = "todos";   // todos · checklisten · packen
 
 /* ── kleine Helfer ─────────────────────────────────────────────── */
@@ -3175,6 +3287,8 @@ const el = (tag, attrs = {}, ...kinder) => {
 
 const rein = (t) => String(t).replace(/<[^>]+>/g, "");
 /* Steuerzeichen aus Blocktiteln: "## " Gruppe, "!! " Zusatzinformation. */
+const ohneSprung = (t) => String(t).split(" >> ")[0];
+
 const alsUnterzeile = (text) => {
   /* "Punkt<i>Hinweis</i>" wird zu zwei Zeilen: Punkt normal, Hinweis grau. */
   const m = String(text).match(/^(.*?)<i>(.*?)<\/i>$/);
@@ -3510,12 +3624,17 @@ const hakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig = 0
 
       if (ablauf) {
         /* Der Abschnitt, der jetzt gilt, wird ganz leicht hervorgehoben. */
-        const phasenwort = { vor: "Zwei Tage", vortag: "Am Vortag",
+        const phasenwort = { vor: "2 Tage", vortag: "1 Tag",
                              tag: "Am Flugtag", nach: "Nach der Landung" };
         const jetztPhase = S.datum ? (() => {
           const h = new Date(); h.setHours(0, 0, 0, 0);
           const t = Math.round((new Date(S.datum + "T00:00:00") - h) / 86400000);
-          return t < 0 ? "nach" : t === 0 ? "tag" : t === 1 ? "vortag" : "vor";
+          /* Erst ab zwei Tagen vorher gilt ein Abschnitt als aktuell. */
+          if (t < 0) return "nach";
+          if (t === 0) return "tag";
+          if (t === 1) return "vortag";
+          if (t === 2) return "vor";
+          return null;
         })() : null;
         const istJetzt = jetztPhase && reinT.startsWith(phasenwort[jetztPhase]);
 
@@ -3523,21 +3642,34 @@ const hakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig = 0
           el("div", { class: "schrittzeit" }, reinT),
           ...eintraege.map((e) => {
             const roh = e[2] || [];
-            const punkte = roh.filter((x) => { const p = zerlege(x) || {}; return !p.url && !p.sprung; });
-            const links = roh.filter((x) => { const p = zerlege(x) || {}; return p.url || p.sprung; });
+            const punkte = roh.filter((x) => !(zerlege(x) || {}).url);
+            const links = roh.filter((x) => (zerlege(x) || {}).url);
             return el("div", {},
               el("ul", { class: "punkte offenblock" },
                 punkte.map((r) => {
+                  /* Ein Punkt mit Sprung ist selbst antippbar – kein zweiter Rahmen. */
+                  if (r && r.punkt && r.sprung) {
+                    const teil = zerlege(r.punkt);
+                    const inhalt = typeof teil === "string"
+                      ? el("span", { html: teil })
+                      : el("span", {},
+                          el("b", { class: "begriff" }, teil.begriff),
+                          el("span", { class: "unterzeile" }, teil.text));
+                    return el("li", { class: "punktsprung" },
+                      el("button", { class: "punktknopf",
+                        onclick: () => gehe(r.sprung, r.param, true) },
+                        el("span", { class: "min0" }, inhalt),
+                        el("span", { class: "faltpfeil pfeilrechts" },
+                          svg("chevron", 15, "#B65A3C", 2.2))));
+                  }
                   const p = zerlege(r);
                   if (typeof p === "string") return el("li", { html: p });
                   if (p.begriff) return begriffZeile(p);
+                  if (p.sprung) return el("li", { class: "ohnepunkt" }, sprungZeile(p));
                   return el("li", { class: "ohnepunkt" }, anrufZeile(p));
                 })),
               links.length
-                ? el("div", { class: "linkblock" }, links.map((r) => {
-                    const p = zerlege(r);
-                    return p.sprung ? sprungZeile(p) : linkZeile(p);
-                  }))
+                ? el("div", { class: "linkblock" }, links.map((r) => linkZeile(zerlege(r))))
                 : null);
           })));
         return;
@@ -3619,7 +3751,17 @@ const hakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig = 0
                 p.split(" ~ ")[0],
                 el("span", { class: "hakenzone" }, " " + p.split(" ~ ")[1]))
             : el("span", { class: "hakentext" + (i < wichtig && !stand[p] ? " wichtig" : ""),
-                html: alsUnterzeile(p) })));
+                html: alsUnterzeile(ohneSprung(p)) })));
+
+      /* "Text >> heute|packen" hängt einen Sprungpfeil an die Zeile. */
+      const sprungTeil = String(p).split(" >> ")[1];
+      if (sprungTeil) {
+        const [ziel, ...rest] = sprungTeil.split("|");
+        zeile.appendChild(el("button", { class: "hakensprung",
+          "aria-label": "Dorthin springen",
+          onclick: () => gehe(ziel, rest.length ? rest.join("|") : null, true) },
+          svg("chevron", 15, "#B65A3C", 2.2)));
+      }
 
       if (selbst) {
         zeile.appendChild(el("button", {
@@ -4346,8 +4488,11 @@ const vorbereitungFertigOben = () => {
 
 const seiteHeute = () => {
   /* Ein Sprung von aussen kann den Bereich vorgeben: gehe("heute", "packen"). */
-  if (typeof param === "string" && ["todos", "checklisten", "packen"].includes(param)) {
-    bereichHeute = param;
+  let offeneListe = null;
+  if (typeof param === "string") {
+    const [ber, ...rest] = param.split("|");
+    if (["todos", "checklisten", "packen"].includes(ber)) bereichHeute = ber;
+    if (rest.length) offeneListe = rest.join("|");
   }
   const wrap = el("div");
 
@@ -4391,9 +4536,10 @@ const seiteHeute = () => {
   ]);
 
   if (bereichHeute === "packen") gruppe("Wo es hingehört", [
-    faltHakenliste("Im Flugzeug", PACK_FLUG, "pack:flug", true),
-    faltHakenliste("Im Bus", PACK_INLAND, "pack:inland", true),
-    faltHakenliste("Tagesrucksack unterwegs", TAGESRUCKSACK, "tour:rucksack", true),
+    faltHakenliste("Im Flugzeug", PACK_FLUG, "pack:flug", true, 0, offeneListe === "pack:flug"),
+    faltHakenliste("Im Bus", PACK_INLAND, "pack:inland", true, 0, offeneListe === "pack:inland"),
+    faltHakenliste("Tagesrucksack unterwegs", TAGESRUCKSACK, "tour:rucksack", true, 0,
+                   offeneListe === "tour:rucksack"),
   ]);
 
   if (false) {
@@ -4584,12 +4730,17 @@ const seiteNotfall = () => {
 
       if (ablauf) {
         /* Der Abschnitt, der jetzt gilt, wird ganz leicht hervorgehoben. */
-        const phasenwort = { vor: "Zwei Tage", vortag: "Am Vortag",
+        const phasenwort = { vor: "2 Tage", vortag: "1 Tag",
                              tag: "Am Flugtag", nach: "Nach der Landung" };
         const jetztPhase = S.datum ? (() => {
           const h = new Date(); h.setHours(0, 0, 0, 0);
           const t = Math.round((new Date(S.datum + "T00:00:00") - h) / 86400000);
-          return t < 0 ? "nach" : t === 0 ? "tag" : t === 1 ? "vortag" : "vor";
+          /* Erst ab zwei Tagen vorher gilt ein Abschnitt als aktuell. */
+          if (t < 0) return "nach";
+          if (t === 0) return "tag";
+          if (t === 1) return "vortag";
+          if (t === 2) return "vor";
+          return null;
         })() : null;
         const istJetzt = jetztPhase && reinT.startsWith(phasenwort[jetztPhase]);
 
@@ -4597,21 +4748,34 @@ const seiteNotfall = () => {
           el("div", { class: "schrittzeit" }, reinT),
           ...eintraege.map((e) => {
             const roh = e[2] || [];
-            const punkte = roh.filter((x) => { const p = zerlege(x) || {}; return !p.url && !p.sprung; });
-            const links = roh.filter((x) => { const p = zerlege(x) || {}; return p.url || p.sprung; });
+            const punkte = roh.filter((x) => !(zerlege(x) || {}).url);
+            const links = roh.filter((x) => (zerlege(x) || {}).url);
             return el("div", {},
               el("ul", { class: "punkte offenblock" },
                 punkte.map((r) => {
+                  /* Ein Punkt mit Sprung ist selbst antippbar – kein zweiter Rahmen. */
+                  if (r && r.punkt && r.sprung) {
+                    const teil = zerlege(r.punkt);
+                    const inhalt = typeof teil === "string"
+                      ? el("span", { html: teil })
+                      : el("span", {},
+                          el("b", { class: "begriff" }, teil.begriff),
+                          el("span", { class: "unterzeile" }, teil.text));
+                    return el("li", { class: "punktsprung" },
+                      el("button", { class: "punktknopf",
+                        onclick: () => gehe(r.sprung, r.param, true) },
+                        el("span", { class: "min0" }, inhalt),
+                        el("span", { class: "faltpfeil pfeilrechts" },
+                          svg("chevron", 15, "#B65A3C", 2.2))));
+                  }
                   const p = zerlege(r);
                   if (typeof p === "string") return el("li", { html: p });
                   if (p.begriff) return begriffZeile(p);
+                  if (p.sprung) return el("li", { class: "ohnepunkt" }, sprungZeile(p));
                   return el("li", { class: "ohnepunkt" }, anrufZeile(p));
                 })),
               links.length
-                ? el("div", { class: "linkblock" }, links.map((r) => {
-                    const p = zerlege(r);
-                    return p.sprung ? sprungZeile(p) : linkZeile(p);
-                  }))
+                ? el("div", { class: "linkblock" }, links.map((r) => linkZeile(zerlege(r))))
                 : null);
           })));
         return;
@@ -5032,12 +5196,17 @@ const seiteRoute = () => {
 
       if (ablauf) {
         /* Der Abschnitt, der jetzt gilt, wird ganz leicht hervorgehoben. */
-        const phasenwort = { vor: "Zwei Tage", vortag: "Am Vortag",
+        const phasenwort = { vor: "2 Tage", vortag: "1 Tag",
                              tag: "Am Flugtag", nach: "Nach der Landung" };
         const jetztPhase = S.datum ? (() => {
           const h = new Date(); h.setHours(0, 0, 0, 0);
           const t = Math.round((new Date(S.datum + "T00:00:00") - h) / 86400000);
-          return t < 0 ? "nach" : t === 0 ? "tag" : t === 1 ? "vortag" : "vor";
+          /* Erst ab zwei Tagen vorher gilt ein Abschnitt als aktuell. */
+          if (t < 0) return "nach";
+          if (t === 0) return "tag";
+          if (t === 1) return "vortag";
+          if (t === 2) return "vor";
+          return null;
         })() : null;
         const istJetzt = jetztPhase && reinT.startsWith(phasenwort[jetztPhase]);
 
@@ -5045,21 +5214,34 @@ const seiteRoute = () => {
           el("div", { class: "schrittzeit" }, reinT),
           ...eintraege.map((e) => {
             const roh = e[2] || [];
-            const punkte = roh.filter((x) => { const p = zerlege(x) || {}; return !p.url && !p.sprung; });
-            const links = roh.filter((x) => { const p = zerlege(x) || {}; return p.url || p.sprung; });
+            const punkte = roh.filter((x) => !(zerlege(x) || {}).url);
+            const links = roh.filter((x) => (zerlege(x) || {}).url);
             return el("div", {},
               el("ul", { class: "punkte offenblock" },
                 punkte.map((r) => {
+                  /* Ein Punkt mit Sprung ist selbst antippbar – kein zweiter Rahmen. */
+                  if (r && r.punkt && r.sprung) {
+                    const teil = zerlege(r.punkt);
+                    const inhalt = typeof teil === "string"
+                      ? el("span", { html: teil })
+                      : el("span", {},
+                          el("b", { class: "begriff" }, teil.begriff),
+                          el("span", { class: "unterzeile" }, teil.text));
+                    return el("li", { class: "punktsprung" },
+                      el("button", { class: "punktknopf",
+                        onclick: () => gehe(r.sprung, r.param, true) },
+                        el("span", { class: "min0" }, inhalt),
+                        el("span", { class: "faltpfeil pfeilrechts" },
+                          svg("chevron", 15, "#B65A3C", 2.2))));
+                  }
                   const p = zerlege(r);
                   if (typeof p === "string") return el("li", { html: p });
                   if (p.begriff) return begriffZeile(p);
+                  if (p.sprung) return el("li", { class: "ohnepunkt" }, sprungZeile(p));
                   return el("li", { class: "ohnepunkt" }, anrufZeile(p));
                 })),
               links.length
-                ? el("div", { class: "linkblock" }, links.map((r) => {
-                    const p = zerlege(r);
-                    return p.sprung ? sprungZeile(p) : linkZeile(p);
-                  }))
+                ? el("div", { class: "linkblock" }, links.map((r) => linkZeile(zerlege(r))))
                 : null);
           })));
         return;
@@ -5217,10 +5399,21 @@ const BEREICHE = [
   ["wissen", "Wissen", "book"],
 ];
 
-function gehe(ziel, p = null) {
+function gehe(ziel, p = null, merken = false) {
+  if (merken) zurueckZu = { seite, param };
+  else if (ziel !== "zurueck") zurueckZu = null;
+  if (ziel === "zurueck" && zurueckZu) {
+    const z = zurueckZu; zurueckZu = null;
+    seite = z.seite; param = z.param; zeichnen(); window.scrollTo(0, 0); return;
+  }
   if (seite !== "suche") vorSuche = seite;
   seite = ziel;
   param = p;
+  /* "packen|pack:flug" wählt Bereich und Liste – vor dem Zeichnen setzen. */
+  if (ziel === "heute" && typeof p === "string") {
+    const ber = p.split("|")[0];
+    if (["todos", "checklisten", "packen"].includes(ber)) bereichHeute = ber;
+  }
   zeichnen();
   window.scrollTo(0, 0);
 }
@@ -5245,6 +5438,16 @@ function leiste() {
 
 function zeichnen() {
   app.innerHTML = "";
+
+  /* Kam man über einen Sprung hierher, führt eine Zeile zurück. */
+  if (zurueckZu) {
+    const HER = { route: "zur Route", heute: "zu den To-dos", geld: "zu Geld",
+                  wissen: "zu Wissen", buchen: "zu Buchen", start: "zum Start" };
+    app.appendChild(el("button", { class: "zurueckpfad",
+      onclick: () => gehe("zurueck") },
+      svg("back", 15, "#B65A3C", 2.2),
+      el("span", {}, "Zurück " + (HER[zurueckZu.seite] || "zurück"))));
+  }
   ["topbar", "startkopf"].forEach((id) => {
     const alt = document.getElementById(id);
     if (alt) alt.remove();
