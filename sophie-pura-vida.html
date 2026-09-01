@@ -1187,6 +1187,26 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   margin: 0 -10px; padding-left: 10px; padding-right: 10px;
 }
 
+/* Verweise am Ende eines Ablaufschritts – leicht abgesetzt */
+.linkblock {
+  background: #F7F2EA; border-radius: 10px;
+  padding: 2px 12px; margin: 8px 0 2px;
+}
+.linkblock .linkzeile { border-bottom: 1px solid #EDE6DA; }
+.linkblock .linkzeile:last-child { border-bottom: 0; }
+
+/* Nachschlagethemen im Stopp: gleicher Fluss wie die Ablaufschritte */
+.blockband.flach {
+  background: transparent; border: 0; border-radius: 0;
+  margin: 0 0 6px; padding: 0;
+  border-top: 1px solid #F0EBE2;
+}
+.blockband.flach .faltkarte { border-radius: 0; margin: 0; background: transparent; }
+.blockband.flach .faltkopf { padding: 12px 0; }
+.blockband.flach .faltinhalt { padding: 0 0 10px; }
+.blockband.flach > .faltkarte + .faltkarte { border-top: 1px solid #F5F0E8; }
+.stopptitel { margin-top: 16px; }
+
 </style>
 </head>
 <body>
@@ -2255,12 +2275,13 @@ const STATIONEN = [
       ["nach", 0, "Fahrt nach Heredia", [["Uber", "https://www.uber.com/cr/de/"]]],
     ],
     abschnitte: [
-      [">> Zwei Tage vorher · Dienstag", [
+      [">> Zwei Tage vorher", [
         ["eigen", "", [
           "<b>Reiseerklärung Ausreise</b> – QR-Code sichern und ausdrucken.",
           "<b>Erste Nacht buchen</b> – Bestätigung als PDF, offline.",
           "<b>Busticket Nicaragua heraussuchen</b> – ohne Nachweis kein Einsteigen.",
           "<b>Online einchecken</b> – ab 24 Stunden vorher.",
+          "<b>Sitzplatz und Gepäck prüfen</b> – ist ein Koffer inbegriffen?",
           { label: "Reiseerklärung Guatemala", url: "https://declaracion.igm.gob.gt/" },
           { label: "Booking.com", url: "https://www.booking.com/" },
           { label: "Hostelworld", url: "https://www.hostelworld.com/" },
@@ -2269,32 +2290,40 @@ const STATIONEN = [
         ]],
       ]],
 
-      [">> Am Vortag · Mittwoch", [
+      [">> Am Vortag", [
         ["eigen", "Mittwoch", [
           "<b>Shuttle buchen</b> – über das Hostel, ab Antigua eine Stunde.",
           "<b>Drei Stunden Vorlauf</b> – morgens mehr.",
           "<b>Quetzal loswerden</b> – in Costa Rica wertlos.",
-          "<b>Packen</b> – Powerbank, iPad, Ersatzhandy ins Handgepäck.",
-          "<b>Alles laden</b> – beide Handys, Powerbank.",
+          "<b>Reiserucksack packen</b> – nach Packordnung Flug, Elektronik nicht hinein.",
+          "<b>Tagesrucksack packen</b> – Elektrotasche, iPad, Nackenkissen, Apotheke.",
+          { sprung: "heute", param: "packen", label: "Zu den Packlisten" },
+          "<b>iPhones und Powerbank laden</b> – beide Geräte über Nacht.",
+          "<b>Bestätigungen offline</b> – Ticket, Unterkunft, Reiseerklärung.",
+          "<b>Wecker stellen</b> – mit genug Vorlauf für den Shuttle.",
         ]],
       ]],
 
-      [">> Am Flugtag · Donnerstag", [
+      [">> Am Flugtag", [
         ["eigen", "Donnerstag", [
           "<b>In den Bodybag</b> – Pass, Geld, Karte, Ticket, Reiseerklärung, Adresse. Auch auf Papier.",
           "<b>Am Schalter</b> – Busticket zeigen, wenn verlangt.",
           "<b>Ausreisestempel prüfen</b> – vor dem Gate.",
+          "<b>Bei der Kontrolle</b> – Powerbank und Laptopfach heraus, Flasche leer.",
           "Copa nach San José, zwei Stunden.",
         ]],
       ]],
 
-      [">> Nach der Landung · San José", [
+      [">> Nach der Landung", [
         ["eigen", "In San José", [
           "<b>Einreiseformular</b> – wird im Flugzeug verteilt.",
           "<b>Adresse bereithalten</b> – wird verlangt.",
           "<b>Stempel lesen</b> – reicht die Dauer bis zur Ausreise?",
           "<b>Nach Heredia</b> – Uber oder Transfer, 30 Minuten.",
+          "<b>eSIM aktivieren</b> – noch am Flughafen, solange WLAN da ist.",
+          "<b>Colón abheben</b> – Automat in der Ankunftshalle, Landeswährung wählen.",
           "<b>Vor 18 Uhr ankommen</b> – dann wird es dunkel.",
+          "<b>Zu Hause melden</b> – kurz genügt.",
           { label: "Uber", url: "https://www.uber.com/cr/de/" },
         ]],
       ]],
@@ -3120,7 +3149,7 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "442 · 01.09.2026";
+const VERSION = "449 · 01.09.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
@@ -3492,19 +3521,30 @@ const hakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig = 0
 
         box.appendChild(el("div", { class: "schrittblock" + (istJetzt ? " jetzt" : "") },
           el("div", { class: "schrittzeit" }, reinT),
-          ...eintraege.map((e) =>
-            el("ul", { class: "punkte offenblock" },
-              (e[2] || []).map((roh) => {
-                const p = zerlege(roh);
-                if (typeof p === "string") return el("li", { html: p });
-                if (p.begriff) return begriffZeile(p);
-                return el("li", { class: "ohnepunkt" }, p.url ? linkZeile(p) : anrufZeile(p));
-              })))));
+          ...eintraege.map((e) => {
+            const roh = e[2] || [];
+            const punkte = roh.filter((x) => { const p = zerlege(x) || {}; return !p.url && !p.sprung; });
+            const links = roh.filter((x) => { const p = zerlege(x) || {}; return p.url || p.sprung; });
+            return el("div", {},
+              el("ul", { class: "punkte offenblock" },
+                punkte.map((r) => {
+                  const p = zerlege(r);
+                  if (typeof p === "string") return el("li", { html: p });
+                  if (p.begriff) return begriffZeile(p);
+                  return el("li", { class: "ohnepunkt" }, anrufZeile(p));
+                })),
+              links.length
+                ? el("div", { class: "linkblock" }, links.map((r) => {
+                    const p = zerlege(r);
+                    return p.sprung ? sprungZeile(p) : linkZeile(p);
+                  }))
+                : null);
+          })));
         return;
       }
 
-      box.appendChild(el("div", { class: "gruppentitel abstandoben klein3" }, titel));
-      const band = el("div", { class: "blockband" });
+      box.appendChild(el("div", { class: "gruppentitel abstandoben klein3 stopptitel" }, titel));
+      const band = el("div", { class: "blockband flach" });
       eintraege.forEach((e) => {
         if (e[0] === "eigen") { band.appendChild(faltblock(e[1], e[2], false)); return; }
         if (e[0] === "liste") {
@@ -4305,6 +4345,10 @@ const vorbereitungFertigOben = () => {
 };
 
 const seiteHeute = () => {
+  /* Ein Sprung von aussen kann den Bereich vorgeben: gehe("heute", "packen"). */
+  if (typeof param === "string" && ["todos", "checklisten", "packen"].includes(param)) {
+    bereichHeute = param;
+  }
   const wrap = el("div");
 
   /* Jede Gruppe kommt in eine eigene weisse Fläche – wie in den Themen. */
@@ -4551,19 +4595,30 @@ const seiteNotfall = () => {
 
         box.appendChild(el("div", { class: "schrittblock" + (istJetzt ? " jetzt" : "") },
           el("div", { class: "schrittzeit" }, reinT),
-          ...eintraege.map((e) =>
-            el("ul", { class: "punkte offenblock" },
-              (e[2] || []).map((roh) => {
-                const p = zerlege(roh);
-                if (typeof p === "string") return el("li", { html: p });
-                if (p.begriff) return begriffZeile(p);
-                return el("li", { class: "ohnepunkt" }, p.url ? linkZeile(p) : anrufZeile(p));
-              })))));
+          ...eintraege.map((e) => {
+            const roh = e[2] || [];
+            const punkte = roh.filter((x) => { const p = zerlege(x) || {}; return !p.url && !p.sprung; });
+            const links = roh.filter((x) => { const p = zerlege(x) || {}; return p.url || p.sprung; });
+            return el("div", {},
+              el("ul", { class: "punkte offenblock" },
+                punkte.map((r) => {
+                  const p = zerlege(r);
+                  if (typeof p === "string") return el("li", { html: p });
+                  if (p.begriff) return begriffZeile(p);
+                  return el("li", { class: "ohnepunkt" }, anrufZeile(p));
+                })),
+              links.length
+                ? el("div", { class: "linkblock" }, links.map((r) => {
+                    const p = zerlege(r);
+                    return p.sprung ? sprungZeile(p) : linkZeile(p);
+                  }))
+                : null);
+          })));
         return;
       }
 
-      box.appendChild(el("div", { class: "gruppentitel abstandoben klein3" }, titel));
-      const band = el("div", { class: "blockband" });
+      box.appendChild(el("div", { class: "gruppentitel abstandoben klein3 stopptitel" }, titel));
+      const band = el("div", { class: "blockband flach" });
       eintraege.forEach((e) => {
         if (e[0] === "eigen") { band.appendChild(faltblock(e[1], e[2], false)); return; }
         if (e[0] === "liste") {
@@ -4988,19 +5043,30 @@ const seiteRoute = () => {
 
         box.appendChild(el("div", { class: "schrittblock" + (istJetzt ? " jetzt" : "") },
           el("div", { class: "schrittzeit" }, reinT),
-          ...eintraege.map((e) =>
-            el("ul", { class: "punkte offenblock" },
-              (e[2] || []).map((roh) => {
-                const p = zerlege(roh);
-                if (typeof p === "string") return el("li", { html: p });
-                if (p.begriff) return begriffZeile(p);
-                return el("li", { class: "ohnepunkt" }, p.url ? linkZeile(p) : anrufZeile(p));
-              })))));
+          ...eintraege.map((e) => {
+            const roh = e[2] || [];
+            const punkte = roh.filter((x) => { const p = zerlege(x) || {}; return !p.url && !p.sprung; });
+            const links = roh.filter((x) => { const p = zerlege(x) || {}; return p.url || p.sprung; });
+            return el("div", {},
+              el("ul", { class: "punkte offenblock" },
+                punkte.map((r) => {
+                  const p = zerlege(r);
+                  if (typeof p === "string") return el("li", { html: p });
+                  if (p.begriff) return begriffZeile(p);
+                  return el("li", { class: "ohnepunkt" }, anrufZeile(p));
+                })),
+              links.length
+                ? el("div", { class: "linkblock" }, links.map((r) => {
+                    const p = zerlege(r);
+                    return p.sprung ? sprungZeile(p) : linkZeile(p);
+                  }))
+                : null);
+          })));
         return;
       }
 
-      box.appendChild(el("div", { class: "gruppentitel abstandoben klein3" }, titel));
-      const band = el("div", { class: "blockband" });
+      box.appendChild(el("div", { class: "gruppentitel abstandoben klein3 stopptitel" }, titel));
+      const band = el("div", { class: "blockband flach" });
       eintraege.forEach((e) => {
         if (e[0] === "eigen") { band.appendChild(faltblock(e[1], e[2], false)); return; }
         if (e[0] === "liste") {
