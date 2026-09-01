@@ -451,6 +451,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 /* Alle Reiter gleich – die aktive Seite zeigt sich nur über die Farbe. */
 .tab span { font-weight: 400; }
+.tab.an span { font-weight: 500; }
 #app { padding-bottom: calc(84px + env(safe-area-inset-bottom)); }
 
 .termindatum {
@@ -852,7 +853,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 .todozeile {
   display: grid;
-  grid-template-columns: 22px 1fr 34px 66px;
+  grid-template-columns: 22px 30px 1fr 62px;
   align-items: center; column-gap: 10px;
   width: 100%; text-align: left;
   padding: 0 12px;
@@ -896,7 +897,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   font-size: var(--ebene5); color: #211C18; line-height: 1.35;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.todolead { font-size: var(--ebene7); color: #B3AA9C; white-space: nowrap; }
+.todolead { font-size: var(--ebene7); color: #9C9284; white-space: nowrap; text-align: center; }
 .tododatum {
   font-size: var(--ebene6); color: #A9A296;
   white-space: nowrap; text-align: right;
@@ -1053,11 +1054,13 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 
 /* Spaltenbeschriftung der To-do-Liste */
 .todospalten {
-  display: grid; grid-template-columns: 22px 1fr 34px 66px;
+  display: grid; grid-template-columns: 22px 30px 1fr 62px;
   align-items: center; column-gap: 10px;
   padding: 7px 14px 5px 13px;
   border-bottom: 0;
 }
+/* "WER" sitzt mittig über der Spalte mit S / M / MS */
+.todospalten span:nth-child(2) { text-align: center; }
 .todospalten span {
   font-size: 10px; color: #BFB6A8;
   letter-spacing: .05em; text-transform: uppercase;
@@ -1120,6 +1123,20 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 #app > div > .gruppentitel:first-child,
 #app > div > .block:first-child,
 #app > div > .kopf:first-child { margin-top: 6px; }
+
+/* Hinweis unter einem Listenpunkt – grau und kleiner, wie in der To-do-Liste */
+.hakennote {
+  display: block; margin-top: 2px;
+  font-size: var(--ebene6); color: #9C9284; line-height: 1.4;
+}
+
+/* Unsichtbarer Ankerpunkt für die Sprungkacheln */
+.sprungmarke { height: 0; }
+
+/* Gewählter Bereich in der Kachelreihe */
+.routenkachel.an {
+  background: #FCF4F0; border-color: #E7CFC4; color: var(--terra);
+}
 
 </style>
 </head>
@@ -1986,9 +2003,14 @@ const DOKUMENTE = [
 const STATIONEN = [
   {
     id: "hinflug", nummer: "1", kurzname: "Hinflug", titel: "Hinflug nach Guatemala", land: "guatemala",
-    zeit: "Ankunft 29. September", kurz: "One-Way, mit Nachweisen im Gepäck",
+    zeit: "Dienstag, 29. September", kurz: "One-Way, mit Nachweisen im Gepäck",
     abschnitte: [
       ["Der Flug", [
+        ["eigen", "Warum Donnerstag der 22.", [
+          "<b>Guatemala ist günstiger als Costa Rica</b> – jeder Tag mehr dort spart Geld.",
+          "<b>Drei Tage vor Kursstart in Heredia:</b> Donnerstag ankommen, Freitag und Samstag die Stadt kennenlernen, Sonntag ausruhen, Montag Schulbeginn.",
+          "<b>Dienstag bis Donnerstag sind die günstigsten Flugtage</b>, Freitag und Sonntag die teuersten.",
+        ]],
         ["eigen", "Was gebucht ist", [
           "One-Way Schweiz → Guatemala-Stadt, 23 kg Aufgabegepäck.",
           "<b>Geplante Ankunft: 29. September 2026</b>, zwei Tage vor dem Start der Tour.",
@@ -2023,7 +2045,7 @@ const STATIONEN = [
   },
   {
     id: "ankunft-gt", nummer: "2", kurzname: "Ankunft", titel: "Ankunft Guatemala",
-    land: "guatemala", zeit: "29. September", kurz: "Vom Flughafen bis ins Hotel",
+    land: "guatemala", zeit: "Dienstag, 29. September", kurz: "Vom Flughafen bis ins Hotel",
     abschnitte: [
       ["Am Flughafen", [
         ["eigen", "Schritt für Schritt", [
@@ -2063,12 +2085,13 @@ const STATIONEN = [
   },
   {
     id: "rundreise", nummer: "3", kurzname: "Tour", titel: "Heart of Guatemala",
-    land: "guatemala", zeit: "1. bis 7. Oktober", kurz: "Intrepid, sieben Tage ab Antigua",
+    land: "guatemala", zeit: "Donnerstag 1. bis Dienstag 6. Oktober", kurz: "Intrepid, sechs Tage ab Antigua",
     abschnitte: [
       ["Die Tour", [
         ["eigen", "Was feststeht", [
           "<b>Heart of Guatemala</b> von Intrepid, gebucht über Globetrotter Basel am 3. September.",
-          "<b>Sieben Tage, 1. bis 7. Oktober.</b> Start und Ende in Antigua, nicht in Guatemala-Stadt.",
+          "<b>Sechs Tage, 1. bis 6. Oktober</b>, sechs Nächte. Start und Ende in Antigua, nicht in Guatemala-Stadt.",
+          "<b>Prüfen:</b> Das genaue Enddatum steht auf der Bestätigung von Globetrotter.",
           "Kleingruppe bis 16 Personen mit lokalem Guide, Stil „Original“.",
           "Enthalten: sechs Nächte Hotel, sechs Frühstücke, ein Mittagessen, alle Transporte.",
           "Reisecode QBSG – bei jeder Rückfrage angeben.",
@@ -2088,7 +2111,7 @@ const STATIONEN = [
           "<b>Tag 4</b> Chichicastenango und Panajachel – grosser Markt, rund 3.5 Stunden Fahrt.",
           "<b>Tag 5</b> Panajachel – Bootsfahrt über den Atitlán nach Santiago Atitlán.",
           "<b>Tag 6</b> zurück nach Antigua, Orientierungsrundgang, freier Abend.",
-          "<b>Tag 7</b> Antigua – keine Aktivitäten mehr, Abreise jederzeit möglich.",
+          "<b>7. Oktober</b> Antigua – keine Aktivitäten mehr, Abreise aus dem Hotel.",
         ]],
       ]],
       ["Anreise zum Start", [
@@ -2110,34 +2133,67 @@ const STATIONEN = [
     ],
   },
   {
-    id: "guatemala-allein", nummer: "4", kurzname: "Rundreise", titel: "Guatemala entdecken", land: "guatemala",
-    zeit: "Oktober, Woche 3–4", kurz: "Allein oder mit anderen, nichts gebucht",
+    id: "guatemala-zuzweit", nummer: "4", kurzname: "Zu zweit", titel: "Zu zweit unterwegs",
+    land: "guatemala", zeit: "Mittwoch 7. bis Dienstag 13. Oktober", kurz: "Idee · mit deiner Freundin, nichts gebucht",
     abschnitte: [
+      ["Der Plan", [
+        ["eigen", "Diese Woche gehört euch", [
+          "Die Tour ist vorbei, ihr habt viel gesehen – <b>jetzt entscheidet ihr selbst</b>.",
+          "<b>Deine Freundin fliegt um den 13. Oktober</b> zurück.",
+          "Nichts davon ist gebucht. Unterkünfte ein bis zwei Tage vorher.",
+        ]],
+        ["eigen", "Was sich anbietet", [
+          "<b>Acatenango</b> – zwei Tage, kalt in der Nacht, nur mit Anbieter.",
+          "<b>Lago de Atitlán</b> – San Marcos zum Ausruhen, San Pedro für Leute.",
+          "<b>Antigua</b> – Kaffeetour, Spanischstunden tageweise, Märkte.",
+          "<b>Semuc Champey</b> nur bei Lust auf acht bis zehn Stunden Anfahrt je Weg.",
+        ]],
+      ]],
       ["Transport", [
-        ["eigen", "Wie du dich bewegst", [
-          "Shuttles zwischen den Orten, gebucht im Hostel oder online am Vortag.",
+        ["eigen", "Wie ihr euch bewegt", [
+          "Shuttles zwischen den Orten, im Hostel oder online am Vortag gebucht.",
           "<b>Nur tagsüber fahren.</b> Keine Nachtfahrten in Guatemala.",
-          "Am Lago de Atitlán fahren Lanchas ohne Fahrplan – sie legen ab, wenn sie voll sind.",
+          "Am Atitlán fahren Lanchas ohne Fahrplan – sie legen ab, wenn sie voll sind.",
         ]],
         ["land", "guatemala", "Chicken-Busse"],
       ]],
       ["Wohin", [["land", "guatemala", "Weitere Standorte"]]],
-      ["Unterkunft", [
-        ["eigen", "Vor Ort buchen", [
-          "Hostels ein bis zwei Tage vorher – so bleibst du beweglich.",
-          "Ankunft nie nach Einbruch der Dunkelheit an einem neuen Ort.",
-          { label: "Hostelworld", url: "https://www.hostelworld.com/" },
-          { label: "Booking.com", url: "https://www.booking.com/" },
-        ]],
-        ["hostels", "guatemala"],
-      ]],
-      ["Sicherheit", [["land", "guatemala", "Sicherheit"]]],
-      ["Checkliste", [["liste", "pack:inland"], ["liste", "ortswechsel"], ["liste", "tour:vorher"], ["liste", "tour:tour"]]],
+      ["Unterkunft", [["hostels", "guatemala"]]],
+      ["Checkliste", [["liste", "pack:inland"], ["liste", "ortswechsel"]]],
     ],
   },
   {
-    id: "abflug-cr", nummer: "5", kurzname: "Abflug", titel: "Abflug nach Costa Rica",
-    land: "guatemala", zeit: "Ende Oktober", kurz: "Ausreise Guatemala, Regionalflug",
+    id: "guatemala-allein", nummer: "5", kurzname: "Allein", titel: "Allein in Guatemala",
+    land: "guatemala", zeit: "Mittwoch 14. bis Mittwoch 21. Oktober", kurz: "Idee · die ersten Tage für dich",
+    abschnitte: [
+      ["!! Der erste Tag allein", [
+        ["eigen", "Ruhig anfangen", [
+          "<b>Bleib zuerst dort, wo du dich auskennst.</b> Kein Ortswechsel am Tag, an dem deine Freundin abreist.",
+          "<b>Melde dich zu Hause</b>, sobald sie weg ist.",
+          "Ein Hostel mit Gemeinschaftsraum wählen – Anschluss findet sich von selbst.",
+        ]],
+      ]],
+      ["Alleinreisen", [["dok", "sicherheit", "Als Frau unterwegs"]]],
+      ["Der Plan", [
+        ["eigen", "Diese Woche nutzen", [
+          "<b>Du bist zum ersten Mal ganz allein unterwegs</b> – und hast Zeit, den zweiten Teil der Reise vorzubereiten.",
+          "<b>Schule:</b> Kurs bestätigen, Zahlung prüfen, Adresse und Telefon der Schule notieren, Einstufungstest online machen.",
+          "<b>Wohnen:</b> Studentenwohnheim oder Gastfamilie festlegen, Ankunft mit der Schule abstimmen.",
+          "<b>Costa Rica planen:</b> die ersten Tage in Heredia buchen, danach die grobe Route – La Fortuna, Monteverde, Santa Teresa, Puerto Viejo.",
+          "<b>Formalitäten:</b> Reiseerklärung für die Ausreise, Weiterreisenachweis bereithalten.",
+          "<b>Ordnung:</b> Wäsche, Fotos sichern, Ausgaben durchsehen, Rucksack ausmisten.",
+          "<b>Und trotzdem:</b> Was noch offen ist, kannst du jetzt nachholen – Acatenango, Atitlán, Antigua.",
+        ]],
+      ]],
+      ["Transport", [["land", "guatemala", "Chicken-Busse"]]],
+      ["Unterkunft", [["hostels", "guatemala"]]],
+      ["Sicherheit", [["land", "guatemala", "Sicherheit"]]],
+      ["Checkliste", [["liste", "pack:inland"], ["liste", "ortswechsel"]]],
+    ],
+  },
+  {
+    id: "abflug-cr", nummer: "6", kurzname: "Abflug", titel: "Abflug nach Costa Rica",
+    land: "guatemala", zeit: "Donnerstag, 22. Oktober", kurz: "Idee · Ausreise Guatemala, Regionalflug",
     abschnitte: [
       ["Der Flug", [
         ["eigen", "Was zu tun ist", [
@@ -2158,8 +2214,8 @@ const STATIONEN = [
     ],
   },
   {
-    id: "ankunft-cr", nummer: "6", kurzname: "Ankunft", titel: "Ankunft Costa Rica",
-    land: "costarica", zeit: "Ende Oktober", kurz: "Vom Flughafen bis nach Heredia",
+    id: "ankunft-cr", nummer: "7", kurzname: "Ankunft", titel: "Ankunft Costa Rica",
+    land: "costarica", zeit: "Donnerstag, 22. Oktober", kurz: "Idee · vom Flughafen bis nach Heredia",
     abschnitte: [
       ["Am Flughafen", [
         ["eigen", "Schritt für Schritt", [
@@ -2193,8 +2249,8 @@ const STATIONEN = [
     ],
   },
   {
-    id: "heredia", nummer: "7", kurzname: "Heredia", titel: "Heredia – Sprachschule", land: "costarica",
-    zeit: "November", kurz: "Vier Lektionen am Vormittag, Studentenwohnheim",
+    id: "heredia", nummer: "8", kurzname: "Heredia", titel: "Heredia – Sprachschule", land: "costarica",
+    zeit: "ab Montag, 26. Oktober", kurz: "Idee: 1 Woche · vier Lektionen am Vormittag",
     abschnitte: [
       ["Transport", [
         ["eigen", "Hinkommen", [
@@ -2202,7 +2258,17 @@ const STATIONEN = [
           "In Heredia alles zu Fuss oder mit dem lokalen Bus.",
         ]],
       ]],
-      ["Die Schule", [["thema", "schule"]]],
+      ["Die Schule", [
+        ["eigen", "Die Tage vor dem Kurs", [
+          "<b>Intercultura startet jeden Montag</b>, hier der 26. Oktober.",
+          "<b>Do 22.</b> Ankunft, Transfer nach Heredia, früh schlafen.",
+          "<b>Fr 23.</b> Stadt zu Fuss: Mercado Central, Parque Central, den Schulweg einmal gehen.",
+          "<b>Sa 24.</b> Wäsche, Einkauf, SIM und Konten prüfen. Nachmittags Kaffeeplantage oder Barva.",
+          "<b>So 25.</b> Ruhetag, Sachen sortieren, zu Hause melden.",
+          "<b>Mo 26.</b> Einstufungstest am Morgen, dann erste Lektion.",
+        ]],
+        ["thema", "schule"],
+      ]],
       ["Unterkunft", [
         ["eigen", "Studentenwohnheim", [
           "Läuft über die Schule und wird bei der Anmeldung gewählt.",
@@ -2214,8 +2280,8 @@ const STATIONEN = [
     ],
   },
   {
-    id: "samara", nummer: "8", kurzname: "Sámara", titel: "Sámara – Sprachschule", land: "costarica",
-    zeit: "November, offen", kurz: "Strandcampus, falls sie den Kurs verlängert",
+    id: "samara", nummer: "9", kurzname: "Sámara", titel: "Sámara – Sprachschule", land: "costarica",
+    zeit: "ab Montag, 2. November", kurz: "Idee: 1 Woche · Strandcampus am Meer",
     abschnitte: [
       ["Transport", [
         ["eigen", "Hinkommen", [
@@ -2223,7 +2289,17 @@ const STATIONEN = [
           "Die Schule organisiert den Wechsel zwischen den Standorten.",
         ]],
       ]],
-      ["Die Schule", [["thema", "schule"]]],
+      ["Die Schule", [
+        ["eigen", "Die Tage vor dem Kurs", [
+          "<b>Intercultura startet jeden Montag</b>, hier der 26. Oktober.",
+          "<b>Do 22.</b> Ankunft, Transfer nach Heredia, früh schlafen.",
+          "<b>Fr 23.</b> Stadt zu Fuss: Mercado Central, Parque Central, den Schulweg einmal gehen.",
+          "<b>Sa 24.</b> Wäsche, Einkauf, SIM und Konten prüfen. Nachmittags Kaffeeplantage oder Barva.",
+          "<b>So 25.</b> Ruhetag, Sachen sortieren, zu Hause melden.",
+          "<b>Mo 26.</b> Einstufungstest am Morgen, dann erste Lektion.",
+        ]],
+        ["thema", "schule"],
+      ]],
       ["Unterkunft", [
         ["eigen", "Noch nicht entschieden", [
           "Intercultura erlaubt den Wechsel innerhalb desselben Kurses, ohne Aufpreis.",
@@ -2234,7 +2310,7 @@ const STATIONEN = [
     ],
   },
   {
-    id: "bus", nummer: "9", kurzname: "Rundreise", titel: "Unterwegs mit dem Bus", land: "costarica",
+    id: "bus", nummer: "10", kurzname: "Rundreise", titel: "Unterwegs mit dem Bus", land: "costarica",
     zeit: "November und Dezember", kurz: "Route entsteht vor Ort",
     abschnitte: [
       ["Transport", [
@@ -2257,7 +2333,7 @@ const STATIONEN = [
     ],
   },
   {
-    id: "workexchange", nummer: "10", kurzname: "Mitarbeit", titel: "Kost und Logis gegen Mitarbeit",
+    id: "workexchange", nummer: "11", kurzname: "Mitarbeit", titel: "Kost und Logis gegen Mitarbeit",
     land: "costarica", zeit: "Dezember", kurz: "Worldpackers oder Workaway",
     abschnitte: [
       ["Unterkunft", [["land", "costarica", "Unterkunft gegen Mitarbeit"]]],
@@ -2265,7 +2341,7 @@ const STATIONEN = [
     ],
   },
   {
-    id: "peru", nummer: "11", kurzname: "Peru", titel: "Peru", land: "peru",
+    id: "peru", nummer: "12", kurzname: "Peru", titel: "Peru", land: "peru",
     zeit: "Ende Dezember, offen", kurz: "Mit einer Freundin, noch nichts gebucht",
     abschnitte: [
       ["Einreise", [["land", "peru", "Einreise"]]],
@@ -2362,7 +2438,7 @@ const LAENDER = {
     hostels: [],
   },
   guatemala: {
-    name: "Guatemala", zeit: "Oktober · rund vier Wochen",
+    name: "Guatemala", zeit: "29. September bis 22. Oktober",
     kurz: "Einreise, Geld, Sicherheit, Klima und die Standorte",
     farbe: "#7A6A4F",
     bloecke: [
@@ -2548,7 +2624,7 @@ const LAENDER = {
     },
   },
   costarica: {
-    name: "Costa Rica", zeit: "November und Dezember",
+    name: "Costa Rica", zeit: "Mitte Oktober bis Dezember",
     kurz: "Einreise, Geld, Klima, Busreisen und Work-Exchange",
     farbe: "#4E6B52",
     bloecke: [
@@ -2582,6 +2658,17 @@ const LAENDER = {
         { label: "Karten aller Regionen", url: "https://de.visitcostarica.com/where-to-go/costa-rica-maps" },
         { label: "Karibikküste – Region im Detail", url: "https://de.visitcostarica.com/where-to-go/caribbean" },
       ]],
+      ["Ein möglicher Weg durch Costa Rica", [
+        "Rund zehn Wochen, sieben Orte – nichts davon ist gebucht. Der Weg entsteht vor Ort.",
+        "<b>1 · Heredia</b> · 7 Tage · Sprachschule eine Woche, Kaffeeplantage, Vulkan Barva.",
+        "<b>2 · Sámara</b> · 7 Tage · Sprachschule Teil 2 am Meer, erste Surfversuche, Schildkröten an der Playa Buena Vista.",
+        "<b>3 · La Fortuna</b> · 10 Tage · Vulkan Arenal, gratis heisse Quellen am El Chorro, Ziplining und Hängebrücken.",
+        "<b>4 · Monteverde</b> · 4 Tage · Nachtwanderung im Nebelwald, Schokoladen- und Kaffeefarm, Santa Elena Reserve.",
+        "<b>5 · Santa Teresa</b> · 8 Tage · Surfen lernen, Yoga am Strand, Wasserfälle von Montezuma.",
+        "<b>6 · Manuel Antonio und Uvita</b> · 11 Tage · Nationalpark mit Faultieren, Walbeobachtung in Marino Ballena, Nauyaca-Wasserfall.",
+        "<b>7 · Puerto Viejo</b> · 11 Tage · Karibikküste, Velo bis Manzanillo, Jaguar Rescue Center.",
+      ]],
+
       ["La Fortuna – Vulkan Arenal", [
         "<b>Anreise:</b> Bus ab San José, Terminal 7-10, rund vier Stunden. Die günstigste Art hinzukommen.",
         "<b>Zwei bis drei Tage</b> genügen für das Wichtigste.",
@@ -2635,6 +2722,32 @@ const LAENDER = {
       { name: "Morada Kampos", ort: "Santa Bárbara, Heredia",
         tel: "+506 8379 5866",
         note: "Familiär und ruhig, nahe am Flughafen. Buchung über Booking." },
+      { name: "Toucan Hostel", ort: "Rio Segundo, nahe Flughafen und Heredia",
+        note: "Gute Gemeinschaft, Frühstück inbegriffen." },
+      { name: "Hostel Mariposas", ort: "100 m südlich der Sprachschule, Sámara",
+        note: "Täglich Gruppenanlässe, Garten mit Hängematten." },
+      { name: "Argdivan Beach Hostel", ort: "Dorfzentrum, Sámara",
+        note: "Drei Minuten zum Strand, ruhig und sauber." },
+      { name: "Viajero La Fortuna", ort: "Avenida 325, La Fortuna",
+        note: "Schlüsselkarten, Pool, Abendanlässe." },
+      { name: "Arenal Backpackers Resort", ort: "350 m westlich der Central Plaza, La Fortuna",
+        note: "Grosser Poolbereich, Wache am Eingang rund um die Uhr." },
+      { name: "OutBox Inn", ort: "Hauptstrasse, Santa Elena, Monteverde",
+        note: "Kapselbetten mit Vorhang – Privatsphäre im Dorm." },
+      { name: "Selina Monteverde", ort: "Beim Nebelwald-Reservat, Monteverde",
+        note: "Yoga-Decks, viel Betrieb." },
+      { name: "Lost Boyz", ort: "100 m östlich der Kirche, Santa Teresa",
+        note: "Surfhaus mit gemeinsamem Abendessen." },
+      { name: "Akih Pods Hostel", ort: "Calle Trébol, Playa Santa Teresa",
+        note: "Schlafkapseln mit Codeschloss." },
+      { name: "Selina Manuel Antonio", ort: "Hauptstrasse zum Nationalpark",
+        note: "Drei Pools, Affen im Garten, laut am Abend." },
+      { name: "Shipwrecked Hostel", ort: "Dorfzentrum, Uvita",
+        note: "Sehr sauber, Schliessfächer mit Steckdose." },
+      { name: "La Tribu Hostel for Women", ort: "Hauptstrasse, Puerto Viejo",
+        note: "Reines Frauenhostel." },
+      { name: "Agapi Beachfront Hostel", ort: "Playa Cocles, Puerto Viejo",
+        note: "Direkt am Strand, Nachtwache." },
     ],
     empfehlung: {
       titel: "Noch nicht geprüft",
@@ -2650,7 +2763,7 @@ const PACKLISTE = [
   ["Kleidung", ["Hardshell-Regenjacke", "Fleece oder dünner Hoodie", "Dünnes Langarmshirt", "Merino-Longsleeve", "Trekkinghose", "Leichthose oder Leggings", "2× Shorts", "3× T-Shirts oder Tops", "Sarong", "Buff", "Cap", "Merinomütze", "5× Unterwäsche", "3× Socken, davon 1 Paar Wandersocken", "Bikini", "Ein schickeres Teil für Abende"]],
   ["Schuhe", ["Salomon Wanderschuh", "Sandalen mit Fersenriemen"]],
   ["Kulturbeutel", ["Festes Shampoo und Seife", "Zahnbürste und -pasta", "Sonnencreme LSF 50, riff-verträglich", "DEET 50 % für den Dschungel", "Icaridin für den Alltag", "Mikrofaser-Handtuch L", "Reisewaschmittel", "Wäscheleine und Klammern", "Nagelknipser und Schere", "Alaunstein", "Monatshygiene", "Handdesinfektion", "Digitales Thermometer"]],
-  ["Elektronik", ["Smartphone", "Zweites iPhone als Backup", "Powerbank 10'000–20'000 mAh", "US-Netzteil mit USB-Ports", "CH→US-Adapter als Reserve", "2 Ladekabel", "In-Ear-Kopfhörer", "Tasche für Elektrozubehör"]],
+  ["Elektronik", ["Smartphone<i>am Körper im Bodybag</i>", "Zweites iPhone als Backup<i>Handgepäck – deine Rückfallebene</i>", "Powerbank 10'000–20'000 mAh<i>Handgepäck ist Vorschrift, im Gepäck verboten</i>", "In-Ear-Kopfhörer<i>Handgepäck, für den Flug</i>", "iPad mini A17 Pro, falls es mitkommt<i>Handgepäck, nie in den aufgegebenen Rucksack</i>", "Apple Pencil Pro – passt nur zum mini A17 Pro<i>Handgepäck</i>", "Smart Folio als Schutzhülle", "2 Ladekabel<i>eines im Handgepäck, eines im Rucksack</i>", "US-Netzteil mit USB-Ports", "CH→US-Adapter als Reserve", "Tasche für Elektrozubehör"]],
   ["Rucksack und Hostel", ["Patagonia Terravia 24 L", "Schlafbeutel: Seidenschlafsack, Schlafkleidung, Schlafmaske, Ohropax, Stirnlampe", "Filter-Trinkflasche", "Wasserdichte Handyhülle", "Stossfeste Hülle und Handykordel", "2–3 Dry Bags", "2 Karabiner", "Zip-Beutel", "ABUS-Schloss für den Locker", "Zweites Zahlenschloss als Reserve", "Zipper-Schloss", "3× Packing Cubes (2× M, 1× S)", "Geruchsdichter Wäschebeutel", "Bodybag für Pass, Handy, Karte",
     "Karteikarten-Box mit RFID-Schutz"]],
   ["Brille und Linsen", ["Ersatzbrille im harten Etui", "Sonnenbrille mit Sehstärke", "Rezept und Linsenwerte als PDF", "Monatslinsen mit Reserve", "Zwei Linsenbehälter für Peroxid", "Befeuchtende Augentropfen", "Lensy Care 4 – Peroxidlösung"]],
@@ -2717,8 +2830,11 @@ const PACK_FLUG = [
   "Regenhülle, Gurte eingezogen ~ aussen",
   "## Patagonia Terravia 24 L – Handgepäck",
   "Powerbank & zweites iPhone",
+  "iPad mini, Pencil Pro & Folio",
+  "Kopfhörer & ein Ladekabel",
+  "Nackenkissen, Schlafmaske, Ohropax",
   "Apotheke & Linsenlösung unter 100 ml",
-  "Eine Garnitur Kleidung, Buff, Ohropax",
+  "Eine Garnitur Kleidung, Buff",
   "## Bodybag am Körper",
   "Pass, Geld & Revolut-Karte",
   "Handy, Ticket & QR-Code",
@@ -2787,10 +2903,10 @@ const TODO_ALLE = [
   ["iPhone einrichten und sichern", "10. Sep", "Sophie", false],
   ["Fehlende Artikel einkaufen", "bis 11. Sep", "Sophie", false],
   ["Deckung englisch Visana", "10. Sep", "Markus", false],
-  ["Sprachschule buchen", "20. Sep", "Sophie", false],
+  ["Sprachschule buchen – Start Mo 26. Okt", "20. Sep", "Sophie", false],
   ["Schuladresse notieren", "20. Sep", "Sophie", false],
   ["Bestätigung 1. Nacht sichern", "26. Sep", "Sophie", false],
-  ["Erste Tage Costa Rica buchen", "20. Okt", "Sophie", false],
+  ["Erste Tage Costa Rica buchen", "12. Okt", "Sophie", false],
   ["Reiseerklärung Guatemala", "20. Sep", "Sophie", false],
   ["Alle Reise-Apps installieren und testen", "20. Sep", "Sophie", false],
   ["Notfallblatt ausfüllen", "20. Sep", "beide", false],
@@ -2800,15 +2916,17 @@ const TODO_ALLE = [
   ["Tageslinsen abklären", "5. Sep", "Sophie", false],
   ["Yallo-App testen", "6. Sep", "Sophie", false],
   ["Gepäck und Material testen", "5. Sep", "Sophie", false],
+  ["iPad mini A17 Pro, Pencil Pro, Folio prüfen", "8. Sep", "beide", false],
   ["Revolut einrichten und testen", "6. Sep", "Sophie", false],
   ["Währungsrechner erklären", "6. Sep", "beide", false],
   ["EDA registrieren", "20. Sep", "Sophie", false],
   ["Scans in die iCloud", "20. Sep", "beide", false],
   ["Ordner offline setzen", "26. Sep", "Sophie", false],
+  ["Nackenkissen und Flugsachen bereitlegen", "26. Sep", "Sophie", false],
   ["Rucksack wiegen", "26. Sep", "Sophie", false],
   ["Letzte Kontrolle – Liste Vor dem Abflugtag", "27. Sep", "Sophie", false],
-  ["Reiseerklärung Ausreise GT", "20. Okt", "Sophie", false],
-  ["Unterkünfte für Oktober buchen", "10. Okt", "Sophie", false],
+  ["Reiseerklärung Ausreise GT", "12. Okt", "Sophie", false],
+  ["Unterkünfte für Oktober buchen", "8. Okt", "Sophie", false],
   ["Work-Exchange für Dezember suchen", "25. Okt", "Sophie", false],
   ["Sprachschule Restzahlung", "5. Nov", "Sophie", false],
   ["Peru entscheiden", "5. Dez", "beide", false],
@@ -2836,6 +2954,9 @@ const NACH_DATUM = [
 ];
 
 const VOR_ABFLUG = [
+  "Am Körper: Pass, Bargeld, eine Karte, Flugticket, Reiseerklärung, Tourbestätigung, Hoteladresse, Handy",
+  "Im Handgepäck griffbereit: Kopfhörer, Powerbank mit Kabel, Nackenkissen, Schlafmaske, Ohropax",
+  "Leere Trinkflasche, Pullover, Zahnbürste, Linsenmittel, etwas zu essen",
   "Alle drei Tickets gebucht und ausgedruckt",
   "Erste Nacht und Flughafentransfer gebucht",
   "Reiseerklärung ausgefüllt, QR-Code gespeichert",
@@ -2884,7 +3005,7 @@ const ROUTE = [
   { ort: "Antigua", note: "Kolonialstadt auf 1'500 m. Kompakt, viele Reisende, Ausgangspunkt für Acatenango.", tag: "Guatemala" },
   { ort: "Lago de Atitlán", note: "Panajachel als Knoten, San Marcos ruhig, San Pedro lebhaft. Per Boot, tagsüber.", tag: "Guatemala" },
   { ort: "San José", note: "Nur Ankunft und Weiterfahrt. Kein Aufenthalt geplant.", tag: "Costa Rica" },
-  { ort: "Heredia – Sprachschule", note: "Ein bis zwei Wochen, vormittags. Kleinstadt im Zentraltal, 20 Minuten von San José. Ruhiger und günstiger als die Hauptstadt, mit Anschluss an andere Lernende.", tag: "Costa Rica" },
+  { ort: "Heredia – Sprachschule", note: "Eine Woche, vormittags. Kleinstadt im Zentraltal, 20 Minuten von San José. Ruhiger und günstiger als die Hauptstadt, mit Anschluss an andere Lernende.", tag: "Costa Rica" },
   { ort: "Sámara – Strandcampus", note: "Zwei oder drei Wochen, falls sie den Kurs verlängert. Intercultura erlaubt es, die Wochen ohne Aufpreis zwischen Heredia und Sámara aufzuteilen.", tag: "offen" },
   { ort: "Unterwegs mit dem Bus", note: "Zwei bis drei Wochen. Die Route entsteht vor Ort.", tag: "Costa Rica" },
   { ort: "Kost und Logis gegen Mitarbeit", note: "Drei bis vier Wochen, eher am Meer.", tag: "Costa Rica" },
@@ -2899,10 +3020,11 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "397 · 31.08.2026";
+const VERSION = "425 · 01.09.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
+let bereichHeute = "todos";   // todos · checklisten · packen
 
 /* ── kleine Helfer ─────────────────────────────────────────────── */
 
@@ -2924,6 +3046,12 @@ const el = (tag, attrs = {}, ...kinder) => {
 
 const rein = (t) => String(t).replace(/<[^>]+>/g, "");
 /* Steuerzeichen aus Blocktiteln: "## " Gruppe, "!! " Zusatzinformation. */
+const alsUnterzeile = (text) => {
+  /* "Punkt<i>Hinweis</i>" wird zu zwei Zeilen: Punkt normal, Hinweis grau. */
+  const m = String(text).match(/^(.*?)<i>(.*?)<\/i>$/);
+  return m ? m[1] + '<span class="hakennote">' + m[2] + "</span>" : text;
+};
+
 const ohneMarker = (t) => String(t).replace(/^(##|!!|\*\*) /, "");
 
 /* Zerlegt "<b>Titel:</b> Erklärung" in zwei Zeilen – alle Listen gleich aufgebaut. */
@@ -3279,7 +3407,7 @@ const hakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig = 0
                 p.split(" ~ ")[0],
                 el("span", { class: "hakenzone" }, " " + p.split(" ~ ")[1]))
             : el("span", { class: "hakentext" + (i < wichtig && !stand[p] ? " wichtig" : ""),
-                html: p })));
+                html: alsUnterzeile(p) })));
 
       if (selbst) {
         zeile.appendChild(el("button", {
@@ -3613,14 +3741,36 @@ const seiteSuche = () => {
     /* Handeln geht vor Nachschlagen: Notfall zuoberst, Packliste zuunterst. */
     const BEREICHSGEWICHT = { notfall: 4, geld: 3, wissen: 2, route: 2, buchen: 1, heute: 0 };
 
+    /* Mehrere Wörter müssen alle vorkommen – sonst findet "Handy gestohlen"
+       auch alles, was nur "gestohlen" enthält. */
+    const woerter = gesucht.split(/\s+/).filter((w) => w.length > 1);
+
     const bewerte = (e) => {
       const alles = flach(`${e.titel} ${e.text} ${e.ort}`);
+      const imTitel = flach(e.titel);
       let treffer = 0;
-      if (flach(e.titel).includes(gesucht)) treffer = 3;
-      else if (alles.includes(gesucht)) treffer = 2;
-      else if (erweitert.some((w) => w.length > 3 && wort(alles, w))) treffer = 1;
+
+      if (woerter.length > 1) {
+        const alleDa = woerter.every((w) => alles.includes(w));
+        if (!alleDa) return 0;
+        if (imTitel.includes(gesucht)) treffer = 5;
+        else if (alles.includes(gesucht)) treffer = 4;
+        else if (woerter.every((w) => imTitel.includes(w))) treffer = 3;
+        else treffer = 2;
+      } else {
+        if (imTitel.includes(gesucht)) treffer = 3;
+        else if (alles.includes(gesucht)) treffer = 2;
+        else if (erweitert.some((w) => w.length > 3 && wort(alles, w))) treffer = 1;
+      }
       if (!treffer) return 0;
-      return (BEREICHSGEWICHT[e.ziel.seite] ?? 0) * 4 + treffer;
+
+      /* Wer nach "Handy" sucht, will zuerst das Handy-Register sehen –
+         nicht einen Notfallpunkt, in dem das Wort nebenbei vorkommt.
+         Massgebend ist der Registername, also der Teil vor dem ersten Punkt. */
+      const register = flach(String(e.ort).split("·")[0]);
+      const imRegister = woerter.every((w) => register.includes(w)) ? 10 : 0;
+
+      return treffer * 4 + imRegister + (BEREICHSGEWICHT[e.ziel.seite] ?? 0);
     };
 
     const treffer = INDEX
@@ -3695,8 +3845,8 @@ const todoTabelle = () => {
   /* Spaltenbeschriftung über der ersten Gruppe. */
   box.appendChild(el("div", { class: "todospalten" },
     el("span", {}, ""),
-    el("span", {}, "To-do"),
     el("span", {}, "Wer"),
+    el("span", {}, "To-do"),
     el("span", { class: "tododatum" }, "Datum")));
 
   const MONATE = { Sep: 8, Okt: 9, Nov: 10, Dez: 11, Jan: 0, Feb: 1, Aug: 7 };
@@ -3748,7 +3898,7 @@ const todoTabelle = () => {
   /* Wochentag davor – "Sa 5. Sep" liest sich schneller als "5. Sep". */
   const TAGE = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
   /* S für Sophie, MA für Markus, alle für beide – S kursiv. */
-  const KURZ = { Sophie: "S", Markus: "M", beide: "alle" };
+  const KURZ = { Sophie: "S", Markus: "M", beide: "MS" };
   const leadZeichen = (lead) => {
     const k = KURZ[lead] || lead;
     return k === "S" ? el("i", {}, k) : el("span", {}, k);
@@ -3820,8 +3970,8 @@ const todoTabelle = () => {
       },
         el("span", { class: "box klein" + (ab ? " an" : "") },
           ab ? svg("check", 11, "#fff", 3) : null),
-        el("span", { class: "todotext", html: was }),
         el("span", { class: "todolead" }, leadZeichen(lead)),
+        el("span", { class: "todotext", html: was }),
         el("span", { class: "tododatum" }, mitTag(datum))));
     });
   });
@@ -3837,8 +3987,8 @@ const todoTabelle = () => {
           onclick: () => { delete stand[was]; merke("haken:alle", stand); zeichnen(); },
         },
           el("span", { class: "box klein an" }, svg("check", 11, "#fff", 3)),
-          el("span", { class: "todotext", html: was }),
           el("span", { class: "todolead" }, leadZeichen(lead)),
+          el("span", { class: "todotext", html: was }),
           el("span", { class: "tododatum" }, mitTag(datum))));
       });
     });
@@ -3987,7 +4137,9 @@ const seiteHeute = () => {
 
   /* Jede Gruppe kommt in eine eigene weisse Fläche – wie in den Themen. */
   const gruppe = (titel, listen) => {
-    wrap.appendChild(el("div", { class: "gruppentitel abstandoben klein3" }, titel));
+    const marke = el("div", { class: "gruppentitel abstandoben klein3" }, titel);
+    marke.id = "gr-" + titel.toLowerCase().replace(/[^a-zäöü]+/g, "");
+    wrap.appendChild(marke);
     const band = el("div", { class: "blockband" });
     listen.forEach((l) => band.appendChild(l));
     wrap.appendChild(band);
@@ -4003,12 +4155,12 @@ const seiteHeute = () => {
   };
   const vorbereitungFertig = erledigt("abflug", VOR_ABFLUG);
 
-  /* Die Gesamtliste zuerst: alles auf einen Blick. */
-  if (!vorbereitungFertigOben()) {
+  /* Es wird immer nur ein Bereich gezeigt – gewählt über die Kacheln oben. */
+  if (bereichHeute === "todos" && !vorbereitungFertigOben()) {
     wrap.appendChild(todoTabelle());
   }
 
-  gruppe("Checklisten", [
+  if (bereichHeute === "checklisten") gruppe("Checklisten", [
     faltHakenliste("Vor dem Abflugtag", VOR_ABFLUG, "abflug"),
     faltHakenliste("→ Ankunft Hostel", ANKUNFT, "ankunft", true),
     faltHakenliste("← Hostel verlassen", VOR_DER_TOUR, "tour:vorher", true),
@@ -4018,11 +4170,14 @@ const seiteHeute = () => {
     faltHakenliste("Rückkehr", RUECKKEHR, "rueckkehr"),
   ]);
 
-  gruppe("Packen", [
-    faltHakenliste("Packordnung Flug", PACK_FLUG, "pack:flug", true),
-    faltHakenliste("Packordnung Bus", PACK_INLAND, "pack:inland", true),
-    faltHakenliste("Tagesrucksack", TAGESRUCKSACK, "tour:rucksack", true),
+  if (bereichHeute === "packen") gruppe("Was mitkommt", [
     ...PACKLISTE.map(([t, p]) => faltHakenliste(t, p, "pack:" + t)),
+  ]);
+
+  if (bereichHeute === "packen") gruppe("Wo es hingehört", [
+    faltHakenliste("Im Flugzeug", PACK_FLUG, "pack:flug", true),
+    faltHakenliste("Im Bus", PACK_INLAND, "pack:inland", true),
+    faltHakenliste("Tagesrucksack unterwegs", TAGESRUCKSACK, "tour:rucksack", true),
   ]);
 
   if (false) {
@@ -4692,8 +4847,8 @@ function leiste() {
   return el("nav", { class: "tableiste" },
     BEREICHE.map(([k, l, ikon, wichtig]) => {
       const aktiv = seite === k || (seite === "suche" && vorSuche === k);
-      /* Aktiv in Terracotta, alles Übrige warmgrau. */
-      const farbe = aktiv ? "#B65A3C" : "#8B8175";
+      /* Aktiv: Anthrazit und halbfett. Terracotta bleibt der Route vorbehalten. */
+      const farbe = wichtig ? "#B65A3C" : (aktiv ? "#211C18" : "#8B8175");
       return el("button", {
         class: "tab" + (aktiv ? " an" : "") + (wichtig ? " wichtig" : ""),
         onclick: () => gehe(k),
@@ -4701,7 +4856,7 @@ function leiste() {
         wichtig
           ? el("span", { class: "tabkreis" + (aktiv ? " an" : "") },
               svg(ikon, 19, aktiv ? "#fff" : "#B65A3C", 1.9))
-          : svg(ikon, 21, farbe, 1.8),
+          : svg(ikon, 21, farbe, aktiv ? 2 : 1.8),
         el("span", { style: "color:" + farbe }, l));
     }));
 }
@@ -4729,11 +4884,24 @@ function zeichnen() {
       el("button", { class: "routenkachel", onclick: () => gehe(wohin, param2) },
         svg(ikon, 14, "#A08C7D", 1.8), el("span", {}, titel));
 
+    /* Umschalten: es wird immer nur ein Bereich gezeigt. */
+    const bereichkachel = (ikon, titel, schluessel) => {
+      const an = bereichHeute === schluessel;
+      return el("button", { class: "routenkachel" + (an ? " an" : ""), onclick: () => {
+        bereichHeute = schluessel; zeichnen(); window.scrollTo(0, 0);
+      } }, svg(ikon, 14, an ? "#B65A3C" : "#A08C7D", 1.8), el("span", {}, titel));
+    };
+
     const kacheln = seite === "route"
       ? el("div", { class: "routenkacheln" },
           schnellkachel("shield", "EDA", "wissen", "eda"),
           schnellkachel("check", "Sicherheit", "wissen", "sicherheit"),
           schnellkachel("bed", "Buchen", "buchen"))
+      : seite === "heute"
+      ? el("div", { class: "routenkacheln" },
+          bereichkachel("check", "To-dos", "todos"),
+          bereichkachel("book", "Checklisten", "checklisten"),
+          bereichkachel("bed", "Packen", "packen"))
       : null;
 
     document.body.insertBefore(el("div", { class: "kopfzeile" + (kacheln ? " mitkacheln" : ""),
