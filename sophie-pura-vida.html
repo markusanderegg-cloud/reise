@@ -1019,7 +1019,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 
 /* 5 Termine: ruhige Hierarchie, feine Linien */
 .terminkarte { padding: 4px 16px; }
-.terminwann { font-size: var(--ebene7); color: #8B8175; letter-spacing: .06em; }
+.terminwann { font-size: var(--ebene6); color: #A9A296; letter-spacing: 0; text-transform: none; }
 .terminwas { font-size: var(--ebene5); color: #211C18; }
 .terminzeile.mitlinie { border-top: 1px solid #F0EBE2; }
 .terminzeile { padding: 11px 0; }
@@ -1047,7 +1047,11 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   border: 1px solid #E3D8C6; border-radius: 17px;
 }
 .heldlupe .ikon { position: relative; z-index: 1; }
-.terminknopf { min-height: 44px; display: flex; flex-direction: column; justify-content: center; }
+.terminknopf {
+  min-height: 48px; display: flex; align-items: center; gap: 10px; width: 100%;
+}
+.terminknopf .terminwas { flex: 1; min-width: 0; }
+.terminknopf .terminwann { margin-left: auto; flex-shrink: 0; }
 .todokopf { min-height: 38px; }
 
 /* Lead als Kürzel – S kursiv */
@@ -1246,6 +1250,16 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   padding: 1px 6px; border-radius: 5px;
   box-decoration-break: clone; -webkit-box-decoration-break: clone;
 }
+
+/* Drei Listenwege auf der Startseite – eine Karte, feine Linien */
+.startlisten { margin-top: 10px; padding: 0 16px; }
+.listenzeile {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  min-height: 48px; padding: 0; background: none; border: 0;
+  border-bottom: 1px solid #F0EBE2; text-align: left;
+}
+.startlisten .listenzeile:last-child { border-bottom: 0; }
+.listenzahl { margin-left: auto; font-size: var(--ebene6); color: #A9A296; }
 
 </style>
 </head>
@@ -3066,7 +3080,7 @@ const VOR_DER_TOUR = [
 ];
 
 const VOR_TOUR = [
-  "Tagesrucksack gepackt",
+  "Tagesrucksack gepackt >> heute|packen|tour:rucksack",
   "Guide nach Wetter und Kleidung gefragt",
   "Feste Schuhe und warme Schicht",
   "Regenschutz dabei",
@@ -3077,12 +3091,12 @@ const VOR_TOUR = [
 const ANKUNFT = [
   "Adresse und Telefon offline gespeichert",
   "Spind geprüft",
-  "Wertsachen-Box eingeräumt",
-  "Geldautomat und Apotheke gefunden",
+  "Wertsachen-Box eingeräumt >> heute|packen|pack:Wertsachen-Box",
+  "Geldautomat und Apotheke gefunden >> geld|geld",
   "Gefragt, was man abends meidet",
   "Zu Hause gemeldet",
-  "WLAN notiert, Offline-Karte geladen",
-  "Backup laufen lassen",
+  "WLAN notiert, Offline-Karte geladen >> geld|apps",
+  "Backup laufen lassen >> wissen|ablage",
 ];
 
 const PACK_FLUG = [
@@ -3158,11 +3172,11 @@ const ORTSWECHSEL = [
 
 const WOCHE = [
   "Zu Hause anrufen, nicht nur schreiben",
-  "Budget aufs Hauptkonto schieben",
+  "Budget aufs Hauptkonto schieben >> geld|geld",
   "Ausgaben der Woche anschauen",
-  "Belege fotografiert und abgelegt",
+  "Belege fotografiert und abgelegt >> wissen|ablage",
   "Wäsche gemacht oder abgegeben",
-  "Vorräte geprüft",
+  "Vorräte geprüft >> heute|packen|pack:Reiseapotheke",
   "Fotos gesichert im guten WLAN",
 ];
 
@@ -3270,15 +3284,15 @@ const VOR_REISE = [
 ];
 
 const RUECKKEHR = [
-  "Restbargeld ausgeben oder wechseln",
+  "Restbargeld ausgeben oder wechseln >> geld|geld",
   "Landeswährungskonto in Revolut leeren",
   "Ausreisegebühr Costa Rica bereithalten",
-  "Reiseerklärung für die Ausreise",
+  "Reiseerklärung für die Ausreise >> wissen|djrv",
   "Stempel im Pass kontrollieren",
   "Adressen und Kontakte sichern",
   "Nachkontrolle beim Tropenarzt",
-  "Versicherungsfälle einreichen",
-  "Revolut-Abo zurückstufen",
+  "Versicherungsfälle einreichen >> geld|versicherung",
+  "Revolut-Abo zurückstufen >> geld|geld",
 ];
 
 const ROUTE = [
@@ -3302,7 +3316,7 @@ const app = document.getElementById("app");
 
 /* Am Wochenende erscheint die Wochenroutine zusätzlich auf der Startseite. */
 const wochenende = () => [0, 6].includes(new Date().getDay());
-const VERSION = "499 · 01.09.2026";
+const VERSION = "505 · 01.09.2026";
 let seite = "start";
 let param = null;
 let vorSuche = "start";
@@ -4427,13 +4441,33 @@ const termineBlock = () => {
   });
   behaelter.appendChild(kopf);
   behaelter.appendChild(inhalt);
-  /* Wie eine Zeile der Liste selbst – weisse Fläche, Pfeil rechts. */
-  behaelter.appendChild(el("button", {
-    class: "karte allezeile", onclick: () => gehe("heute"),
-  },
-    el("span", { class: "blocktitel ohneabstand" }, "Alle To-dos"),
-    el("span", { class: "faltpfeil pfeilrechts" },
-      svg("chevron", 17, "#B65A3C", 2.2))));
+  /* Drei Wege in die Listen – mit Zähler, damit man sieht, wo etwas offen ist. */
+  const offeneTodos = (() => {
+    const stand = hole("haken:alle", {});
+    return TODO_ALLE.filter(([was]) => !stand[was]).length;
+  })();
+  const packStand = (() => {
+    let ab = 0, alle = 0;
+    PACKLISTE.forEach(([t, p]) => {
+      const s = hole("haken:pack:" + t, {});
+      p.forEach((x) => { alle++; if (s[x]) ab++; });
+    });
+    return ab + " von " + alle;
+  })();
+
+  /* Eine Karte, drei Zeilen – wie die Termine darüber. */
+  const zeile = (titel, zahl, ziel, bereich) =>
+    el("button", { class: "listenzeile", onclick: () => gehe(ziel, bereich) },
+      el("span", { class: "blocktitel ohneabstand" }, titel),
+      el("span", { class: "listenzahl" }, zahl),
+      el("span", { class: "faltpfeil pfeilrechts" },
+        svg("chevron", 16, "#B65A3C", 2.2)));
+
+  const listen = el("div", { class: "karte startlisten" },
+    zeile("To-dos", offeneTodos + " offen", "heute", "todos"),
+    zeile("Checklisten", "7 Listen", "heute", "checklisten"),
+    zeile("Packen", packStand, "heute", "packen"));
+  behaelter.appendChild(listen);
   return behaelter;
 };
 
@@ -4457,7 +4491,7 @@ const termineKarte = (kopfNeu) => {
   const zeichne = () => {
     behaelter.innerHTML = "";
     const offeneTermine = sortiert.filter((t) => !fertig(t));
-    const zeigen = alle ? sortiert : offeneTermine.slice(0, 3);
+    const zeigen = alle ? sortiert : offeneTermine.slice(0, 2);
 
     const karteEl = el("div", { class: "karte terminkarte" });
     zeigen.forEach(([datum, titel, text], i) => {
@@ -4472,12 +4506,12 @@ const termineKarte = (kopfNeu) => {
         class: "terminknopf",
         onclick: () => { offen = offen === titel ? null : titel; zeichne(); },
       },
-        el("span", { class: "terminwann" + (dringend ? " bald" : "") }, wannText(datum)),
         el("span", { class: "terminwas" + (ganz ? " ab" : "") },
           titel + (offen === titel ? "" : " …"),
           liste.length > 1
             ? el("span", { class: "terminstand" }, erledigt + "/" + liste.length)
-            : null)));
+            : null),
+        el("span", { class: "terminwann" + (dringend ? " bald" : "") }, wannText(datum))));
 
       if (offen === titel) {
         const block = el("div", { class: "terminaufgaben" });
@@ -4590,16 +4624,18 @@ const seiteHeute = () => {
     faltHakenliste("Rückkehr", RUECKKEHR, "rueckkehr"),
   ]);
 
-  if (bereichHeute === "packen") gruppe("Was mitkommt", [
-    ...PACKLISTE.map(([t, p]) => faltHakenliste(t, p, "pack:" + t)),
-  ]);
-
-  if (bereichHeute === "packen") gruppe("Wo es hingehört", [
+  if (bereichHeute === "packen") gruppe("Packordnung", [
     faltHakenliste("Im Flugzeug", PACK_FLUG, "pack:flug", true, 0, offeneListe === "pack:flug"),
     faltHakenliste("Im Bus", PACK_INLAND, "pack:inland", true, 0, offeneListe === "pack:inland"),
     faltHakenliste("Tagesrucksack unterwegs", TAGESRUCKSACK, "tour:rucksack", true, 0,
                    offeneListe === "tour:rucksack"),
   ]);
+
+  if (bereichHeute === "packen") gruppe("Ausrüstung", [
+    ...PACKLISTE.map(([t, p]) => faltHakenliste(t, p, "pack:" + t, false, 0,
+                                               offeneListe === "pack:" + t)),
+  ]);
+
 
   if (false) {
     gruppe("Erledigt vor der Reise", [
