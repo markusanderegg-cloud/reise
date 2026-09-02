@@ -2277,8 +2277,7 @@ const STATIONEN = [
           "<b>Einreiseformular Guatemala</b> – dein QR-Code wird gescannt.",
           "<b>Adresse bereithalten</b> – Casa Florencia Hotel<br>7a Avenida Norte 100, Antigua. Wird bei der Einreise verlangt.",
           "<b>Stempel gleich lesen</b> – reicht die Dauer bis zur Ausreise?",
-          { punkt: "<b>Quetzal abheben</b> – Geldautomat in der Ankunftshalle<br>100 bis 150 Franken, Landeswährung wählen.",
-            sprung: "geld", param: "geld" },
+          "<b>Quetzal abheben</b> – Geldautomat in der Ankunftshalle<br>100 bis 150 Franken, immer Landeswährung wählen.",
           { punkt: "<b>eSIM aktivieren</b> – zuerst WLAN am Flughafen.",
             sprung: "geld", param: "handy" },
           "<b>Transfer nach Antigua</b> – vorbestellt, Fahrer mit Namensschild<br>rund 1 h, Landung vor 18 Uhr eingeplant.",
@@ -2286,7 +2285,6 @@ const STATIONEN = [
         ]],
       ]],
 
-      ["Einreiseformular", [["thema", "djrv"]]],
       ["Checkliste", [["liste", "pack:rucksack"], ["liste", "pack:hand"], ["liste", "pack:body"], ["liste", "abflug"]]],
     ],
   },
@@ -2461,8 +2459,7 @@ const STATIONEN = [
           "<b>Shuttle organisieren</b> – über das Hostel, 12 bis 20 USD.",
           "<b>3 h vor Abflug am Flughafen</b> – ab Antigua 1 h Fahrt, morgens mehr.",
           "<b>Flughafen Guatemala-Stadt</b> – La Aurora GUA<br>9 Avenida 14-75, Zona 13.",
-          { punkt: "<b>Quetzal loswerden</b> – in Costa Rica wertlos.",
-            sprung: "geld", param: "geld" },
+          "<b>Quetzal loswerden</b> – in Costa Rica wertlos.",
           { punkt: "<b>Reiserucksack packen</b> – Osprey Fairview Trek 70, keine Elektronik hinein.",
             sprung: "heute", param: "packen|pack:rucksack" },
           { punkt: "<b>Handgepäck packen</b> – Patagonia Terravia 24 L, Elektrotasche und iPad.",
@@ -2494,8 +2491,7 @@ const STATIONEN = [
             sprung: "route", param: { tab: "land", land: "costarica", block: "Einreise" } },
           { punkt: "<b>Zuerst WLAN, dann eSIM</b> – ohne Netz kein Uber, keine Karte.",
             sprung: "geld", param: "handy" },
-          { punkt: "<b>Colón abheben</b> – Geldautomat in der Flughafenhalle<br>50 bis 100 Franken genügen, in Costa Rica zahlst du fast überall mit Karte.",
-            sprung: "geld", param: "geld" },
+          "<b>Colón abheben</b> – Geldautomat in der Flughafenhalle<br>50 bis 100 Franken genügen, in Costa Rica zahlst du fast überall mit Karte.",
           "<b>Der Flughafen liegt in Alajuela</b> – nicht in San José<br>nach Heredia 20 Min.",
           "<b>Orange Taxis oder Uber</b> – 20 bis 30 USD<br>keine Abholzone: Strasse hinter dem Parkplatz.",
           "<b>Vor 18 Uhr im Quartier</b> – dann wird es dunkel.",
@@ -4792,22 +4788,31 @@ const seiteHeute = () => {
     }
   }
 
-  if (bereichHeute === "packen") gruppe("Packordnung", [
-    faltHakenliste("Reiserucksack – Flug", PACK_RUCKSACK, "pack:rucksack", true, 0,
-      offeneListe === "pack:rucksack"),
-    faltHakenliste("Handgepäck – Flug", PACK_HAND, "pack:hand", true, 0,
-      offeneListe === "pack:hand"),
-    faltHakenliste("Bodybag am Körper", PACK_BODY, "pack:body", true, 0,
-      offeneListe === "pack:body"),
-    faltHakenliste("Im Bus", PACK_INLAND, "pack:inland", true, 0, offeneListe === "pack:inland"),
-    faltHakenliste("Tagesrucksack unterwegs", TAGESRUCKSACK, "tour:rucksack", true, 0,
-                   offeneListe === "tour:rucksack"),
-  ]);
+  if (bereichHeute === "packen") {
+    const ORDNUNG = [
+      ["Reiserucksack – Flug", PACK_RUCKSACK, "pack:rucksack"],
+      ["Handgepäck – Flug", PACK_HAND, "pack:hand"],
+      ["Bodybag am Körper", PACK_BODY, "pack:body"],
+      ["Im Bus", PACK_INLAND, "pack:inland"],
+      ["Tagesrucksack unterwegs", TAGESRUCKSACK, "tour:rucksack"],
+    ];
+    const ausruestung = PACKLISTE.map(([t, p]) => [t, p, "pack:" + t]);
+    /* Kam man über einen Sprung auf eine bestimmte Liste, steht nur sie da –
+       sonst sucht man sie zwischen allen anderen. */
+    const nurEine = zurueckZu
+      ? ORDNUNG.concat(ausruestung).find(([, , k]) => k === offeneListe) : null;
 
-  if (bereichHeute === "packen") gruppe("Ausrüstung", [
-    ...PACKLISTE.map(([t, p]) => faltHakenliste(t, p, "pack:" + t, false, 0,
-                                               offeneListe === "pack:" + t)),
-  ]);
+    if (nurEine) {
+      gruppe("Packordnung", [
+        faltHakenliste(nurEine[0], nurEine[1], nurEine[2], true, 0, true),
+      ]);
+    } else {
+      gruppe("Packordnung", ORDNUNG.map(([t, p, k]) =>
+        faltHakenliste(t, p, k, true, 0, offeneListe === k)));
+      gruppe("Ausrüstung", ausruestung.map(([t, p, k]) =>
+        faltHakenliste(t, p, k, false, 0, offeneListe === k)));
+    }
+  }
 
 
   if (false) {
