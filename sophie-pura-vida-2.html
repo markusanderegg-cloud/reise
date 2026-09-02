@@ -1823,13 +1823,6 @@ const DOKUMENTE = [
     id: "versicherung", titel: "Versicherungen",
     kurz: "Wer zahlt was, krank oder verletzt",
     bloecke: [
-      ["Karten sperren", [
-        "<b>Zuerst selbst sperren – beide in der App:</b> Revolut einfrieren, BKB in „one“. Gratis und in Sekunden. Telefonisch nur ohne Internet.",
-        "<b>Danach Visana:</b> Der Kartendienst sperrt alle übrigen Karten und übernimmt die Ersatzgebühren.",
-        "Der Dienst ersetzt die eigene Meldung nicht – für die Haftung zählt der Zeitpunkt deiner Meldung.",
-        { label: "BKB STU Visa Debit – nur ohne Internet", nr: "+41 58 958 83 83" },
-        { label: "Visana – Karten, Gepäck, Annullation", nr: "+41 44 628 52 80" },
-      ]],
       ["## Was du hast", null],
       ["Wer zahlt was", [
         "<b>Visana Vacanza</b> – Behandlung vor Ort: Spital, Röntgen, Gips, Medikamente.",
@@ -1903,48 +1896,44 @@ const DOKUMENTE = [
       ]],    ],
   },
   {
-    id: "geld", titel: "Finanzen, Geld und Karten",
-    kurz: "Setup, Konten, Sperren, Bargeld, Budget",
+    id: "geld", titel: "Geld unterwegs",
+    kurz: "Karten, Konten, Budget, Routine",
     bloecke: [
-      ["Karte sperren", [
-        "<b>Immer zuerst in der App:</b> Revolut einfrieren, BKB in „one“ – Karte wählen, Schloss-Symbol, sperren. Gratis, weltweit, in Sekunden.",
-        "<b>Danach Visana</b> – sperrt die restlichen Karten und übernimmt die Ersatzgebühren.",
-        { label: "BKB STU Visa Debit – nur ohne Internet", nr: "+41 58 958 83 83" },
-        { label: "Visana – Karten, Gepäck, Annullation", nr: "+41 44 628 52 80" },
-        { sprung: "notfall", param: "ablauf", label: "Vollständiger Ablauf im Notfall-Bereich" },
+      ["Deine Karten und dein Bargeld", [
+        { begriff: "Revolut Premium",
+          text: "Die Alltagskarte, immer bei dir. Darauf liegt nur ein Wochenbudget – geht sie verloren, ist der Schaden klein. Keine Reiseversicherung: dafür gilt allein die Visana-Police." },
+        { begriff: "BKB STU Visa Debit",
+          text: "Die Reserve, im Spind in der Wertsachen-Box. Nur wenn Revolut ausfällt, nie auf Tagesausflüge." },
+        { begriff: "Bargeld an drei Orten",
+          text: "Tagesgeld am Körper, rund 150 USD im Spind, 50–100 USD versteckt im Rucksack. Das Versteckte wird nie angefasst." },
       ]],
-      ["## Was du hast", null],
-      ["Karten & Bargeld", [
-        { begriff: "Revolut Premium", text: "Deine Alltagskarte, immer bei dir. Darauf liegt nur ein Wochenbudget – geht sie verloren, ist der Schaden klein.",
-          mehrLabel: "Was Premium bringt",
-          mehr: "<b>Was Premium dir bringt:</b> unbegrenzter Währungstausch zum guten Kurs, auch am Wochenende – im Standard-Abo kostet er dann rund ein Prozent mehr. Höherer Freibetrag beim Bargeldbezug, trotzdem gilt: selten und viel abheben.<br><br><b>Was Premium nicht ist:</b> keine Reiseversicherung. Für Arzt, Spital und Gepäck gilt allein die Visana-Police." },
-        { begriff: "BKB STU Visa Debit", text: "Deine Reserve, im Spind in der Wertsachen-Box. Nur wenn Revolut ausfällt, nie auf Tagesausflüge." },
-        { begriff: "Bargeld an drei Orten", text: "Tagesgeld am Körper, rund 150 USD im Spind, 50–100 USD versteckt im Rucksack. Das Versteckte wird nie angefasst." },
-      ]],
-      ["Revolut-Konten", [
+      ["Deine vier Konten", [
         { begriff: "Hauptkonto", text: "Dein Wochenbudget, etwa 150–250 Franken. Nur dieses Konto hängt an der Karte." },
-        { begriff: "Reisekasse", text: "Rund 1'000 Franken. Sonntagabends schiebst du daraus das Budget für die neue Woche nach." },
+        { begriff: "Reisekasse", text: "Rund 1'000 Franken. Sonntags schiebst du daraus das Budget für die neue Woche nach." },
         { begriff: "Notreserve", text: "Rund 500 Franken für Umbuchung, Arzt oder eine spontane Nacht im Einzelzimmer." },
-        { begriff: "USD-Konto", text: "USD ist in beiden Ländern die Zweitwährung. Mit Premium tauschst du jederzeit zum guten Kurs, auch am Wochenende." },
+        { begriff: "USD-Konto", text: "USD ist in beiden Ländern die Zweitwährung – Tausch jederzeit zum guten Kurs." },
       ]],
-      ["## Wie du es nutzt", null],
       ["Die wichtigste Regel", [
-        "<b>Am Automaten die Landeswährung wählen.</b> Umrechnung in CHF ablehnen – sie kostet 3 bis 12 Prozent.",
-        "Dasselbe beim Bezahlen im Laden: <b>immer in Quetzal oder Colones abrechnen</b>, nie in Franken.",
-              ]],
-      ["Routine", [
-        "<b>Jeden Sonntag:</b> Budget von der Reisekasse aufs Hauptkonto schieben.",
-        "<b>Ausgaben der Woche anschauen</b> – liegt der Tagesschnitt im Rahmen?",
+        "<b>Am Automaten die Landeswährung wählen.</b> Umrechnung in Franken ablehnen – sie kostet 3 bis 12 Prozent.",
+        "<b>Dasselbe im Laden:</b> immer in Quetzal oder Colones abrechnen, nie in Franken.",
+        "<b>Selten und viel abheben</b> – die Gebühr hängt am Vorgang, nicht am Betrag.",
+      ]],
+      ["Woche für Woche", [
+        "<b>Sonntags:</b> Budget von der Reisekasse aufs Hauptkonto schieben.",
+        "<b>Ausgaben anschauen</b> – liegt der Tagesschnitt im Rahmen?",
+        "<b>Vor jedem Ortswechsel:</b> genug Bargeld für zwei Tage.",
         "Belege fotografieren und ablegen.",
-        "Vor jedem Ortswechsel: genug Bargeld für zwei Tage.",
       ]],
-      ["Budget", [
-        "<b>Guatemala:</b> 25–35 USD pro Tag · <b>Costa Rica:</b> 35–45 USD pro Tag.",
-        "Darin enthalten: Hostelbett, Essen, lokale Transporte, gelegentlich eine Tour.",
-        "Nicht enthalten: Flüge, Sprachschule, grössere Touren wie Acatenango.",
-        "Wenn eine Woche teurer wird, gleicht die nächste es aus – die Reisekasse ist der Puffer, nicht die Notreserve.",
+      ["Was du pro Tag rechnest", [
+        "<b>Guatemala 25–35 USD</b> · <b>Costa Rica 35–45 USD</b> – Hostelbett, Essen, lokale Transporte, gelegentlich eine Tour.",
+        "<b>Nicht enthalten:</b> Flüge, Sprachschule, grössere Touren wie Acatenango.",
+        "Wird eine Woche teurer, gleicht die nächste es aus. Puffer ist die Reisekasse, nicht die Notreserve.",
       ]],
-      ["## Vor Ort", null],
+      ["Wenn eine Karte weg ist", [
+        "<b>Zuerst selbst sperren</b> – Revolut einfrieren, BKB in „one“. Gratis, weltweit, in Sekunden.",
+        "<b>Danach Visana melden</b> – sperrt die restlichen Karten und übernimmt die Ersatzgebühren.",
+        { sprung: "notfall", param: "ablauf", label: "Alle Nummern und der ganze Ablauf" },
+      ]],
     ],
   },
   {
