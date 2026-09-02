@@ -1328,7 +1328,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .heldtext {
   margin: -66px calc(-1 * max(20px, env(safe-area-inset-left))) 0
           calc(-1 * max(20px, env(safe-area-inset-left)));   /* bis an beide Ränder */
-  padding: 64px 38px 22px;
+  padding: 54px 38px 12px;
   box-shadow: none;
   position: relative;
   display: block;
@@ -1346,10 +1346,13 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .held { background: none; border: 0; border-radius: 0; overflow: visible; contain: none; }
 .held img { border-radius: 14px 14px 0 0; }
 .heldtext .min0 { padding-right: 52px; }   /* Platz für die Lupe */
-.heldlupe { position: absolute; right: 24px; top: 60px; margin-top: 0; }
+.heldlupe { position: absolute; right: 24px; top: 50px; margin-top: 0; }
 /* Der Notfallknopf steht links unter der Länderzeile, nicht mehr allein rechts. */
-.startkopf .notfallzeile { justify-content: flex-end; margin-top: 12px; }
-.startkopf .notfallleiste { margin-bottom: 0; }
+.startkopf .notfallzeile { justify-content: flex-end; margin-top: 2px; margin-right: 4px; }
+.startkopf .notfallleiste {
+  margin-bottom: 0; padding: 4px 4px 4px 11px; gap: 7px; border-radius: 18px;
+}
+.startkopf .notfallleiste .rundknopf.alarm { width: 26px; height: 26px; }
 
 /* Termine und Wege ohne Rahmen, direkt auf dem Sand */
 .offenfeld { background: none; border: 0; padding: 0; }
@@ -1371,18 +1374,13 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   margin: 2px 0 4px;
 }
 .blickkachel {
-  display: flex; flex-direction: column; align-items: center; gap: 7px;
-  min-height: 44px; padding: 14px 4px 16px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  min-height: 44px; padding: 10px 4px 14px;
   background: none; border: 0; text-align: center; position: relative;
 }
-/* Die Trennlinie ist kurz und hell – sie ordnet, ohne aufzufallen. */
-.blickkachel::before {
-  content: ""; position: absolute; left: 0; top: 24%; height: 52%;
-  width: 1px; background: #EBE3D6;
-}
-.blickkachel:first-child::before { display: none; }
-.blickwas { font-size: var(--ebene4); color: #211C18; }
-.blickzahl { font-size: var(--ebene6); color: var(--grau); }
+/* Ohne Trennlinien – die drei Bereiche trennt allein der Abstand. */
+.blickwas { font-size: var(--ebene5); color: var(--grau); }
+.blickzahl { font-size: 24px; font-weight: 600; color: #211C18; line-height: 1.2; }
 
 /* Aufgaben, die an einer anderen hängen: grau und gesperrt. */
 .todozeile.wartet { opacity: .55; }
@@ -1899,18 +1897,24 @@ const DOKUMENTE = [
     id: "handy", titel: "Handy und AppleCare+",
     kurz: "Abo, Setup, eSIM neu, Diebstahl",
     bloecke: [
-      ["Wenn das Handy gestohlen ist", [
-        "<b>1 Verlustmodus</b> über „Wo ist?“ oder icloud.com/find. Code-Abfrage: „Keinen Code erhalten?“ → Nummer der Eltern.",
-        "<b>2 SIM sperren:</b> App „My yallo“ – Meine Einstellungen → SIM-Karte sperren.",
-        "<b>3 Denuncia holen:</b> Touristenpolizei. Ohne Rapport zahlt niemand.",
-        "<b>4 Neue eSIM</b> nach der Anleitung oben.",
-        "<b>5 WhatsApp</b> mit der Schweizer Nummer neu anmelden.",
-        "<b>6 AppleCare einreichen:</b> www.aigtheftandloss.ch mit Foto der Denuncia.",
-        "<b>Niemals aus der Apple-ID löschen</b>, solange der Fall läuft – sonst verfällt der Anspruch.",
+      ["!! Handy weg – die Reihenfolge", [
+        "<b>1 Verlustmodus</b> über „Wo ist?“ auf dem Ersatzgerät oder icloud.com/find.<br><span class='warnung'>Nie löschen, solange der Fall läuft – sonst verfällt der AppleCare-Anspruch.</span>",
+        "<b>2 Karten sperren</b> – Revolut und BKB in den Apps auf dem Ersatzgerät. War das Handy entsperrt, hatte jemand vollen Kontozugriff.",
+        "<b>3 SIM sperren</b> – App „My yallo“, Meine Einstellungen, SIM-Karte sperren.",
+        "<b>4 Denuncia holen</b> – Polizeirapport, sofort fotografieren. Ohne ihn zahlt niemand.",
+        "<b>5 Neue eSIM</b> bestellen und aktivieren – Anleitung weiter unten.",
+        "<b>6 WhatsApp</b> mit derselben Nummer neu anmelden, der Code kommt auf die neue eSIM.",
+        "<b>7 AppleCare+ melden</b> bei AIG, innert 60 Tagen, mit Foto der Denuncia.",
+        "Alles läuft über das <b>Ersatzgerät im Spind</b>: geladen, ohne SIM, mit My yallo, Revolut, one und „Wo ist?“ angemeldet.",
         { label: "Yallo Support", nr: "+41 44 525 01 23" },
         { label: "AIG Diebstahl-Hotline", nr: "+1 833 768 4600" },
         { label: "Apple Support", nr: "+41 848 000 132" },
         { label: "Schadenmeldung AppleCare+", url: "https://www.aigtheftandloss.ch" },
+      ]],
+      ["Was zu Hause passiert", [
+        "<b>Papi ist erreichbar</b> – der Bestätigungscode für den Verlustmodus geht auf Wunsch an seine Nummer.",
+        "<b>Yallo-Konto:</b> die neue eSIM lässt sich auch von zu Hause bestellen, der QR-Code kommt ins Konto.",
+        "<b>Geld:</b> falls beide Karten gesperrt sind, Western Union – Abholung mit Namen und Referenznummer.",
       ]],
       ["## Was du hast", null],
       ["Abo und Roaming", [
@@ -4571,23 +4575,24 @@ const termineBlock = () => {
   })();
 
   /* Alles im Blick: drei Kacheln nebeneinander, direkt auf dem Sand. */
+  /* Zahl zuerst – die Wege in die Listen stehen ohnehin in der Leiste unten. */
   const kachel = (ikon, titel, zahl, bereich) =>
     el("button", { class: "blickkachel", onclick: () => gehe("heute", bereich) },
-      svg(ikon, 24, "#B65A3C", 1.8),
-      el("span", { class: "blickwas" }, titel),
-      el("span", { class: "blickzahl" }, zahl));
-
-  behaelter.appendChild(el("div", { class: "gruppentitel klein3" }, "Alles im Blick"));
-  behaelter.appendChild(el("div", { class: "blickreihe" },
-    kachel("check", "To-dos", offeneTodos + " offen", "todos"),
-    kachel("book", "Checklisten", "6 Listen", "checklisten"),
-    kachel("rucksack", "Packen", packStand, "packen"),
-    wochenende() ? kachel("star", "Wochenende", wochenStand, "woche") : null));
+      el("span", { class: "blickzahl" }, zahl),
+      el("span", { class: "blickwas" }, titel));
 
   behaelter.appendChild(kopf);
   const eineKarte = el("div", { class: "karte startkarte" });
   eineKarte.appendChild(inhalt);
   behaelter.appendChild(eineKarte);
+
+  behaelter.appendChild(el("div", { class: "gruppentitel abstandoben klein3" },
+    "Alles im Blick"));
+  behaelter.appendChild(el("div", { class: "blickreihe" },
+    kachel("check", "To-dos offen", String(offeneTodos), "todos"),
+    kachel("book", "Checklisten", "6", "checklisten"),
+    kachel("rucksack", "Packen", packStand.replace(" von ", " / "), "packen"),
+    wochenende() ? kachel("star", "Wochenende", wochenStand, "woche") : null));
   return behaelter;
 };
 
@@ -5556,7 +5561,7 @@ const seiteRoute = () => {
 const BEREICHE = [
   ["start", "Home", "home"],
   ["heute", "To-dos", "check"],
-  ["route", "Route", "map", true],     // Mitte: der Hauptweg
+  ["route", "Route", "map"],
   ["geld", "Geld", "wallet"],
   ["wissen", "Wissen", "book"],
 ];
@@ -5590,18 +5595,15 @@ function gehe(ziel, p = null, merken = false) {
 
 function leiste() {
   return el("nav", { class: "tableiste" },
-    BEREICHE.map(([k, l, ikon, wichtig]) => {
+    BEREICHE.map(([k, l, ikon]) => {
+      /* Farbe zeigt nur, wo man ist – sonst nichts. */
       const aktiv = seite === k || (seite === "suche" && vorSuche === k);
-      /* Aktiv: Anthrazit und halbfett. Terracotta bleibt der Route vorbehalten. */
-      const farbe = wichtig ? "#B65A3C" : (aktiv ? "#211C18" : "#8B8175");
+      const farbe = aktiv ? "#211C18" : "#8B8175";
       return el("button", {
-        class: "tab" + (aktiv ? " an" : "") + (wichtig ? " wichtig" : ""),
+        class: "tab" + (aktiv ? " an" : ""),
         onclick: () => gehe(k),
       },
-        wichtig
-          ? el("span", { class: "tabkreis" + (aktiv ? " an" : "") },
-              svg(ikon, 19, aktiv ? "#fff" : "#B65A3C", 1.9))
-          : svg(ikon, 21, farbe, aktiv ? 2 : 1.8),
+        svg(ikon, 21, farbe, aktiv ? 2 : 1.8),
         el("span", { style: "color:" + farbe }, l));
     }));
 }
