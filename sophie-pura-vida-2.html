@@ -5189,7 +5189,7 @@ const seiteWissen = () => {
 
   if (offen) {
     return el("div", {},
-      kopf(offen.titel, null, () => gehe("wissen"), "Wissen"),
+      kopf(offen.titel, null, zurueckZu ? null : () => gehe("wissen"), "Wissen"),
       bloeckeMit(offen.bloecke));
   }
 
@@ -5260,12 +5260,12 @@ const seiteGeld = () => {
   const offen = typeof param === "string" ? DOKUMENTE.find((d) => d.id === param) : null;
   if (offen && offen.id === "apps") {
     return el("div", {},
-      kopf("Apps", null, () => gehe("geld"), "Geld"),
+      kopf("Apps", null, zurueckZu ? null : () => gehe("geld"), "Geld"),
       appTabelle());
   }
   if (offen) {
     return el("div", {},
-      kopf(offen.titel, null, () => gehe("geld"), "Geld"),
+      kopf(offen.titel, null, zurueckZu ? null : () => gehe("geld"), "Geld"),
       bloeckeMit(offen.bloecke));
   }
   const liste = GELD_REIHE
@@ -5296,7 +5296,7 @@ const seiteBuchen = () => {
   const nur = typeof param === "string" ? param : null;
   const liste = nur ? BUCHEN.filter(([t]) => t === nur) : BUCHEN;
   return el("div", {},
-    kopf(nur || "Buchen", null, () => gehe("wissen"), "Wissen"),
+    kopf(nur || "Buchen", null, zurueckZu ? null : () => gehe("wissen"), "Wissen"),
     liste.map(([t, p]) => el("div", {},
       nur ? null : el("div", { class: "gruppentitel abstandoben klein3" }, t),
       el("div", { class: "buchenliste" }, p.map(buchenZeile)))),
