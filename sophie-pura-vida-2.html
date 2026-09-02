@@ -740,7 +740,11 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 
 
 /* Aufgeklappte Station in der Zeitachse */
-.stationsinhalt { margin: 2px 0 20px 2px; }
+/* Ende einer offenen Station: klarer Schnitt zur nächsten Zeile. */
+.stationsinhalt { margin: 2px 0 8px 2px; padding-bottom: 18px; }
+.stationsinhalt.offenerinhalt {
+  padding-bottom: 20px; margin-bottom: 26px; border-bottom: 1px solid var(--linie);
+}
 .etappeknopf.auf .etappenort { color: var(--terra); }
 .etappepfeil.auf { transform: rotate(180deg); }
 
@@ -1389,7 +1393,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 
 /* Abhängige Aufgaben stehen klein unter der Aufgabe, an der sie hängen. */
 .danachzeile {
-  font-size: var(--ebene7); color: #A9A296; line-height: 1.5;
+  font-size: var(--ebene6); color: #A9A296; line-height: 1.5;
   margin: 4px 0 2px; letter-spacing: .4px;
 }
 .danachpunkt {
@@ -1528,90 +1532,6 @@ const VERLUST = [
 
 const ABFLUG = "2026-09-29";
 
-const TERMINE_VORHER = [
-
-
-
-  ["4. Sep", "Flugnummern melden", [
-    "An Marco bei Globetrotter – er braucht sie für Transfer und Tourstart.",
-  ]],
-
-  ["bis 26. Sep", "Bestätigung der ersten Nacht", [
-    "Wird bei der Einreise verlangt – Guatemala und Costa Rica.",
-    "Casa Florencia ab 29. September – das Hotel der Tour.",
-    "Bestätigung als PDF sichern, offline auf dem Handy.",
-  ]],
-
-  ["20. Sep", "Sprachschule", [
-    "Direkt buchen, nicht über eine Agentur.",
-    "Studentenwohnheim, Gastfamilie als zweite Wahl.",
-    "Adresse notieren – wird bei der Einreise verlangt.",
-  ]],
-
-  ["29. Aug", "Optiker und Yallo", [
-    "Linsen für fünf Monate, Peroxid-Behälter, Rezept als PDF.",
-    "Yallo-App installieren und Anmeldung testen.",
-  ]],
-
-
-  ["12. Sep", "iPhone einrichten", [
-    "Kontrollzentrum im Sperrbildschirm aus, „Wo ist?“ vollständig ein, Diebstahlschutz ein.",
-    "Zwei-Faktor prüfen, IMEI und Seriennummern notieren, Apps testen.",
-  ]],
-
-  ["6. Sep", "Revolut und Ablage", [
-    "Auf beiden iPhones einrichten, vier Konten anlegen, einmal testen.",
-    "Währungsrechner einrichten und zeigen.",
-    "Dokumente scannen, iCloud-Ordner teilen.",
-  ]],
-
-  ["4. Sep", "Vacanza-Rechnung", [
-    "Die QR-Rechnung ist nicht gekommen – bei Visana nachfragen.",
-    "Ohne Zahlung keine Deckung. Einzahlen bis 6. September.",
-  ]],
-
-  ["20. Sep", "Reiseerklärung Guatemala", [
-    "Vor dem Hinflug ausfüllen, QR-Code sichern.",
-    "Vor dem Flug nach San José ein zweites Mal.",
-  ]],
-];
-
-const TERMINE_UNTERWEGS = [
-  ["laufend", "Passseite kopieren", [
-    "Nach jeder Einreise die Seite mit dem Stempel kopieren und laminiert mitführen.",
-  ]],
-  ["Oktober", "Unterkünfte und Work-Exchange", [
-    "<b>Unterkünfte</b> für die Wochen allein buchen.",
-    "<b>Work-Exchange</b> für Dezember suchen – Worldpackers oder Workaway.",
-  ]],
-  ["Ende Okt", "Zweite Reiseerklärung", [
-    "Vor dem Flug nach San José nochmals ausfüllen – ab 14 Tage vorher möglich.",
-  ]],
-  ["November", "Sprachschule buchen", [
-    "Zwei bis drei Wochen Vorlauf genügen. Nur den Kurs buchen, nicht die Unterkunft.",
-  ]],
-  ["Anfang Dez", "Peru entscheiden", [
-    "<b>Falls ja:</b> Flug San José nach Lima buchen.",
-    "<b>Versicherung:</b> Vacanza läuft acht Monate ab Abreise – Dauer prüfen.",
-  ]],
-  ["Vor Cusco", "Höhe vorbereiten", [
-    "<b>Cusco liegt auf 3400 m.</b> Erste 24 Stunden keine Anstrengung, kein Alkohol, viel trinken oder Mate de Coca.",
-    "In der Apotheke <b>Sorojchi Pills</b> kaufen, bevor du hochfährst.",
-    "<b>Atemnot oder starker Schwindel: absteigen</b>, nicht abwarten.",
-  ]],
-  ["Anfang Jan", "Rückflug buchen", [
-    "Vier bis sechs Wochen Vorlauf einplanen.",
-  ]],
-  ["vor Rückreise", "Restbargeld und Stempel", [
-    "<b>Geld:</b> Landeswährung ausgeben, Währungskonto leeren.",
-    "<b>Stempel:</b> Ausreisestempel im Pass kontrollieren, bevor du den Schalter verlässt.",
-  ]],
-];
-
-const TERMINE = new Date() < new Date(ABFLUG) ? TERMINE_VORHER : TERMINE_UNTERWEGS;
-const TERMINE_TITEL = new Date() < new Date(ABFLUG)
-  ? "Was als Nächstes ansteht" : "Termine unterwegs";
-
 const APPS = [
   ["Geld", [
     ["wallet", "Revolut", "Alltagskarte, Konten, Wechselkurs",
@@ -1712,14 +1632,6 @@ const BUCHEN = [
 
 
 const MELDUNG = [
-  ["Immer – wird bei jeder Meldung verlangt", [
-    "Name, Vorname und Geburtsdatum",
-    "Policennummer Visana Vacanza – steht auf deinem Notfallblatt",
-    "Was ist passiert, in einem Satz",
-    "Wann: Datum und Uhrzeit, möglichst genau",
-    "Wo: Ort, Land, Adresse",
-    "Deine erreichbare Nummer und eine E-Mail für Unterlagen",
-  ]],
   ["Zusätzlich bei Karte oder Bargeld", [
     "Welche Karte – Bank und Kartentyp, keine Kartennummer",
     "Ob du selbst schon gesperrt hast, wann und bei wem",
@@ -1829,7 +1741,7 @@ const DOKUMENTE = [
         "<b>Visana Zusatzpaket</b> – Reisegepäck, Annullationskosten, Sperrung aller Karten.",
         "<b>Rega</b> – Rücktransport in die Schweiz, Ambulanzflug, Helikopter.",
         "<b>Zürich Hausrat</b> – gestohlene Ausrüstung, ergänzend zum Reisegepäck.",
-        "TCS ETI gilt nur für Europa und hilft auf dieser Reise nicht. AppleCare+ steht im Handy-Bereich.",
+        "<b>TCS ETI</b> gilt nur für Europa und hilft auf dieser Reise nicht.<br><span class='warnung'>AppleCare+ steht im Handy-Bereich.</span>",
         { label: "Visana – Notfälle Ausland, 24 h", nr: "+41 848 848 855" },
         { label: "Visana – Karten, Gepäck, Annullation", nr: "+41 44 628 52 80" },
         { label: "Rega – Rücktransport", nr: "+41 333 333 333" },
@@ -1937,8 +1849,8 @@ const DOKUMENTE = [
     ],
   },
   {
-    id: "fluege", titel: "Tickets und Nachweise",
-    kurz: "Weiterreisenachweis, wo du buchst",
+    id: "fluege", titel: "Weiterreisenachweis",
+    kurz: "Wann du ihn brauchst, wo du ihn bekommst",
     bloecke: [
       ["Wenn du unterwegs einen Nachweis brauchst", [
         "<b>Erste Wahl:</b> ein Flug, den du ohnehin brauchst.",
@@ -2048,20 +1960,13 @@ const DOKUMENTE = [
   },
   {
     id: "eda", titel: "EDA und Travel Admin",
-    kurz: "Reise registrieren – vor dem Abflug erledigen",
+    kurz: "Reisehinweise, Botschaften, Helpline",
     bloecke: [
-      ["Was die App sonst kann", [
+      ["Was die App dir unterwegs gibt", [
         "Aktuelle Reisehinweise des EDA für Guatemala und Costa Rica.",
-        "Suche und Kartenanzeige aller Schweizer Vertretungen – Kontakt direkt per Telefon oder Mail.",
+        "Alle Schweizer Vertretungen auf der Karte – Kontakt direkt per Telefon oder Mail.",
         "Die Notfallnummern des Reiselands: Feuerwehr, Polizei, Ambulanz.",
-        "Die EDA-Helpline, weltweit und jederzeit erreichbar.",
-      ]],
-      ["So machst du es", [
-        "App laden, Konto anlegen, Reise erfassen: Zeitraum, Länder, Kontaktangaben.",
-        "Beide Etappen eintragen – Guatemala im Oktober, Costa Rica ab November. Peru später ergänzen, falls es dazukommt.",
-        "Push-Nachrichten aktiviert lassen, sonst entgeht dir die Warnung.",
-        "Verschiebt sich etwas, die Reisedaten in der App anpassen.",
-        { label: "Travel Admin – Reise registrieren", url: "https://www.eda.admin.ch/de/travel-admin-app", hinweis: "Kostenlos, dauert wenige Minuten" },
+        "Verschiebt sich deine Reise, die Daten in der App anpassen.",
       ]],
       ["Wenn es ernst wird", [
         "Die Helpline berät weltweit, rund um die Uhr – auch wenn die Botschaft geschlossen ist.",
@@ -2151,14 +2056,29 @@ const DOKUMENTE = [
     ],
   },
   {
-    id: "ablage", titel: "Offline und Ablage",
-    kurz: "Was ohne Netz da sein muss",
+    id: "ablage", titel: "Was liegt wo",
+    kurz: "Vier Stufen, nach Schaden sortiert",
     bloecke: [
-      ["Das muss offline auf dem Handy sein", [
-        "Flug- und Bustickets, Bestätigung der Unterkunft, Reiseerklärung mit QR-Code.",
-        "Pass- und Versicherungskopie, Notfallblatt.",
-        "<b>So geht es:</b> Dateien-App öffnen, Ordner lange antippen, „Offline verfügbar behalten“ wählen.",
-        "Pro Gerät einzeln – auch auf dem Ersatzhandy.",
+      ["** Die Frage dahinter", [
+        "<b>Was sieht jemand, der dein entsperrtes iPhone in der Hand hat?</b> Danach richtet sich, wo ein Dokument liegt.",
+      ]],
+      ["In dieser App", [
+        "Nur, was allein niemandem nützt: Abläufe, Checklisten, Adressen, Notfallnummern, Policennummer.",
+        "<b>Keine Ausweisbilder, keine Kartennummern, keine Passwörter.</b> Die App hat keine eigene Sperre.",
+      ]],
+      ["Offline auf dem iPhone", [
+        "Was du am Schalter oder im Spital zeigen musst: Flug- und Bustickets, Bestätigung der Unterkunft, Reiseerklärung mit QR-Code, Impfausweis, englische Deckungsbestätigung, Notfallblatt.",
+        "<b>So geht es:</b> Dateien-App öffnen, Ordner lange antippen, „Offline verfügbar behalten“ wählen. Pro Gerät einzeln.",
+        "<b>Die Passkopie gehört dazu, aber nicht offen:</b> in der Notizen-App eine Notiz mit Face ID sperren und das Bild dort ablegen.",
+        "Dazu eine laminierte Papierkopie im Tagesrucksack – getrennt vom Original im Spind.",
+      ]],
+      ["Nur in der iCloud, geteilt mit Papi", [
+        "Vollständige Police, Sprachschulvertrag, Kaufbelege der Elektronik für den Diebstahlfall, Bankunterlagen, alle Original-Scans.",
+        "Nicht offline verfügbar machen – du kommst im Bedarfsfall über WLAN dran, oder Papi schickt es.",
+      ]],
+      ["!! Gar nicht mitnehmen", [
+        "PIN und Kartennummern, Passwörter ausserhalb des Passwortmanagers, Kontoauszüge, AHV-Nummer, Zeugnisse, Vollmachten.",
+        "Brauchst du etwas davon, fragst du zu Hause an.",
       ]],
       ["Wenn deine Haken weg sind", [
         "<b>Öffnest du die App sieben Tage nicht, löscht das iPhone deine Haken und Nummern.</b> Die App selbst bleibt.",
@@ -2364,13 +2284,10 @@ const STATIONEN = [
       ["Alleinreisen", [["dok", "sicherheit", "Als Frau unterwegs"]]],
       ["Der Plan", [
         ["eigen", "Diese Woche nutzen", [
-          "<b>Du bist zum ersten Mal ganz allein unterwegs</b> – und hast Zeit, den zweiten Teil der Reise vorzubereiten.",
-          "<b>Schule:</b> Kurs bestätigen, Zahlung prüfen, Adresse und Telefon der Schule notieren, Einstufungstest online machen.",
-          "<b>Wohnen:</b> Studentenwohnheim oder Gastfamilie festlegen, Ankunft mit der Schule abstimmen.",
-          "<b>Costa Rica planen:</b> die ersten Tage in Heredia buchen, danach die grobe Route – La Fortuna, Monteverde, Santa Teresa, Puerto Viejo.",
-          "<b>Formalitäten:</b> Reiseerklärung für die Ausreise, Weiterreisenachweis bereithalten.",
+          "<b>Nachholen, was offen ist</b> – Acatenango, Atitlán, Antigua.",
+          "<b>Costa Rica grob planen:</b> erste Tage in Heredia, danach La Fortuna, Monteverde, Santa Teresa, Puerto Viejo.",
           "<b>Ordnung:</b> Wäsche, Fotos sichern, Ausgaben durchsehen, Rucksack ausmisten.",
-          "<b>Und trotzdem:</b> Was noch offen ist, kannst du jetzt nachholen – Acatenango, Atitlán, Antigua.",
+          "Was die Schule und die Ausreise betrifft, steht als To-do mit Datum.",
         ]],
       ]],
   ["Unterkunft", [["hostels", "guatemala"]]],
@@ -2527,17 +2444,15 @@ const STATIONEN = [
         ]],
       ]],
       ["Die Schule", [
-        ["eigen", "Die Tage vor dem Kurs", [
-          "<b>Intercultura startet jeden Montag</b>, hier der 26. Oktober.",
-          "<b>Do 22.</b> Ankunft, Transfer nach Heredia, früh schlafen.",
-          "<b>Fr 23.</b> Stadt zu Fuss: Mercado Central, Parque Central, den Schulweg einmal gehen.",
-          "<b>Sa 24.</b> Wäsche, Einkauf, SIM und Konten prüfen. Nachmittags Kaffeeplantage oder Barva.",
-          "<b>So 25.</b> Ruhetag, Sachen sortieren, zu Hause melden.",
-          "<b>Mo 26.</b> Einstufungstest am Morgen, dann erste Lektion.",
+        ["eigen", "Am zweiten Standort", [
+          "<b>Derselbe Kurs, anderer Ort</b> – Intercultura wechselt ohne Aufpreis.",
+          "Wechsel und Unterkunft mit der Schule abmachen, bevor du fährst.",
+          "Am Ankunftstag den Schulweg einmal gehen, dann weisst du morgens Bescheid.",
+          "Sámara ist klein: Strand, Schule und Unterkunft liegen zu Fuss beieinander.",
         ]],
         ["thema", "schule"],
       ]],
-  ["Unterkunft", [
+      ["Unterkunft", [
         ["eigen", "Noch nicht entschieden", [
           "Intercultura erlaubt den Wechsel innerhalb desselben Kurses, ohne Aufpreis.",
           "<b>Entscheidung fällt vor Ort</b>, nicht jetzt.",
@@ -2553,8 +2468,7 @@ const STATIONEN = [
       ["Transport", [
         ["eigen", "Was unterwegs entsteht", [
           "Unterkünfte, Busse und Touren buchst du vor Ort, ein bis zwei Tage vorher.",
-          "Peru entscheidet sich Anfang Dezember. Falls es dazukommt: Flug ab San José.",
-          "<b>Rückflug spätestens Anfang Januar buchen</b>, vier bis sechs Wochen Vorlauf.",
+          
         ]],
       ]],
   ["Unterkunft", [["hostels", "costarica"]]],
@@ -2622,11 +2536,6 @@ const STATIONEN = [
           "<b>Drei Stunden vorher</b> dort sein, Interkontinentalflug.",
           "<b>Ausreisestempel im Pass kontrollieren</b>, bevor du den Schalter verlässt.",
           "Sackmesser und Flüssigkeiten über 100 ml in den aufgegebenen Rucksack.",
-        ]],
-        ["eigen", "Zu Hause", [
-          "Versicherungsfälle einreichen, Belege beilegen.",
-          "Revolut-Abo zurückstufen.",
-          "Nachkontrolle beim Tropenarzt, auch ohne Beschwerden.",
         ]],
       ]],
       ["Checkliste", [["liste", "rueckkehr"], ["liste", "pack:rucksack"], ["liste", "pack:hand"], ["liste", "pack:body"]]],
@@ -3258,7 +3167,10 @@ const TODO_ALLE = [
    ["Auf beiden iPhones einrichten, vier Konten anlegen, einmal testen.",
     "Währungsrechner einrichten und zeigen."]],
   ["Währungsrechner erklären", "6. Sep", "beide", false],
-  ["EDA registrieren", "20. Sep", "Sophie", false],
+  ["EDA registrieren", "20. Sep", "Sophie", false,
+   ["App Travel Admin laden, Konto anlegen, Reise erfassen: Zeitraum, Länder, Kontakte.",
+    "Beide Etappen eintragen – Guatemala im Oktober, Costa Rica ab November.",
+    "Push-Nachrichten aktiviert lassen, sonst entgeht dir die Warnung."]],
   ["Scans in die iCloud", "20. Sep", "beide", false,
    ["Dokumente scannen, iCloud-Ordner teilen."]],
   ["Ordner offline setzen", "26. Sep", "Sophie", false],
@@ -4605,7 +4517,7 @@ const termineKarte = (kopfNeu) => {
       const danach = TODO_ALLE.filter((e) => e[5] === was && !stand[e[0]]);
       if (danach.length) {
         zeile.appendChild(el("div", { class: "danachzeile" }, "danach",
-          danach.map((e) => el("span", { class: "danachpunkt" }, e[0]))));
+          danach.map((e) => el("span", { class: "danachpunkt" }, "– " + e[0]))));
       }
 
       if (offen === was) {
@@ -5136,7 +5048,7 @@ const seiteNotfall = () => {
 
 /* Dieselbe Reihenfolge und Nummerierung wie die Register im Dossier. */
 const WISSEN_REIHE = [
-  ["shield", "sicherheit"], ["kreuz", "gesundheit"], ["ordner", "ablage"],
+  ["kreuz", "gesundheit"], ["shield", "sicherheit"], ["ordner", "ablage"],
   ["ticket", "fluege"], ["globus", "eda"],
 ];
 
@@ -5623,7 +5535,11 @@ const seiteRoute = () => {
         el("div", { class: "hinweis" }, S.kurz),
         el("span", { class: "etappepfeil" + (auf ? " auf" : "") },
           svg("chevron", 16, "#B65A3C", 2))));
-      if (auf) strang.appendChild(stationsinhalt(S));
+      if (auf) {
+        const inh = stationsinhalt(S);
+        inh.classList.add("offenerinhalt");   /* markiert das Ende der Station */
+        strang.appendChild(inh);
+      }
     });
   };
 
