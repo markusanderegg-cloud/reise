@@ -1833,6 +1833,15 @@ const DOKUMENTE = [
         "<b>Dasselbe im Laden:</b> immer in Quetzal oder Colones abrechnen, nie in Franken.",
         "<b>Selten und viel abheben</b> – die Gebühr hängt am Vorgang, nicht am Betrag.",
       ]],
+      ["Online bezahlen – Flug, Bus, Tour", [
+        "<b>Vorher:</b> genug Geld aufs Hauptkonto schieben. Nur dieses hängt an der Karte, die Reisekasse nicht.",
+        "<b>Tageslimit prüfen</b> – Karte, Einstellungen, Limits. Ein Flug über dem Limit wird abgelehnt.",
+        "<b>Währung:</b> immer in der Währung zahlen, in der ausgezeichnet ist. Die Umrechnung der Buchungsseite kostet 3 bis 12 Prozent.",
+        "<b>Name genau wie im Pass</b> – eine Namensänderung kostet später mehr als der Flug.",
+        "<b>Kartendaten:</b> Karte antippen, „Kartendetails anzeigen“, kopieren statt abtippen.",
+        "<b>Wird abgelehnt?</b> Geld, Limit, Standortprüfung, Online-Zahlungen prüfen – und nicht fünfmal hintereinander probieren, sonst sperrt Revolut die Karte.",
+        "<b>Danach:</b> Bestätigung als PDF in den Ordner 08_NACHWEISE, offline verfügbar.",
+      ]],
       ["Eine Schweizer QR-Rechnung bezahlen", [
         "<b>Zahlungen</b> unten in der Leiste, oben rechts das Plus, dann das QR-Symbol.",
         "<b>QR-Code scannen</b> oder über das Galeriesymbol ein PDF oder Foto der Rechnung wählen.",
@@ -1863,6 +1872,12 @@ const DOKUMENTE = [
     id: "fluege", titel: "Weiterreisenachweis",
     kurz: "Wann du ihn brauchst, wo du ihn bekommst",
     bloecke: [
+      ["Wer ihn verlangt", [
+        "<b>Beide Länder verlangen bei jeder Einreise mit dem Flugzeug einen Ein- und Ausreisenachweis</b> – das ist eine Einreisebestimmung, nicht nur eine Regel der Airline.",
+        "<b>Zwei Kontrollen:</b> beim Einchecken, weil die Airline für abgewiesene Passagiere haftet, und bei der Einwanderung im Zielland.",
+        "<b>Als Nachweis gilt jedes Ticket</b>, das dich vor Ablauf der gestempelten Aufenthaltsdauer wieder aus dem Land bringt – Flug oder Bus.",
+        "Datum und Route stehen bei dir noch nicht fest. Der Nachweis muss am Tag der Einreise gültig sein, nicht heute.",
+      ]],
       ["Wenn du unterwegs einen Nachweis brauchst", [
         "<b>Erste Wahl:</b> ein Flug, den du ohnehin brauchst.",
         "<b>Zweite Wahl:</b> Busticket über ticabus.com oder busbud.com, 25–50 Franken.",
@@ -2120,7 +2135,7 @@ const DOKUMENTE = [
 const STATIONEN = [
   {
     id: "hinflug", nummer: "1", kurzname: "Hinflug", titel: "Hinflug nach Guatemala", land: "guatemala",
-    zeit: "Dienstag, 29. September", kurz: "One-Way, mit Nachweisen im Gepäck",
+    zeit: "Dienstag, 29. September", kurz: "Iberia via Madrid, Ankunft 15:25",
     datum: "2026-09-29",
     jetzt: [
       ["vor", 14, "Reiseerklärung ausfüllen, QR-Code sichern", []],
@@ -2130,6 +2145,15 @@ const STATIONEN = [
       ["nach", 0, "Transfer nach Antigua", []],
     ],
     abschnitte: [
+      ["Deine Flüge", [
+        ["eigen", "Iberia, gebucht auf Sophie Anderegg", [
+          "<b>IB 0634 · Zürich – Madrid</b><br>Dienstag 29. September, 07:30 bis 09:55. Ankunft Terminal 4.",
+          "<b>IB 0221 · Madrid – Guatemala City</b><br>12:10 bis 15:25 Ortszeit, 11 Stunden 15 Minuten. La Aurora International.",
+          "<b>2 h 15 in Madrid</b> – von Terminal 4 nach 4S mit dem Zug im Terminal, rund 15 Minuten. Nicht trödeln.",
+          "<b>Tarif Economy Optimal</b> – Gepäck inbegriffen, Sitzplatz beim Check-in wählen.",
+          "Ankunft 15:25, Transfer rund eine Stunde: du bist vor Einbruch der Dunkelheit in Antigua.",
+        ]],
+      ]],
       [">> 2 Tage vor Abflug", [
         ["eigen", "", [
           "<b>Flug Costa Rica und Bus Nicaragua</b> – griffbereit, als PDF offline auf dem Handy und ausgedruckt.",
@@ -3196,7 +3220,8 @@ const TODO_ALLE = [
   ["Rucksack wiegen", "26. Sep", "Sophie", false],
   ["Letzte Kontrolle – Liste Vor dem Abflugtag", "27. Sep", "Sophie", false],
   ["Reiseerklärung Ausreise GT", "12. Okt", "Sophie", false,
-   ["Vor dem Flug nach San José nochmals ausfüllen – ab 14 Tage vorher möglich."]],
+   ["Vor dem Flug nach San José nochmals ausfüllen.",
+    "Erst möglich, sobald der Flug gebucht ist – das Formular geht 14 Tage vor dem Reisetag auf."]],
   ["Unterkünfte für Oktober buchen", "30. Sep", "Sophie", false,
    ["Die Wochen buchen, in denen du allein unterwegs bist – ab 7. Oktober.",
     "Vor dem Tourstart erledigen, während der Tour hast du kaum Zeit."]],
@@ -3470,7 +3495,7 @@ const istDringend = (titel) => {
 
 /* Zeichnet die Blöcke eines Themas – "## Titel" wird zur Zwischenüberschrift. */
 /* Kurze Themen zeigen alles offen – Aufklappen lohnt sich erst ab zwölf Punkten. */
-const KURZ_OFFEN = 30;
+const KURZ_OFFEN = 40;
 
 const bloeckeMit = (bloecke) => {
   const gesamt = bloecke.reduce((n, b) => n + ((b[1] && b[1].length) || 0), 0);
