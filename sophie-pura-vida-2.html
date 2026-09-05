@@ -1942,7 +1942,9 @@ const DOKUMENTE = [
         "<b>iPhone 17 unterwegs</b> – Fotos, Navigation, Zahlungen. „Wo ist?“ und Diebstahlschutz aktiv.",
         "<b>iPhone 12 im Spind</b> – geladen, im Hostel-WLAN, mit My yallo, Revolut, one und „Wo ist?“ angemeldet. Damit ortest, sperrst und ersetzt du im Ernstfall alles.",
         "<b>Beide mit derselben Apple-ID</b> – dann empfängt das Ersatzgerät auch die Bestätigungscodes von Apple.",
-        "<b>Wo die Schweizer SIM liegt, entscheidet ihr vor der Abreise:</b> im 17 bist du unterwegs erreichbar, verlierst sie aber beim Diebstahl. Im 12 bleibt die Nummer sicher, dafür kommen Anrufe und SMS erst am Abend an – dann braucht das 17 eine Daten-eSIM.",
+        "<b>Yallo-SIM im 17, Daten-eSIM von Saily im 12.</b> So bist du unterwegs unter deiner Nummer erreichbar, und das Ersatzgerät ist trotzdem jederzeit online – ohne WLAN.",
+        "<b>Ist das Hauptgerät weg</b>, hat das 12 sofort Internet: Karten sperren, orten, neue Yallo-eSIM bestellen – alles vom Spind aus.",
+        "<b>Nur eine eSIM gleichzeitig aktiv:</b> Kommt die neue Yallo-eSIM aufs 12, in den Einstellungen Saily aus und Yallo ein. Kein QR-Code nötig.",
         "<b>Einmal pro Woche laden</b> – ein leeres Ersatzgerät nützt nichts.",
         "<b>iCloud-Fotos auf beiden Geräten ein</b> – dann liegen deine Bilder automatisch auch im Spind. Auf dem 12 „iPhone-Speicher optimieren“ wählen.",
         "<b>Upload nur im WLAN:</b> Einstellungen → Fotos → Mobile Daten aus. Sonst ist dein Roaming-Volumen nach 200 Fotos weg.",
@@ -4327,8 +4329,11 @@ const alsTage = (datum) => {
   heute.setHours(0, 0, 0, 0);
   let jahr = heute.getFullYear();
   let ziel = new Date(jahr, monat, Number(m[1]));
-  if (ziel < heute) ziel = new Date(jahr + 1, monat, Number(m[1]));
-  return Math.round((ziel - heute) / 86400000);
+  /* Ein Datum, das erst wenige Monate zurückliegt, ist überfällig – nicht nächstes Jahr.
+     Nur weit Zurückliegendes gehört ins Folgejahr, sonst verschwinden offene Aufgaben. */
+  const tage = Math.round((ziel - heute) / 86400000);
+  if (tage < -120) return Math.round((new Date(jahr + 1, monat, Number(m[1])) - heute) / 86400000);
+  return tage;
 };
 
 const wannText = (datum) => {
@@ -4654,7 +4659,7 @@ const termineBlock = () => {
     kachel("check", "To-dos offen", String(offeneTodos), "todos"),
     kachel("book", "Checklisten", "6", "checklisten"),
     kachel("rucksack", "Packen", packStand.replace(" von ", " / "), "packen"),
-    wochenende() ? kachel("star", "Wochenende", wochenStand, "woche") : null));
+    wochenende() ? kachel("star", "Wochenende", wochenStand.replace(" von ", " / "), "woche") : null));
   return behaelter;
 };
 
