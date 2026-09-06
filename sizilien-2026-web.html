@@ -387,6 +387,7 @@ a.feld-link{text-decoration:underline;text-underline-offset:3px;color:var(--tint
 .msg-oben{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0 8px;margin-bottom:2px}
 .msg-hinweis{font-size:12.5px;line-height:1.45;color:var(--sek-hell);margin:0 0 12px}
 .msg-hinweis.kein-wa{color:#9A5B4F}
+.feld-titel2{font-size:17px;font-weight:700;color:var(--text);margin:2px 0 6px}
 .kacheln{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
 .kachel{position:relative;display:block;background:var(--card);border:1px solid var(--line);
  border-radius:12px;padding:18px 16px 16px;min-height:104px;text-align:left;
@@ -2055,6 +2056,7 @@ function renderReise(){
   h.push(kachel('buchungen','Buchungen','Flug \u00b7 Mietwagen \u00b7 F\u00e4hre \u00b7 Unterkunft'));
   h.push(kachel('unterlagen','Unterlagen','Reiseplan Tag f\u00fcr Tag'));
   h.push(kachel('checklisten','Checklisten',ta+' von '+tn+' erledigt'));
+  h.push(kachel('tipps','Tipps von Freunden',tippListe().length+' Orte mit Hinweisen'));
   h.push(kachel('notfall','Notfall & Gesundheit','112 \u00b7 Rega \u00b7 Spit\u00e4ler','notfall'));
   h.push(kachel('budget','Budget',summe?('\u20ac '+summe.toFixed(2).replace('.',',')+' erfasst'):'noch nichts erfasst'));
   h.push('</div>');
@@ -2162,7 +2164,7 @@ function detailOeffnen(d){
 function openSight(i){merkeDetail({t:'sight',n:i});openDet(detSight(S.sights[i]))}
 function openHotel(nr){merkeDetail({t:'hotel',n:nr});openDet(detHotel(hotelById(nr)))}
 function openInfo(w){merkeDetail({t:'info',n:w});
-  openDet(w==='auto'?detAuto():w==='flug'?detFlug():w==='unterlagen'?detUnterlagen():w==='hotels'?detHotelNummern():
+  openDet(w==='auto'?detAuto():w==='flug'?detFlug():w==='tipps'?detTipps():w==='unterlagen'?detUnterlagen():w==='hotels'?detHotelNummern():
           w==='notfall'?detNotfall():w==='chltage'?detChlTage():
           w==='buchungen'?detBuchungen():w==='checklisten'?detChecklisten():
           w==='budget'?detBudget():detFaehre());
@@ -2243,6 +2245,29 @@ function notKarte(i,titel,sub,inhalt,offen){
    '<div class="hk-name">'+esc(titel)+'</div><div class="hk-sub">'+esc(sub)+'</div>'+
    '<span class="hk-pf">\u2304</span></button>'+
    '<div class="hk-body">'+inhalt+'</div></div>';
+}
+function tippListe(){
+  /* alle Orte, zu denen ein Hinweis aus erster Hand vorliegt */
+  var r=[];
+  for(var i=0;i<S.sights.length;i++) if(S.sights[i].freund){
+    var o=S.sights[i]; o.idx=i; r.push(o);
+  }
+  return r;
+}
+function detTipps(){
+  var l=tippListe();
+  var h=kopf('Reise','Tipps von Freunden','','Hinweise aus erster Hand \u00b7 '+l.length+' Orte','');
+  h+='<div class="feld"><div class="feld-lbl">Wer hat geraten</div>'+
+     '<div class="feld-txt">Ein Bekannter mit Sizilien-Erfahrung, im Gespr\u00e4ch vom 5. September.</div></div>';
+  for(var i=0;i<l.length;i++){
+    var o=l[i];
+    h+='<div class="feld"><div class="feld-lbl">'+esc(o.region||'')+'</div>'+
+       '<div class="feld-titel2">'+esc(o.name)+'</div>'+
+       '<div class="feld-txt">'+esc(o.freund)+'</div>'+
+       '<button class="feld-doc" type="button" onclick="return openSight('+o.idx+')">'+
+       'Ort ansehen \u203a</button></div>';
+  }
+  return h;
 }
 function detUnterlagen(){
   /* die drei Dossier-Teile als Seitenbilder, gleiche Ansicht wie die Belege */
