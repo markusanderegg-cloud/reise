@@ -180,7 +180,6 @@ a.link,button.link{display:inline-block;margin:10px 9px 0 0;border:1px solid var
 #topbar.kompakt .rb{width:34px;height:34px;flex:0 0 34px;font-size:14px}
 #topbar.kompakt .rb.fav,#topbar.kompakt .rb.karte-btn{display:none}
 #topbar.kompakt .burger{font-size:19px}
-#topbar.kompakt .wpills{margin-top:10px}
 .rundrow{display:flex;align-items:center;gap:12px;margin-bottom:18px}
 .rb{width:44px;height:44px;flex:0 0 44px;border:1px solid var(--line);background:var(--card);
  border-radius:50%;color:var(--tinte);font-size:16px;font-weight:400;display:flex;align-items:center;justify-content:center}
@@ -192,18 +191,6 @@ a.link,button.link{display:inline-block;margin:10px 9px 0 0;border:1px solid var
 .wetterzeile{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--lauf);margin-top:10px}
 .wetterzeile .tr{width:1px;height:14px;background:var(--line)}
 .wetterzeile .ic{color:var(--sek-hell)}
-.wpills{display:flex;gap:7px;margin-top:16px}
-.wpill{flex:1 1 0;min-width:0;justify-content:center;border:1px solid var(--line);background:var(--card);
- border-radius:999px;padding:11px 2px;
- font-size:12px;letter-spacing:0;font-weight:500;color:var(--gold);
- display:flex;align-items:center;white-space:nowrap;overflow:hidden}
-.wpill .ic{color:var(--sek-hell)}
-.wpill.leer{opacity:.35}
-.wpill.an{border-color:var(--akzent);color:var(--akzent);font-weight:600}
-.wp-zurueck{display:none;width:100%;margin-top:10px;text-align:center;border:1px solid var(--akzent);
- background:var(--card);border-radius:999px;padding:10px 8px;font-size:12px;letter-spacing:.04em;
- text-transform:uppercase;font-weight:600;color:var(--akzent);font-family:var(--ui)}
-.wp-zurueck.an{display:block}
 .blk{transition:opacity .18s}
 .blk.aus{opacity:.2}
 
@@ -388,6 +375,11 @@ a.feld-link{text-decoration:underline;text-underline-offset:3px;color:var(--tint
 .msg-hinweis{font-size:12.5px;line-height:1.45;color:var(--sek-hell);margin:0 0 12px}
 .msg-hinweis.kein-wa{color:#9A5B4F}
 .feld-titel2{font-size:17px;font-weight:700;color:var(--text);margin:2px 0 6px}
+.bezug{display:flex;align-items:center;gap:10px;background:var(--karte,#fff);
+ border:1px solid var(--line);border-radius:12px;padding:11px 14px;margin:0 0 12px}
+.bz-ik{font-size:17px;color:var(--akzent);line-height:1}
+.bz-t{font-size:15px;font-weight:600;color:var(--tinte,#211C18)}
+.bz-s{font-size:12.5px;color:var(--gold);margin-top:2px}
 .kacheln{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
 .kachel{position:relative;display:block;background:var(--card);border:1px solid var(--line);
  border-radius:12px;padding:18px 16px 16px;min-height:104px;text-align:left;
@@ -493,13 +485,7 @@ a.feld-link{text-decoration:underline;text-underline-offset:3px;color:var(--tint
  </div>
  <div class="datumzeile" id="tb-tag"></div>
  <div class="wetterzeile" id="tb-wetter"></div>
- <div class="wpills">
-  <button class="wpill" id="wp-MORGEN" type="button" onclick="waehleAbschnitt('MORGEN')">Morgen</button>
-  <button class="wpill" id="wp-MITTAG" type="button" onclick="waehleAbschnitt('MITTAG')">Mittag</button>
-  <button class="wpill" id="wp-NACHMITTAG" type="button" onclick="waehleAbschnitt('NACHMITTAG')">Nachm.</button>
-  <button class="wpill" id="wp-ABEND" type="button" onclick="waehleAbschnitt('ABEND')">Abend</button>
- </div>
- <button class="wp-zurueck" id="wp-zurueck" type="button" onclick="waehleAbschnitt('')">✕ Ganzen Tag zeigen</button>
+ 
 </div>
 
 <div id="v-heute" class="view on"><div class="wrap" id="heute-inh"></div></div>
@@ -578,6 +564,31 @@ function navTarget(s){
 function mapsUrl(q){return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q)}
 
 /* ---------------- Heute ---------------- */
+/* Zeile über dem Tagesbild: vor der Reise ein Countdown, unterwegs die
+   Einordnung des angezeigten Tages gegenüber heute. */
+function tagBezug(t){
+  var d=new Date(t.datum+'T00:00:00'), h=new Date();
+  h.setHours(0,0,0,0);
+  var tage=Math.round((d-h)/86400000);
+  var start=new Date(S.tage[0].datum+'T00:00:00');
+  var bis=Math.round((start-h)/86400000);
+  var txt='', sub='', ikon='\u25CB';
+  if(bis>0 && t.nr===1){
+    txt = bis===1 ? 'Noch 1 Tag bis zur Abreise' : 'Noch '+bis+' Tage bis zur Abreise';
+    var f=S.flug&&S.flug.hin;
+    if(f) sub=f.von+' \u00b7 '+f.gate;
+    ikon='\u2708';
+  } else if(tage===0){ txt='Heute'; }
+  else if(tage===1){ txt='Morgen'; }
+  else if(tage===-1){ txt='Gestern'; }
+  else if(tage>1){ txt='In '+tage+' Tagen'; }
+  else { txt='Vor '+(-tage)+' Tagen'; }
+  if(tage===0 && bis<=0) return '';
+  return '<div class="bezug"><span class="bz-ik">'+ikon+'</span><div>'+
+         '<div class="bz-t">'+esc(txt)+'</div>'+
+         (sub?'<div class="bz-s">'+esc(sub)+'</div>':'')+'</div></div>';
+}
+
 function renderHeute(){
   var t=tag(TAG), h=[];
   PROG=progLesen(TAG); if(PROG==='b'&&!altFuerTag(TAG))PROG='a';
@@ -595,6 +606,7 @@ function renderHeute(){
 
   /* Der Umschalter steht VOR dem Titel - danach zeigt der Kopf nur noch die
      gewaehlte Variante. */
+  h.push(tagBezug(t));
   if(t.foto) h.push(tagFoto(t));
   h.push(progUmschalter(TAG));
   if(!t.foto){
@@ -645,7 +657,6 @@ function renderHeute(){
   }
 
   $('heute-inh').innerHTML=h.join('');
-  pillen();
   kopfHoehe();
 }
 /* Ort fuer die Wettersuche: Unterkunft des Tages, sonst der Tagestitel */
@@ -659,12 +670,7 @@ function wetterSuche(){
   if(!wo)return false;
   return oeffne('https://www.google.com/search?q='+encodeURIComponent('Wetter '+wo+' Sizilien'));
 }
-function pillen(){
-  var B=['MORGEN','MITTAG','NACHMITTAG','ABEND'];
-  for(var i=0;i<B.length;i++){var e=$('wp-'+B[i]);
-    if(e) e.className='wpill'+(ABSCHNITT===B[i]?' an':'');}
-  var z=$('wp-zurueck'); if(z) z.className='wp-zurueck'+(ABSCHNITT?' an':'');
-}
+
 /* Tippen filtert auf einen Tagesabschnitt, nochmal tippen zeigt wieder alles */
 function waehleAbschnitt(b){
   if(VIEW!=='heute')go('heute');
