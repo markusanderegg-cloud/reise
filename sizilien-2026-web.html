@@ -1050,7 +1050,9 @@ function detFaehre(){var f=S.faehre;
   /* Ticketcodes stehen im Text - hier einzeln zum Kopieren */
   var codes=(f.hin+' '+f.rueck).match(/\b[A-Z]{3}[0-9]{6}\b/g)||[];
   for(var c=0;c<codes.length;c++) h+=nrFeld('Ticket '+(c+1),codes[c],codes[c]);
-  h+=dokumente([{name:'E-Ticket Hinfahrt',da:false},{name:'E-Ticket R\u00fcckfahrt',da:false}]);
+  h+=feld('Hafen Marsala',esc(f.hafen_ab||''));
+  h+=feld('Hafen Favignana',esc(f.hafen_an||''));
+  h+=feld('E-Tickets','Nur in der iPhone-Fassung hinterlegt.');
   return h}
 
 /* Station aus Programm B: eigene Ansicht, weil unsere 146 Eintraege andere Orte
