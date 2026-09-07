@@ -2479,8 +2479,9 @@ function etappeTagesliste(i){
   var r=['<div class="etl">'];
   for(var k=0;k<t.length;k++){
     var d=t[k].datum.split('-');
+    var titel=(k===0 && i>0) ? ('Anreise \u00b7 '+t[k].titel) : t[k].titel;
     r.push('<div class="etl-z"><span class="etl-d tnum">'+parseInt(d[2],10)+'.'+parseInt(d[1],10)+'.</span>'+
-           '<span class="etl-t">'+esc(t[k].titel)+'</span></div>');
+           '<span class="etl-t">'+esc(titel)+'</span></div>');
   }
   /* letzter Tag: Weiterreise statt Wiederholung */
   var n=S.etappen[i+1];
