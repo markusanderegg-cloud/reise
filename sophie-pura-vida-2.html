@@ -232,6 +232,17 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .punkte li.ohnepunkt { padding-left: 0; }
 .punkte li.ohnepunkt::before { display: none; }
 .punkte li:last-child { margin-bottom: 0; }
+/* Nummerierter Schritt: Ziffer und Text als Flex-Paar. Bricht der Text um,
+   beginnt die zweite Zeile exakt unter der ersten – nicht unter der Ziffer. */
+.punkte li.nummerpunkt {
+  display: flex; align-items: baseline; gap: 7px; padding-left: 0;
+}
+.punkte li.nummerpunkt::before { display: none; }
+.nummerziffer {
+  flex-shrink: 0; color: var(--terra); font-weight: 700; font-size: var(--ebene5);
+  min-width: 15px; text-align: left;
+}
+.nummertext { flex: 1; min-width: 0; }
 
 .schritte li { display: flex; gap: 12px; margin-bottom: 12px; }
 .schritte .ziffer {
@@ -860,6 +871,9 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 .haken { padding: 11px 0; align-items: center; }
 .haken .box { flex-shrink: 0; }
+/* In Checklisten selbst etwas enger als die generelle 44-Punkte-Regel –
+   viele Zeilen auf einmal, der Finger trifft auch bei 38 Punkten sicher. */
+.hakenzeile .haken { min-height: 38px; padding: 7px 0; }
 .textknopf { padding: 11px 8px; margin: -11px -8px; }
 .reiterknopf { padding: 12px 14px; }
 
@@ -1417,8 +1431,10 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
-/* Listentitel sind die Einstiegspunkte – etwas mehr Gewicht als der Zähler. */
-.blockband .faltkopf .blocktitel { font-size: 15px; }
+/* Listentitel sind die Einstiegspunkte – etwas mehr Gewicht als der Zähler.
+   Gleiche Grösse wie .schrittzeit (die Ablaufphasen), damit beide Arten von
+   Zwischenüberschriften auf einer Stationsseite gleich schwer wirken. */
+.blockband .faltkopf .blocktitel { font-size: 16px; }
 
 /* Detailzeile eines To-dos, die weiterführt */
 .terminhinweis.sprungzeile {
@@ -2187,7 +2203,7 @@ const DOKUMENTE = [
 const STATIONEN = [
   {
     id: "hinflug", nummer: "1", kurzname: "Hinflug", titel: "Hinflug nach Guatemala", land: "guatemala",
-    zeit: "Dienstag, 29. September", kurz: "Iberia via Madrid, Ankunft 15:25",
+    zeit: "Dienstag, 29. September", kurz: "Iberia IB 0634 · Abflug 07:30, Ankunft 15:25",
     datum: "2026-09-29",
     jetzt: [
       ["vor", 14, "Reiseerklärung ausfüllen, QR-Code sichern", []],
@@ -2199,12 +2215,10 @@ const STATIONEN = [
     abschnitte: [
       ["", [
         ["eigen", "Deine Flüge", [
-          "Iberia, gebucht auf Sophie Anderegg.",
-          "<b>IB 0634 · Zürich – Madrid</b><br>Dienstag 29. September, 07:30 bis 09:55. Ankunft Terminal 4.",
-          "<b>IB 0221 · Madrid – Guatemala City</b><br>12:10 bis 15:25 Ortszeit, 11 Stunden 15 Minuten. La Aurora International.",
-          "<b>2 h 15 in Madrid</b> – von Terminal 4 nach 4S mit dem Zug im Terminal, rund 15 Minuten. Nicht trödeln.",
-          "<b>Tarif Economy Optimal</b> – Gepäck inbegriffen, Sitzplatz beim Check-in wählen.",
-          "Ankunft 15:25, Transfer rund eine Stunde: du bist vor Einbruch der Dunkelheit in Antigua.",
+          "<b>IB 0634</b> Iberia · Zürich (ZRH) &#8594; Madrid (MAD)<br>Di 29. September, 07:30\u201309:55 Uhr, Terminal 4",
+          "<b>Umsteigen in Madrid</b> 2 Std 15 Min<br>Terminal 4 zu 4S mit dem Zug, rund 15 Minuten. Nicht trödeln.",
+          "<b>IB 0221</b> Iberia · Madrid (MAD) &#8594; Guatemala City (GUA)<br>12:10\u201315:25 Uhr Ortszeit, Flugzeit 11 Std 15 Min",
+          "<b>Weiter nach Antigua</b> Rund eine Stunde<br>Transfer vorbestellt über das Hostel, Fahrer wartet mit Namensschild – du bist vor Einbruch der Dunkelheit dort.",
         ]],
       ]],
       [">> 2 Tage vor Abflug", [
@@ -2239,14 +2253,13 @@ const STATIONEN = [
 
       [">> Nach der Landung", [
         ["eigen", "", [
-          "<b>Einreiseformular Guatemala</b> – dein QR-Code wird gescannt.",
-          "<b>Adresse bereithalten</b> – Casa Florencia Hotel<br>7a Avenida Norte 100, Antigua. Wird bei der Einreise verlangt.",
-          "<b>Stempel gleich lesen</b> – reicht die Dauer bis zur Ausreise?",
-          "<b>Quetzal abheben</b> – Geldautomat in der Ankunftshalle<br>100 bis 150 Franken, immer Landeswährung wählen.",
-          { punkt: "<b>eSIM aktivieren</b> – zuerst WLAN am Flughafen.",
-            sprung: "geld", param: "handy" },
-          "<b>Transfer nach Antigua</b> – vorbestellt, Fahrer mit Namensschild<br>rund 1 h, Landung vor 18 Uhr eingeplant.",
-          "<b>Zu Hause melden</b> – kurz genügt.",
+          "<b>1</b> QR-Code der Reiseerklärung bereithalten – ausgefüllt vor dem Abflug, siehe Station 1.",
+          "<b>2</b> Passkontrolle: Weiterreiseticket und Adresse der ersten Unterkunft zeigen.",
+          "<b>3</b> Einreisestempel im Pass kontrollieren, bevor du weitergehst.",
+          "<b>4</b> Gepäck holen, Zoll meist grün.",
+          "<b>5</b> Geld am Automaten in der Halle abheben – Details unter Geld.",
+          "<b>6</b> SIM prüfen: Roaming aktiv, Nachricht nach Hause.",
+          "<b>7</b> Lokale SIM fürs iPhone 12 kaufen – Tigo, im Terminal oder in der Ankunftshalle.",
         ]],
       ]],
 
@@ -2258,20 +2271,21 @@ const STATIONEN = [
     land: "guatemala", zeit: "Dienstag, 29. September", kurz: "Vom Flughafen bis ins Hotel",
     abschnitte: [
       ["", [
-        ["eigen", "Am Flughafen", [
+        ["eigen", "Flughafen", [
           "<b>1</b> QR-Code der Reiseerklärung bereithalten – ausgefüllt vor dem Abflug, siehe Station 1.",
           "<b>2</b> Passkontrolle: Weiterreiseticket und Adresse der ersten Unterkunft zeigen.",
           "<b>3</b> Einreisestempel im Pass kontrollieren, bevor du weitergehst.",
           "<b>4</b> Gepäck holen, Zoll meist grün.",
           "<b>5</b> Geld am Automaten in der Halle abheben – Details unter Geld.",
           "<b>6</b> SIM prüfen: Roaming aktiv, Nachricht nach Hause.",
+          "<b>7</b> Lokale SIM fürs iPhone 12 kaufen – Tigo, im Terminal oder in der Ankunftshalle.",
         ]],
-        ["eigen", "Der Transfer", [
+        ["eigen", "Transfer", [
           "<b>Vorbestellt über das Hostel</b> – der Fahrer wartet mit deinem Namen am Ausgang.",
           "Kein Taxi von der Strasse. Wer dich anspricht, ist nicht dein Fahrer.",
           "Nach Antigua rund eine Stunde. <b>Nicht nachts fahren.</b>",
         ]],
-        ["eigen", "Die Unterkunft", [
+        ["eigen", "Unterkunft", [
           "<b>Casa Florencia Hotel</b>, 7a Avenida Norte 100 – ab dem 29. September, dort startet auch die Tour am 1. Oktober.",
           "<b>Ein Haus für alle Nächte</b> – kein Wechsel vor dem Tourstart.",
           "Die Adresse wird bei der Einreise verlangt – vor dem Anstehen bereithalten.",
@@ -2339,7 +2353,12 @@ const STATIONEN = [
           "Was die Schule und die Ausreise betrifft, steht als To-do mit Datum.",
         ]],
       ]],
-  ["Unterkunft", [["hostels", "guatemala"]]],
+  ["Unterkunft", [
+        ["eigen", "Für die letzte Nacht", [
+          "Nichts ist gebucht. Zwei Ideen für die letzte Nacht vor dem Flug nach Costa Rica – zurück in Antigua, dann direkt zum Flughafen.",
+        ]],
+        ["hostels", "guatemala"],
+      ]],
       ["Checkliste", [["liste", "pack:inland"], ["liste", "ortswechsel"]]],
     ],
   },
@@ -2408,6 +2427,7 @@ const STATIONEN = [
             sprung: "route", param: { tab: "land", land: "costarica", block: "Einreise" } },
           { punkt: "<b>Zuerst WLAN, dann eSIM</b> – ohne Netz kein Uber, keine Karte.",
             sprung: "geld", param: "handy" },
+          "<b>Lokale SIM fürs iPhone 12 kaufen</b> – Kölbi, am Flughafen oder im Supermarkt.",
           "<b>Colón abheben</b> – Geldautomat in der Flughafenhalle<br>50 bis 100 Franken genügen, in Costa Rica zahlst du fast überall mit Karte.",
           "<b>Der Flughafen liegt in Alajuela</b> – nicht in San José<br>nach Heredia 20 Min.",
           "<b>Orange Taxis oder Uber</b> – 20 bis 30 USD<br>keine Abholzone: Strasse hinter dem Parkplatz.",
@@ -2424,18 +2444,19 @@ const STATIONEN = [
     land: "costarica", zeit: "Donnerstag, 22. Oktober", kurz: "Idee · vom Flughafen bis nach Heredia",
     abschnitte: [
       ["", [
-        ["eigen", "Am Flughafen", [
+        ["eigen", "Flughafen", [
           "<b>1</b> Passkontrolle: Adresse der Unterkunft nennen, Weiterreisenachweis zeigen.",
           "<b>2</b> Einreisestempel kontrollieren – hier wird die erlaubte Aufenthaltsdauer eingetragen.",
           "<b>3</b> Gepäck holen, Zoll meist grün.",
           "<b>4</b> Geld: am Automaten in der Halle abheben, Colones wählen, keine Umrechnung.",
-          "<b>5</b> Nachricht nach Hause.",
+          "<b>5</b> SIM prüfen: Roaming aktiv, Nachricht nach Hause.",
+          "<b>6</b> Lokale SIM fürs iPhone 12 kaufen – Kölbi, am Flughafen oder im Supermarkt.",
         ]],
-        ["eigen", "Weiter nach Heredia", [
+        ["eigen", "Transfer", [
           "Rund 20 Minuten vom Flughafen. Transfer über die Schule oder Uber.",
           "Kein Taxi von der Strasse. In San José kein Aufenthalt.",
         ]],
-        ["eigen", "Die Unterkunft", [
+        ["eigen", "Unterkunft", [
           "<b>Heredia, vier Nächte</b> – vom 22. bis zum Schulstart am 26. Oktober.",
           "<b>Nahe der Schule buchen</b>, mit Gratisstornierung – der Ankunftstag kann sich verschieben.",
           "Die Adresse wird bei der Einreise verlangt – vor dem Anstehen bereithalten, auch auf Papier.",
@@ -2460,11 +2481,11 @@ const STATIONEN = [
       ["Die Schule", [
         ["eigen", "Die Tage vor dem Kurs", [
           "<b>Intercultura startet jeden Montag</b>, hier der 26. Oktober.",
-          "<b>Do 22.</b> Ankunft, Transfer nach Heredia, früh schlafen.",
-          "<b>Fr 23.</b> Stadt zu Fuss: Mercado Central, Parque Central, den Schulweg einmal gehen.",
-          "<b>Sa 24.</b> Wäsche, Einkauf, SIM und Konten prüfen. Nachmittags Kaffeeplantage oder Barva.",
-          "<b>So 25.</b> Ruhetag, Sachen sortieren, zu Hause melden.",
-          "<b>Mo 26.</b> Einstufungstest am Morgen, dann erste Lektion.",
+          "<b>Donnerstag 22. Oktober</b> Ankunft, Transfer nach Heredia, früh schlafen.",
+          "<b>Freitag 23. Oktober</b> Stadt zu Fuss: Mercado Central, Parque Central, den Schulweg einmal gehen.",
+          "<b>Samstag 24. Oktober</b> Wäsche, Einkauf, SIM und Konten prüfen. Nachmittags Kaffeeplantage oder Barva.",
+          "<b>Sonntag 25. Oktober</b> Ruhetag, Sachen sortieren, zu Hause melden.",
+          "<b>Montag 26. Oktober</b> Einstufungstest am Morgen, dann erste Lektion.",
         ]],
         ["thema", "schule"],
       ]],
@@ -2755,19 +2776,9 @@ const LAENDER = {
     },
     hostels: [
       {
-        name: "Casa Florencia Hotel", ort: "7a Avenida Norte 100, Antigua",
-        tel: "+502 7832 0261", web: "http://www.cflorencia.net/", note: "4.5 · 102 Bewertungen",
-        tipp: "Gebucht ab 29. September",
-        gut: ["Hier beginnt die Rundreise – das Willkommenstreffen findet im Hotel statt",
-              "Ruhig, etwas nördlich des Zentrums, sicheres Tor"],
-        schlecht: ["Gäste berichten von fehlendem Warmwasser und dunklen Zimmern im Erdgeschoss",
-                   "Kein Frühstück im Haus",
-                   "Kein Dorm – dafür ein eigenes Zimmer schon am Ankunftstag"],
-      },
-      {
         name: "Maya Papaya", ort: "1a Calle Poniente 20, Antigua", tel: "+502 5825 7586",
         web: "https://direct-book.com/properties/mayapapayadirect", note: "4.7 · 446 Bewertungen",
-        tipp: "Falls du länger bleibst",
+        tipp: "1. Wahl – ruhig, gut organisiert",
         gut: ["Echtes Frauen-Dorm mit Vorhang vor dem Bett, Licht, Steckdose und Schliessfach",
               "Rezeption rund um die Uhr besetzt – eine Ankunft um 00:30 ist dort Normalfall",
               "Arbeitet mit offiziellen Fahrern zusammen: Transfer mit Namensschild, 40–45 USD",
@@ -2782,7 +2793,7 @@ const LAENDER = {
       {
         name: "The Purpose Hostel", ort: "9 Calle Oriente 6, Antigua", tel: "+502 7842 9014",
         web: "https://thepurposehostel.com", note: "4.8 · 298 Bewertungen",
-        tipp: "2. Wahl – für einen längeren Aufenthalt",
+        tipp: "2. Wahl – sicher, sehr sauber",
         gut: ["Von Frauen geführt, mit Frauen-Dorm", "Sehr sauber, nachts ruhig",
               "Betten mit Vorhang, eigenem Licht und Steckdose",
               "Gepäckdepot während der Acatenango-Wanderung", "Schneller Wäscheservice",
@@ -3045,12 +3056,12 @@ const TAGESRUCKSACK = [
 ];
 
 const TOUR = [
-  "## Sachen sichern",
-  "Spind abgeschlossen",
-  "Rucksack gesichert & angeschlossen",
-  "Wertsachen-Box im Spind",
-  "Ladestation kontrolliert",
-  "Jemandem gesagt, wohin du gehst",
+  "## Sachen sichern · JUWEL",
+  "<b>J</b>emandem gesagt, wohin du gehst",
+  "<b>U</b>nter Verschluss: Spind abgeschlossen",
+  "<b>W</b>ertsachen-Box im Spind genutzt",
+  "<b>E</b>lektrik: Ladestation kontrolliert",
+  "<b>L</b>ock: Rucksack gesichert und angeschlossen",
   "## Mitnehmen",
   "Tagesrucksack gepackt >> heute|packen|tour:rucksack",
   "Handy geladen, Offline-Karte da",
@@ -3062,15 +3073,11 @@ const TOUR = [
 ];
 
 const ANKUNFT = [
-  "Adresse und Telefon offline gespeichert",
-  "Spind geprüft",
-  "Fluchtweg angeschaut – wo geht es raus, wo ist nachts die Rezeption",
-  "Wertsachen-Box eingeräumt >> heute|packen|pack:Wertsachen-Box",
-  "Geldautomat und Apotheke gefunden >> geld|geld",
-  "Gefragt, was man abends meidet",
-  "Zu Hause gemeldet",
-  "WLAN notiert, Offline-Karte geladen >> geld|apps",
-  "Backup laufen lassen >> wissen|ablage",
+  "<b>F</b>luchtweg angeschaut – wo geht es raus, wo ist nachts die Rezeption",
+  "<b>A</b>dresse und Telefon offline gespeichert",
+  "<b>Z</b>u Hause gemeldet",
+  "<b>I</b>nfrastruktur gecheckt – Geldautomat und Apotheke gefunden >> geld|geld",
+  "<b>T</b>resor: Wertsachen im Spind eingeräumt >> heute|packen|pack:Wertsachen-Box",
 ];
 
 const PACK_RUCKSACK = [
@@ -3386,6 +3393,17 @@ const zerlege = (p) => {
   if (!m) return p;
   return { begriff: m[1].replace(/[:–—-]\s*$/, ""), text: m[2].trim() };
 };
+/* Ein Punkt "<b>3</b> Text ..." ist ein nummerierter Schritt. Als Flex-Zeile
+   gerendert, damit eine zweite Zeile exakt unter dem Text beginnt, nicht
+   unter der Ziffer – unabhängig von Textlänge oder Bildschirmbreite. */
+const NUMMER_MUSTER = /^<b>(\d{1,2})<\/b>\s+(.+)$/s;
+const nummerZeile = (html) => {
+  const m = String(html).match(NUMMER_MUSTER);
+  if (!m) return null;
+  return el("li", { class: "nummerpunkt" },
+    el("span", { class: "nummerziffer" }, m[1]),
+    el("span", { class: "nummertext", html: m[2] }));
+};
 const flach = (t) => String(t).toLowerCase()
   .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
   .replace(/ß/g, "ss");
@@ -3541,7 +3559,7 @@ const faltblock = (titel, punkte, offenStart = false) => {
   const inhalt = el("ul", { class: "punkte" },
     punkte.map((roh) => {
       const p = zerlege(roh);
-      if (typeof p === "string") return el("li", { html: p });
+      if (typeof p === "string") return nummerZeile(p) || el("li", { html: p });
       if (p.begriff) return begriffZeile(p);
       if (p.sprung) return el("li", { class: "ohnepunkt" }, sprungZeile(p));
       return el("li", { class: "ohnepunkt" }, p.url ? linkZeile(p) : anrufZeile(p));
@@ -3599,7 +3617,7 @@ const block = (titel, punkte) =>
     el("ul", { class: "punkte" },
       punkte.map((roh) => {
         const p = zerlege(roh);
-        if (typeof p === "string") return el("li", { html: p });
+        if (typeof p === "string") return nummerZeile(p) || el("li", { html: p });
         if (p.begriff) return begriffZeile(p);
         if (p.sprung) return el("li", { class: "ohnepunkt" }, sprungZeile(p));
         return el("li", { class: "ohnepunkt" }, p.url ? linkZeile(p) : anrufZeile(p));
@@ -3651,7 +3669,7 @@ const hakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig = 0
     const LISTEN = {
       "abflug": ["Vor dem Abflugtag", VOR_ABFLUG],
       "vorreise": ["Wochen vorher", VOR_REISE],
-      "ankunft": ["Angekommen", ANKUNFT],
+      "ankunft": ["Angekommen · FAZIT", ANKUNFT],
       "ortswechsel": ["Weiterreise", ORTSWECHSEL],
       "pack:inland": ["Packordnung Inland", PACK_INLAND],
       "pack:rucksack": ["Reiserucksack", PACK_RUCKSACK],
@@ -3750,7 +3768,7 @@ const hakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig = 0
                           svg("chevron", 15, "#B65A3C", 2.2))));
                   }
                   const p = zerlege(r);
-                  if (typeof p === "string") return el("li", { html: p });
+                  if (typeof p === "string") return nummerZeile(p) || el("li", { html: p });
                   if (p.begriff) return begriffZeile(p);
                   if (p.sprung) return el("li", { class: "ohnepunkt" }, sprungZeile(p));
                   return el("li", { class: "ohnepunkt" }, anrufZeile(p));
@@ -4884,7 +4902,7 @@ const seiteNotfall = () => {
     const LISTEN = {
       "abflug": ["Vor dem Abflugtag", VOR_ABFLUG],
       "vorreise": ["Wochen vorher", VOR_REISE],
-      "ankunft": ["Angekommen", ANKUNFT],
+      "ankunft": ["Angekommen · FAZIT", ANKUNFT],
       "ortswechsel": ["Weiterreise", ORTSWECHSEL],
       "pack:inland": ["Packordnung Inland", PACK_INLAND],
       "pack:rucksack": ["Reiserucksack", PACK_RUCKSACK],
@@ -4983,7 +5001,7 @@ const seiteNotfall = () => {
                           svg("chevron", 15, "#B65A3C", 2.2))));
                   }
                   const p = zerlege(r);
-                  if (typeof p === "string") return el("li", { html: p });
+                  if (typeof p === "string") return nummerZeile(p) || el("li", { html: p });
                   if (p.begriff) return begriffZeile(p);
                   if (p.sprung) return el("li", { class: "ohnepunkt" }, sprungZeile(p));
                   return el("li", { class: "ohnepunkt" }, anrufZeile(p));
@@ -5367,7 +5385,7 @@ const seiteRoute = () => {
     const LISTEN = {
       "abflug": ["Vor dem Abflugtag", VOR_ABFLUG],
       "vorreise": ["Wochen vorher", VOR_REISE],
-      "ankunft": ["Angekommen", ANKUNFT],
+      "ankunft": ["Angekommen · FAZIT", ANKUNFT],
       "ortswechsel": ["Weiterreise", ORTSWECHSEL],
       "pack:inland": ["Packordnung Inland", PACK_INLAND],
       "pack:rucksack": ["Reiserucksack", PACK_RUCKSACK],
@@ -5466,7 +5484,7 @@ const seiteRoute = () => {
                           svg("chevron", 15, "#B65A3C", 2.2))));
                   }
                   const p = zerlege(r);
-                  if (typeof p === "string") return el("li", { html: p });
+                  if (typeof p === "string") return nummerZeile(p) || el("li", { html: p });
                   if (p.begriff) return begriffZeile(p);
                   if (p.sprung) return el("li", { class: "ohnepunkt" }, sprungZeile(p));
                   return el("li", { class: "ohnepunkt" }, anrufZeile(p));
