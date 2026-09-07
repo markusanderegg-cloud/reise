@@ -32,7 +32,9 @@ button{-webkit-appearance:none;appearance:none;background:none;border:0;margin:0
  font:inherit;color:inherit;text-align:left;cursor:pointer}
 html,body{margin:0;padding:0;background:var(--bg);color:var(--tinte);font-family:var(--ui);
  -webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased;
- width:100%;max-width:100%;overflow-x:clip}
+ width:100%;max-width:100%;overflow-x:clip;
+ overscroll-behavior-x:none;touch-action:pan-y}
+html{width:100%;max-width:100%;overflow-x:clip;overscroll-behavior-x:none}
 .view,.ov-inh,#topbar,.wrap{max-width:100%}
 body{padding-bottom:calc(var(--inset-bottom) + 100px + env(safe-area-inset-bottom, 0px))}
 .zeit,.tnum{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
