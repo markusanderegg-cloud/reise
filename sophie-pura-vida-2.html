@@ -445,9 +445,9 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .tableiste {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
   display: flex; max-width: 480px; margin: 0 auto;
-  background: rgba(255, 253, 250, .92);
-  -webkit-backdrop-filter: saturate(180%) blur(14px);
-  backdrop-filter: saturate(180%) blur(14px);
+  /* Deckend statt weichgezeichnet: Safari zeichnet sonst beim Scrollen
+     den alten Inhalt in die Leiste – es sieht aus, als hänge der Bildschirm. */
+  background: #FFFDFA;
   border-top: 0.5px solid rgba(43, 39, 35, .12);
   padding: 6px 2px calc(7px + env(safe-area-inset-bottom));
 }
@@ -1942,9 +1942,10 @@ const DOKUMENTE = [
         "<b>iPhone 17 unterwegs</b> – Fotos, Navigation, Zahlungen. „Wo ist?“ und Diebstahlschutz aktiv.",
         "<b>iPhone 12 im Spind</b> – geladen, im Hostel-WLAN, mit My yallo, Revolut, one und „Wo ist?“ angemeldet. Damit ortest, sperrst und ersetzt du im Ernstfall alles.",
         "<b>Beide mit derselben Apple-ID</b> – dann empfängt das Ersatzgerät auch die Bestätigungscodes von Apple.",
-        "<b>Yallo-SIM im 17, Daten-eSIM von Saily im 12.</b> So bist du unterwegs unter deiner Nummer erreichbar, und das Ersatzgerät ist trotzdem jederzeit online – ohne WLAN.",
-        "<b>Ist das Hauptgerät weg</b>, hat das 12 sofort Internet: Karten sperren, orten, neue Yallo-eSIM bestellen – alles vom Spind aus.",
-        "<b>Nur eine eSIM gleichzeitig aktiv:</b> Kommt die neue Yallo-eSIM aufs 12, in den Einstellungen Saily aus und Yallo ein. Kein QR-Code nötig.",
+        "<b>iPhone 17:</b> Yallo-SIM für Nummer, Anrufe und SMS-Codes. Dazu die Saily-eSIM als Datenreserve, wenn die 5 GB von Yallo weg sind.",
+        "<b>iPhone 12:</b> lokale Prepaid-SIM vor Ort – Tigo in Guatemala, Kölbi in Costa Rica. 15 bis 20 USD für 30 Tage, Pass zur Registrierung nötig.",
+        "<b>Daten sparen:</b> Roaming-Kostenlimit bei Yallo auf 0 CHF, Datensparmodus ein, Foto-Upload und App-Downloads nur im WLAN, Offline-Karten vorher laden.",
+        "<b>Wenn die 5 GB weg sind:</b> Einstellungen → Mobilfunk → Mobile Daten → Saily. Die Yallo-SIM bleibt aktiv, Anrufe kommen weiter an.",
         "<b>Einmal pro Woche laden</b> – ein leeres Ersatzgerät nützt nichts.",
         "<b>iCloud-Fotos auf beiden Geräten ein</b> – dann liegen deine Bilder automatisch auch im Spind. Auf dem 12 „iPhone-Speicher optimieren“ wählen.",
         "<b>Upload nur im WLAN:</b> Einstellungen → Fotos → Mobile Daten aus. Sonst ist dein Roaming-Volumen nach 200 Fotos weg.",
@@ -3522,7 +3523,7 @@ const istDringend = (titel) => {
 
 /* Zeichnet die Blöcke eines Themas – "## Titel" wird zur Zwischenüberschrift. */
 /* Kurze Themen zeigen alles offen – Aufklappen lohnt sich erst ab zwölf Punkten. */
-const KURZ_OFFEN = 40;
+const KURZ_OFFEN = 55;
 
 const bloeckeMit = (bloecke) => {
   const gesamt = bloecke.reduce((n, b) => n + ((b[1] && b[1].length) || 0), 0);
