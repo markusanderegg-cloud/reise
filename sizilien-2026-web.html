@@ -380,6 +380,10 @@ a.feld-link{text-decoration:underline;text-underline-offset:3px;color:var(--tint
 .bz-ik{font-size:17px;color:var(--akzent);line-height:1}
 .bz-t{font-size:15px;font-weight:600;color:var(--tinte,#211C18)}
 .bz-s{font-size:12.5px;color:var(--gold);margin-top:2px}
+.etl{margin-top:10px}
+.etl-z{display:flex;gap:10px;padding:3px 0;font-size:13.5px;line-height:1.45}
+.etl-d{color:var(--akzent);min-width:42px;flex:none}
+.etl-t{color:var(--sek)}
 .kacheln{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
 .kachel{position:relative;display:block;background:var(--card);border:1px solid var(--line);
  border-radius:12px;padding:18px 16px 16px;min-height:104px;text-align:left;
@@ -2440,6 +2444,55 @@ function tageLinien(e){
     h+='<div class="tgl"><span class="tgl-nr tnum">'+(i+1)+'</span>'+esc(e.tage_linien[i])+'</div>';
   return h+'</div>';
 }
+function etappeTage(i){
+  /* alle Tage dieser Etappe: von e.start bis zum Start der naechsten */
+  var e=S.etappen[i], n=S.etappen[i+1];
+  var bis=n?(n.start-1):S.tage[S.tage.length-1].nr;
+  var r=[];
+  for(var k=e.start;k<=bis;k++){var t=tag(k); if(t) r.push(t);}
+  return r;
+}
+/* Route-Übersicht: Ortsname, Zeitraum mit Nächten, darunter Tag für Tag */
+function ortName(e){
+  var h=hotelById(e.hotel);
+  return (h&&h.ort)?h.ort:String(e.name||'').split(/[&:,]/)[0].trim();
+}
+function etappeZeitraum(i){
+  var t=etappeTage(i); if(!t.length) return '';
+  var von=t[0], bis=t[t.length-1];
+  var n=(S.etappen[i+1]?tag(S.etappen[i+1].start):null);
+  var ende=n?n:bis;
+  var d1=new Date(von.datum+'T00:00:00'), d2=new Date(ende.datum+'T00:00:00');
+  var naechte=Math.max(1,Math.round((d2-d1)/86400000));
+  return kurzDat(von.datum)+' bis '+langDat(ende.datum)+' \u00b7 '+
+         naechte+(naechte===1?' Nacht':' N\u00e4chte');
+}
+function kurzDat(iso){var p=iso.split('-');return parseInt(p[2],10)+'.'}
+function langDat(iso){
+  var M=['Januar','Februar','M\u00e4rz','April','Mai','Juni','Juli','August',
+         'September','Oktober','November','Dezember'];
+  var p=iso.split('-');
+  return parseInt(p[2],10)+'. '+M[parseInt(p[1],10)-1];
+}
+function etappeTagesliste(i){
+  var t=etappeTage(i); if(!t.length) return '';
+  var r=['<div class="etl">'];
+  for(var k=0;k<t.length;k++){
+    var d=t[k].datum.split('-');
+    r.push('<div class="etl-z"><span class="etl-d tnum">'+parseInt(d[2],10)+'.'+parseInt(d[1],10)+'.</span>'+
+           '<span class="etl-t">'+esc(t[k].titel)+'</span></div>');
+  }
+  /* letzter Tag: Weiterreise statt Wiederholung */
+  var n=S.etappen[i+1];
+  if(n){
+    var w=tag(n.start), dd=w.datum.split('-');
+    var ziel=ortName(n);
+    r.push('<div class="etl-z"><span class="etl-d tnum">'+parseInt(dd[2],10)+'.'+parseInt(dd[1],10)+'.</span>'+
+           '<span class="etl-t">Abreise nach '+esc(ziel)+'</span></div>');
+  }
+  return r.join('')+'</div>';
+}
+
 function renderRoute(){
   var jetzt=etappeFuerTag(TAG).nr;
   var h=['<div class="wrap"><div class="sek-titel">Die Route</div>'];
@@ -2451,10 +2504,9 @@ function renderRoute(){
   h.push('</div><div class="balken-txt tnum">St\u00fctzpunkt '+jetzt+' von '+S.etappen.length+'</div>');
   for(var i=0;i<S.etappen.length;i++){var e=S.etappen[i];
    h.push('<div class="stop'+(e.nr===jetzt?' hl':'')+'" onclick="openOrt('+i+')"><div class="inh">'+
-    '<div class="meta"><b class="tnum">St\u00fctzpunkt '+e.nr+'</b> \u00b7 '+esc(e.tage)+'</div>'+
-    '<div class="stitel">'+esc(e.name)+'</div>'+
-    '<div class="sinfo">'+esc(e.orte)+'</div>'+
-    tageLinien(e)+'</div><div class="chev">\u203a</div></div>');}
+    '<div class="stitel">'+esc(ortName(e))+'</div>'+
+    '<div class="sinfo">'+esc(etappeZeitraum(i))+'</div>'+
+    etappeTagesliste(i)+'</div><div class="chev">\u203a</div></div>');}
   h.push('</div>');
   $('route-inh').innerHTML=h.join('');
 }
