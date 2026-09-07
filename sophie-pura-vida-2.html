@@ -1403,6 +1403,13 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 /* Listentitel sind die Einstiegspunkte – etwas mehr Gewicht als der Zähler. */
 .blockband .faltkopf .blocktitel { font-size: 15px; }
 
+/* Detailzeile eines To-dos, die weiterführt */
+.terminhinweis.sprungzeile {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  width: 100%; background: none; border: 0; text-align: left; padding: 2px 0;
+  min-height: 32px; color: var(--ink);
+}
+
 </style>
 </head>
 <body>
@@ -1600,6 +1607,9 @@ const APPS = [
 ];
 
 const BUCHEN = [
+  ["Flug", [
+    { label: "Google Flights", url: "https://www.google.com/travel/flights", hinweis: "Preise vergleichen – Copa und Avianca fliegen täglich" },
+  ]],
   ["Schlafen", [
     { label: "Hostelworld", url: "https://www.hostelworld.com/de/", hinweis: "Hostels, Bewertungen von Reisenden" },
     { label: "Booking.com", url: "https://www.booking.com/", hinweis: "Hotels und Hostels, oft mit Gratisstornierung" },
@@ -1609,7 +1619,6 @@ const BUCHEN = [
     { label: "Interbus", url: "https://www.interbusonline.com/", hinweis: "Shuttles von Tür zu Tür" },
     { label: "Tica Bus", url: "https://ticabus.com", hinweis: "Internationale Busse, auch als Ausreisenachweis" },
     { label: "Uber", url: "https://www.uber.com/cr/de/", hinweis: "In San José und Umgebung" },
-    { label: "Google Flights", url: "https://www.google.com/travel/flights", hinweis: "Weiterflug und Rückflug" },
   ]],
   ["Schule und Mitarbeit", [
     { label: "Intercultura", url: "https://interculturacostarica.com", hinweis: "Heredia und Sámara" },
@@ -1945,6 +1954,8 @@ const DOKUMENTE = [
         "<b>iPhone 17:</b> Yallo-SIM für Nummer, Anrufe und SMS-Codes. Dazu die Saily-eSIM als Datenreserve, wenn die 5 GB von Yallo weg sind.",
         "<b>iPhone 12:</b> lokale Prepaid-SIM vor Ort – Tigo in Guatemala, Kölbi in Costa Rica. 15 bis 20 USD für 30 Tage, Pass zur Registrierung nötig.",
         "<b>Daten sparen:</b> Roaming-Kostenlimit bei Yallo auf 0 CHF, Datensparmodus ein, Foto-Upload und App-Downloads nur im WLAN, Offline-Karten vorher laden.",
+        "<b>Weitere Yallo-Einstellungen:</b> Premium-SMS blockiert, Roaming ein, Surfen im Flugzeug und via Satellit aus, Voicemail aus – sonst kostet jede hinterlassene Nachricht wie ein Auslandsanruf.",
+        "<b>Am ersten Tag prüfen:</b> Laufen die Daten über Yallo? Falls nicht, sperrt das 0-Franken-Limit auch das Inklusivvolumen – dann im Portal auf 20 CHF setzen.",
         "<b>Wenn die 5 GB weg sind:</b> Einstellungen → Mobilfunk → Mobile Daten → Saily. Die Yallo-SIM bleibt aktiv, Anrufe kommen weiter an.",
         "<b>Einmal pro Woche laden</b> – ein leeres Ersatzgerät nützt nichts.",
         "<b>iCloud-Fotos auf beiden Geräten ein</b> – dann liegen deine Bilder automatisch auch im Spind. Auf dem 12 „iPhone-Speicher optimieren“ wählen.",
@@ -3187,8 +3198,12 @@ const TODO_ALLE = [
   ["Vacanza-Rechnung nachfragen", "4. Sep", "Markus", false,
    ["Die QR-Rechnung ist nicht gekommen – bei Visana nachfragen.",
     "Ohne Zahlung keine Deckung. Einzahlen bis 6. September."]],
-  ["Flug Costa Rica buchen", "5. Sep", "Sophie", false],
-  ["Bus Nicaragua buchen", "5. Sep", "Sophie", false],
+  ["Flug Costa Rica buchen", "5. Sep", "Sophie", false,
+   ["Guatemala – San José, 22. Oktober. Copa und Avianca fliegen täglich.",
+    "Preise vergleichen, dann direkt bei der Airline buchen >> buchen|Flug"]],
+  ["Bus Nicaragua buchen", "5. Sep", "Sophie", false,
+   ["Dient als Ein- und Ausreisenachweis für Costa Rica.",
+    "Tica Bus oder Busbud >> buchen|Fahren"]],
   ["Rechn. Tour GT einzahlen", "5. Sep", "Sophie", false],
   ["Rechn. Hotel/Transfer einzahlen", "6. Sep", "Sophie", false],
   ["Vacanza-Prämie einzahlen", "6. Sep", "Markus", false],
@@ -3252,6 +3267,7 @@ const TODO_ALLE = [
     "Erst möglich, sobald der Flug gebucht ist – das Formular geht 14 Tage vor dem Reisetag auf."]],
   ["Unterkünfte für Oktober buchen", "30. Sep", "Sophie", false,
    ["Die Wochen buchen, in denen du allein unterwegs bist – ab 7. Oktober.",
+    "Hostelworld oder Booking >> buchen|Schlafen",
     "Vor dem Tourstart erledigen, während der Tour hast du kaum Zeit."]],
   ["Work-Exchange für Dezember suchen", "25. Okt", "Sophie", false,
    ["Worldpackers oder Workaway."]],
@@ -4596,8 +4612,21 @@ const termineKarte = (kopfNeu) => {
 
       if (offen === was) {
         const block = el("div", { class: "terminaufgaben" });
-        detail.forEach((p) => block.appendChild(
-          el("div", { class: "terminhinweis", html: p })));
+        detail.forEach((p) => {
+          /* "Text >> wissen|buchen" hängt einen Sprung an die Detailzeile. */
+          const teil = String(p).split(" >> ")[1];
+          if (!teil) {
+            block.appendChild(el("div", { class: "terminhinweis", html: p }));
+            return;
+          }
+          const [ziel, par] = teil.split("|");
+          block.appendChild(el("button", {
+            class: "terminhinweis sprungzeile",
+            onclick: (e) => { e.stopPropagation(); gehe(ziel, par || null); },
+          },
+            el("span", { html: ohneSprung(p) }),
+            el("span", { class: "sprungpfeil" }, svg("chevron", 14, "#B65A3C", 2))));
+        });
         block.appendChild(el("button", {
           class: "haken",
           onclick: () => {
