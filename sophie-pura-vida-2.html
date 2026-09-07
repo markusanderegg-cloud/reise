@@ -424,6 +424,8 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   border-top: 1px solid var(--linie); margin-top: 10px; padding-top: 2px;
 }
 .kopierknopf { padding: 10px 0; min-height: 40px; }
+.todoteilen { display: flex; justify-content: flex-end; margin: 2px 2px 6px; }
+.todoteilen .teilenknopf { padding: 6px 2px; min-height: 32px; font-weight: 600; }
 .listenfuss .ruecksetzen { margin-top: 0; }
 .ruecksetzen { display: none; margin-top: 12px; font-size: var(--ebene6); color: var(--grau); }
 
@@ -3032,7 +3034,7 @@ const PACKLISTE = [
   ["Kleidung", ["Hardshell-Regenjacke", "Fleece oder dünner Hoodie", "Dünnes Langarmshirt", "Merino-Longsleeve", "Trekkinghose", "Leichthose oder Leggings", "2× Shorts", "3× T-Shirts oder Tops", "Sarong", "Buff", "Cap", "Merinomütze", "Leichte Daunen- oder Primaloftjacke<i>für Cusco und kalte Nachtbusse</i>", "Dünne Handschuhe", "5× Unterwäsche", "3× Socken, davon 1 Paar Wandersocken", "Bikini", "Ein schickeres Teil für Abende"]],
   ["Schuhe", ["Salomon Wanderschuh", "Sandalen mit Fersenriemen", "Duschschlappen<i>fünf Monate Gemeinschaftsduschen</i>"]],
   ["Kulturbeutel", ["Festes Shampoo und Seife", "Zahnbürste und -pasta", "Sonnencreme LSF 50, riff-verträglich", "Lippenbalsam mit Lichtschutz", "DEET 50 % für den Dschungel", "Icaridin für den Alltag", "Mikrofaser-Handtuch L", "Reisewaschmittel", "Wäscheleine und Klammern", "Nagelknipser und Schere", "Kleines Nähset", "Feuchttücher und eine Rolle Klopapier<i>viele Toiletten haben keines</i>", "Alaunstein", "Monatshygiene", "Handdesinfektion", "Digitales Thermometer"]],
-  ["Elektronik", ["Smartphone<i>am Körper im Bodybag</i>", "Zweites iPhone als Backup<i>Handgepäck – deine Rückfallebene</i>", "Powerbank 10'000–20'000 mAh<i>Handgepäck ist Vorschrift, im Gepäck verboten</i>", "Kabelkopfhörer<i>Lightning für das iPhone 12 – ohne Akku, ohne Koppeln</i>", "iPad mini A17 Pro, falls es mitkommt<i>Handgepäck, nie in den aufgegebenen Rucksack</i>", "Apple Pencil Pro – passt nur zum mini A17 Pro<i>Handgepäck</i>", "Smart Folio als Schutzhülle", "Ladekabel USB-C für das iPhone 17<i>auch für iPad und Powerbank</i>",
+  ["Elektronik", ["Smartphone<i>am Körper im Bodybag</i>", "Zweites iPhone als Backup<i>Handgepäck – deine Rückfallebene</i>", "Powerbank 10'000–20'000 mAh<i>Handgepäck ist Vorschrift, im Gepäck verboten</i>", "Kabelkopfhörer<i>Lightning für das iPhone 12 – ohne Akku, ohne Koppeln</i>", "Ladekabel USB-C für das iPhone 17<i>auch für iPad und Powerbank</i>",
     "Ladekabel Lightning für das iPhone 12<i>anderer Anschluss – ohne dieses Kabel bleibt das Ersatzgerät leer</i>", "US-Netzteil mit USB-Ports", "CH→US-Adapter als Reserve", "Elektrotasche für Kabel und Kleinteile"]],
   ["Rucksack und Hostel", ["Patagonia Terravia 24 L", "Regenhülle für den grossen Rucksack", "Schlafbeutel: Seidenschlafsack, Schlafkleidung, Schlafmaske, Ohropax, Stirnlampe", "Filter-Trinkflasche", "Wasserdichte Handyhülle", "Stossfeste Hülle und Handykordel", "2–3 Dry Bags", "2 Karabiner", "Stahlkabel zum Anschliessen<i>ohne Kabel nützt das Schloss im Bus und im Hostel nichts</i>", "Zip-Beutel", "ABUS-Schloss für den Locker", "Zweites Zahlenschloss als Reserve", "Zipper-Schloss", "3× Packing Cubes (2× M, 1× S)", "Geruchsdichter Wäschebeutel", "Bodybag für Pass, Handy, Karte",
     "Karteikarten-Box mit RFID-Schutz"]],
@@ -3097,7 +3099,6 @@ const PACK_RUCKSACK = [
 
 const PACK_HAND = [
   "Elektrotasche ~ iPhone 12, Powerbank, Kabelkopfhörer, beide Ladekabel",
-  "iPad mini, Pencil Pro & Folio",
   "Nackenkissen, Schlafmaske, Ohropax",
   "Apotheke & Linsenlösung unter 100 ml",
   "Eine Garnitur Kleidung, Buff",
@@ -3167,7 +3168,13 @@ const WOCHE = [
 const WOCHE_WICHTIG = 3;
 
 const TODO_ALLE = [
-  ["Reisedossier durchlesen", "bis 6. Sep", "Sophie", false],
+  ["Reisedossier Alle Themen durchlesen", "bis 18. Sep", "Sophie", false],
+  ["Alle To-dos bis Abflugtag durchlesen", "11. Sep", "Sophie", false],
+  ["Dossier Handy durchlesen", "11. Sep", "Sophie", false],
+  ["Dossier Revolut durchlesen", "11. Sep", "Sophie", false],
+  ["Dossier Gesundheit durchlesen", "18. Sep", "Sophie", false],
+  ["Dossier Sprachschule durchlesen", "18. Sep", "Sophie", false],
+  ["Dossier Reise durchlesen", "18. Sep", "Sophie", false],
   ["Flug Guatemala buchen", "4. Sep", "Sophie", false],
   ["Flug-Nr. an Marco melden", "4. Sep", "Sophie", false,
    ["An Marco bei Globetrotter – er braucht sie für Transfer und Tourstart."],
@@ -3185,18 +3192,18 @@ const TODO_ALLE = [
     "Tica Bus oder Busbud >> buchen|Fahren"]],
   ["Rechn. Tour GT einzahlen", "5. Sep", "Sophie", false],
   ["Rechn. Hotel/Transfer einzahlen", "6. Sep", "Sophie", false],
-  ["Vacanza-Prämie einzahlen", "6. Sep", "Markus", false],
+  ["Vacanza-Prämie einzahlen", "bis 18. Sep", "Markus", false],
 
-  ["Saily-eSIM aufs iPhone 17 installieren", "10. Sep", "Markus", false,
+  ["Saily-eSIM aufs iPhone 17 installieren", "26. Sep", "Markus", false,
    ["App laden, Konto anlegen, Paket für Mittelamerika kaufen, eSIM installieren.",
     "Nur aufs iPhone 17 – das iPhone 12 bekommt vor Ort eine lokale SIM, keine eSIM."]],
-  ["Dokumente scannen", "10. Sep", "beide", false],
-  ["iPhone einrichten und sichern", "10. Sep", "Sophie", false,
+  ["Dokumente scannen", "26. Sep", "beide", false],
+  ["iPhone einrichten und sichern", "26. Sep", "Sophie", false,
    ["Kontrollzentrum im Sperrbildschirm aus, „Wo ist?“ vollständig ein, Diebstahlschutz ein.",
     "Zwei-Faktor prüfen, IMEI und Seriennummern notieren, Apps testen."]],
-  ["Fehlende Artikel einkaufen", "bis 11. Sep", "Sophie", false],
-  ["Deckung englisch Visana", "10. Sep", "Markus", false],
-  ["Sprachschule buchen – Start Mo 26. Okt", "20. Sep", "Sophie", false,
+  ["Fehlende Artikel einkaufen", "18. Sep", "Sophie", false],
+  ["Deckung englisch Visana", "24. Sep", "Markus", false],
+  ["Sprachschule buchen – Start Mo 26. Okt", "26. Sep", "Sophie", false,
    ["Direkt buchen, nicht über eine Agentur.",
     "Studentenwohnheim, Gastfamilie als zweite Wahl.",
     "Adresse notieren – wird bei der Einreise verlangt.",
@@ -3209,8 +3216,10 @@ const TODO_ALLE = [
   ["Unterkunft Heredia buchen – 4 Nächte", "12. Okt", "Sophie", false],
   ["Reiseerklärung Guatemala", "20. Sep", "Sophie", false,
    ["Vor dem Hinflug ausfüllen, QR-Code sichern."]],
-  ["Alle Reise-Apps installieren und testen", "20. Sep", "Sophie", false],
+  ["Alle Reise-Apps installieren und testen", "18. Sep", "Sophie", false],
   ["Notfallblatt ausfüllen", "20. Sep", "beide", false],
+  ["IMEI und Seriennummer aufs Notfallblatt notieren", "18. Sep", "Sophie", false,
+   ["Einstellungen → Allgemein → Info – für beide Geräte, Hauptgerät und iPhone 12."]],
   ["Passgültigkeit prüfen – sechs Monate über die Rückreise hinaus", "6. Sep", "Sophie", false],
   ["Kurzdossier drucken", "20. Sep", "Markus", false],
   ["Offline-Karten laden", "26. Sep", "Sophie", false],
@@ -3228,7 +3237,6 @@ const TODO_ALLE = [
   ["Bankkarten: Ablaufdatum und Reisemeldung", "6. Sep", "beide", false,
    ["Laufen die Karten über den Februar hinaus?",
     "Reise bei BKB und Revolut melden – sonst sperrt der Geoblocking-Schutz die Karte."]],
-  ["iPad mini A17 Pro, Pencil Pro, Folio prüfen", "8. Sep", "beide", false],
   ["Revolut einrichten und testen", "6. Sep", "Sophie", false,
    ["Auf beiden iPhones einrichten, vier Konten anlegen, einmal testen.",
     "Währungsrechner einrichten und zeigen."]],
@@ -4364,6 +4372,24 @@ const todoTabelle = () => {
      Gruppiert nach diese Woche, nächste Woche, später – sonst sind es zu viele. */
   const stand = hole("haken:alle", {});
   const box = el("div", { class: "todoliste" });
+
+  /* Alle offenen Aufgaben als Text – zum Teilen, z. B. per WhatsApp. */
+  const offeneAlle = TODO_ALLE.filter(([was]) => !stand[was]);
+  const teilenText = () => "Offene To-dos (" + offeneAlle.length + ")\n"
+    + offeneAlle.map(([was, datum]) => "☐ " + was + " – " + datum).join("\n");
+  const teilen = el("button", { class: "textknopf kopierknopf teilenknopf", onclick: async () => {
+    const text = teilenText();
+    if (navigator.share) {
+      try { await navigator.share({ text }); return; } catch (e) { /* abgebrochen: weiter zu Kopieren */ }
+    }
+    const fertig = () => { teilen.textContent = "kopiert";
+      setTimeout(() => { teilen.textContent = "Offene To-dos teilen"; }, 1600); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(fertig, () => altKopie(text, fertig));
+    } else altKopie(text, fertig);
+  } }, "Offene To-dos teilen");
+  box.appendChild(el("div", { class: "todoteilen" }, teilen));
+
   /* Spaltenbeschriftung über der ersten Gruppe. */
   box.appendChild(el("div", { class: "todospalten" },
     el("span", {}, ""),
