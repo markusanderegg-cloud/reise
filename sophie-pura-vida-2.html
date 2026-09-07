@@ -937,8 +937,9 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 .todozeile .box.an { background: var(--terra); border-color: var(--terra); }
 .todotext {
+  /* Nie abschneiden – sonst weiss man nicht, was zu tun ist. Bricht der Text
+     um, wächst die Zeile einfach; Kästchen und Datum bleiben zentriert. */
   font-size: var(--ebene5); color: #211C18; line-height: 1.35;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .todolead { font-size: var(--ebene7); color: #9C9284; white-space: nowrap; text-align: center; }
 .tododatum {
@@ -3186,7 +3187,9 @@ const TODO_ALLE = [
   ["Rechn. Hotel/Transfer einzahlen", "6. Sep", "Sophie", false],
   ["Vacanza-Prämie einzahlen", "6. Sep", "Markus", false],
 
-  ["eSIM auf beiden Geräten", "10. Sep", "beide", false],
+  ["Saily-eSIM aufs iPhone 17 installieren", "10. Sep", "Markus", false,
+   ["App laden, Konto anlegen, Paket für Mittelamerika kaufen, eSIM installieren.",
+    "Nur aufs iPhone 17 – das iPhone 12 bekommt vor Ort eine lokale SIM, keine eSIM."]],
   ["Dokumente scannen", "10. Sep", "beide", false],
   ["iPhone einrichten und sichern", "10. Sep", "Sophie", false,
    ["Kontrollzentrum im Sperrbildschirm aus, „Wo ist?“ vollständig ein, Diebstahlschutz ein.",
