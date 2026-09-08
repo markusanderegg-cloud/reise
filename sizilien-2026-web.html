@@ -939,6 +939,9 @@ function openStop(i){
 function closeStop(){
   OFFEN=null; merke();
   $('detview').className='overlay';
+  /* Kacheln im Hintergrund koennen sich waehrend der Detailansicht
+     geaendert haben (Haken, Budget) - beim Schliessen neu zeichnen. */
+  if(VIEW==='reise') renderReise();
   var y=SCROLLY;
   window.scrollTo(0,y);
   setTimeout(function(){
@@ -1007,19 +1010,17 @@ function detHotel(o){
   if(!o) return '';
   var st=''; for(var i=0;i<(o.sterne||0);i++)st+='\u2605';
   var h=heroFoto(o)+kopf('Unterkunft',o.name+(st?' '+st:''),'','',o.adresse);
+  h+=telFeld(o.tel,'Rezeption');
+  h+='<div class="feld"><div class="feld-lbl">Ankunft melden</div>'+
+     '<button class="feld-link" type="button" onclick="openMsgHotel('+o.nr+')">'+
+     'Text auf Italienisch \u00f6ffnen \u203a</button></div>';
   h+=hotelBild(o)+galerie(o);
   h+=aktionen({google:mapsUrl(o.name+', '+o.adresse),route:routeUrl(o.name+', '+o.adresse),
                tel:o.tel,mail:o.mail,web:o.website});
   h+=chips(o.chips||[]);
-
-  /* zuerst das, was man unterwegs braucht */
-  h+='<div class="feld"><div class="feld-lbl">Ankunft melden</div>'+
-     '<button class="feld-link" type="button" onclick="openMsgHotel('+o.nr+')">'+
-     'Text auf Italienisch \u00f6ffnen \u203a</button></div>';
   h+=dokumenteFuer(o);
 
   /* danach die Buchungsangaben */
-  h+=telFeld(o.tel,'Rezeption');
   h+=feld('Preis',esc(o.preisText||o.preis));
   h+=feld('Check-in & Check-out',esc(o.zeitraum||o.tagetext)+
      (o.checkin?'\n'+esc('Check-in-Fenster: '+o.checkin):''));
