@@ -1446,6 +1446,123 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   min-height: 32px; color: var(--ink);
 }
 
+/* ── Eigene Stationen (Route) ──────────────────────────────────── */
+.eigenkopf {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 14px 16px; border-bottom: 1px solid var(--linie);
+}
+.eigenweg {
+  flex-shrink: 0; width: 30px; height: 30px; border-radius: 15px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--sand); border: 0;
+}
+.eigenform {
+  padding: 14px 16px; display: flex; flex-direction: column; gap: 10px;
+}
+.eigenform .meldefeld {
+  width: 100%; border: 1px solid var(--linie); border-radius: 10px;
+  padding: 9px 10px; font-size: var(--ebene5); font-family: inherit; background: #fff;
+}
+.eigentypzeile { display: flex; gap: 8px; }
+.eigentyp {
+  flex: 1; border: 1px solid var(--linie); border-radius: 10px; padding: 8px 6px;
+  font-size: var(--ebene6); text-align: center; background: #fff;
+}
+.eigentyp.an { border-color: var(--terra); color: var(--terra); font-weight: 600; background: #FBF1EC; }
+
+/* Eigene Station im Zeitstrahl – wie eine echte Etappe, aber mit Kreuz
+   statt Nummer und gestricheltem Rand, damit klar ist: selbst hinzugefügt. */
+.eigenstation {
+  border: 1px dashed var(--sand-tief); border-radius: 12px;
+  padding: 10px 12px; margin-bottom: 10px; position: relative;
+}
+.eigenstation .eigenweg {
+  position: absolute; top: 8px; right: 8px;
+  width: 26px; height: 26px; border-radius: 13px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--sand); border: 0;
+}
+.eigenpunkt {
+  background: transparent !important; border: 2px dashed var(--grau) !important;
+  color: var(--grau) !important; font-size: 13px !important; font-weight: 700 !important;
+}
+.eigenselect {
+  width: 100%; border: 1px solid var(--linie); border-radius: 10px;
+  padding: 9px 10px; font-size: var(--ebene5); font-family: inherit; background: #fff;
+  -webkit-appearance: none; appearance: none;
+}
+
+.neuerstoppknopf {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 4px; font-weight: 600; margin-bottom: 4px;
+}
+
+.eigennotiz { resize: vertical; min-height: 60px; }
+
+.eigenform input[type="date"] { color: var(--ink); }
+
+.eigentodo {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 9px 2px; border-bottom: 1px solid #F5F0E8; font-size: var(--ebene6);
+}
+.eigentodo .eigenweg { width: 24px; height: 24px; border-radius: 12px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; background: var(--sand); border: 0; }
+
+/* Kompakte Zeile: Beschriftung links, Feld rechts – für kurze Eingaben
+   wie Was/Wer/Wann/Kategorie bei einem eigenen To-do. */
+.meldezeile {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+}
+.meldezeile .klein { flex: 0 0 70px; }
+.meldezeile .meldefeld { flex: 1; min-width: 0; }
+
+/* ── Eigenständiges To-do-Formular ─────────────────────────────── */
+.neuesformular {
+  background: var(--karte); border: 1px solid var(--linie); border-radius: 16px;
+  padding: 4px 16px 18px; margin-bottom: 4px;
+}
+.formkopf {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 0 10px; border-bottom: 1px solid var(--linie); margin-bottom: 16px;
+}
+.formtitel { font-size: var(--ebene3); font-weight: 600; color: #211C18; }
+.formzu {
+  width: 30px; height: 30px; border-radius: 15px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--sand); border: 0;
+}
+.formfeld {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+}
+.formlabel {
+  flex: 0 0 78px; font-size: var(--ebene6); color: var(--grau);
+  font-weight: 600; text-transform: uppercase; letter-spacing: .02em;
+}
+.formfeld .meldefeld {
+  flex: 1; min-width: 0; width: 100%; max-width: 100%; box-sizing: border-box;
+  border: 1px solid var(--linie); border-radius: 10px;
+  padding: 14px 12px; font-size: var(--ebene5); font-family: inherit; background: #fff;
+}
+.formfeld .meldefeld:focus { outline: none; border-color: var(--terra); }
+.formfeld input[type="date"] {
+  appearance: none; -webkit-appearance: none; min-height: 48px;
+}
+.formspeichern {
+  width: 100%; background: var(--terra); color: #fff; border-radius: 12px;
+  padding: 13px 0; font-weight: 600; text-align: center; margin-top: 4px;
+}
+
+
+/* Eigene To-do-Zeile: gleiche Optik wie die übrigen, nur mit Löschknopf
+   in einer zusätzlichen, schmalen letzten Spalte. */
+.todozeile.eigenzeile {
+  grid-template-columns: 22px 30px 1fr 50px 22px; cursor: pointer;
+}
+.eigenzeileweg {
+  width: 22px; height: 22px; border-radius: 11px; border: 0; background: none;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+
 </style>
 </head>
 <body>
@@ -3296,6 +3413,22 @@ const NACH_DATUM = [
   "<b>vor Abflug</b> Rucksack wiegen – Ziel 10 kg",
 ];
 
+const TOUR_ALLGEMEIN = [
+  "Reisecode oder Bestätigung bereit",
+  "Treffpunkt und Uhrzeit notiert",
+  "Kontaktnummer des Anbieters gespeichert",
+  "Was inbegriffen ist geklärt – Verpflegung, Ausrüstung",
+  "Zahlung erledigt",
+];
+
+const ABFLUG_ALLGEMEIN = [
+  "Tickets bereit – Bus oder Flug",
+  "Weiterreisenachweis griffbereit, falls nötig",
+  "Gepäck gewogen, Limit geprüft",
+  "Wertsachen im Tagesrucksack, nicht im aufgegebenen Gepäck",
+  "Zu Hause gesagt, wohin du fährst",
+];
+
 const VOR_ABFLUG = [
   "Nach Packordnung „Im Flugzeug“ gepackt<i>Rucksack, Handgepäck, Bodybag – Gewicht unter dem Limit der Airline</i> >> heute|packen",
   "Alle Tickets gebucht und ausgedruckt",
@@ -3367,6 +3500,7 @@ let vorSuche = "start";
 let zurueckZu = null;   // woher der letzte Sprung kam
 let offeneStation = null;   // welche Station in der Route offen ist
 let bereichHeute = "todos";   // todos · checklisten · packen
+let todoFormOffen = false;   // Formular "Neues To-do" auf oder zu
 
 /* ── kleine Helfer ─────────────────────────────────────────────── */
 
@@ -3435,6 +3569,8 @@ const ICON = {
   shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
   edit: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
   chevron: '<path d="m6 9 6 6 6-6"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  x: '<path d="m18 6-12 12M6 6l12 12"/>',
   home: '<path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>',
   kreuz: '<rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M12 10v5M9.5 12.5h5"/>',
   ordner: '<path d="M3 7.5a2 2 0 0 1 2-2h4l2 2.5h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
@@ -3683,6 +3819,7 @@ const hakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig = 0
       "vorreise": ["Wochen vorher", VOR_REISE],
       "ankunft": ["Angekommen · FAZIT", ANKUNFT],
       "ortswechsel": ["Weiterreise", ORTSWECHSEL],
+      "abflug-allgemein": ["Abflug", ABFLUG_ALLGEMEIN],
       "pack:inland": ["Packordnung Inland", PACK_INLAND],
       "pack:rucksack": ["Reiserucksack", PACK_RUCKSACK],
       "pack:hand": ["Handgepäck", PACK_HAND],
@@ -4374,8 +4511,56 @@ const todoTabelle = () => {
   const stand = hole("haken:alle", {});
   const box = el("div", { class: "todoliste" });
 
+  const MONATSKURZ = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"];
+  const todoDatumKurz = (iso) => {
+    if (!iso) return "";
+    const [j, m, t] = iso.split("-").map(Number);
+    return t + ". " + MONATSKURZ[m - 1];
+  };
+
+  /* Offen: nur das Formular, ganz für sich – die laufende Liste lenkt sonst ab. */
+  if (todoFormOffen) {
+    const karte = el("div", { class: "neuesformular" });
+    karte.appendChild(el("div", { class: "formkopf" },
+      el("span", { class: "formtitel" }, "Neues To-do"),
+      el("button", { class: "formzu", "aria-label": "Schliessen", onclick: () => {
+        todoFormOffen = false; zeichnen();
+      } }, svg("x", 16, "#8B8175", 2))));
+    const wasfeld = el("input", { class: "meldefeld", placeholder: "z. B. Zweite Nacht in Sámara buchen" });
+    const werfeld = el("select", { class: "meldefeld eigenselect" },
+      el("option", { value: "Sophie" }, "Sophie"),
+      el("option", { value: "beide" }, "beide"));
+    const wannfeld = el("input", { class: "meldefeld", type: "date" });
+    const themafeld = el("input", { class: "meldefeld", placeholder: "z. B. Tour, Wasserfall (optional)" });
+    const feld = (label, eingabe) => el("div", { class: "formfeld" },
+      el("span", { class: "formlabel" }, label), eingabe);
+    karte.appendChild(feld("Was", wasfeld));
+    karte.appendChild(feld("Wer", werfeld));
+    karte.appendChild(feld("Wann", wannfeld));
+    karte.appendChild(feld("Thema", themafeld));
+    karte.appendChild(el("button", { class: "textknopf kopierknopf formspeichern", onclick: () => {
+      const was = wasfeld.value.trim();
+      if (!was) return;
+      const liste = hole("eigeneToDos", []);
+      liste.push({
+        id: "et" + Date.now(), was, wer: werfeld.value,
+        datum: todoDatumKurz(wannfeld.value) || "ohne Datum",
+        thema: themafeld.value.trim(),
+      });
+      merke("eigeneToDos", liste);
+      todoFormOffen = false;
+      zeichnen();
+    } }, "Speichern"));
+    box.appendChild(karte);
+    return box;
+  }
+  box.appendChild(el("button", {
+    class: "textknopf neuerstoppknopf", onclick: () => { todoFormOffen = true; zeichnen(); },
+  }, svg("plus", 15, "#B65A3C", 2.2), el("span", {}, "Neues To-do")));
+
   /* Alle offenen Aufgaben als Text – zum Teilen, z. B. per WhatsApp. */
-  const offeneAlle = TODO_ALLE.filter(([was]) => !stand[was]);
+  const eigeneFuerTeilen = hole("eigeneToDos", []).map((et) => [et.was, et.datum, et.wer, false]);
+  const offeneAlle = TODO_ALLE.concat(eigeneFuerTeilen).filter(([was]) => !stand[was]);
   const teilenText = () => "Offene To-dos (" + offeneAlle.length + ")\n"
     + offeneAlle.map(([was, datum]) => "☐ " + was + " – " + datum).join("\n");
   const teilen = el("button", { class: "textknopf kopierknopf teilenknopf", onclick: async () => {
@@ -4398,7 +4583,8 @@ const todoTabelle = () => {
     el("span", {}, "To-do"),
     el("span", { class: "tododatum" }, "Datum")));
 
-  const MONATE = { Sep: 8, Okt: 9, Nov: 10, Dez: 11, Jan: 0, Feb: 1, Aug: 7 };
+  const MONATE = { Jan: 0, Feb: 1, Mär: 2, Apr: 3, Mai: 4, Jun: 5,
+    Jul: 6, Aug: 7, Sep: 8, Okt: 9, Nov: 10, Dez: 11 };
   const heute = new Date();
   heute.setHours(0, 0, 0, 0);
   /* Montag dieser Woche */
@@ -4436,7 +4622,8 @@ const todoTabelle = () => {
     for (const [muster, nr] of THEMEN) if (muster.test(was)) return nr;
     return 5;
   };
-  const sortiert = TODO_ALLE.slice().sort((a, b) =>
+  const eigeneAlsZeilen = hole("eigeneToDos", []).map((et) => [et.was, et.datum, et.wer, false, null, null, et.id]);
+  const sortiert = TODO_ALLE.concat(eigeneAlsZeilen).sort((a, b) =>
     tag(a[1]) - tag(b[1]) || thema(a[0]) - thema(b[0]));
 
   /* Je Woche eine Gruppe – so bleiben auch die späteren Aufgaben übersichtlich. */
@@ -4461,6 +4648,8 @@ const todoTabelle = () => {
     const vorsatz = /^bis/i.test(text) ? "bis " : "";
     return vorsatz + TAGE[d.getDay()] + " " + kurz;
   };
+
+  /* Spaltenbeschriftung über der ersten Gruppe. */
 
   const gruppen = [];
   const finde = (titel) => {
@@ -4513,9 +4702,33 @@ const todoTabelle = () => {
     box.appendChild(zeilen);
     eintraege.forEach((eintrag) => {
       const [was, datum, lead] = eintrag;
+      const eigenId = eintrag[6];
       const ab = stand[was];
       /* Hängt die Aufgabe an einer anderen, bleibt sie grau und gesperrt. */
       const wartet = ab ? null : gesperrtDurch(eintrag, stand);
+      const inhaltZeile = [
+        el("span", { class: "box klein" + (ab ? " an" : "") },
+          ab ? svg("check", 11, "#fff", 3) : null),
+        el("span", { class: "todolead" }, leadZeichen(lead)),
+        el("span", { class: "todotext", html: was }),
+        el("span", { class: "tododatum" }, wartet ? "wartet" : mitTag(datum)),
+      ];
+      if (eigenId) {
+        /* Eigene Zeile: exakt dieselbe Optik, nur als div mit einem echten
+           Löschknopf zusätzlich – zwei Buttons ineinander sind kein gültiges HTML. */
+        const zeile = el("div", {
+          class: "todozeile eigenzeile" + (ab ? " ab" : "") + (wartet ? " wartet" : ""),
+        }, ...inhaltZeile,
+          el("button", { class: "eigenzeileweg", "aria-label": "To-do entfernen", onclick: (e) => {
+            e.stopPropagation();
+            merke("eigeneToDos", hole("eigeneToDos", []).filter((x) => x.id !== eigenId));
+            delete stand[was]; merke("haken:alle", stand);
+            zeichnen();
+          } }, svg("x", 12, "#A08C7D", 2)));
+        if (!wartet) zeile.onclick = () => { stand[was] = !stand[was]; merke("haken:alle", stand); zeichnen(); };
+        zeilen.appendChild(zeile);
+        return;
+      }
       const zeilenAttr = {
         class: "todozeile" + (ab ? " ab" : "") + (wartet ? " wartet" : ""),
         onclick: () => {
@@ -4524,12 +4737,7 @@ const todoTabelle = () => {
         },
       };
       if (wartet) zeilenAttr.disabled = "disabled";
-      zeilen.appendChild(el("button", zeilenAttr,
-        el("span", { class: "box klein" + (ab ? " an" : "") },
-          ab ? svg("check", 11, "#fff", 3) : null),
-        el("span", { class: "todolead" }, leadZeichen(lead)),
-        el("span", { class: "todotext", html: was }),
-        el("span", { class: "tododatum" }, wartet ? "wartet" : mitTag(datum))));
+      zeilen.appendChild(el("button", zeilenAttr, ...inhaltZeile));
     });
   });
 
@@ -4934,6 +5142,7 @@ const seiteNotfall = () => {
       "vorreise": ["Wochen vorher", VOR_REISE],
       "ankunft": ["Angekommen · FAZIT", ANKUNFT],
       "ortswechsel": ["Weiterreise", ORTSWECHSEL],
+      "abflug-allgemein": ["Abflug", ABFLUG_ALLGEMEIN],
       "pack:inland": ["Packordnung Inland", PACK_INLAND],
       "pack:rucksack": ["Reiserucksack", PACK_RUCKSACK],
       "pack:hand": ["Handgepäck", PACK_HAND],
@@ -5358,6 +5567,7 @@ const seiteRoute = () => {
   let station = (param && param.station) || null;
   offeneStation = station;
   let land = (param && param.land) || "guatemala";
+  let formularOffen = false;
 
   const farbe = { guatemala: "gt", costarica: "cr", schweiz: "ch" };
 
@@ -5417,6 +5627,7 @@ const seiteRoute = () => {
       "vorreise": ["Wochen vorher", VOR_REISE],
       "ankunft": ["Angekommen · FAZIT", ANKUNFT],
       "ortswechsel": ["Weiterreise", ORTSWECHSEL],
+      "abflug-allgemein": ["Abflug", ABFLUG_ALLGEMEIN],
       "pack:inland": ["Packordnung Inland", PACK_INLAND],
       "pack:rucksack": ["Reiserucksack", PACK_RUCKSACK],
       "pack:hand": ["Handgepäck", PACK_HAND],
@@ -5622,8 +5833,142 @@ const seiteRoute = () => {
     }
 
     /* Die Route als Zeitachse */
+    /* Allgemeine, ortsunabhängige Schritte – dieselbe Machart wie bei den
+       echten Ankünften, nur ohne landesspezifische Fakten, die wir für
+       einen noch unbekannten Ort nicht wissen können. */
+    const eigenFlughafen = (ort) => [
+      "<b>1</b> Passkontrolle: Rückreise- oder Weiterreiseticket bereithalten.",
+      "<b>2</b> Einreisestempel im Pass kontrollieren, bevor du weitergehst.",
+      "<b>3</b> Gepäck holen, Zoll meist grün.",
+      "<b>4</b> Geld am Automaten in der Halle abheben, Landeswährung wählen.",
+      "<b>5</b> SIM oder Roaming prüfen, Nachricht nach Hause.",
+      "<b>6</b> Transfer zur Unterkunft klären" + (ort ? " – " + ort + "." : "."),
+    ];
+    const eigenVorFlug = (ort) => [
+      "<b>1</b> Tickets bereit" + (ort ? ", Ziel " + ort + "." : "."),
+      "<b>2</b> Weiterreisenachweis griffbereit, falls nötig.",
+      "<b>3</b> Gepäck gewogen, Limit geprüft.",
+      "<b>4</b> Wertsachen im Tagesrucksack, nicht im aufgegebenen Gepäck.",
+      "<b>5</b> Zu Hause gesagt, wohin du fährst.",
+    ];
+    /* Eine eigene Karte sieht aus wie eine Station, mit Kreuz statt Nummer,
+       darunter je nach Typ eine oder zwei Karten – offen, ohne Umweg. */
+    const eigeneKarte = (es, ziel) => {
+      ziel.appendChild(el("div", { class: "etappe eigenstation" },
+        el("div", { class: "etappekopf" },
+          el("span", { class: "punkt eigenpunkt" }, "+"),
+          el("div", { class: "etappenort" }, es.titel)),
+        el("div", { class: "etappenzeit" }, es.datum),
+        el("button", { class: "eigenweg", "aria-label": "Eintrag entfernen", onclick: () => {
+          merke("eigeneStationen", hole("eigeneStationen", []).filter((x) => x.id !== es.id));
+          merke("haken:eigen:" + es.id, {});
+          zeichne();
+        } }, svg("x", 15, "#A08C7D", 2))));
+      if (es.notiz) {
+        ziel.appendChild(faltblock("Deine Notizen", [es.notiz.replace(/\n/g, "<br>")], true));
+      }
+      if (es.typ === "ankunft") {
+        ziel.appendChild(faltblock("Am Flughafen" + (es.ort ? " · " + es.ort : ""),
+          eigenFlughafen(es.ort), true));
+        ziel.appendChild(faltHakenliste("Angekommen · FAZIT", ANKUNFT, "eigen:" + es.id, true, 0, true));
+      } else if (es.typ === "abflug") {
+        ziel.appendChild(faltblock("Vor dem Flug" + (es.ort ? " · " + es.ort : ""),
+          eigenVorFlug(es.ort), true));
+      } else if (es.typ === "ortswechsel") {
+        ziel.appendChild(faltHakenliste("Weiterreise", ORTSWECHSEL, "eigen:" + es.id, true, 0, true));
+      } else if (es.typ === "tour") {
+        ziel.appendChild(faltHakenliste("Tour", TOUR_ALLGEMEIN, "eigen:" + es.id, true, 0, true));
+      }
+    };
+    const eigeneNach = (stationId, ziel) => {
+      hole("eigeneStationen", [])
+        .filter((es) => es.nach === stationId)
+        .forEach((es) => eigeneKarte(es, ziel));
+    };
+
+    /* Knopf ganz oben – klappt das Formular direkt darunter auf, kein
+       Scrollen bis ans Ende der Route nötig. */
+    inhalt.appendChild(el("button", {
+      class: "textknopf neuerstoppknopf", onclick: () => { formularOffen = !formularOffen; zeichne(); },
+    },
+      svg(formularOffen ? "chevron" : "plus", 15, "#B65A3C", 2.2),
+      el("span", {}, "Neuer Stopp")));
+
+    if (formularOffen) {
+      let neuTyp = "ankunft";
+      let neuNach = STATIONEN[STATIONEN.length - 1].id;
+      const formBand = el("div", { class: "blockband flach eigenform" });
+      const WOCHENTAGE = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
+      const MONATSNAMEN = ["Januar", "Februar", "März", "April", "Mai", "Juni",
+        "Juli", "August", "September", "Oktober", "November", "Dezember"];
+      const datumLesbar = (iso) => {
+        if (!iso) return "";
+        const [j, m, t] = iso.split("-").map(Number);
+        const d = new Date(j, m - 1, t);
+        return WOCHENTAGE[d.getDay()] + ", " + t + ". " + MONATSNAMEN[m - 1];
+      };
+      const titelfeld = el("input", { class: "meldefeld", placeholder: "z. B. Abflug nach Brasilien" });
+      const ortfeld = el("input", { class: "meldefeld", placeholder: "z. B. Flughafen São Paulo (optional)" });
+      const datumfeld = el("input", { class: "meldefeld", type: "date" });
+      const notizfeld = el("textarea", { class: "meldefeld eigennotiz", rows: "3",
+        placeholder: "Eigene Notizen (optional) – Adresse, Name, was du sonst noch weisst" });
+      const nachfeld = el("select", { class: "meldefeld eigenselect" },
+        el("option", { value: "start" }, "Ganz am Anfang"),
+        STATIONEN.map((S) => el("option", { value: S.id }, "Nach: " + S.titel)));
+      nachfeld.value = neuNach;
+      nachfeld.oninput = (e) => { neuNach = e.target.value; };
+      const KATEGORIE_TEXT = {
+        ankunft: "Ankunft", abflug: "Abflug", ortswechsel: "Weiterreise",
+        tour: "Tour", sonstiges: "",
+      };
+      const KATEGORIE_PLATZHALTER = {
+        ankunft: "z. B. in Brasilien", abflug: "z. B. nach Brasilien",
+        ortswechsel: "z. B. nach Lima", tour: "z. B. Kaffeeplantage",
+        sonstiges: "z. B. Geburtstag von Mia",
+      };
+      const typfeld = el("select", { class: "meldefeld eigenselect" },
+        el("option", { value: "ankunft" }, "Ankunft · mit FAZIT"),
+        el("option", { value: "abflug" }, "Abflug"),
+        el("option", { value: "ortswechsel" }, "Weiterreise"),
+        el("option", { value: "tour" }, "Tour"),
+        el("option", { value: "sonstiges" }, "Sonstiges"));
+      typfeld.value = neuTyp;
+      typfeld.oninput = (e) => { neuTyp = e.target.value; titelfeld.placeholder = KATEGORIE_PLATZHALTER[neuTyp]; };
+      titelfeld.placeholder = KATEGORIE_PLATZHALTER[neuTyp];
+      formBand.appendChild(el("div", { class: "meldelabel" },
+        el("span", { class: "klein" }, "Tätigkeit"), typfeld));
+      formBand.appendChild(el("div", { class: "meldelabel" },
+        el("span", { class: "klein" }, "Titel"), titelfeld));
+      formBand.appendChild(el("div", { class: "meldelabel" },
+        el("span", { class: "klein" }, "Ort oder Flughafen"), ortfeld));
+      formBand.appendChild(el("div", { class: "meldelabel" },
+        el("span", { class: "klein" }, "Datum"), datumfeld));
+      formBand.appendChild(el("div", { class: "meldelabel" },
+        el("span", { class: "klein" }, "Eigene Notizen"), notizfeld));
+      formBand.appendChild(el("div", { class: "meldelabel" },
+        el("span", { class: "klein" }, "Wo einsortieren"), nachfeld));
+      formBand.appendChild(el("button", { class: "textknopf kopierknopf", onclick: () => {
+        const rest = titelfeld.value.trim();
+        if (!rest) return;
+        const vorsatz = KATEGORIE_TEXT[neuTyp];
+        const titel = vorsatz ? vorsatz + " " + rest : rest;
+        const liste = hole("eigeneStationen", []);
+        liste.push({
+          id: "es" + Date.now(), titel, ort: ortfeld.value.trim(),
+          datum: datumLesbar(datumfeld.value) || "Datum offen",
+          notiz: notizfeld.value.trim(),
+          typ: neuTyp, nach: neuNach,
+        });
+        merke("eigeneStationen", liste);
+        formularOffen = false;
+        zeichne();
+      } }, "Speichern – erscheint unten in der Route"));
+      inhalt.appendChild(formBand);
+    }
+
     let letztes = null;
     let strang = null;
+    eigeneNach("start", inhalt);
     STATIONEN.forEach((S) => {
       const k = S.land || "peru";
       if (k !== letztes) {
@@ -5678,7 +6023,9 @@ const seiteRoute = () => {
         inh.classList.add("offenerinhalt");   /* markiert das Ende der Station */
         strang.appendChild(inh);
       }
+      eigeneNach(S.id, strang);
     });
+
   };
 
   wrap.appendChild(inhalt);
