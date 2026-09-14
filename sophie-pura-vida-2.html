@@ -426,6 +426,22 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .kopierknopf { padding: 10px 0; min-height: 40px; }
 .todoteilen { display: flex; justify-content: flex-end; margin: 2px 2px 6px; }
 .todoteilen .teilenknopf { padding: 6px 2px; min-height: 32px; font-weight: 600; }
+/* Kopfzeile mit den beiden Aktionen: klar getrennt, kein Text der überläuft. */
+.todokopfzeile {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  margin: 4px 4px 14px;
+}
+.todoaktion {
+  display: flex; align-items: center; gap: 6px; border: 0; white-space: nowrap;
+}
+.todoaktion-primaer {
+  background: var(--terra); color: #fff; font-weight: 600; font-size: var(--ebene6);
+  padding: 9px 14px 9px 12px; border-radius: 20px;
+}
+.teilenknopf {
+  background: var(--sand); color: #6B6259; font-weight: 600; font-size: var(--ebene6);
+  padding: 9px 13px; border-radius: 20px;
+}
 .listenfuss .ruecksetzen { margin-top: 0; }
 .ruecksetzen { display: none; margin-top: 12px; font-size: var(--ebene6); color: var(--grau); }
 
@@ -926,7 +942,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 .todokopf + .todokopf { border-top: 1px solid var(--linie); }
 .todozeile {
-  min-height: 37px; padding-top: 6.5px; padding-bottom: 6.5px;
+  min-height: 33px; padding-top: 5px; padding-bottom: 5px;
   border-bottom: 1px solid #F5F0E8;
 }
 .todozeile:last-child { border-bottom: 0; }
@@ -1519,11 +1535,11 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 /* ── Eigenständiges To-do-Formular ─────────────────────────────── */
 .neuesformular {
   background: var(--karte); border: 1px solid var(--linie); border-radius: 16px;
-  padding: 4px 16px 18px; margin-bottom: 4px;
+  padding: 6px 20px 22px; margin-bottom: 4px;
 }
 .formkopf {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 0 10px; border-bottom: 1px solid var(--linie); margin-bottom: 16px;
+  padding: 16px 0 14px; border-bottom: 1px solid var(--linie); margin-bottom: 20px;
 }
 .formtitel { font-size: var(--ebene3); font-weight: 600; color: #211C18; }
 .formzu {
@@ -1531,25 +1547,33 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   display: flex; align-items: center; justify-content: center;
   background: var(--sand); border: 0;
 }
-.formfeld {
-  display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+.formabschnitt { margin-bottom: 20px; }
+.formueberschrift {
+  display: block; font-size: var(--ebene6); color: var(--grau);
+  font-weight: 600; text-transform: uppercase; letter-spacing: .03em; margin-bottom: 10px;
 }
-.formlabel {
-  flex: 0 0 78px; font-size: var(--ebene6); color: var(--grau);
-  font-weight: 600; text-transform: uppercase; letter-spacing: .02em;
+.formzeile { display: flex; gap: 10px; }
+.formzeile .meldefeld { flex: 1; min-width: 0; }
+.meldefeld {
+  width: 100%; box-sizing: border-box;
+  border: 1px solid var(--linie); border-radius: 12px;
+  padding: 14px 14px; font-size: var(--ebene5); font-family: inherit; background: #fff;
 }
-.formfeld .meldefeld {
-  flex: 1; min-width: 0; width: 100%; max-width: 100%; box-sizing: border-box;
-  border: 1px solid var(--linie); border-radius: 10px;
-  padding: 14px 12px; font-size: var(--ebene5); font-family: inherit; background: #fff;
-}
-.formfeld .meldefeld:focus { outline: none; border-color: var(--terra); }
-.formfeld input[type="date"] {
+.meldefeld.formgross { font-size: var(--ebene4); padding: 15px 14px; }
+.meldefeld:focus { outline: none; border-color: var(--terra); }
+input[type="date"].meldefeld {
   appearance: none; -webkit-appearance: none; min-height: 48px;
 }
+/* Pillen wie im Sizilien-Vorbild: rund, viel Weissraum, aktiv in Terracotta. */
+.pillenzeile { display: flex; gap: 10px; flex-wrap: wrap; }
+.pille {
+  border: 1px solid var(--linie); border-radius: 22px; background: #fff;
+  padding: 11px 22px; font-size: var(--ebene5); color: #211C18;
+}
+.pille.an { border-color: var(--terra); color: var(--terra); font-weight: 600; }
 .formspeichern {
   width: 100%; background: var(--terra); color: #fff; border-radius: 12px;
-  padding: 13px 0; font-weight: 600; text-align: center; margin-top: 4px;
+  padding: 15px 0; font-weight: 600; text-align: center; margin-top: 6px; font-size: var(--ebene5);
 }
 
 
@@ -1562,6 +1586,22 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   width: 22px; height: 22px; border-radius: 11px; border: 0; background: none;
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
+
+/* Eigene, oben fixierte Karte für "Neues To-do" / "Teilen" – bleibt beim
+   Scrollen stehen, direkt unter der fixen Kopfleiste (63px hoch). */
+/* Titel und Aktionskarte zusammen als eine sticky-Einheit direkt unter der
+   Kopfleiste – beide zusammen reservieren ihren Platz gemeinsam, die Liste
+   kann darunter nicht mehr durchrutschen. */
+.todoklebt {
+  position: sticky; top: 63px; z-index: 40;
+  background: var(--karte); padding-top: 10px; padding-bottom: 12px;
+}
+.todoklebt .kopf { padding: 0; }
+.todokopfkarte {
+  border: 1px solid var(--linie);
+  border-radius: 14px; padding: 4px; margin-top: 8px;
+}
+.todokopfkarte .todokopfzeile { margin: 4px; }
 
 </style>
 </head>
@@ -3569,6 +3609,7 @@ const ICON = {
   shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
   edit: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
   chevron: '<path d="m6 9 6 6 6-6"/>',
+  share: '<path d="M12 3v12M8 7l4-4 4 4M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
   x: '<path d="m18 6-12 12M6 6l12 12"/>',
   home: '<path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>',
@@ -4526,24 +4567,35 @@ const todoTabelle = () => {
       el("button", { class: "formzu", "aria-label": "Schliessen", onclick: () => {
         todoFormOffen = false; zeichnen();
       } }, svg("x", 16, "#8B8175", 2))));
-    const wasfeld = el("input", { class: "meldefeld", placeholder: "z. B. Zweite Nacht in Sámara buchen" });
-    const werfeld = el("select", { class: "meldefeld eigenselect" },
-      el("option", { value: "Sophie" }, "Sophie"),
-      el("option", { value: "beide" }, "beide"));
+    const wasfeld = el("input", { class: "meldefeld formgross", placeholder: "Was steht an?" });
+    let wer = "Sophie";
     const wannfeld = el("input", { class: "meldefeld", type: "date" });
-    const themafeld = el("input", { class: "meldefeld", placeholder: "z. B. Tour, Wasserfall (optional)" });
-    const feld = (label, eingabe) => el("div", { class: "formfeld" },
-      el("span", { class: "formlabel" }, label), eingabe);
-    karte.appendChild(feld("Was", wasfeld));
-    karte.appendChild(feld("Wer", werfeld));
-    karte.appendChild(feld("Wann", wannfeld));
-    karte.appendChild(feld("Thema", themafeld));
+    const themafeld = el("input", { class: "meldefeld", placeholder: "Thema (optional)" });
+
+    karte.appendChild(el("div", { class: "formabschnitt" }, wasfeld));
+
+    const werKnopf = (wert) => el("button", {
+      class: "pille" + (wer === wert ? " an" : ""),
+      onclick: () => { wer = wert; zeichneWer(); },
+    }, wert);
+    const werZeile = el("div", { class: "pillenzeile" });
+    const zeichneWer = () => {
+      werZeile.innerHTML = "";
+      werZeile.appendChild(werKnopf("Sophie"));
+      werZeile.appendChild(werKnopf("beide"));
+    };
+    zeichneWer();
+    karte.appendChild(el("div", { class: "formabschnitt" },
+      el("span", { class: "formueberschrift" }, "Wer"), werZeile));
+
+    karte.appendChild(el("div", { class: "formabschnitt formzeile" }, wannfeld, themafeld));
+
     karte.appendChild(el("button", { class: "textknopf kopierknopf formspeichern", onclick: () => {
       const was = wasfeld.value.trim();
       if (!was) return;
       const liste = hole("eigeneToDos", []);
       liste.push({
-        id: "et" + Date.now(), was, wer: werfeld.value,
+        id: "et" + Date.now(), was, wer,
         datum: todoDatumKurz(wannfeld.value) || "ohne Datum",
         thema: themafeld.value.trim(),
       });
@@ -4552,36 +4604,33 @@ const todoTabelle = () => {
       zeichnen();
     } }, "Speichern"));
     box.appendChild(karte);
-    return box;
+    return { kopfkarte: null, box };
   }
-  box.appendChild(el("button", {
-    class: "textknopf neuerstoppknopf", onclick: () => { todoFormOffen = true; zeichnen(); },
-  }, svg("plus", 15, "#B65A3C", 2.2), el("span", {}, "Neues To-do")));
-
   /* Alle offenen Aufgaben als Text – zum Teilen, z. B. per WhatsApp. */
   const eigeneFuerTeilen = hole("eigeneToDos", []).map((et) => [et.was, et.datum, et.wer, false]);
   const offeneAlle = TODO_ALLE.concat(eigeneFuerTeilen).filter(([was]) => !stand[was]);
   const teilenText = () => "Offene To-dos (" + offeneAlle.length + ")\n"
     + offeneAlle.map(([was, datum]) => "☐ " + was + " – " + datum).join("\n");
-  const teilen = el("button", { class: "textknopf kopierknopf teilenknopf", onclick: async () => {
-    const text = teilenText();
-    if (navigator.share) {
-      try { await navigator.share({ text }); return; } catch (e) { /* abgebrochen: weiter zu Kopieren */ }
-    }
-    const fertig = () => { teilen.textContent = "kopiert";
-      setTimeout(() => { teilen.textContent = "Offene To-dos teilen"; }, 1600); };
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(fertig, () => altKopie(text, fertig));
-    } else altKopie(text, fertig);
-  } }, "Offene To-dos teilen");
-  box.appendChild(el("div", { class: "todoteilen" }, teilen));
+  const teilenLabel = el("span", {}, "Teilen");
+  const teilen = el("button", { class: "todoaktion teilenknopf", "aria-label": "Offene To-dos teilen",
+    onclick: async () => {
+      const text = teilenText();
+      if (navigator.share) {
+        try { await navigator.share({ text }); return; } catch (e) { /* abgebrochen: weiter zu Kopieren */ }
+      }
+      const fertig = () => { teilenLabel.textContent = "Kopiert";
+        setTimeout(() => { teilenLabel.textContent = "Teilen"; }, 1600); };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(fertig, () => altKopie(text, fertig));
+      } else altKopie(text, fertig);
+    } }, svg("share", 15, "#8B8175", 2), teilenLabel);
 
-  /* Spaltenbeschriftung über der ersten Gruppe. */
-  box.appendChild(el("div", { class: "todospalten" },
-    el("span", {}, ""),
-    el("span", {}, "Wer"),
-    el("span", {}, "To-do"),
-    el("span", { class: "tododatum" }, "Datum")));
+  const neu = el("button", { class: "todoaktion todoaktion-primaer",
+    onclick: () => { todoFormOffen = true; zeichnen(); },
+  }, svg("plus", 15, "#fff", 2.4), el("span", {}, "Neues To-do"));
+
+  const kopfkarte = el("div", { class: "todokopfkarte" },
+    el("div", { class: "todokopfzeile" }, neu, teilen));
 
   const MONATE = { Jan: 0, Feb: 1, Mär: 2, Apr: 3, Mai: 4, Jun: 5,
     Jul: 6, Aug: 7, Sep: 8, Okt: 9, Nov: 10, Dez: 11 };
@@ -4651,123 +4700,50 @@ const todoTabelle = () => {
 
   /* Spaltenbeschriftung über der ersten Gruppe. */
 
-  const gruppen = [];
-  const finde = (titel) => {
-    let g = gruppen.find((x) => x[0] === titel);
-    if (!g) { g = [titel, []]; gruppen.push(g); }
-    return g;
-  };
-
-  const ohneDatum = [];
+  /* Eine durchgehende Liste, nach Datum sortiert – keine Wochen-Titel mehr,
+     jede Zeile trägt ihr Datum ja schon selbst. */
+  const zeilen = el("div", { class: "todogruppeninhalt offen" });
+  box.appendChild(zeilen);
   sortiert.forEach((eintrag) => {
-    const t = tag(eintrag[1]);
-    if (t === 9e9) { ohneDatum.push(eintrag); return; }
-    const nr = Math.floor((t - montag.getTime()) / WOCHE);
-    const VOLL = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli",
-                  "August", "September", "Oktober", "November", "Dezember"];
-    let titel;
-    if (nr <= 0) titel = "Diese Woche";
-    else if (nr <= 4) {
-      const start = new Date(montag.getTime() + nr * WOCHE);
-      titel = "Woche ab " + start.getDate() + ". " + MONATSNAME[start.getMonth()];
-    } else {
-      /* Weiter weg genügt der Monat – sonst zerfällt die Liste in viele Wochen. */
-      const d = new Date(t);
-      titel = VOLL[d.getMonth()];
+    const [was, datum, lead] = eintrag;
+    const eigenId = eintrag[6];
+    const ab = stand[was];
+    /* Hängt die Aufgabe an einer anderen, bleibt sie grau und gesperrt. */
+    const wartet = ab ? null : gesperrtDurch(eintrag, stand);
+    const inhaltZeile = [
+      el("span", { class: "box klein" + (ab ? " an" : "") },
+        ab ? svg("check", 11, "#fff", 3) : null),
+      el("span", { class: "todolead" }, leadZeichen(lead)),
+      el("span", { class: "todotext", html: was }),
+      el("span", { class: "tododatum" }, wartet ? "wartet" : mitTag(datum)),
+    ];
+    if (eigenId) {
+      /* Eigene Zeile: exakt dieselbe Optik, nur als div mit einem echten
+         Löschknopf zusätzlich – zwei Buttons ineinander sind kein gültiges HTML. */
+      const zeile = el("div", {
+        class: "todozeile eigenzeile" + (ab ? " ab" : "") + (wartet ? " wartet" : ""),
+      }, ...inhaltZeile,
+        el("button", { class: "eigenzeileweg", "aria-label": "To-do entfernen", onclick: (e) => {
+          e.stopPropagation();
+          merke("eigeneToDos", hole("eigeneToDos", []).filter((x) => x.id !== eigenId));
+          delete stand[was]; merke("haken:alle", stand);
+          zeichnen();
+        } }, svg("x", 12, "#A08C7D", 2)));
+      if (!wartet) zeile.onclick = () => { stand[was] = !stand[was]; merke("haken:alle", stand); zeichnen(); };
+      zeilen.appendChild(zeile);
+      return;
     }
-    finde(titel)[1].push(eintrag);
+    const zeilenAttr = {
+      class: "todozeile" + (ab ? " ab" : "") + (wartet ? " wartet" : ""),
+      onclick: () => {
+        if (wartet) return;
+        stand[was] = !stand[was]; merke("haken:alle", stand); zeichnen();
+      },
+    };
+    if (wartet) zeilenAttr.disabled = "disabled";
+    zeilen.appendChild(el("button", zeilenAttr, ...inhaltZeile));
   });
-  if (ohneDatum.length) gruppen.push(["Unterwegs", ohneDatum]);
-
-  /* Fertige Gruppen verschwinden – die Liste wird kürzer, während man arbeitet.
-     Zuunterst steht, wie viele Gruppen schon erledigt sind. */
-  const fertigeGruppen = gruppen.filter(([, e]) => e.every(([w]) => stand[w]));
-  const offeneGruppen = gruppen.filter(([, e]) => !e.every(([w]) => stand[w]));
-
-  offeneGruppen.forEach(([titel, eintraege], i) => {
-    if (!eintraege.length) return;
-    const offen = eintraege.filter(([w]) => !stand[w]).length;
-
-    /* Nur die erste Gruppe steht offen – der Rest klappt auf Wunsch auf. */
-    const zeilen = el("div", { class: "todogruppeninhalt" + (i === 0 ? " offen" : "") });
-    const pfeil = el("span", { class: "faltpfeil" + (i === 0 ? " auf" : "") },
-      svg("chevron", 16, "#B65A3C", 2.2));
-    box.appendChild(el("button", { class: "todokopf", onclick: () => {
-      const auf = zeilen.classList.toggle("offen");
-      pfeil.classList.toggle("auf", auf);
-    } },
-      el("span", { class: "todogruppe" }, titel),
-      el("span", { class: "todozahl" }, offen ? offen + " offen" : "fertig"),
-      pfeil));
-    box.appendChild(zeilen);
-    eintraege.forEach((eintrag) => {
-      const [was, datum, lead] = eintrag;
-      const eigenId = eintrag[6];
-      const ab = stand[was];
-      /* Hängt die Aufgabe an einer anderen, bleibt sie grau und gesperrt. */
-      const wartet = ab ? null : gesperrtDurch(eintrag, stand);
-      const inhaltZeile = [
-        el("span", { class: "box klein" + (ab ? " an" : "") },
-          ab ? svg("check", 11, "#fff", 3) : null),
-        el("span", { class: "todolead" }, leadZeichen(lead)),
-        el("span", { class: "todotext", html: was }),
-        el("span", { class: "tododatum" }, wartet ? "wartet" : mitTag(datum)),
-      ];
-      if (eigenId) {
-        /* Eigene Zeile: exakt dieselbe Optik, nur als div mit einem echten
-           Löschknopf zusätzlich – zwei Buttons ineinander sind kein gültiges HTML. */
-        const zeile = el("div", {
-          class: "todozeile eigenzeile" + (ab ? " ab" : "") + (wartet ? " wartet" : ""),
-        }, ...inhaltZeile,
-          el("button", { class: "eigenzeileweg", "aria-label": "To-do entfernen", onclick: (e) => {
-            e.stopPropagation();
-            merke("eigeneToDos", hole("eigeneToDos", []).filter((x) => x.id !== eigenId));
-            delete stand[was]; merke("haken:alle", stand);
-            zeichnen();
-          } }, svg("x", 12, "#A08C7D", 2)));
-        if (!wartet) zeile.onclick = () => { stand[was] = !stand[was]; merke("haken:alle", stand); zeichnen(); };
-        zeilen.appendChild(zeile);
-        return;
-      }
-      const zeilenAttr = {
-        class: "todozeile" + (ab ? " ab" : "") + (wartet ? " wartet" : ""),
-        onclick: () => {
-          if (wartet) return;
-          stand[was] = !stand[was]; merke("haken:alle", stand); zeichnen();
-        },
-      };
-      if (wartet) zeilenAttr.disabled = "disabled";
-      zeilen.appendChild(el("button", zeilenAttr, ...inhaltZeile));
-    });
-  });
-
-  /* Erledigte Gruppen: eine Zeile am Fuss, die sich öffnen lässt. */
-  if (fertigeGruppen.length) {
-    const anzahl = fertigeGruppen.reduce((n, [, e]) => n + e.length, 0);
-    const fertigZeilen = el("div", { class: "todogruppeninhalt" });
-    fertigeGruppen.forEach(([, eintraege]) => {
-      eintraege.forEach(([was, datum, lead]) => {
-        fertigZeilen.appendChild(el("button", {
-          class: "todozeile ab",
-          onclick: () => { delete stand[was]; merke("haken:alle", stand); zeichnen(); },
-        },
-          el("span", { class: "box klein an" }, svg("check", 11, "#fff", 3)),
-          el("span", { class: "todolead" }, leadZeichen(lead)),
-          el("span", { class: "todotext", html: was }),
-          el("span", { class: "tododatum" }, mitTag(datum))));
-      });
-    });
-    const pf = el("span", { class: "faltpfeil" }, svg("chevron", 16, "#8B8175", 2.2));
-    box.appendChild(el("button", { class: "todokopf fertigkopf", onclick: () => {
-      const auf = fertigZeilen.classList.toggle("offen");
-      pf.classList.toggle("auf", auf);
-    } },
-      el("span", { class: "todogruppe" }, "Erledigt"),
-      el("span", { class: "todozahl" }, anzahl + " Aufgaben"),
-      pf));
-    box.appendChild(fertigZeilen);
-  }
-  return box;
+  return { kopfkarte, box };
 };
 
 const seiteStart = () => {
@@ -4930,14 +4906,39 @@ const vorbereitungFertigOben = () => {
 };
 
 const seiteHeute = () => {
-  /* Ein Sprung von aussen kann den Bereich vorgeben: gehe("heute", "packen"). */
+  /* Landing: drei grosse Kacheln, genau wie bei Wissen und Geld.
+     Erst beim Antippen geht es in die jeweilige Liste. */
+  let bereich = null;
   let offeneListe = null;
   if (typeof param === "string") {
     const [ber, ...rest] = param.split("|");
-    if (["todos", "checklisten", "packen"].includes(ber)) bereichHeute = ber;
+    if (["todos", "checklisten", "packen"].includes(ber)) bereich = ber;
+    else if (ber === "woche") bereich = "checklisten";
     if (rest.length) offeneListe = rest.join("|");
   }
+
+  if (!bereich) {
+    const REIHE = [
+      ["check", "To-dos", "Was zu tun ist, nach Datum sortiert", "todos"],
+      ["book", "Checkliste", "Was ständig gilt, zum Abhaken", "checklisten"],
+      ["rucksack", "Packliste", "Was mitkommt, nach Rucksack sortiert", "packen"],
+    ];
+    return el("div", {},
+      el("div", { class: "spalten" }, REIHE.map(([ikon, titel, kurz, ziel]) =>
+        el("button", { class: "block", onclick: () => gehe("heute", ziel) },
+          karte(el("div", { class: "geldzeile" },
+            el("span", { class: "geldikon" }, svg(ikon, 19, "#B65A3C", 1.8)),
+            el("span", { class: "min0" },
+              el("span", { class: "kacheltitel klein2" }, titel),
+              el("span", { class: "hinweis" }, kurz)),
+            el("span", { class: "faltpfeil pfeilrechts" },
+              svg("chevron", 16, "#B65A3C", 2.2))))))));
+  }
+
+  const bereichHeute = bereich;
+  const TITEL = { todos: "To-dos", checklisten: "Checkliste", packen: "Packliste" };
   const wrap = el("div");
+  const kopfEl = kopf(TITEL[bereich], null, () => gehe("heute"), "Übersicht");
 
   /* Jede Gruppe kommt in eine eigene weisse Fläche – wie in den Themen. */
   const gruppe = (titel, listen) => {
@@ -4961,7 +4962,15 @@ const seiteHeute = () => {
 
   /* Es wird immer nur ein Bereich gezeigt – gewählt über die Kacheln oben. */
   if (bereichHeute === "todos" && !vorbereitungFertigOben()) {
-    wrap.appendChild(todoTabelle());
+    const { kopfkarte, box } = todoTabelle();
+    /* Titel und Aktionskarte zusammen als eine sticky-Einheit – sonst
+       reserviert die Karte allein nicht genug Platz, und die Liste
+       rutscht beim Scrollen darunter durch. Beim offenen Formular gibt
+       es keine Kopfkarte – dann steht der Titel einfach normal da. */
+    wrap.appendChild(kopfkarte ? el("div", { class: "todoklebt" }, kopfEl, kopfkarte) : kopfEl);
+    wrap.appendChild(box);
+  } else {
+    wrap.appendChild(kopfEl);
   }
 
   if (bereichHeute === "checklisten") {
@@ -6119,24 +6128,11 @@ function zeichnen() {
       el("button", { class: "routenkachel", onclick: () => gehe(wohin, param2) },
         svg(ikon, 14, "#A08C7D", 1.8), el("span", {}, titel));
 
-    /* Umschalten: es wird immer nur ein Bereich gezeigt. */
-    const bereichkachel = (ikon, titel, schluessel) => {
-      const an = bereichHeute === schluessel;
-      return el("button", { class: "routenkachel" + (an ? " an" : ""), onclick: () => {
-        bereichHeute = schluessel; zeichnen(); window.scrollTo(0, 0);
-      } }, svg(ikon, 14, an ? "#B65A3C" : "#A08C7D", 1.8), el("span", {}, titel));
-    };
-
     const kacheln = seite === "route"
       ? el("div", { class: "routenkacheln" },
           schnellkachel("shield", "EDA", "wissen", "eda"),
           schnellkachel("check", "Sicherheit", "wissen", "sicherheit"),
           schnellkachel("bed", "Buchen", "buchen"))
-      : seite === "heute"
-      ? el("div", { class: "routenkacheln" },
-          bereichkachel("check", "To-dos", "todos"),
-          bereichkachel("book", "Checklisten", "checklisten"),
-          bereichkachel("rucksack", "Packen", "packen"))
       : null;
 
     document.body.insertBefore(el("div", { class: "kopfzeile" + (kacheln ? " mitkacheln" : ""),
