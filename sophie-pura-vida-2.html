@@ -431,6 +431,8 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   display: flex; align-items: center; justify-content: space-between; gap: 10px;
   margin: 4px 4px 14px;
 }
+.todokopfzeile-oben { margin-bottom: 8px; }
+.todokopfzeile:not(.todokopfzeile-oben) .teilenknopf { flex: 1; justify-content: center; }
 .todoaktion {
   display: flex; align-items: center; gap: 6px; border: 0; white-space: nowrap;
 }
@@ -805,7 +807,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .landname {
   font-weight: 600; font-size: var(--ebene3); line-height: 1.1; }
 /* Ein Ton für alle Länder – die Flagge unterscheidet. */
-.landname.gt, .landname.cr, .landname.pe, .landname.ch { color: #211C18; }
+.landname.gt, .landname.cr, .landname.pe, .landname.ch, .landname.mx { color: #211C18; }
 .landzeit { font-size: var(--ebene6); color: var(--grau); margin: 3px 0 2px; }
 .landpfeil { display: inline-flex; transform: rotate(-90deg); margin-top: 6px; }
 
@@ -1602,6 +1604,14 @@ input[type="date"].meldefeld {
   border-radius: 14px; padding: 4px; margin-top: 8px;
 }
 .todokopfkarte .todokopfzeile { margin: 4px; }
+
+/* Umschalter Nach Datum / Nach Kategorie – zwei gleich grosse Knöpfe. */
+.ansichtumschalter { display: flex; gap: 8px; padding: 8px 4px 4px; }
+.ansichtknopf {
+  flex: 1; border: 1px solid var(--linie); border-radius: 10px;
+  padding: 9px 0; font-size: var(--ebene6); color: #211C18; background: #fff; text-align: center;
+}
+.ansichtknopf.an { border-color: var(--terra); color: #fff; background: var(--terra); font-weight: 600; }
 
 </style>
 </head>
@@ -2429,7 +2439,7 @@ const STATIONEN = [
   },
   {
     id: "ankunft-gt", nummer: "2", kurzname: "Ankunft", titel: "Ankunft Guatemala",
-    land: "guatemala", zeit: "Dienstag, 29. September", kurz: "Vom Flughafen bis ins Hotel",
+    land: "guatemala", zeit: "Dienstag, 29. September", kurz: "Vom Flughafen bis ins Hostel",
     abschnitte: [
       ["", [
         ["eigen", "Flughafen", [
@@ -2447,8 +2457,8 @@ const STATIONEN = [
           "Nach Antigua rund eine Stunde. <b>Nicht nachts fahren.</b>",
         ]],
         ["eigen", "Unterkunft", [
-          "<b>Casa Florencia Hotel</b>, 7a Avenida Norte 100 – ab dem 29. September, dort startet auch die Tour am 1. Oktober.",
-          "<b>Ein Haus für alle Nächte</b> – kein Wechsel vor dem Tourstart.",
+          "<b>Hostel selbst gebucht</b> – 29. September bis 1. Oktober, zwei Nächte in Antigua.",
+          "<b>Am 1. Oktober wechselt es</b> – dann übernimmt die Tour, Treffpunkt bei Casa Florencia.",
           "Die Adresse wird bei der Einreise verlangt – vor dem Anstehen bereithalten.",
           "Wertsachen in den Spind, eigenes Schloss verwenden.",
           "Zu Hause anrufen, nicht nur schreiben.",
@@ -2495,44 +2505,38 @@ const STATIONEN = [
     ],
   },
   {
-    id: "guatemala-allein", nummer: "5", kurzname: "Allein", titel: "Allein in Guatemala",
-    land: "guatemala", zeit: "Mittwoch 14. bis Mittwoch 21. Oktober", kurz: "Idee · die ersten Tage für dich",
+    id: "mexiko-freundin", nummer: "5", kurzname: "Mexiko", titel: "Mexiko mit Freundin",
+    land: "mexiko", zeit: "Mitte Oktober bis Mitte November", kurz: "Idee · mit deiner Freundin, noch nichts geplant",
     abschnitte: [
-      ["!! Der erste Tag allein", [
-        ["eigen", "Ruhig anfangen", [
-          "<b>Bleib zuerst dort, wo du dich auskennst.</b> Kein Ortswechsel am Tag, an dem deine Freundin abreist.",
-          "<b>Melde dich zu Hause</b>, sobald sie weg ist.",
-          "Ein Hostel mit Gemeinschaftsraum wählen – Anschluss findet sich von selbst.",
+      ["", [
+        ["eigen", "Statt allein weiter zu zweit", [
+          "<b>Plan geändert:</b> ihr bleibt zusammen und reist gemeinsam nach Mexiko weiter.",
+          "Drei bis vier Wochen sind eingeplant, ein genaues Enddatum gibt es noch nicht.",
+          "Nichts ist gebucht – Flug, Route und Unterkünfte sind noch offen.",
         ]],
-      ]],
-      ["Alleinreisen", [["dok", "sicherheit", "Als Frau unterwegs"]]],
-      ["Der Plan", [
-        ["eigen", "Diese Woche nutzen", [
-          "<b>Nachholen, was offen ist</b> – Acatenango, Atitlán, Antigua.",
-          "<b>Costa Rica grob planen:</b> erste Tage in Heredia, danach La Fortuna, Monteverde, Santa Teresa, Puerto Viejo.",
-          "<b>Ordnung:</b> Wäsche, Fotos sichern, Ausgaben durchsehen, Rucksack ausmisten.",
-          "Was die Schule und die Ausreise betrifft, steht als To-do mit Datum.",
+        ["eigen", "Was ansteht", [
+          "<b>Flug nach Mexiko buchen</b> – sobald die Route feststeht.",
+          "<b>Rückflug nach Costa Rica planen</b> – der Rest der Reise verschiebt sich entsprechend nach hinten.",
+          "<b>Route zu zweit absprechen</b> – einigen, was ihr sehen wollt.",
         ]],
-      ]],
-  ["Unterkunft", [
-        ["eigen", "Für die letzte Nacht", [
-          "Nichts ist gebucht. Zwei Ideen für die letzte Nacht vor dem Flug nach Costa Rica – zurück in Antigua, dann direkt zum Flughafen.",
+        ["eigen", "Grenze und Einreise", [
+          "<b>Guatemala-Ausreiseerklärung</b> – gilt für diesen Grenzübertritt, steht als To-do mit Datum.",
+          "<b>FMM-Touristenkarte</b> – bei der Einreise nach Mexiko ausfüllen, meist im Flugzeug oder am Schalter.",
+          "<b>Ausreiseteil der FMM aufbewahren</b> – die zweite Hälfte des Formulars, wird erst beim Verlassen Mexikos wieder gebraucht. Nicht wegwerfen.",
         ]],
-        ["hostels", "guatemala"],
       ]],
       ["Checkliste", [["liste", "pack:inland"], ["liste", "ortswechsel"]]],
     ],
   },
   {
     id: "abflug-cr", nummer: "6", kurzname: "Abflug", titel: "Abflug nach Costa Rica",
-    land: "guatemala", zeit: "Donnerstag, 22. Oktober", kurz: "Idee · Ausreise Guatemala, Regionalflug",
-    datum: "2026-10-22",
+    land: "mexiko", zeit: "Donnerstag, 12. November", kurz: "Idee · Datum hängt vom Ende in Mexiko ab",
+    datum: "2026-11-12",
     jetzt: [
-      ["vor", 14, "Reiseerklärung Ausreise ausfüllen, QR-Code sichern", []],
       ["vor", 3, "Weiterreisenachweis und Adresse griffbereit legen", []],
-      ["vor", 1, "Flug einchecken, Shuttle bestätigen", []],
+      ["vor", 1, "Flug einchecken, Weg zum Flughafen organisieren", []],
       ["vortag", 0, "Packen, laden, Bestätigungen offline", []],
-      ["tag", 0, "Papiere in den Bodybag, Ausreisestempel prüfen", []],
+      ["tag", 0, "Papiere in den Bodybag, FMM-Ausreiseteil bereit", []],
       ["nach", 0, "WLAN, eSIM, Colón, Fahrt nach Heredia", []],
     ],
 
@@ -2543,8 +2547,7 @@ const STATIONEN = [
             sprung: "wissen", param: "ablage" },
           { punkt: "<b>Danach Wohnheim</b> – läuft über die Schule<br>bei der Anmeldung wählen.",
             sprung: "wissen", param: "schule" },
-          { punkt: "<b>Reiseerklärung Ausreise</b> – Guatemala, elektronisch. QR-Code sichern und ausdrucken.",
-            sprung: "wissen", param: "djrv" },
+          "<b>FMM-Ausreiseteil griffbereit</b> – die Hälfte deiner mexikanischen Touristenkarte, wird am Schalter oder im Flugzeug eingesammelt.",
           { punkt: "<b>Busticket Nicaragua</b> – Weiterreisenachweis<br><span class='warnung'>Ohne ihn kein Einsteigen.</span>",
             sprung: "wissen", param: "fluege" },
           "<b>Online einchecken</b> – ab 24 h vorher<br>Sitzplatz und Gepäck prüfen.",
@@ -2553,10 +2556,9 @@ const STATIONEN = [
 
       [">> 1 Tag vor Abflug", [
         ["eigen", "", [
-          "<b>Shuttle organisieren</b> – über das Hostel, 12 bis 20 USD.",
-          "<b>3 h vor Abflug am Flughafen</b> – ab Antigua 1 h Fahrt, morgens mehr.",
-          "<b>Flughafen Guatemala-Stadt</b> – La Aurora GUA<br>9 Avenida 14-75, Zona 13.",
-          "<b>Quetzal loswerden</b> – in Costa Rica wertlos.",
+          "<b>Weg zum Flughafen organisieren</b> – hängt von der Stadt ab, in der ihr dann seid.",
+          "<b>Genug Vorlauf einplanen</b> – 3 Stunden vor Abflug am Flughafen.",
+          "<b>Pesos loswerden</b> – in Costa Rica wertlos.",
           { punkt: "<b>Reiserucksack packen</b> – Osprey Fairview Trek 70, keine Elektronik hinein.",
             sprung: "heute", param: "packen|pack:rucksack" },
           { punkt: "<b>Handgepäck packen</b> – Patagonia Terravia 24 L, Elektrotasche und iPad.",
@@ -2564,18 +2566,18 @@ const STATIONEN = [
           "<b>iPhones und Powerbank laden</b> – beide Geräte über Nacht.",
           { punkt: "<b>Offline abspeichern</b> – Ticket, Unterkunft, Reiseerklärung.",
             sprung: "wissen", param: "ablage" },
-          "<b>Wecker stellen</b> – mit genug Vorlauf für den Shuttle.",
+          "<b>Wecker stellen</b> – mit genug Vorlauf.",
         ]],
       ]],
 
       [">> Am Flugtag", [
         ["eigen", "", [
-          "<b>In den Bodybag</b> – Pass, Geld, Revolut-Karte, Handy<br>Flugticket, Reiseerklärung und die Adresse in Heredia ausgedruckt.",
-          "<b>Am Schalter</b> – Busticket zeigen, wenn verlangt.",
+          "<b>In den Bodybag</b> – Pass, Geld, Revolut-Karte, Handy<br>Flugticket, FMM-Ausreiseteil und die Adresse in Heredia ausgedruckt.",
+          "<b>Am Schalter</b> – Busticket zeigen, wenn verlangt, FMM-Ausreiseteil abgeben.",
           "<b>Sicherheitskontrolle</b> – Powerbank und iPad heraus<br>Trinkflasche leer.",
           { punkt: "<b>Ausreisestempel prüfen</b> – vor dem Gate.",
-            sprung: "route", param: { tab: "land", land: "guatemala", block: "Einreise" } },
-          "<b>Flug nach San José</b> – Copa, 2 h.",
+            sprung: "route", param: { tab: "land", land: "mexiko", block: "Einreise" } },
+          "<b>Flug nach San José</b> – 2 bis 3 h, je nach Abflugort.",
         ]],
       ]],
 
@@ -2602,7 +2604,7 @@ const STATIONEN = [
   },
   {
     id: "ankunft-cr", nummer: "7", kurzname: "Ankunft", titel: "Ankunft Costa Rica",
-    land: "costarica", zeit: "Donnerstag, 22. Oktober", kurz: "Idee · vom Flughafen bis nach Heredia",
+    land: "costarica", zeit: "Donnerstag, 12. November", kurz: "Idee · vom Flughafen bis nach Heredia",
     abschnitte: [
       ["", [
         ["eigen", "Flughafen", [
@@ -2618,7 +2620,7 @@ const STATIONEN = [
           "Kein Taxi von der Strasse. In San José kein Aufenthalt.",
         ]],
         ["eigen", "Unterkunft", [
-          "<b>Heredia, vier Nächte</b> – vom 22. bis zum Schulstart am 26. Oktober.",
+          "<b>Heredia, vier Nächte</b> – vom 12. bis zum Schulstart am 16. November.",
           "<b>Nahe der Schule buchen</b>, mit Gratisstornierung – der Ankunftstag kann sich verschieben.",
           "Die Adresse wird bei der Einreise verlangt – vor dem Anstehen bereithalten, auch auf Papier.",
           "Adresse und WLAN-Name notieren.",
@@ -2631,7 +2633,7 @@ const STATIONEN = [
   },
   {
     id: "heredia", nummer: "8", kurzname: "Heredia", titel: "Heredia – Sprachschule", land: "costarica",
-    zeit: "ab Montag, 26. Oktober", kurz: "Idee: 1 Woche · vier Lektionen am Vormittag",
+    zeit: "ab Montag, 16. November", kurz: "Idee: 1 Woche · vier Lektionen am Vormittag",
     abschnitte: [
       ["Transport", [
         ["eigen", "Hinkommen", [
@@ -2641,12 +2643,12 @@ const STATIONEN = [
       ]],
       ["Die Schule", [
         ["eigen", "Die Tage vor dem Kurs", [
-          "<b>Intercultura startet jeden Montag</b>, hier der 26. Oktober.",
-          "<b>Donnerstag 22. Oktober</b> Ankunft, Transfer nach Heredia, früh schlafen.",
-          "<b>Freitag 23. Oktober</b> Stadt zu Fuss: Mercado Central, Parque Central, den Schulweg einmal gehen.",
-          "<b>Samstag 24. Oktober</b> Wäsche, Einkauf, SIM und Konten prüfen. Nachmittags Kaffeeplantage oder Barva.",
-          "<b>Sonntag 25. Oktober</b> Ruhetag, Sachen sortieren, zu Hause melden.",
-          "<b>Montag 26. Oktober</b> Einstufungstest am Morgen, dann erste Lektion.",
+          "<b>Intercultura startet jeden Montag</b>, hier der 16. November.",
+          "<b>Donnerstag 12. November</b> Ankunft, Transfer nach Heredia, früh schlafen.",
+          "<b>Freitag 13. November</b> Stadt zu Fuss: Mercado Central, Parque Central, den Schulweg einmal gehen.",
+          "<b>Samstag 14. November</b> Wäsche, Einkauf, SIM und Konten prüfen. Nachmittags Kaffeeplantage oder Barva.",
+          "<b>Sonntag 15. November</b> Ruhetag, Sachen sortieren, zu Hause melden.",
+          "<b>Montag 16. November</b> Einstufungstest am Morgen, dann erste Lektion.",
         ]],
         ["thema", "schule"],
       ]],
@@ -2662,7 +2664,7 @@ const STATIONEN = [
   },
   {
     id: "samara", nummer: "9", kurzname: "Sámara", titel: "Sámara – Sprachschule", land: "costarica",
-    zeit: "ab Montag, 2. November", kurz: "Idee: 1 Woche · Strandcampus am Meer",
+    zeit: "ab Montag, 23. November", kurz: "Idee: 1 Woche · Strandcampus am Meer",
     abschnitte: [
       ["Transport", [
         ["eigen", "Hinkommen", [
@@ -2841,6 +2843,28 @@ const LAENDER = {
       ]],
     ],
   },
+  mexiko: {
+    name: "Mexiko", zeit: "Mitte Oktober bis Mitte November · mit Freundin, offen",
+    kurz: "Einreise, Sicherheit – Route noch offen",
+    farbe: "#8C6239",
+    bloecke: [
+      ["Einreise", [
+        "Visumfrei für Schweizerinnen, bis 180 Tage als Touristin.",
+        "Pass mindestens 6 Monate über die Rückreise hinaus gültig.",
+        "Bei der Einreise eine Touristenkarte (FMM) ausfüllen – im Flugzeug oder am Schalter.",
+        "Rückflug- oder Weiterreiseticket bereithalten.",
+      ]],
+      ["Sicherheit", [
+        "Sehr unterschiedlich je nach Region – vor der Routenwahl die EDA-Reisehinweise für Mexiko lesen.",
+        "Touristisch erschlossene Gegenden wie Yucatán und Oaxaca gelten als deutlich ruhiger als der Norden.",
+        "Nur offizielle Taxis oder Apps wie Uber, nicht auf der Strasse winken.",
+      ]],
+      ["Noch offen", [
+        "Route, Unterkünfte und Transportmittel sind noch nicht geplant.",
+        "Sobald mehr feststeht, hier ergänzen.",
+      ]],
+    ],
+  },
   peru: {
     name: "Peru", zeit: "Januar · optional",
     kurz: "Einreise, Höhe, Busse, Geld",
@@ -2877,7 +2901,7 @@ const LAENDER = {
     hostels: [],
   },
   guatemala: {
-    name: "Guatemala", zeit: "29. September bis 22. Oktober",
+    name: "Guatemala", zeit: "29. September bis Anfang November · mit Mexiko-Unterbruch",
     kurz: "Einreise, Geld, Sicherheit, Klima und die Standorte",
     farbe: "#7A6A4F",
     bloecke: [
@@ -3042,18 +3066,18 @@ const LAENDER = {
       },
     },
     empfehlung: {
-      titel: "Gebucht: Casa Florencia ab 29. September",
-      text: "Du bleibst von der Ankunft bis zum Tourstart im selben Haus – kein Wechsel, "
-        + "kein zweites Einchecken. Das Willkommenstreffen der Intrepid-Tour findet am "
-        + "1. Oktober dort statt.\n\n"
-        + "Die anderen Häuser stehen für die Wochen danach, wenn du allein unterwegs bist. "
-        + "Maya Papaya ist dann die erste Wahl: echtes Frauen-Dorm mit Vorhang vor dem Bett, "
-        + "Rezeption rund um die Uhr, tagsüber sozial genug, um Leute fürs Acatenango-Trekking "
-        + "kennenzulernen.",
+      titel: "Erste zwei Nächte: selbst buchen",
+      text: "Vom 29. September bis 1. Oktober suchst du dir selbst ein Hostel in Antigua – "
+        + "Maya Papaya oder The Purpose Hostel sind beide eine gute Wahl. Am 1. Oktober "
+        + "übernimmt dann die Tour: Treffpunkt und Unterkunft ist ab dort Casa Florencia, "
+        + "bis zum Tourende.\n\n"
+        + "Danach, wenn du allein unterwegs bist, ist Maya Papaya wieder die erste Wahl: "
+        + "echtes Frauen-Dorm mit Vorhang vor dem Bett, Rezeption rund um die Uhr, tagsüber "
+        + "sozial genug, um Leute fürs Acatenango-Trekking kennenzulernen.",
     },
   },
   costarica: {
-    name: "Costa Rica", zeit: "Mitte Oktober bis Dezember",
+    name: "Costa Rica", zeit: "Mitte November bis Dezember",
     kurz: "Einreise, Geld, Klima, Busreisen und Work-Exchange",
     farbe: "#4E6B52",
     bloecke: [
@@ -3266,7 +3290,7 @@ const PACK_BODY = [
   "Pass, Geld & Revolut-Karte",
   "Handy, Flugticket & QR-Code",
   "Reiseerklärung ausgedruckt",
-  "Adresse Casa Florencia auf Papier",
+  "Adresse des ersten Hostels auf Papier",
   "Tourbestätigung Intrepid ausgedruckt",
 ];
 
@@ -3325,6 +3349,72 @@ const WOCHE = [
 
 const WOCHE_WICHTIG = 3;
 
+
+const TODO_THEMEN = {
+  einreise: ["🛂", "Einreise"],
+  finanzen: ["💳", "Finanzen"],
+  gesundheit: ["🩺", "Gesundheit"],
+  packen: ["🎒", "Packen"],
+  unterwegs: ["🗺️", "Unterwegs"],
+};
+const TODO_KATEGORIE = {
+  "Reisedossier Alle Themen durchlesen": "einreise",
+  "Alle To-dos bis Abflugtag durchlesen": "einreise",
+  "Dossier Handy durchlesen": "packen",
+  "Dossier Revolut durchlesen": "finanzen",
+  "Dossier Gesundheit durchlesen": "gesundheit",
+  "Dossier Sprachschule durchlesen": "einreise",
+  "Dossier Reise durchlesen": "einreise",
+  "Flug Guatemala buchen": "einreise",
+  "Hostel für 29. Sep. bis 1. Okt. buchen": "einreise",
+  "Transfer mit Hostel reservieren und bestätigen lassen": "einreise",
+  "Vacanza-Rechnung nachfragen": "finanzen",
+  "Flug Costa Rica buchen": "einreise",
+  "Bus Nicaragua buchen": "einreise",
+  "Rechn. Tour GT einzahlen": "finanzen",
+  "Rechn. Hotel/Transfer einzahlen": "finanzen",
+  "Vacanza-Prämie einzahlen": "finanzen",
+  "Saily-eSIM aufs iPhone 17 installieren": "packen",
+  "Dokumente scannen": "einreise",
+  "iPhone einrichten und sichern": "packen",
+  "Fehlende Artikel einkaufen": "packen",
+  "Deckung englisch Visana": "gesundheit",
+  "Sprachschule buchen – Start Mo 16. Nov": "einreise",
+  "Schuladresse notieren": "einreise",
+  "Bestätigung 1. Nacht sichern": "einreise",
+  "Unterkunft Heredia buchen – 4 Nächte": "einreise",
+  "Reiseerklärung Guatemala": "einreise",
+  "Alle Reise-Apps installieren und testen": "packen",
+  "Notfallblatt ausfüllen": "einreise",
+  "IMEI und Seriennummer aufs Notfallblatt notieren": "packen",
+  "Passgültigkeit prüfen – sechs Monate über die Rückreise hinaus": "einreise",
+  "Kurzdossier drucken": "einreise",
+  "Offline-Karten laden": "packen",
+  "Linsenmittel besorgen": "gesundheit",
+  "Tageslinsen abklären": "gesundheit",
+  "Yallo-App testen": "packen",
+  "Yallo fragen: Ersatz-SIM auf Vorrat": "packen",
+  "Gepäck und Material testen": "packen",
+  "Bankkarten: Ablaufdatum und Reisemeldung": "finanzen",
+  "Revolut einrichten und testen": "finanzen",
+  "Währungsrechner erklären": "finanzen",
+  "EDA registrieren": "einreise",
+  "Scans in die iCloud": "einreise",
+  "Ordner offline setzen": "packen",
+  "Nackenkissen und Flugsachen bereitlegen": "packen",
+  "Rucksack wiegen": "packen",
+  "Letzte Kontrolle – Liste Vor dem Abflugtag": "packen",
+  "Reiseerklärung Ausreise Guatemala": "einreise",
+  "Unterkünfte für Oktober buchen": "einreise",
+  "Work-Exchange für Dezember suchen": "einreise",
+  "Sprachschule Restzahlung": "finanzen",
+  "Peru entscheiden": "einreise",
+  "Höhe vorbereiten – Sorojchi, 24 h Ruhe": "gesundheit",
+  "Rückflug buchen": "einreise",
+  "Restbargeld ausgeben, Stempel prüfen": "finanzen",
+  "Passseite nach jeder Einreise kopieren": "einreise",
+};
+
 const TODO_ALLE = [
   ["Reisedossier Alle Themen durchlesen", "bis 18. Sep", "Sophie", false],
   ["Alle To-dos bis Abflugtag durchlesen", "11. Sep", "Sophie", false],
@@ -3334,18 +3424,21 @@ const TODO_ALLE = [
   ["Dossier Sprachschule durchlesen", "18. Sep", "Sophie", false],
   ["Dossier Reise durchlesen", "18. Sep", "Sophie", false],
   ["Flug Guatemala buchen", "4. Sep", "Sophie", false],
-  ["Flug-Nr. an Marco melden", "4. Sep", "Sophie", false,
-   ["An Marco bei Globetrotter – er braucht sie für Transfer und Tourstart."],
-   "Flug Guatemala buchen"],
-  ["Hotel/Transfer bei Marco melden", "4. Sep", "Sophie", false, [],
-   "Flug Guatemala buchen"],
+  ["Hostel für 29. Sep. bis 1. Okt. buchen", "bis 18. Sep", "Sophie", false,
+   ["In Antigua – für die zwei Nächte vor Tourstart. Danach zieht die Gruppe gemeinsam um."]],
+  ["Transfer mit Hostel reservieren und bestätigen lassen", "bis 18. Sep", "Sophie", false,
+   ["Angeben: Flugnummer IB 0221, Ankunft 29. September 15:25 Uhr, Flughafen La Aurora.",
+    "Dazu Name und eine Telefonnummer für den Notfall.",
+    "Bestätigung als Screenshot sichern."],
+   "Hostel für 29. Sep. bis 1. Okt. buchen"],
   ["Vacanza-Rechnung nachfragen", "4. Sep", "Markus", false,
    ["Die QR-Rechnung ist nicht gekommen – bei Visana nachfragen.",
     "Ohne Zahlung keine Deckung. Einzahlen bis 6. September."]],
-  ["Flug Costa Rica buchen", "5. Sep", "Sophie", false,
-   ["Guatemala – San José, 22. Oktober. Copa und Avianca fliegen täglich.",
+  ["Flug Costa Rica buchen", "während Mexiko, sobald das Enddatum feststeht", "Sophie", false,
+   ["Guatemala – San José. Copa und Avianca fliegen täglich.",
+    "Datum hängt vom Ende der Mexiko-Reise ab – nicht zu früh fixieren.",
     "Preise vergleichen, dann direkt bei der Airline buchen >> buchen|Flug"]],
-  ["Bus Nicaragua buchen", "5. Sep", "Sophie", false,
+  ["Bus Nicaragua buchen", "während Mexiko, sobald das Enddatum feststeht", "Sophie", false,
    ["Dient als Ein- und Ausreisenachweis für Costa Rica.",
     "Tica Bus oder Busbud >> buchen|Fahren"]],
   ["Rechn. Tour GT einzahlen", "5. Sep", "Sophie", false],
@@ -3361,7 +3454,7 @@ const TODO_ALLE = [
     "Zwei-Faktor prüfen, IMEI und Seriennummern notieren, Apps testen."]],
   ["Fehlende Artikel einkaufen", "18. Sep", "Sophie", false],
   ["Deckung englisch Visana", "24. Sep", "Markus", false],
-  ["Sprachschule buchen – Start Mo 26. Okt", "26. Sep", "Sophie", false,
+  ["Sprachschule buchen – Start Mo 16. Nov", "während Mexiko, sobald das Enddatum feststeht", "Sophie", false,
    ["Direkt buchen, nicht über eine Agentur.",
     "Studentenwohnheim, Gastfamilie als zweite Wahl.",
     "Adresse notieren – wird bei der Einreise verlangt.",
@@ -3369,10 +3462,10 @@ const TODO_ALLE = [
   ["Schuladresse notieren", "20. Sep", "Sophie", false],
   ["Bestätigung 1. Nacht sichern", "26. Sep", "Sophie", false,
    ["Wird bei der Einreise verlangt – Guatemala und Costa Rica.",
-    "Casa Florencia ab 29. September – das Hotel der Tour.",
+    "Das selbst gebuchte Hostel für die ersten zwei Nächte, ab 29. September.",
     "Bestätigung als PDF sichern, offline auf dem Handy."]],
-  ["Unterkunft Heredia buchen – 4 Nächte", "12. Okt", "Sophie", false],
-  ["Reiseerklärung Guatemala", "20. Sep", "Sophie", false,
+  ["Unterkunft Heredia buchen – 4 Nächte", "während Mexiko, sobald das Enddatum feststeht", "Sophie", false],
+  ["Reiseerklärung Guatemala", "bis 18. Sep", "Sophie", false,
    ["Vor dem Hinflug ausfüllen, QR-Code sichern."]],
   ["Alle Reise-Apps installieren und testen", "18. Sep", "Sophie", false],
   ["Notfallblatt ausfüllen", "20. Sep", "beide", false],
@@ -3399,7 +3492,7 @@ const TODO_ALLE = [
    ["Auf beiden iPhones einrichten, vier Konten anlegen, einmal testen.",
     "Währungsrechner einrichten und zeigen."]],
   ["Währungsrechner erklären", "8. Sep", "beide", false],
-  ["EDA registrieren", "20. Sep", "Sophie", false,
+  ["EDA registrieren", "bis 18. Sep", "Sophie", false,
    ["App Travel Admin laden, Konto anlegen, Reise erfassen: Zeitraum, Länder, Kontakte.",
     "Beide Etappen eintragen – Guatemala im Oktober, Costa Rica ab November.",
     "Push-Nachrichten aktiviert lassen, sonst entgeht dir die Warnung."]],
@@ -3409,11 +3502,11 @@ const TODO_ALLE = [
   ["Nackenkissen und Flugsachen bereitlegen", "26. Sep", "Sophie", false],
   ["Rucksack wiegen", "26. Sep", "Sophie", false],
   ["Letzte Kontrolle – Liste Vor dem Abflugtag", "27. Sep", "Sophie", false],
-  ["Reiseerklärung Ausreise GT", "12. Okt", "Sophie", false,
-   ["Vor dem Flug nach San José nochmals ausfüllen.",
-    "Erst möglich, sobald der Flug gebucht ist – das Formular geht 14 Tage vor dem Reisetag auf."]],
+  ["Reiseerklärung Ausreise Guatemala", "13. Okt", "Sophie", false,
+   ["Gilt für den Grenzübertritt nach Mexiko, nicht erst für den Costa-Rica-Flug.",
+    "Elektronisch, geht 14 Tage vorher auf. QR-Code sichern und ausdrucken."]],
   ["Unterkünfte für Oktober buchen", "30. Sep", "Sophie", false,
-   ["Die Wochen buchen, in denen du allein unterwegs bist – ab 7. Oktober.",
+   ["Die Woche zu zweit mit deiner Freundin buchen – ab 7. Oktober, eine Woche vor Mexiko.",
     "Hostelworld oder Booking >> buchen|Schlafen",
     "Vor dem Tourstart erledigen, während der Tour hast du kaum Zeit."]],
   ["Work-Exchange für Dezember suchen", "25. Okt", "Sophie", false,
@@ -3541,6 +3634,7 @@ let zurueckZu = null;   // woher der letzte Sprung kam
 let offeneStation = null;   // welche Station in der Route offen ist
 let bereichHeute = "todos";   // todos · checklisten · packen
 let todoFormOffen = false;   // Formular "Neues To-do" auf oder zu
+let todoAnsicht = "datum";   // "datum" oder "kategorie" in den To-dos
 
 /* ── kleine Helfer ─────────────────────────────────────────────── */
 
@@ -4570,7 +4664,10 @@ const todoTabelle = () => {
     const wasfeld = el("input", { class: "meldefeld formgross", placeholder: "Was steht an?" });
     let wer = "Sophie";
     const wannfeld = el("input", { class: "meldefeld", type: "date" });
-    const themafeld = el("input", { class: "meldefeld", placeholder: "Thema (optional)" });
+    const themafeld = el("select", { class: "meldefeld" },
+      el("option", { value: "" }, "Thema (optional)"),
+      Object.entries(TODO_THEMEN).map(([schluessel, [icon, name]]) =>
+        el("option", { value: schluessel }, icon + " " + name)));
 
     karte.appendChild(el("div", { class: "formabschnitt" }, wasfeld));
 
@@ -4625,12 +4722,87 @@ const todoTabelle = () => {
       } else altKopie(text, fertig);
     } }, svg("share", 15, "#8B8175", 2), teilenLabel);
 
+  /* Einmaliger Export nach Things 3: alle offenen To-dos (Titel, Datum,
+     Kategorie als Tag) sowie die 6 laufenden Checklisten (als eigene To-dos
+     mit den Punkten als Things-Unterpunkte) über das things:///json-Schema
+     übergeben. Kein laufender Abgleich – muss nach Änderungen erneut
+     angestossen werden. */
+  const CHECKLISTEN_FUER_THINGS = [
+    ["Vor dem Abflugtag", VOR_ABFLUG, "abflug"],
+    ["Angekommen", ANKUNFT, "ankunft"],
+    ["Tagsüber weg", TOUR, "tour"],
+    ["Weiterreise", ORTSWECHSEL, "ortswechsel"],
+    ["Jede Woche", WOCHE, "woche"],
+    ["Rückkehr", RUECKKEHR, "rueckkehr"],
+  ];
+  const thingsLabel = el("span", {}, "In Things öffnen");
+  const thingsKnopf = el("button", { class: "todoaktion teilenknopf",
+    "aria-label": "Offene To-dos und Checklisten in Things 3 öffnen",
+    onclick: () => {
+      const eigeneFuerThings = hole("eigeneToDos", []).map((et) => [et.was, et.datum, et.thema || null]);
+      const fixeFuerThings = TODO_ALLE.map(([was, datum]) => [was, datum, TODO_KATEGORIE[was] || null]);
+      const thingsPosten = fixeFuerThings.concat(eigeneFuerThings).filter(([was]) => !stand[was]);
+      const thingsEintraege = thingsPosten.map(([was, datum, thema]) => {
+        const attrs = { title: was };
+        const tage = alsTage(datum);
+        if (tage !== null) {
+          const d = new Date();
+          d.setHours(0, 0, 0, 0);
+          d.setDate(d.getDate() + tage);
+          const pad = (n) => String(n).padStart(2, "0");
+          attrs.when = d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+        }
+        if (thema && TODO_THEMEN[thema]) attrs.tags = [TODO_THEMEN[thema][1]];
+        return { type: "to-do", attributes: attrs };
+      });
+      /* Jede Checkliste wird selbst zu einem To-do; ihre Punkte werden zu
+         abhakbaren Things-Unterpunkten. Abschnitts-Titel ("## ...") sind
+         keine eigenen Punkte und werden ausgelassen; der bereits erledigte
+         Stand wird mit übernommen. */
+      const checklistenEintraege = CHECKLISTEN_FUER_THINGS.map(([titel, punkte, schluessel]) => {
+        const checkStand = hole("haken:" + schluessel, {});
+        const eigenePunkte = hole("eigene:" + schluessel, []);
+        const zeilen = punkte.concat(eigenePunkte)
+          .filter((p) => !String(p).startsWith("## ") && !String(p).startsWith("%%"));
+        const checklistItems = zeilen.map((p) => ({
+          type: "checklist-item",
+          attributes: {
+            title: rein(alsUnterzeile(ohneSprung(String(p))).replace(/<br>/g, " – ")
+              .replace(/<[^>]+>/g, "")).trim(),
+            completed: !!checkStand[p],
+          },
+        }));
+        return { type: "to-do", attributes: { title: titel, tags: ["Checkliste"], "checklist-items": checklistItems } };
+      });
+      const url = "things:///json?data="
+        + encodeURIComponent(JSON.stringify(thingsEintraege.concat(checklistenEintraege)));
+      console.log("Things-Export:", url);
+      window.location.href = url;
+    } }, svg("link", 15, "#8B8175", 2), thingsLabel);
+
   const neu = el("button", { class: "todoaktion todoaktion-primaer",
     onclick: () => { todoFormOffen = true; zeichnen(); },
   }, svg("plus", 15, "#fff", 2.4), el("span", {}, "Neues To-do"));
 
   const kopfkarte = el("div", { class: "todokopfkarte" },
-    el("div", { class: "todokopfzeile" }, neu, teilen));
+    el("div", { class: "todokopfzeile todokopfzeile-oben" }, neu),
+    el("div", { class: "todokopfzeile" }, teilen, thingsKnopf));
+
+  /* Zwei Ansichten: nach Datum (wie bisher) oder nach Kategorie – dort
+     alle fünf Themen als eigene Abschnitte untereinander, nicht als Pillen
+     nebeneinander. */
+  const ansichtZeile = el("div", { class: "ansichtumschalter" });
+  const zeichneUmschalter = () => {
+    ansichtZeile.innerHTML = "";
+    const knopf = (wert, text) => el("button", {
+      class: "ansichtknopf" + (todoAnsicht === wert ? " an" : ""),
+      onclick: () => { todoAnsicht = wert; zeichnen(); },
+    }, text);
+    ansichtZeile.appendChild(knopf("datum", "Nach Datum"));
+    ansichtZeile.appendChild(knopf("kategorie", "Nach Kategorie"));
+  };
+  zeichneUmschalter();
+  kopfkarte.appendChild(ansichtZeile);
 
   const MONATE = { Jan: 0, Feb: 1, Mär: 2, Apr: 3, Mai: 4, Jun: 5,
     Jul: 6, Aug: 7, Sep: 8, Okt: 9, Nov: 10, Dez: 11 };
@@ -4671,14 +4843,21 @@ const todoTabelle = () => {
     for (const [muster, nr] of THEMEN) if (muster.test(was)) return nr;
     return 5;
   };
-  const eigeneAlsZeilen = hole("eigeneToDos", []).map((et) => [et.was, et.datum, et.wer, false, null, null, et.id]);
-  const sortiert = TODO_ALLE.concat(eigeneAlsZeilen).sort((a, b) =>
+  const eigeneListe = hole("eigeneToDos", []);
+  const eigeneAlsZeilen = eigeneListe.map((et) => [et.was, et.datum, et.wer, false, null, null, et.id]);
+  const sortiertAlle = TODO_ALLE.concat(eigeneAlsZeilen).sort((a, b) =>
     tag(a[1]) - tag(b[1]) || thema(a[0]) - thema(b[0]));
+
+  /* Themen-Zuordnung: eigene To-dos schauen in ihr eigenes Thema-Feld,
+     die festen in die Zuordnungstabelle. */
+  const eigenThema = {};
+  eigeneListe.forEach((et) => { eigenThema[et.id] = et.thema; });
+  const themaVon = (was, eigenId) => eigenId ? (eigenThema[eigenId] || null) : (TODO_KATEGORIE[was] || null);
 
   /* Je Woche eine Gruppe – so bleiben auch die späteren Aufgaben übersichtlich. */
   const MONATSNAME = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun",
                       "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"];
-  const WOCHE = 7 * 24 * 3600 * 1000;
+  const WOCHE_MS = 7 * 24 * 3600 * 1000;
 
   /* Wochentag davor – "Sa 5. Sep" liest sich schneller als "5. Sep". */
   const TAGE = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
@@ -4700,11 +4879,8 @@ const todoTabelle = () => {
 
   /* Spaltenbeschriftung über der ersten Gruppe. */
 
-  /* Eine durchgehende Liste, nach Datum sortiert – keine Wochen-Titel mehr,
-     jede Zeile trägt ihr Datum ja schon selbst. */
-  const zeilen = el("div", { class: "todogruppeninhalt offen" });
-  box.appendChild(zeilen);
-  sortiert.forEach((eintrag) => {
+  /* Eine Zeile bauen – dieselbe Optik in beiden Ansichten. */
+  const bauZeile = (eintrag) => {
     const [was, datum, lead] = eintrag;
     const eigenId = eintrag[6];
     const ab = stand[was];
@@ -4730,8 +4906,7 @@ const todoTabelle = () => {
           zeichnen();
         } }, svg("x", 12, "#A08C7D", 2)));
       if (!wartet) zeile.onclick = () => { stand[was] = !stand[was]; merke("haken:alle", stand); zeichnen(); };
-      zeilen.appendChild(zeile);
-      return;
+      return zeile;
     }
     const zeilenAttr = {
       class: "todozeile" + (ab ? " ab" : "") + (wartet ? " wartet" : ""),
@@ -4741,8 +4916,35 @@ const todoTabelle = () => {
       },
     };
     if (wartet) zeilenAttr.disabled = "disabled";
-    zeilen.appendChild(el("button", zeilenAttr, ...inhaltZeile));
-  });
+    return el("button", zeilenAttr, ...inhaltZeile);
+  };
+
+  if (todoAnsicht === "kategorie") {
+    /* Alle fünf Themen als eigene Abschnitte untereinander – plus ein
+       Sammelbereich für alles, was noch kein Thema hat. */
+    Object.entries(TODO_THEMEN).forEach(([schluessel, [icon, name]]) => {
+      const eintraege = sortiertAlle.filter((e) => themaVon(e[0], e[6]) === schluessel);
+      if (!eintraege.length) return;
+      box.appendChild(el("div", { class: "gruppentitel abstandoben klein3" }, icon + " " + name));
+      const zeilen = el("div", { class: "todogruppeninhalt offen" });
+      eintraege.forEach((eintrag) => zeilen.appendChild(bauZeile(eintrag)));
+      box.appendChild(zeilen);
+    });
+    const ohneThema = sortiertAlle.filter((e) => !themaVon(e[0], e[6]));
+    if (ohneThema.length) {
+      box.appendChild(el("div", { class: "gruppentitel abstandoben klein3" }, "Ohne Thema"));
+      const zeilen = el("div", { class: "todogruppeninhalt offen" });
+      ohneThema.forEach((eintrag) => zeilen.appendChild(bauZeile(eintrag)));
+      box.appendChild(zeilen);
+    }
+    return { kopfkarte, box };
+  }
+
+  /* Eine durchgehende Liste, nach Datum sortiert – keine Wochen-Titel mehr,
+     jede Zeile trägt ihr Datum ja schon selbst. */
+  const zeilen = el("div", { class: "todogruppeninhalt offen" });
+  box.appendChild(zeilen);
+  sortiertAlle.forEach((eintrag) => zeilen.appendChild(bauZeile(eintrag)));
   return { kopfkarte, box };
 };
 
@@ -5578,7 +5780,7 @@ const seiteRoute = () => {
   let land = (param && param.land) || "guatemala";
   let formularOffen = false;
 
-  const farbe = { guatemala: "gt", costarica: "cr", schweiz: "ch" };
+  const farbe = { guatemala: "gt", costarica: "cr", schweiz: "ch", mexiko: "mx" };
 
   /* Flaggen als Vektorgrafik – auf jedem Gerät gleich. */
   const flagge = (schluessel) => {
@@ -5608,6 +5810,11 @@ const seiteRoute = () => {
       return rahmen('<rect width="21" height="14" fill="#002B7F"/>'
         + '<rect y="2.8" width="21" height="8.4" fill="#fff"/>'
         + '<rect y="4.9" width="21" height="4.2" fill="#CE1126"/>');
+    }
+    if (schluessel === "mexiko") {
+      return rahmen('<rect width="7" height="14" fill="#006847"/>'
+        + '<rect x="7" width="7" height="14" fill="#fff"/>'
+        + '<rect x="14" width="7" height="14" fill="#CE1126"/>');
     }
     return rahmen('<rect width="7" height="14" fill="#D91023"/>'
       + '<rect x="7" width="7" height="14" fill="#fff"/>'
