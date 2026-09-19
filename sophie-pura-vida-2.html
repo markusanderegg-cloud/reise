@@ -4768,6 +4768,18 @@ const todoTabelle = () => {
     if (monat === "jan" || monat === "feb") return "rueckkehr";
     return "vorbereitung";
   };
+  /* Innerhalb jedes Projekts werden die To-dos zusätzlich unter Things-
+     Überschriften gruppiert – erst die fünf Themen in dieser Reihenfolge,
+     dann die Checklisten, zuletzt Undatiertes/Unkategorisiertes. */
+  const THINGS_UEBERSCHRIFTEN = [
+    ["einreise", "🛂 Einreise"],
+    ["finanzen", "💳 Finanzen"],
+    ["gesundheit", "🩺 Gesundheit"],
+    ["packen", "🎒 Packen"],
+    ["unterwegs", "🗺️ Unterwegs"],
+    ["checkliste", "✅ Checklisten"],
+    ["weiteres", "Weiteres"],
+  ];
   const thingsLabel = el("span", {}, "In Things öffnen");
   const thingsKnopf = el("button", { class: "todoaktion teilenknopf",
     "aria-label": "Offene To-dos und Checklisten in Things 3 öffnen",
@@ -4776,6 +4788,9 @@ const todoTabelle = () => {
       const fixeFuerThings = TODO_ALLE.map(([was, datum]) => [was, datum, TODO_KATEGORIE[was] || null]);
       const thingsPosten = fixeFuerThings.concat(eigeneFuerThings).filter(([was]) => !stand[was]);
 
+      /* Statt gleich fertiger To-do-Objekte werden vorerst Paare
+         [Überschriften-Schlüssel, To-do] gesammelt – die Gruppierung in
+         Überschriften passiert erst am Schluss pro Projekt. */
       const nachPhase = {};
       THINGS_PHASEN.forEach(([schluessel]) => { nachPhase[schluessel] = []; });
 
@@ -4789,8 +4804,9 @@ const todoTabelle = () => {
           const pad = (n) => String(n).padStart(2, "0");
           attrs.when = d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
         }
+        const kategorie = thema && TODO_THEMEN[thema] ? thema : "weiteres";
         if (thema && TODO_THEMEN[thema]) attrs.tags = [TODO_THEMEN[thema][1]];
-        nachPhase[thingsPhaseVon(datum)].push({ type: "to-do", attributes: attrs });
+        nachPhase[thingsPhaseVon(datum)].push([kategorie, { type: "to-do", attributes: attrs }]);
       });
 
       /* Jede Checkliste wird selbst zu einem To-do; ihre Punkte werden zu
@@ -4811,16 +4827,30 @@ const todoTabelle = () => {
             completed: !!checkStand[p],
           },
         }));
-        nachPhase.laufend.push({ type: "to-do",
-          attributes: { title: titel, tags: ["Checkliste"], "checklist-items": checklistItems } });
+        nachPhase.laufend.push(["checkliste", { type: "to-do",
+          attributes: { title: titel, tags: ["Checkliste"], "checklist-items": checklistItems } }]);
       });
+
+      /* Aus den gesammelten Paaren pro Projekt die Items-Liste bauen:
+         eine Things-Überschrift, gefolgt von ihren To-dos – nur wenn in
+         dieser Kategorie in diesem Projekt überhaupt etwas offen ist. */
+      const mitUeberschriften = (paare) => {
+        const items = [];
+        THINGS_UEBERSCHRIFTEN.forEach(([schluessel, titel]) => {
+          const treffer = paare.filter(([k]) => k === schluessel);
+          if (!treffer.length) return;
+          items.push({ type: "heading", attributes: { title: titel } });
+          treffer.forEach(([, todo]) => items.push(todo));
+        });
+        return items;
+      };
 
       /* Nur Projekte anlegen, in denen tatsächlich etwas offen ist. */
       const projekte = THINGS_PHASEN
         .filter(([schluessel]) => nachPhase[schluessel].length > 0)
         .map(([schluessel, titel]) => ({
           type: "project",
-          attributes: { title: titel, area: THINGS_AREA, items: nachPhase[schluessel] },
+          attributes: { title: titel, area: THINGS_AREA, items: mitUeberschriften(nachPhase[schluessel]) },
         }));
 
       const url = "things:///json?data=" + encodeURIComponent(JSON.stringify(projekte));
