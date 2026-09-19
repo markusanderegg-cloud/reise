@@ -4724,11 +4724,13 @@ const todoTabelle = () => {
 
   /* Einmaliger Export nach Things 3: alle offenen To-dos (Titel, Datum,
      Kategorie als Tag) sowie die 6 laufenden Checklisten (als eigene To-dos
-     mit den Punkten als Things-Unterpunkte) über das things:///json-Schema
-     übergeben. Sortiert in eine Area "Sophie Pura Vida" mit einem Projekt
-     je Reisephase – so bleibt Things übersichtlich statt eine lange flache
-     Liste. Kein laufender Abgleich – muss nach Änderungen erneut
-     angestossen werden. */
+     mit den Punkten als Things-Unterpunkten) über das things:///json-Schema
+     übergeben. Projekte nach Anwendungsbereich statt nach Reisephase:
+     Vorbereitung & Einreise (vor dem Abflug erledigt), Finanzen &
+     Versicherungen, Gesundheit, Packen & Tech-Setup (mit zwei
+     Überschriften), Unterwegs (alles, was erst während der Reise ansteht
+     oder immer wieder gilt). Kein laufender Abgleich – muss nach
+     Änderungen erneut angestossen werden. */
   const THINGS_AREA = "Sophie Pura Vida";
   const CHECKLISTEN_FUER_THINGS = [
     ["Vor dem Abflugtag", VOR_ABFLUG, "abflug"],
@@ -4738,47 +4740,41 @@ const todoTabelle = () => {
     ["Jede Woche", WOCHE, "woche"],
     ["Rückkehr", RUECKKEHR, "rueckkehr"],
   ];
-  /* Reihenfolge der Reise: Vorbereitung, dann die Länder/Etappen, dann
-     Rückkehr; laufende Punkte ohne festes Land ganz am Schluss. */
-  const THINGS_PHASEN = [
-    ["vorbereitung", "Vorbereitung"],
-    ["guatemala", "Guatemala"],
-    ["mexiko", "Mexiko"],
-    ["costarica", "Costa Rica"],
-    ["peru", "Peru"],
-    ["rueckkehr", "Rückkehr"],
-    ["laufend", "Laufende Checklisten"],
+  /* Diese "Einreise"-To-dos betreffen nicht die Vorbereitung, sondern
+     Termine und Buchungen während der Reise – sie wandern ins Projekt
+     "Unterwegs". Vier davon haben noch kein festes Datum (erst sobald
+     Mexiko zu Ende ist) und bekommen dort eine eigene Überschrift. */
+  const THINGS_UNTERWEGS_FLEXIBEL = [
+    "Flug Costa Rica buchen",
+    "Bus Nicaragua buchen",
+    "Sprachschule buchen – Start Mo 16. Nov",
+    "Unterkunft Heredia buchen – 4 Nächte",
   ];
-  /* Welcher Phase ein To-do zugeteilt wird – nach seinem Datum, nicht nach
-     Stichworten im Titel, das ist eindeutiger. Grenzen: Ausreise Guatemala
-     am 13. Oktober, Ankunft Costa Rica Mitte November, Peru im Dezember
-     entschieden, Rückflug Januar/Februar. */
-  const thingsPhaseVon = (datum) => {
-    const d = String(datum);
-    if (/^laufend$/i.test(d) || d === "ohne Datum") return "laufend";
-    if (/während Mexiko/i.test(d)) return "mexiko";
-    const m = d.match(/(\d{1,2})\.\s*([A-Za-zäöü]{3})/);
-    if (!m) return "vorbereitung";
-    const tag = parseInt(m[1], 10);
-    const monat = m[2].toLowerCase().slice(0, 3);
-    if (monat === "sep") return "vorbereitung";
-    if (monat === "okt") return tag < 13 ? "guatemala" : "mexiko";
-    if (monat === "nov") return "costarica";
-    if (monat === "dez") return "peru";
-    if (monat === "jan" || monat === "feb") return "rueckkehr";
-    return "vorbereitung";
-  };
-  /* Innerhalb jedes Projekts werden die To-dos zusätzlich unter Things-
-     Überschriften gruppiert – erst die fünf Themen in dieser Reihenfolge,
-     dann die Checklisten, zuletzt Undatiertes/Unkategorisiertes. */
-  const THINGS_UEBERSCHRIFTEN = [
-    ["einreise", "🛂 Einreise"],
-    ["finanzen", "💳 Finanzen"],
-    ["gesundheit", "🩺 Gesundheit"],
-    ["packen", "🎒 Packen"],
-    ["unterwegs", "🗺️ Unterwegs"],
-    ["checkliste", "✅ Checklisten"],
-    ["weiteres", "Weiteres"],
+  const THINGS_UNTERWEGS_FIX = [
+    "Reiseerklärung Ausreise Guatemala",
+    "Unterkünfte für Oktober buchen",
+    "Work-Exchange für Dezember suchen",
+    "Peru entscheiden",
+    "Rückflug buchen",
+  ];
+  /* Innerhalb "Packen & Tech-Setup": Physisches und Digitales getrennt. */
+  const THINGS_PACKEN_PHYSISCH = [
+    "Gepäck und Material testen",
+    "Fehlende Artikel einkaufen",
+    "Nackenkissen und Flugsachen bereitlegen",
+    "Rucksack wiegen",
+    "Letzte Kontrolle – Liste Vor dem Abflugtag",
+  ];
+  const THINGS_PACKEN_DIGITAL = [
+    "Dossier Handy durchlesen",
+    "Yallo fragen: Ersatz-SIM auf Vorrat",
+    "Yallo-App testen",
+    "Alle Reise-Apps installieren und testen",
+    "IMEI und Seriennummer aufs Notfallblatt notieren",
+    "Saily-eSIM aufs iPhone 17 installieren",
+    "iPhone einrichten und sichern",
+    "Offline-Karten laden",
+    "Ordner offline setzen",
   ];
   const thingsLabel = el("span", {}, "In Things öffnen");
   const thingsKnopf = el("button", { class: "todoaktion teilenknopf",
@@ -4788,13 +4784,7 @@ const todoTabelle = () => {
       const fixeFuerThings = TODO_ALLE.map(([was, datum]) => [was, datum, TODO_KATEGORIE[was] || null]);
       const thingsPosten = fixeFuerThings.concat(eigeneFuerThings).filter(([was]) => !stand[was]);
 
-      /* Statt gleich fertiger To-do-Objekte werden vorerst Paare
-         [Überschriften-Schlüssel, To-do] gesammelt – die Gruppierung in
-         Überschriften passiert erst am Schluss pro Projekt. */
-      const nachPhase = {};
-      THINGS_PHASEN.forEach(([schluessel]) => { nachPhase[schluessel] = []; });
-
-      thingsPosten.forEach(([was, datum, thema]) => {
+      const machTodo = (was, datum, thema) => {
         const attrs = { title: was };
         const tage = alsTage(datum);
         if (tage !== null) {
@@ -4804,16 +4794,45 @@ const todoTabelle = () => {
           const pad = (n) => String(n).padStart(2, "0");
           attrs.when = d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
         }
-        const kategorie = thema && TODO_THEMEN[thema] ? thema : "weiteres";
         if (thema && TODO_THEMEN[thema]) attrs.tags = [TODO_THEMEN[thema][1]];
-        nachPhase[thingsPhaseVon(datum)].push([kategorie, { type: "to-do", attributes: attrs }]);
+        return { type: "to-do", attributes: attrs };
+      };
+      const heading = (titel) => ({ type: "heading", attributes: { title: titel } });
+
+      const vorbereitungEinreise = [];
+      const finanzen = [];
+      const gesundheit = [];
+      const packenPhysisch = [];
+      const packenDigital = [];
+      const packenWeiteres = [];
+      const unterwegsFix = [];
+      const unterwegsFlexibel = [];
+      const unterwegsLaufend = [];
+
+      thingsPosten.forEach(([was, datum, thema]) => {
+        const todo = machTodo(was, datum, thema);
+        if (THINGS_UNTERWEGS_FLEXIBEL.includes(was)) { unterwegsFlexibel.push(todo); return; }
+        if (THINGS_UNTERWEGS_FIX.includes(was)) { unterwegsFix.push(todo); return; }
+        if (was === "Passseite nach jeder Einreise kopieren") { unterwegsLaufend.push(todo); return; }
+        if (thema === "einreise") { vorbereitungEinreise.push(todo); return; }
+        if (thema === "finanzen") { finanzen.push(todo); return; }
+        if (thema === "gesundheit") { gesundheit.push(todo); return; }
+        if (thema === "packen") {
+          if (THINGS_PACKEN_PHYSISCH.includes(was)) packenPhysisch.push(todo);
+          else if (THINGS_PACKEN_DIGITAL.includes(was)) packenDigital.push(todo);
+          else packenWeiteres.push(todo);
+          return;
+        }
+        /* Eigene To-dos ohne oder mit unbekanntem Thema: sicher ist sicher
+           im Projekt Unterwegs statt zu verschwinden. */
+        unterwegsLaufend.push(todo);
       });
 
       /* Jede Checkliste wird selbst zu einem To-do; ihre Punkte werden zu
          abhakbaren Things-Unterpunkten. Abschnitts-Titel ("## ...") sind
          keine eigenen Punkte und werden ausgelassen; der bereits erledigte
          Stand wird mit übernommen. Sie laufen die ganze Reise über, darum
-         alle im Projekt "Laufende Checklisten". */
+         zusammen mit dem Laufenden im Projekt "Unterwegs". */
       CHECKLISTEN_FUER_THINGS.forEach(([titel, punkte, schluessel]) => {
         const checkStand = hole("haken:" + schluessel, {});
         const eigenePunkte = hole("eigene:" + schluessel, []);
@@ -4827,31 +4846,33 @@ const todoTabelle = () => {
             completed: !!checkStand[p],
           },
         }));
-        nachPhase.laufend.push(["checkliste", { type: "to-do",
-          attributes: { title: titel, tags: ["Checkliste"], "checklist-items": checklistItems } }]);
+        unterwegsLaufend.push({ type: "to-do",
+          attributes: { title: titel, tags: ["Checkliste"], "checklist-items": checklistItems } });
       });
 
-      /* Aus den gesammelten Paaren pro Projekt die Items-Liste bauen:
-         eine Things-Überschrift, gefolgt von ihren To-dos – nur wenn in
-         dieser Kategorie in diesem Projekt überhaupt etwas offen ist. */
-      const mitUeberschriften = (paare) => {
-        const items = [];
-        THINGS_UEBERSCHRIFTEN.forEach(([schluessel, titel]) => {
-          const treffer = paare.filter(([k]) => k === schluessel);
-          if (!treffer.length) return;
-          items.push({ type: "heading", attributes: { title: titel } });
-          treffer.forEach(([, todo]) => items.push(todo));
-        });
-        return items;
+      const projekte = [];
+      const projekt = (titel, items) => {
+        if (items.length) projekte.push({ type: "project", attributes: { title: titel, area: THINGS_AREA, items } });
       };
 
-      /* Nur Projekte anlegen, in denen tatsächlich etwas offen ist. */
-      const projekte = THINGS_PHASEN
-        .filter(([schluessel]) => nachPhase[schluessel].length > 0)
-        .map(([schluessel, titel]) => ({
-          type: "project",
-          attributes: { title: titel, area: THINGS_AREA, items: mitUeberschriften(nachPhase[schluessel]) },
-        }));
+      projekt("Vorbereitung & Einreise", vorbereitungEinreise);
+      projekt("Finanzen & Versicherungen", finanzen);
+      projekt("Gesundheit", gesundheit);
+
+      const packenItems = [];
+      if (packenPhysisch.length) { packenItems.push(heading("Physisches Packen")); packenItems.push(...packenPhysisch); }
+      if (packenDigital.length) { packenItems.push(heading("Digitales Setup")); packenItems.push(...packenDigital); }
+      if (packenWeiteres.length) { packenItems.push(heading("Weiteres")); packenItems.push(...packenWeiteres); }
+      projekt("Packen & Tech-Setup", packenItems);
+
+      const unterwegsItems = [];
+      if (unterwegsFix.length) { unterwegsItems.push(heading("Fixe Termine unterwegs")); unterwegsItems.push(...unterwegsFix); }
+      if (unterwegsFlexibel.length) {
+        unterwegsItems.push(heading("Sobald Mexiko-Enddatum feststeht"));
+        unterwegsItems.push(...unterwegsFlexibel);
+      }
+      if (unterwegsLaufend.length) { unterwegsItems.push(heading("Laufend")); unterwegsItems.push(...unterwegsLaufend); }
+      projekt("Unterwegs", unterwegsItems);
 
       const url = "things:///json?data=" + encodeURIComponent(JSON.stringify(projekte));
       console.log("Things-Export:", url);
