@@ -4725,8 +4725,11 @@ const todoTabelle = () => {
   /* Einmaliger Export nach Things 3: alle offenen To-dos (Titel, Datum,
      Kategorie als Tag) sowie die 6 laufenden Checklisten (als eigene To-dos
      mit den Punkten als Things-Unterpunkte) über das things:///json-Schema
-     übergeben. Kein laufender Abgleich – muss nach Änderungen erneut
+     übergeben. Sortiert in eine Area "Sophie Pura Vida" mit einem Projekt
+     je Reisephase – so bleibt Things übersichtlich statt eine lange flache
+     Liste. Kein laufender Abgleich – muss nach Änderungen erneut
      angestossen werden. */
+  const THINGS_AREA = "Sophie Pura Vida";
   const CHECKLISTEN_FUER_THINGS = [
     ["Vor dem Abflugtag", VOR_ABFLUG, "abflug"],
     ["Angekommen", ANKUNFT, "ankunft"],
@@ -4735,6 +4738,36 @@ const todoTabelle = () => {
     ["Jede Woche", WOCHE, "woche"],
     ["Rückkehr", RUECKKEHR, "rueckkehr"],
   ];
+  /* Reihenfolge der Reise: Vorbereitung, dann die Länder/Etappen, dann
+     Rückkehr; laufende Punkte ohne festes Land ganz am Schluss. */
+  const THINGS_PHASEN = [
+    ["vorbereitung", "Vorbereitung"],
+    ["guatemala", "Guatemala"],
+    ["mexiko", "Mexiko"],
+    ["costarica", "Costa Rica"],
+    ["peru", "Peru"],
+    ["rueckkehr", "Rückkehr"],
+    ["laufend", "Laufende Checklisten"],
+  ];
+  /* Welcher Phase ein To-do zugeteilt wird – nach seinem Datum, nicht nach
+     Stichworten im Titel, das ist eindeutiger. Grenzen: Ausreise Guatemala
+     am 13. Oktober, Ankunft Costa Rica Mitte November, Peru im Dezember
+     entschieden, Rückflug Januar/Februar. */
+  const thingsPhaseVon = (datum) => {
+    const d = String(datum);
+    if (/^laufend$/i.test(d) || d === "ohne Datum") return "laufend";
+    if (/während Mexiko/i.test(d)) return "mexiko";
+    const m = d.match(/(\d{1,2})\.\s*([A-Za-zäöü]{3})/);
+    if (!m) return "vorbereitung";
+    const tag = parseInt(m[1], 10);
+    const monat = m[2].toLowerCase().slice(0, 3);
+    if (monat === "sep") return "vorbereitung";
+    if (monat === "okt") return tag < 13 ? "guatemala" : "mexiko";
+    if (monat === "nov") return "costarica";
+    if (monat === "dez") return "peru";
+    if (monat === "jan" || monat === "feb") return "rueckkehr";
+    return "vorbereitung";
+  };
   const thingsLabel = el("span", {}, "In Things öffnen");
   const thingsKnopf = el("button", { class: "todoaktion teilenknopf",
     "aria-label": "Offene To-dos und Checklisten in Things 3 öffnen",
@@ -4742,7 +4775,11 @@ const todoTabelle = () => {
       const eigeneFuerThings = hole("eigeneToDos", []).map((et) => [et.was, et.datum, et.thema || null]);
       const fixeFuerThings = TODO_ALLE.map(([was, datum]) => [was, datum, TODO_KATEGORIE[was] || null]);
       const thingsPosten = fixeFuerThings.concat(eigeneFuerThings).filter(([was]) => !stand[was]);
-      const thingsEintraege = thingsPosten.map(([was, datum, thema]) => {
+
+      const nachPhase = {};
+      THINGS_PHASEN.forEach(([schluessel]) => { nachPhase[schluessel] = []; });
+
+      thingsPosten.forEach(([was, datum, thema]) => {
         const attrs = { title: was };
         const tage = alsTage(datum);
         if (tage !== null) {
@@ -4753,13 +4790,15 @@ const todoTabelle = () => {
           attrs.when = d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
         }
         if (thema && TODO_THEMEN[thema]) attrs.tags = [TODO_THEMEN[thema][1]];
-        return { type: "to-do", attributes: attrs };
+        nachPhase[thingsPhaseVon(datum)].push({ type: "to-do", attributes: attrs });
       });
+
       /* Jede Checkliste wird selbst zu einem To-do; ihre Punkte werden zu
          abhakbaren Things-Unterpunkten. Abschnitts-Titel ("## ...") sind
          keine eigenen Punkte und werden ausgelassen; der bereits erledigte
-         Stand wird mit übernommen. */
-      const checklistenEintraege = CHECKLISTEN_FUER_THINGS.map(([titel, punkte, schluessel]) => {
+         Stand wird mit übernommen. Sie laufen die ganze Reise über, darum
+         alle im Projekt "Laufende Checklisten". */
+      CHECKLISTEN_FUER_THINGS.forEach(([titel, punkte, schluessel]) => {
         const checkStand = hole("haken:" + schluessel, {});
         const eigenePunkte = hole("eigene:" + schluessel, []);
         const zeilen = punkte.concat(eigenePunkte)
@@ -4772,10 +4811,19 @@ const todoTabelle = () => {
             completed: !!checkStand[p],
           },
         }));
-        return { type: "to-do", attributes: { title: titel, tags: ["Checkliste"], "checklist-items": checklistItems } };
+        nachPhase.laufend.push({ type: "to-do",
+          attributes: { title: titel, tags: ["Checkliste"], "checklist-items": checklistItems } });
       });
-      const url = "things:///json?data="
-        + encodeURIComponent(JSON.stringify(thingsEintraege.concat(checklistenEintraege)));
+
+      /* Nur Projekte anlegen, in denen tatsächlich etwas offen ist. */
+      const projekte = THINGS_PHASEN
+        .filter(([schluessel]) => nachPhase[schluessel].length > 0)
+        .map(([schluessel, titel]) => ({
+          type: "project",
+          attributes: { title: titel, area: THINGS_AREA, items: nachPhase[schluessel] },
+        }));
+
+      const url = "things:///json?data=" + encodeURIComponent(JSON.stringify(projekte));
       console.log("Things-Export:", url);
       window.location.href = url;
     } }, svg("link", 15, "#8B8175", 2), thingsLabel);
