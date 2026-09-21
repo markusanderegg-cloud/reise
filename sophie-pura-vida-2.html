@@ -5209,11 +5209,11 @@ const todoTabelle = () => {
           attributes: { title: titel, tags: ["Checkliste"], "checklist-items": checklistItems } }]);
       });
 
-      /* In den Länder-Projekten sollen immer alle sechs reisenahen
+      /* In den Länder-Projekten sollen immer alle vier reisenahen
          Überschriften erscheinen, auch wenn dort gerade nichts offen ist –
          so bleibt die Struktur für später gleich. Bei Vorbereitung und
          Laufende Checklisten nur Überschriften mit Inhalt. */
-      const LAENDER_UEBERSCHRIFTEN = ["fluege", "unterkunft", "transport", "aktivitaeten", "formalitaeten", "finanzen", "gesundheit"];
+      const LAENDER_UEBERSCHRIFTEN = ["buchungen", "formalitaeten", "gesundheit", "aktivitaeten"];
       const LAENDER_PHASEN = ["guatemala", "mexiko", "costarica", "peru", "rueckkehr"];
 
       /* Aus den gesammelten Paaren pro Projekt die Items-Liste bauen:
