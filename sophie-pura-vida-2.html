@@ -1004,6 +1004,14 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   padding: 2px 0 4px 62px;
 }
 .todozeile.ab .todonotiz { color: #C9C0B3; }
+.todonotizzeile {
+  display: flex; align-items: center; justify-content: space-between; gap: 6px;
+}
+.todonotizzeile + .todonotizzeile { margin-top: 2px; }
+.todonotizlink {
+  color: var(--terra); text-decoration: underline; word-break: break-all;
+}
+.todozeile.ab .todonotizlink { color: #C9A08C; }
 
 /* Verweis auf die vollständige To-do-Liste – gleiche Anmutung wie eine Zeile */
 .allezeile {
@@ -3567,6 +3575,7 @@ const TODO_KATEGORIE = {
   "Transfer mit Hostel reservieren und bestätigen lassen": "unterkunft",
   "Vacanza-Rechnung nachfragen": "finanzen",
   "Flug nach Mexiko buchen": "fluege",
+  "Ausreisenachweis für Mexiko-Check-in besorgen": "transport",
   "Flug Costa Rica buchen": "fluege",
   "Bus Nicaragua buchen": "transport",
   "Rechn. Tour GT einzahlen": "finanzen",
@@ -3635,15 +3644,23 @@ const TODO_ALLE = [
   ["Flug nach Mexiko buchen", "27. Sep", "Sophie", false,
    ["Guatemala-Stadt – Mexiko-Stadt, mit deiner Freundin zusammen.",
     "Datum hängt davon ab, wann die gemeinsame Woche in Guatemala endet.",
+    "Beim Check-in in Guatemala verlangt die Airline einen Nachweis der Weiterreise aus Mexiko – siehe eigenes To-do.",
     "Preise vergleichen, dann direkt bei der Airline buchen.",
     "Google Flights: https://www.google.com/travel/flights?q=Flug%20von%20Guatemala-Stadt%20nach%20Mexiko-Stadt"]],
+  ["Ausreisenachweis für Mexiko-Check-in besorgen", "27. Sep", "Sophie", false,
+   ["Mexiko verlangt von Einreisenden ohne Wohnsitz ein Ticket, das die Weiterreise zeigt – die Airline kontrolliert das schon beim Check-in in Guatemala, nicht erst die mexikanische Grenze.",
+    "Muss nicht das echte Costa-Rica-Ticket sein – ein günstiges, umbuchbares Busticket Mexiko-Stadt–Guatemala reicht, mit Passnummer drauf.",
+    "ADO oder ähnliche Buslinie >> buchen|Fahren"]],
   ["Flug Costa Rica buchen", "27. Sep", "Sophie", false,
    ["Mexiko-Stadt – San José. Copa und Avianca fliegen täglich.",
     "Datum hängt vom Ende der Mexiko-Reise ab – nicht zu früh fixieren.",
+    "Beim Check-in verlangt die Airline den Nachweis der Weiterreise aus Costa Rica – das Bus-Nicaragua-Ticket muss also schon gebucht sein.",
     "Preise vergleichen, dann direkt bei der Airline buchen >> buchen|Flug",
     "Google Flights: https://www.google.com/travel/flights?q=Flug%20von%20Mexiko-Stadt%20nach%20San%20Jos%C3%A9"]],
   ["Bus Nicaragua buchen", "27. Sep", "Sophie", false,
-   ["Dient als Ein- und Ausreisenachweis für Costa Rica.",
+   ["Braucht es schon vor dem Costa-Rica-Datum: Die Airline verlangt das Ticket beim Check-in in Mexiko, nicht erst die costaricanische Grenze.",
+    "Pass-Nummer muss auf dem Ticket stehen.",
+    "Bus ist günstig – lieber jetzt ein ungefähres Datum buchen als bis zum fixen Costa-Rica-Datum warten. Bei TicaBus lässt sich das Datum später ändern.",
     "Tica Bus oder Busbud >> buchen|Fahren"]],
   ["Rechn. Tour GT einzahlen", "5. Sep", "Sophie", true],
   ["Rechn. Hotel/Transfer einzahlen", "6. Sep", "Sophie", true],
@@ -3671,7 +3688,9 @@ const TODO_ALLE = [
   ["Unterkunft Heredia buchen – erste Nächte", "während Mexiko, sobald das Enddatum feststeht", "Sophie", false,
    ["Wichtig für das Busticket – die Adresse wird dafür verlangt."]],
   ["Reiseerklärung Guatemala", "25. Sep", "Sophie", false,
-   ["Vor dem Hinflug ausfüllen, QR-Code sichern."]],
+   ["Vor dem Hinflug ausfüllen, QR-Code sichern.",
+    "Nur .gob.gt-Adressen, Drittanbieter verlangen unnötig Geld.",
+    "Offizielles Formular >> wissen|djrv"]],
   ["Alle Reise-Apps installieren und testen", "27. Sep", "Sophie", false],
   ["Notfallblatt ausfüllen", "27. Sep", "beide", false],
   ["IMEI und Seriennummer aufs Notfallblatt notieren", "27. Sep", "Sophie", false,
@@ -3704,7 +3723,8 @@ const TODO_ALLE = [
   ["Letzte Kontrolle – Liste Vor dem Abflugtag", "27. Sep", "Sophie", false],
   ["Reiseerklärung Ausreise Guatemala", "13. Okt", "Sophie", false,
    ["Gilt für den Grenzübertritt nach Mexiko, nicht erst für den Costa-Rica-Flug.",
-    "Elektronisch, geht 14 Tage vorher auf. QR-Code sichern und ausdrucken."]],
+    "Elektronisch, geht 14 Tage vorher auf. QR-Code sichern und ausdrucken.",
+    "Offizielles Formular >> wissen|djrv"]],
   ["Unterkünfte für Oktober buchen", "30. Sep", "Sophie", false,
    ["Die Woche zu zweit mit deiner Freundin buchen – ab 7. Oktober, eine Woche vor Mexiko.",
     "Hostelworld oder Booking >> buchen|Schlafen",
@@ -3863,6 +3883,11 @@ const el = (tag, attrs = {}, ...kinder) => {
 const rein = (t) => String(t).replace(/<[^>]+>/g, "");
 /* Steuerzeichen aus Blocktiteln: "## " Gruppe, "!! " Zusatzinformation. */
 const ohneSprung = (t) => String(t).split(" >> ")[0];
+/* Macht eine nackte URL in einem Text anklickbar – z. B. Google-Flights-Links
+   in To-do-Notizen. */
+const linkifiziert = (html) => String(html).replace(
+  /(https?:\/\/[^\s<]+)/g,
+  (m) => '<a href="' + m + '" target="_blank" rel="noopener" class="todonotizlink">' + m + '</a>');
 
 const alsUnterzeile = (text) => {
   /* "Punkt<i>Hinweis</i>" wird zu zwei Zeilen: Punkt normal, Hinweis grau. */
@@ -4967,6 +4992,7 @@ const todoTabelle = () => {
      über das Sep-Datum automatisch in "Vorbereitung". */
   const TODO_PHASE_FEST = {
     "Unterkünfte für Oktober buchen": "guatemala",
+    "Ausreisenachweis für Mexiko-Check-in besorgen": "guatemala",
     "Reiseerklärung Ausreise Guatemala": "guatemala",
     "Bus Nicaragua buchen": "costarica",
     "Sprachschule buchen – Start Mo 16. Nov": "costarica",
@@ -5070,6 +5096,7 @@ const todoTabelle = () => {
     "Unterkünfte für Oktober buchen": "unterkunft",
     "Reiseerklärung Ausreise Guatemala": "formalitaeten",
     "Bus Nicaragua buchen": "transport",
+    "Ausreisenachweis für Mexiko-Check-in besorgen": "transport",
     "Sprachschule buchen – Start Mo 16. Nov": "aktivitaeten",
     "Unterkunft Heredia buchen – erste Nächte": "unterkunft",
     "Work-Exchange für Dezember suchen": "aktivitaeten",
@@ -5090,6 +5117,7 @@ const todoTabelle = () => {
     "Unterkunft Heredia buchen – erste Nächte": ["Verfügbarkeit prüfen", "Buchen", "Bestätigung sichern"],
     "Unterkünfte für Oktober buchen": ["Verfügbarkeit prüfen", "Buchen", "Bestätigung sichern"],
     "Bus Nicaragua buchen": ["Ticket online buchen", "Bestätigung sichern"],
+    "Ausreisenachweis für Mexiko-Check-in besorgen": ["Ticket online buchen", "Bestätigung sichern"],
     "Sprachschule buchen – Start Mo 16. Nov": ["Schule kontaktieren", "Anmeldung ausfüllen", "Anzahlung leisten", "Bestätigung sichern"],
   };
   const thingsLabel = el("span", {}, "In Things öffnen");
@@ -5314,8 +5342,28 @@ const todoTabelle = () => {
       el("span", { class: "tododatum" }, wartet ? "wartet" : mitTag(datum)),
     ];
     if (Array.isArray(details) && details.length) {
-      const notizHtml = details.map((d) => ohneSprung(String(d))).join("<br>");
-      inhaltZeile.push(el("div", { class: "todonotiz", html: notizHtml }));
+      /* Jede Detailzeile einzeln: Text mit anklickbaren Links, dazu ein
+         Sprungpfeil, falls die Zeile mit " >> ziel|param" auf eine
+         Buchungs- oder Wissensseite verweist (gleiches Muster wie bei den
+         Checklisten). Ein Klick auf Link oder Pfeil darf das To-do nicht
+         gleich abhaken – darum eigenes stopPropagation auf der Notiz. */
+      const notizBox = el("div", { class: "todonotiz" });
+      notizBox.onclick = (e) => { if (e.target.closest("a, button")) e.stopPropagation(); };
+      details.forEach((d) => {
+        const text = String(d);
+        const sprungTeil = text.split(" >> ")[1];
+        const zeileEl = el("div", { class: "todonotizzeile" },
+          el("span", { html: linkifiziert(ohneSprung(text)) }));
+        if (sprungTeil) {
+          const [ziel, ...rest] = sprungTeil.split("|");
+          zeileEl.appendChild(el("button", { class: "hakensprung",
+            "aria-label": "Dorthin springen",
+            onclick: () => gehe(ziel, rest.length ? rest.join("|") : null, true) },
+            svg("chevron", 13, "#B65A3C", 2.2)));
+        }
+        notizBox.appendChild(zeileEl);
+      });
+      inhaltZeile.push(notizBox);
     }
     if (eigenId) {
       /* Eigene Zeile: exakt dieselbe Optik, nur als div mit einem echten
