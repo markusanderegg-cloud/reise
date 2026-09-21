@@ -319,18 +319,31 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 /* ── Route ── */
 
 .zeitstrahl { position: relative; padding-left: 26px; }
-/* Die Zeitachse steht auf weisser Fläche wie alle anderen Inhalte. */
+/* Die Zeitachse steht auf weisser Fläche wie alle anderen Inhalte. Titel,
+   Zeitraum und Stationen bilden zusammen eine Karte – eine Einheit statt
+   eines losen Titels über einer separaten weissen Fläche. */
 .strang {
-  position: relative; padding: 16px 14px 4px 44px;
+  position: relative; padding: 14px 14px 4px;
   background: var(--karte); border: 1px solid var(--linie); border-radius: 14px;
   margin-bottom: 16px;
 }
-.strang::before {
-  content: ""; position: absolute; left: 23px; top: 26px; bottom: 26px;
+/* Die Stationen-Liste trägt die Zeitachsen-Linie und den Einzug für die
+   nummerierten Kreise – unabhängig davon, wie hoch der Titel darüber ist. */
+.etappenliste {
+  position: relative; padding: 12px 0 4px 30px;
+  margin-top: 6px; border-top: 1px solid var(--linie);
+}
+.etappenliste::before {
+  content: ""; position: absolute; left: 9px; top: 22px; bottom: 26px;
   width: 2px; background: var(--sand-tief);
 }
 .etappe { position: relative; margin-bottom: 16px; }
 .etappe:last-child { margin-bottom: 12px; }
+
+/* Ein Eckpunkt ohne eigene Station (z. B. "Abflug", solange nichts feststeht) –
+   dieselbe Zeile wie eine echte Etappe, nur ohne Nummer, Pfeil und Klick. */
+.etappeleer .etappenort { color: var(--grau); font-weight: 500; }
+.etappeleer .etappenzeit { font-style: italic; }
 
 /* In der weissen Zeitachse brauchen die Blöcke eine eigene Tönung,
    sonst verschwimmen weisse Karten auf weissem Grund. */
@@ -796,12 +809,14 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .etappeknopf.auf .etappenort { color: var(--terra); }
 .etappepfeil.auf { transform: rotate(180deg); }
 
-/* ── Ländermarke und Stationszeile: drei Ebenen ── */
+/* ── Ländermarke und Stationszeile: drei Ebenen ──
+   Die Ländermarke ist jetzt immer die erste Zeile in der Karte (.strang),
+   nicht mehr eine lose Überschrift davor – darum reicht ein knapper
+   Innenabstand statt des grossen Zwischenraums von früher. */
 .landmarke {
   display: flex; align-items: flex-start; gap: 10px;
-  margin: 30px 0 12px; padding: 0; width: 100%; text-align: left;
+  margin: 2px 0 8px; padding: 0; width: 100%; text-align: left;
 }
-.landmarke:first-child { margin-top: 4px; }
 .landtext { flex: 1; }
 .landzeile { display: flex; align-items: center; gap: 9px; }
 .landname {
@@ -823,6 +838,17 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   padding: 2px 2px 10px; margin: 0 0 8px;
 }
 .portaltext { font-size: var(--ebene6); color: var(--grau); }
+
+/* Umschalter "X Stationen anzeigen" – Länder-Karte bleibt zu, bis man
+   sie antippt, damit auf einen Blick nur Zeitraum, Dauer und
+   Schwerpunkte sichtbar sind. */
+.stationenumschalter {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  width: 100%; background: transparent; border: 0; border-top: 1px solid var(--linie);
+  padding: 10px 2px 0; margin-top: 4px; position: relative;
+  font-size: var(--ebene6); color: var(--terra); font-weight: 500; text-align: left;
+}
+.stationenumschalter .etappepfeil { position: static; }
 
 /* Buchen – der einzige Weg nach aussen, deshalb kräftig */
 .karte.buchenkarte {
@@ -916,7 +942,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 .todozeile {
   display: grid;
-  grid-template-columns: 22px 30px 1fr 62px;
+  grid-template-columns: 22px 30px 1fr 84px;
   align-items: center; column-gap: 10px;
   width: 100%; text-align: left;
   padding: 0 12px;
@@ -963,8 +989,11 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 .todolead { font-size: var(--ebene7); color: #9C9284; white-space: nowrap; text-align: center; }
 .tododatum {
-  font-size: var(--ebene6); color: #A9A296;
-  white-space: nowrap; text-align: right;
+  /* Ein echtes Datum ist kurz und bleibt einzeilig; ein Hinweistext wie
+     "während Mexiko, sobald das Enddatum feststeht" ist länger – der bricht
+     um, statt (von der Karte) abgeschnitten zu werden. */
+  font-size: var(--ebene6); color: #A9A296; line-height: 1.25;
+  white-space: normal; text-align: right; align-self: center;
 }
 .todozeile.ab .todotext { color: var(--grau); text-decoration: line-through; }
 .todozeile.ab .todolead, .todozeile.ab .tododatum { color: #A9A296; }
@@ -2019,31 +2048,24 @@ const DOKUMENTE = [
   },
   {
     id: "geld", titel: "Geld unterwegs",
-    kurz: "Karten, Konten, Budget, Routine",
+    kurz: "Karten, Konten, Routine",
     bloecke: [
-      ["Deine Karten und dein Bargeld", [
-        { begriff: "Revolut Premium",
-          text: "Die Alltagskarte, immer bei dir. Darauf liegt nur ein Wochenbudget – geht sie verloren, ist der Schaden klein. Keine Reiseversicherung: dafür gilt allein die Visana-Police." },
-        { begriff: "BKB STU Visa Debit",
-          text: "Die Reserve, im Spind in der Wertsachen-Box. Nur wenn Revolut ausfällt, nie auf Tagesausflüge." },
-        { begriff: "Bargeld an drei Orten",
-          text: "Tagesgeld am Körper, rund 150 USD im Spind, 50–100 USD versteckt im Rucksack.<br><b>Das ist deine Rückfallebene</b>, kein Budget: Sind Karte und Handy weg, zahlst du damit die Nacht, das Taxi und den Weg zur Polizei. Das Versteckte wird nie angefasst.<br>Dollarnoten in der Schweiz bei der Bank besorgen – kleine Scheine zu 1, 5, 10 und 20, keine beschädigten." },
+      ["Karten, Konten und Bargeld", [
+        { begriff: "Hauptkonto ca. 250 CHF",
+          text: "Dein Wochenbudget. Daran hängt die Revolut-Premium-Karte, deine Alltagskarte, immer bei dir – geht sie verloren, ist der Schaden klein." },
+        { begriff: "Reisekasse ca. 1'000 CHF",
+          text: "Sonntags schiebst du daraus das Budget aufs Hauptkonto nach." },
+        { begriff: "Notreserve ca. 500 CHF",
+          text: "Für Umbuchung, Arzt oder eine spontane Nacht im Einzelzimmer. Liegt auf der BKB-STU-Visa-Debit-Karte im Spind, in der Wertsachen-Box – nur wenn Revolut ausfällt, nie auf Tagesausflüge." },
+        { begriff: "Bargeld im Spind ca. 150 USD",
+          text: "Dazu Tagesgeld am Körper für den Alltag.<br><b>Das ist deine Rückfallebene:</b> Sind Karte und Handy weg, zahlst du damit die Nacht, das Taxi und den Weg zur Polizei." },
       ]],
-      ["Deine drei Konten", [
-        { begriff: "Hauptkonto", text: "Dein Wochenbudget, etwa 150–250 Franken. Nur dieses Konto hängt an der Karte." },
-        { begriff: "Reisekasse", text: "Rund 1'000 Franken. Sonntags schiebst du daraus das Budget für die neue Woche nach." },
-        { begriff: "Notreserve", text: "Rund 500 Franken für Umbuchung, Arzt oder eine spontane Nacht im Einzelzimmer." },
-        "<b>Kein USD-Konto nötig.</b> In Guatemala zahlst du bar in Quetzal, in Costa Rica mit der Karte – Revolut rechnet direkt von Franken um.",
-      ]],
-      ["Im Kopf umrechnen", [
-        "<b>Guatemala:</b> Quetzal durch 7 sind ungefähr Franken. 100 Q rund 14 Franken.<br>Mittagessen 30–50 Q · Hostelbett 100–150 Q · Busfahrt 10–25 Q.",
-        "<b>Costa Rica:</b> Colones durch 600. 10'000 Colones rund 17 Franken.<br>Mittagessen 4'000–6'000 · Hostelbett 12'000–18'000.",
-        "<b>Kontrolle:</b> Revolut zeigt kurz nach dem Bezahlen den Frankenbetrag. Weicht er stark von deiner Schätzung ab, nachfragen.",
-      ]],
-      ["Die wichtigste Regel", [
-        "<b>Am Automaten die Landeswährung wählen.</b> Umrechnung in Franken ablehnen – sie kostet 3 bis 12 Prozent.",
-        "<b>Dasselbe im Laden:</b> immer in Quetzal oder Colones abrechnen, nie in Franken.",
-        "<b>Selten und viel abheben</b> – die Gebühr hängt am Vorgang, nicht am Betrag.",
+      ["Woche für Woche", [
+        "<b>Sonntags:</b> Budget von der Reisekasse aufs Hauptkonto schieben, Ausgaben anschauen – liegt der Tagesschnitt im Rahmen?",
+        "<b>Vor jedem Ortswechsel:</b> genug Bargeld für zwei Tage.",
+        "Belege fotografieren und ablegen.",
+        "Wird eine Woche teurer, gleicht die nächste es aus. Puffer ist die Reisekasse, nicht die Notreserve.",
+        { sprung: "geld", param: "budget", label: "Tagesbudget pro Land ansehen" },
       ]],
       ["Online bezahlen – Flug, Bus, Tour", [
         "<b>Vorher:</b> genug Geld aufs Hauptkonto schieben. Nur dieses hängt an der Karte, die Reisekasse nicht.",
@@ -2061,22 +2083,44 @@ const DOKUMENTE = [
         "<b>Wenn der Scan nicht geht:</b> Schweizer QR-Rechnungen kann Revolut je nach Version nicht lesen. Dann Banküberweisung wählen und IBAN samt Referenznummer von Hand eintippen.",
         "Betrifft dich unterwegs bei der Restzahlung der Sprachschule.",
       ]],
-      ["Woche für Woche", [
-        "<b>Sonntags:</b> Budget von der Reisekasse aufs Hauptkonto schieben.",
-        "<b>Ausgaben anschauen</b> – liegt der Tagesschnitt im Rahmen?",
-        "<b>Vor jedem Ortswechsel:</b> genug Bargeld für zwei Tage.",
-        "Belege fotografieren und ablegen.",
-      ]],
-      ["Was du pro Tag rechnest", [
-        "<b>Guatemala 25–35 USD</b> · <b>Costa Rica 35–45 USD</b> – Hostelbett, Essen, lokale Transporte, gelegentlich eine Tour.",
-        "<b>Nicht enthalten:</b> Flüge, Sprachschule, grössere Touren wie Acatenango.",
-        "Wird eine Woche teurer, gleicht die nächste es aus. Puffer ist die Reisekasse, nicht die Notreserve.",
-      ]],
       ["Wenn eine Karte weg ist", [
         "<b>Zuerst selbst sperren</b> – Revolut einfrieren, BKB in „one“. Gratis, weltweit, in Sekunden.",
         "<b>Danach Visana melden</b> – sperrt die restlichen Karten und übernimmt die Ersatzgebühren.",
         "<b>Wenn gar nichts mehr geht:</b> Papi schickt Geld über Western Union. Du holst es mit Namen und Referenznummer, ohne Karte.",
         { sprung: "notfall", param: "ablauf", label: "Alle Nummern und der ganze Ablauf" },
+      ]],
+    ],
+  },
+  {
+    id: "budget", titel: "Tagesbudget pro Land",
+    kurz: "Guatemala, Mexiko, Costa Rica, Peru im Vergleich",
+    bloecke: [
+      ["Pro Tag", [
+        { begriff: "Guatemala – Total 290 Q ≈ 32 Franken/Tag",
+          text: "Unterkunft 140 Q ≈ 15.40 Fr.<br>Essen 100 Q ≈ 11.00 Fr.<br>Ausgang 25 Q ≈ 2.75 Fr.<br>Transport 25 Q ≈ 2.75 Fr." },
+        { begriff: "Mexiko – Total 950 Peso ≈ 45 Franken/Tag",
+          text: "Unterkunft 450 Peso ≈ 21.40 Fr.<br>Essen 300 Peso ≈ 14.30 Fr.<br>Ausgang 80 Peso ≈ 3.80 Fr.<br>Transport 120 Peso ≈ 5.70 Fr." },
+        { begriff: "Costa Rica – Total 34'500 Colones ≈ 60 Franken/Tag",
+          text: "Unterkunft 16'000 Colones ≈ 27.80 Fr.<br>Essen 12'500 Colones ≈ 21.75 Fr.<br>Ausgang 2'500 Colones ≈ 4.35 Fr.<br>Transport 3'500 Colones ≈ 6.10 Fr." },
+        { begriff: "Peru – Total 165 Sol ≈ 40 Franken/Tag",
+          text: "Unterkunft 65 Sol ≈ 15.75 Fr.<br>Essen 65 Sol ≈ 15.75 Fr.<br>Ausgang 15 Sol ≈ 3.65 Fr.<br>Transport 20 Sol ≈ 4.85 Fr." },
+        "<b>Nicht enthalten:</b> Flüge, Sprachschule und grosse Einmal-Kosten wie Acatenango, Machu Picchu oder Nationalpark-Tickets in Costa Rica (oft 15–20 Franken pro Park) – kommen separat aufs Gesamtbudget drauf.",
+        { sprung: "geld", param: "waehrung", label: "Landeswährung umrechnen" },
+      ]],
+    ],
+  },
+  {
+    id: "waehrung", titel: "Landeswährung umrechnen",
+    kurz: "Faustregeln für Guatemala, Mexiko, Costa Rica, Peru",
+    bloecke: [
+      ["Faustregeln", [
+        "<b>Immer in Landeswährung zahlen und abheben</b> – am Automaten und im Laden nie in Franken umrechnen lassen, das kostet 3 bis 12 Prozent. Selten und viel abheben, die Gebühr hängt am Vorgang, nicht am Betrag.",
+        "<b>Guatemala – Faustregel:</b> durch 10 teilen. 100 Q → rund 10 Franken.",
+        "<b>Costa Rica – Faustregel:</b> drei Nullen weg, dann fast verdoppeln. 10'000 Colones → 10, mal 1.8 → rund 18 Franken.",
+        "<b>Mexiko – Faustregel:</b> eine Null weg und halbieren. 100 Peso → 10, halbiert → rund 5 Franken.",
+        "<b>Peru – Faustregel:</b> durch vier teilen. 10 Sol → rund 2.50 Franken.",
+        "<b>Kontrolle:</b> Revolut zeigt kurz nach dem Bezahlen den Frankenbetrag. Weicht er stark von deiner Schätzung ab, nachfragen.",
+        { sprung: "geld", param: "budget", label: "Tagesbudget pro Land ansehen" },
       ]],
     ],
   },
@@ -2155,7 +2199,7 @@ const DOKUMENTE = [
         "<b>iPhone 12 im Spind</b> – geladen, im Hostel-WLAN, mit My yallo, Revolut, one und „Wo ist?“ angemeldet. Damit ortest, sperrst und ersetzt du im Ernstfall alles.",
         "<b>Beide mit derselben Apple-ID</b> – dann empfängt das Ersatzgerät auch die Bestätigungscodes von Apple.",
         "<b>iPhone 17:</b> Yallo-SIM für Nummer, Anrufe und SMS-Codes. Dazu die Saily-eSIM als Datenreserve, wenn die 5 GB von Yallo weg sind.",
-        "<b>iPhone 12:</b> lokale Prepaid-SIM vor Ort – Tigo in Guatemala, Kölbi in Costa Rica. 15 bis 20 USD für 30 Tage, Pass zur Registrierung nötig.",
+        "<b>iPhone 12:</b> lokale Prepaid-SIM vor Ort – Tigo in Guatemala, Kölbi in Costa Rica, in Peru z. B. Claro oder Movistar am Flughafen Lima. 15 bis 20 USD für 30 Tage, Pass zur Registrierung nötig.",
         "<b>Daten sparen:</b> Roaming-Kostenlimit bei Yallo auf 0 CHF, Datensparmodus ein, Foto-Upload und App-Downloads nur im WLAN, Offline-Karten vorher laden.",
         "<b>Weitere Yallo-Einstellungen:</b> Premium-SMS blockiert, Roaming ein, Surfen im Flugzeug und via Satellit aus, Voicemail aus – sonst kostet jede hinterlassene Nachricht wie ein Auslandsanruf.",
         "<b>Am ersten Tag prüfen:</b> Laufen die Daten über Yallo? Falls nicht, sperrt das 0-Franken-Limit auch das Inklusivvolumen – dann im Portal auf 20 CHF setzen.",
@@ -2366,6 +2410,94 @@ const DOKUMENTE = [
       ]],
     ],
   },
+  {
+    id: "neuesland", titel: "Weiteres Land? (z. B. Brasilien)",
+    kurz: "Was zu klären ist, falls sich die Route spontan ändert",
+    bloecke: [
+      ["Flug", [
+        "Verbindung ab dem aktuellen Standort prüfen – Preise, Dauer, Zwischenstopps.",
+        "Buchungsfenster: vier bis sechs Wochen im Voraus ist meist am günstigsten.",
+        "Anschluss an den Rest der Reise – wie kommt sie von dort wieder zurück in den Plan.",
+      ]],
+      ["Einreise-Bestimmungen", [
+        "Visum nötig oder visumfrei? Für wie viele Tage.",
+        "Pass-Gültigkeit – meist mindestens sechs Monate über die Rückreise hinaus.",
+        "<b>Brasilien speziell:</b> Gelbfieber-Impfung bzw. Nachweis prüfen, je nach Herkunftsland/Vorreisen.",
+        "Einreiseformulare, die vorher online ausgefüllt werden müssen.",
+      ]],
+      ["Reiseplanung", [
+        "Wie viele Wochen sind realistisch, ohne den Rest der Route zu sprengen.",
+        "Zeitlich einordnen: wo in der bestehenden Route hätte es Platz.",
+        "Grobe Route zuerst, Details erst kurz vorher.",
+      ]],
+      ["Orte", [
+        "Welche Städte oder Regionen stehen im Vordergrund.",
+        "Prioritäten setzen – nicht alles geht in ein paar Wochen.",
+        "Distanzen zwischen den Orten realistisch einschätzen.",
+      ]],
+      ["Hostel buchen", [
+        "Erste ein bis zwei Nächte fix buchen, Rest vor Ort.",
+        "Adresse der ersten Unterkunft bereithalten – wird oft bei der Einreise verlangt.",
+      ]],
+      ["Geld", [
+        "Landeswährung, gängige Bezahlmethoden (Karte vs. Bargeld).",
+        "Geldautomaten in den geplanten Orten vorhanden?",
+        "Grobes Budget für die zusätzliche Zeit einplanen.",
+      ]],
+      ["Sicherheit", [
+        "EDA-Reisehinweise für das Land lesen, nach Region unterschiedlich.",
+        { label: "EDA-Reisehinweise Brasilien", url: "https://www.eda.admin.ch/eda/de/home/vertretungen-und-reisehinweise/brasilien.html" },
+      ]],
+      ["Gesundheit", [
+        "Nötige Impfungen prüfen, je nach Region auch Malaria-Prophylaxe.",
+        "Versicherung: deckt sie das zusätzliche Land und die verlängerte Reisedauer?",
+      ]],
+      ["Klima", [
+        "Jahreszeit vor Ort zum geplanten Zeitpunkt – Regenzeit meiden, wenn möglich.",
+        "Packliste anpassen, falls das Klima stark abweicht.",
+      ]],
+      ["Transport vor Ort", [
+        "Busse, Inlandflüge oder beides – grosse Distanzen einplanen.",
+        "Grenzübertritt: Formalitäten und Wartezeiten je nach Übergang unterschiedlich.",
+      ]],
+      ["Prompt für die KI", [
+        "Fertiger Text zum Kopieren – einfach die eckigen Klammern ausfüllen und "
+        + "bei einer KI wie Claude oder ChatGPT einfügen.",
+        "„Ich bin auf einer mehrmonatigen Backpacking-Reise durch Mittelamerika "
+        + "(aktuell: [bisherige Route/Länder und Zeitraum einfügen]) und überlege, "
+        + "spontan noch <b>[Land, z. B. Brasilien]</b> anzuhängen, ungefähr im Zeitraum "
+        + "[Datum von–bis] für ca. [Anzahl Wochen].<br><br>"
+        + "Bitte erstelle mir eine detaillierte, gut strukturierte Reisevorbereitung zu "
+        + "genau diesen Themen, mit konkreten, aktuellen und praktisch umsetzbaren "
+        + "Informationen (keine allgemeinen Plattitüden):<br><br>"
+        + "<b>1 Flug</b> – beste Verbindungen ab [aktueller Standort/Land], ungefähre "
+        + "Preise, sinnvolles Buchungsfenster, wie sich der Rückflug/Anschluss an die "
+        + "restliche Reiseroute organisieren lässt.<br>"
+        + "<b>2 Einreise-Bestimmungen</b> – Visumpflicht oder visumfrei, maximale "
+        + "Aufenthaltsdauer, nötige Impfungen/Nachweise (z. B. Gelbfieber), "
+        + "Einreiseformulare, Pass-Gültigkeitsanforderungen.<br>"
+        + "<b>3 Reiseplanung</b> – realistische Aufenthaltsdauer für die gewählten Orte, "
+        + "wie sich das zeitlich am besten in die bestehende Route einfügt.<br>"
+        + "<b>4 Orte</b> – die 3–5 empfehlenswertesten Städte/Regionen für diesen "
+        + "Zeitraum, mit kurzer Begründung und ungefährer Reisezeit dazwischen.<br>"
+        + "<b>5 Hostel/Unterkunft buchen</b> – worauf bei der Wahl der ersten Unterkunft "
+        + "zu achten ist, empfohlene Buchungsplattformen, Preisniveau.<br>"
+        + "<b>6 Geld</b> – Landeswährung, übliche Bezahlmethoden, Verfügbarkeit von "
+        + "Geldautomaten, grobe Tagesbudget-Schätzung für Backpacking-Standard.<br>"
+        + "<b>7 Sicherheit</b> – aktuelle Lage nach Region, was besonders zu beachten "
+        + "ist, offizielle Reisehinweise (z. B. EDA für Schweizer:innen).<br>"
+        + "<b>8 Gesundheit</b> – empfohlene Impfungen, Malariarisiko nach Region, "
+        + "Trinkwasser, Krankenversicherung/Zusatzdeckung prüfen.<br>"
+        + "<b>9 Klima</b> – Wetter und Jahreszeit im geplanten Zeitraum, was das für die "
+        + "Packliste bedeutet.<br>"
+        + "<b>10 Transport vor Ort</b> – wie man zwischen den Orten am besten reist "
+        + "(Bus, Inlandflug), typische Fahrzeiten, Grenzübertritt falls relevant.<br><br>"
+        + "Gib zu jedem Punkt konkrete Fakten, Namen, Zahlen oder Links, wo sinnvoll – "
+        + "keine vagen Aussagen. Fasse am Ende zusammen, was die 2–3 wichtigsten Dinge "
+        + "sind, die zuerst geklärt/gebucht werden müssen.“",
+      ]],
+    ],
+  },
 ];
 
 
@@ -2374,6 +2506,7 @@ const DOKUMENTE = [
 const STATIONEN = [
   {
     id: "hinflug", nummer: "1", kurzname: "Hinflug", titel: "Hinflug nach Guatemala", land: "guatemala",
+    phase: "hinflug",
     zeit: "Dienstag, 29. September", kurz: "Iberia IB 0634 · Abflug 07:30, Ankunft 15:25",
     datum: "2026-09-29",
     jetzt: [
@@ -2394,7 +2527,6 @@ const STATIONEN = [
       ]],
       [">> 2 Tage vor Abflug", [
         ["eigen", "", [
-          "<b>Flug Costa Rica und Bus Nicaragua</b> – griffbereit, als PDF offline auf dem Handy und ausgedruckt.",
           { punkt: "<b>Reiseerklärung Guatemala</b> – elektronisch, ab 14 Tage vorher<br>QR-Code sichern und ausdrucken.",
             sprung: "wissen", param: "djrv" },
           "<b>Online einchecken</b> – ab 24 h vorher<br>Sitzplatz und Gepäck prüfen.",
@@ -2439,7 +2571,8 @@ const STATIONEN = [
   },
   {
     id: "ankunft-gt", nummer: "2", kurzname: "Ankunft", titel: "Ankunft Guatemala",
-    land: "guatemala", zeit: "Dienstag, 29. September", kurz: "Vom Flughafen bis ins Hostel",
+    land: "guatemala", phase: "ankunft",
+    zeit: "Dienstag, 29. September", kurz: "Vom Flughafen bis ins Hostel bei Maya Papaya",
     abschnitte: [
       ["", [
         ["eigen", "Flughafen", [
@@ -2457,7 +2590,7 @@ const STATIONEN = [
           "Nach Antigua rund eine Stunde. <b>Nicht nachts fahren.</b>",
         ]],
         ["eigen", "Unterkunft", [
-          "<b>Hostel selbst gebucht</b> – 29. September bis 1. Oktober, zwei Nächte in Antigua.",
+          "<b>Hostel selbst gebucht – Maya Papaya</b> – 29. September bis 1. Oktober, zwei Nächte in Antigua.",
           "<b>Am 1. Oktober wechselt es</b> – dann übernimmt die Tour, Treffpunkt bei Casa Florencia.",
           "Die Adresse wird bei der Einreise verlangt – vor dem Anstehen bereithalten.",
           "Wertsachen in den Spind, eigenes Schloss verwenden.",
@@ -2469,8 +2602,9 @@ const STATIONEN = [
     ],
   },
   {
-    id: "rundreise", nummer: "3", kurzname: "Tour", titel: "Heart of Guatemala",
-    land: "guatemala", zeit: "Donnerstag 1. bis Dienstag 6. Oktober", kurz: "Intrepid, sechs Tage ab Antigua",
+    id: "rundreise", nummer: "3", kurzname: "Tour", titel: "Tour durch Guatemala",
+    land: "guatemala", phase: "unterwegs", ohnePhasenLabel: true,
+    zeit: "Donnerstag 1. bis Dienstag 6. Oktober", kurz: "Unterwegs mit Tour Intrepid",
     abschnitte: [
       ["", [
         ["eigen", "Die Tour", [
@@ -2488,8 +2622,9 @@ const STATIONEN = [
     ],
   },
   {
-    id: "guatemala-zuzweit", nummer: "4", kurzname: "Zu zweit", titel: "Zu zweit unterwegs",
-    land: "guatemala", zeit: "Mittwoch 7. bis Dienstag 13. Oktober", kurz: "Idee · mit deiner Freundin, nichts gebucht",
+    id: "guatemala-zuzweit", nummer: "4", kurzname: "Zu zweit", titel: "Unterwegs",
+    land: "guatemala", phase: "unterwegs",
+    zeit: "Mittwoch 7. bis Dienstag 13. Oktober", kurz: "Unterwegs mit Freundin, nichts gebucht",
     abschnitte: [
       ["", [
         ["eigen", "Diese Woche gehört euch", [
@@ -2505,32 +2640,54 @@ const STATIONEN = [
     ],
   },
   {
-    id: "mexiko-freundin", nummer: "5", kurzname: "Mexiko", titel: "Mexiko mit Freundin",
-    land: "mexiko", zeit: "Mitte Oktober bis Mitte November", kurz: "Idee · mit deiner Freundin, noch nichts geplant",
+    id: "abflug-gt", nummer: "5", kurzname: "Abflug", titel: "Abflug nach Mexiko",
+    land: "guatemala", phase: "abflug",
+    zeit: "Datum offen", kurz: "Flug noch nicht gebucht",
+    abschnitte: [
+      ["", [
+        ["eigen", "Was ansteht", [
+          "<b>Flug nach Mexiko buchen</b> – sobald die Route zu zweit feststeht.",
+          "<b>Guatemala-Ausreiseerklärung</b> – gilt für diesen Grenzübertritt, steht als To-do mit Datum.",
+        ]],
+      ]],
+    ],
+  },
+  {
+    id: "ankunft-mx", nummer: "6", kurzname: "Ankunft", titel: "Ankunft Mexiko",
+    land: "mexiko", phase: "ankunft",
+    zeit: "Mitte Oktober, offen", kurz: "FMM-Touristenkarte bei der Einreise",
+    abschnitte: [
+      ["", [
+        ["eigen", "Einreise", [
+          "<b>FMM-Touristenkarte</b> – bei der Einreise nach Mexiko ausfüllen, meist im Flugzeug oder am Schalter.",
+          "<b>Ausreiseteil der FMM aufbewahren</b> – die zweite Hälfte des Formulars, wird erst beim Verlassen Mexikos wieder gebraucht. Nicht wegwerfen.",
+        ]],
+      ]],
+    ],
+  },
+  {
+    id: "mexiko-freundin", nummer: "7", kurzname: "Mexiko", titel: "Unterwegs",
+    land: "mexiko", phase: "unterwegs",
+    zeit: "Mitte Oktober bis Mitte November", kurz: "Unterwegs mit Freundin, noch nichts geplant",
     abschnitte: [
       ["", [
         ["eigen", "Statt allein weiter zu zweit", [
           "<b>Plan geändert:</b> ihr bleibt zusammen und reist gemeinsam nach Mexiko weiter.",
           "Drei bis vier Wochen sind eingeplant, ein genaues Enddatum gibt es noch nicht.",
-          "Nichts ist gebucht – Flug, Route und Unterkünfte sind noch offen.",
+          "Nichts ist gebucht – Route und Unterkünfte sind noch offen.",
         ]],
         ["eigen", "Was ansteht", [
-          "<b>Flug nach Mexiko buchen</b> – sobald die Route feststeht.",
           "<b>Rückflug nach Costa Rica planen</b> – der Rest der Reise verschiebt sich entsprechend nach hinten.",
           "<b>Route zu zweit absprechen</b> – einigen, was ihr sehen wollt.",
-        ]],
-        ["eigen", "Grenze und Einreise", [
-          "<b>Guatemala-Ausreiseerklärung</b> – gilt für diesen Grenzübertritt, steht als To-do mit Datum.",
-          "<b>FMM-Touristenkarte</b> – bei der Einreise nach Mexiko ausfüllen, meist im Flugzeug oder am Schalter.",
-          "<b>Ausreiseteil der FMM aufbewahren</b> – die zweite Hälfte des Formulars, wird erst beim Verlassen Mexikos wieder gebraucht. Nicht wegwerfen.",
         ]],
       ]],
       ["Checkliste", [["liste", "pack:inland"], ["liste", "ortswechsel"]]],
     ],
   },
   {
-    id: "abflug-cr", nummer: "6", kurzname: "Abflug", titel: "Abflug nach Costa Rica",
-    land: "mexiko", zeit: "Donnerstag, 12. November", kurz: "Idee · Datum hängt vom Ende in Mexiko ab",
+    id: "abflug-cr", nummer: "8", kurzname: "Abflug", titel: "Abflug nach Costa Rica",
+    land: "mexiko", phase: "abflug",
+    zeit: "Donnerstag, 12. November", kurz: "Datum hängt vom Ende in Mexiko ab",
     datum: "2026-11-12",
     jetzt: [
       ["vor", 3, "Weiterreisenachweis und Adresse griffbereit legen", []],
@@ -2603,8 +2760,8 @@ const STATIONEN = [
     ],
   },
   {
-    id: "ankunft-cr", nummer: "7", kurzname: "Ankunft", titel: "Ankunft Costa Rica",
-    land: "costarica", zeit: "Donnerstag, 12. November", kurz: "Idee · vom Flughafen bis nach Heredia",
+    id: "ankunft-cr", nummer: "9", kurzname: "Ankunft", titel: "Ankunft Costa Rica",
+    land: "costarica", zeit: "Donnerstag, 12. November", kurz: "Vom Flughafen bis nach Heredia",
     abschnitte: [
       ["", [
         ["eigen", "Flughafen", [
@@ -2632,8 +2789,8 @@ const STATIONEN = [
     ],
   },
   {
-    id: "heredia", nummer: "8", kurzname: "Heredia", titel: "Heredia – Sprachschule", land: "costarica",
-    zeit: "ab Montag, 16. November", kurz: "Idee: 1 Woche · vier Lektionen am Vormittag",
+    id: "heredia", nummer: "10", kurzname: "Heredia", titel: "Heredia – Sprachschule", land: "costarica",
+    zeit: "ab Montag, 16. November", kurz: "1 Woche · vier Lektionen am Vormittag",
     abschnitte: [
       ["Transport", [
         ["eigen", "Hinkommen", [
@@ -2663,8 +2820,8 @@ const STATIONEN = [
     ],
   },
   {
-    id: "samara", nummer: "9", kurzname: "Sámara", titel: "Sámara – Sprachschule", land: "costarica",
-    zeit: "ab Montag, 23. November", kurz: "Idee: 1 Woche · Strandcampus am Meer",
+    id: "samara", nummer: "11", kurzname: "Sámara", titel: "Sámara – Sprachschule", land: "costarica",
+    zeit: "ab Montag, 23. November", kurz: "1 Woche · Strandcampus am Meer",
     abschnitte: [
       ["Transport", [
         ["eigen", "Hinkommen", [
@@ -2691,7 +2848,7 @@ const STATIONEN = [
     ],
   },
   {
-    id: "bus", nummer: "10", kurzname: "Rundreise", titel: "Unterwegs mit dem Bus", land: "costarica",
+    id: "bus", nummer: "12", kurzname: "Rundreise", titel: "Unterwegs", land: "costarica",
     zeit: "November und Dezember", kurz: "Route entsteht vor Ort",
     abschnitte: [
       ["Transport", [
@@ -2711,7 +2868,7 @@ const STATIONEN = [
     ],
   },
   {
-    id: "workexchange", nummer: "11", kurzname: "Mitarbeit", titel: "Kost und Logis gegen Mitarbeit",
+    id: "workexchange", nummer: "13", kurzname: "Mitarbeit", titel: "Kost und Logis gegen Mitarbeit",
     land: "costarica", zeit: "Dezember", kurz: "Worldpackers oder Workaway",
     abschnitte: [
       ["Der Ablauf", [
@@ -2732,12 +2889,23 @@ const STATIONEN = [
     ],
   },
   {
-    id: "peru", nummer: "12", kurzname: "Peru", titel: "Peru", land: "peru",
-    zeit: "Ende Dezember, offen", kurz: "Mit einer Freundin, noch nichts gebucht",
+    id: "abflug-pe", nummer: "14", kurzname: "Abflug", titel: "Abflug nach Peru",
+    land: "costarica",
+    zeit: "Januar, genaues Datum offen", kurz: "Noch nicht entschieden",
+    abschnitte: [
+      ["", [
+        ["eigen", "Wenn ihr euch entscheidet", [
+          "<b>Flug ab San José buchen</b>, sobald der Entscheid steht – vier bis sechs Wochen Vorlauf.",
+        ]],
+      ]],
+    ],
+  },
+  {
+    id: "peru", nummer: "15", kurzname: "Peru", titel: "Unterwegs", land: "peru", phase: "unterwegs",
+    zeit: "Januar bis Februar, offen", kurz: "Unterwegs mit Freundin, noch nichts gebucht",
     abschnitte: [
       ["Der Ablauf", [
         ["eigen", "Wenn ihr euch entscheidet", [
-          "<b>Flug ab San José buchen</b>, sobald der Entscheid steht – vier bis sechs Wochen Vorlauf.",
           "<b>Versicherung prüfen:</b> Vacanza läuft acht Monate ab Abreise.",
           "<b>Cusco liegt auf 3400 m.</b> Erste 24 Stunden nichts vornehmen.",
         ]],
@@ -2746,7 +2914,7 @@ const STATIONEN = [
     ],
   },
   {
-    id: "rueckreise", nummer: "13", kurzname: "Rückreise", titel: "Rückreise in die Schweiz",
+    id: "rueckreise", nummer: "16", kurzname: "Rückreise", titel: "Rückreise in die Schweiz",
     land: "schweiz", zeit: "Januar bis Februar", kurz: "Rückflug buchen, ausreisen, ankommen",
     abschnitte: [
       ["Der Ablauf", [
@@ -2844,7 +3012,8 @@ const LAENDER = {
     ],
   },
   mexiko: {
-    name: "Mexiko", zeit: "Mitte Oktober bis Mitte November · mit Freundin, offen",
+    name: "Mexiko", zeit: "Mitte Oktober bis 12. November · mit Freundin, offen", dauer: "ca. 3 Wochen",
+    schwerpunkte: "Unterwegs mit den Eltern der Freundin",
     kurz: "Einreise, Sicherheit – Route noch offen",
     farbe: "#8C6239",
     bloecke: [
@@ -2866,9 +3035,14 @@ const LAENDER = {
     ],
   },
   peru: {
-    name: "Peru", zeit: "Januar · optional",
+    name: "Peru", zeit: "Januar bis Februar · optional", dauer: "ca. 4 Wochen",
+    schwerpunkte: "Unterwegs mit Freundin",
     kurz: "Einreise, Höhe, Busse, Geld",
     farbe: "#A8322A",
+    eckpunkte: {
+      ankunft: "Januar, genaues Datum offen",
+      abflug: "Januar/Februar, genaues Datum offen",
+    },
     bloecke: [
       ["Einreise", [
         "Visumfrei für Schweizerinnen, bis 90 Tage.",
@@ -2901,7 +3075,8 @@ const LAENDER = {
     hostels: [],
   },
   guatemala: {
-    name: "Guatemala", zeit: "29. September bis Anfang November · mit Mexiko-Unterbruch",
+    name: "Guatemala", zeit: "29. September bis 13. Oktober", dauer: "ca. 2 Wochen",
+    schwerpunkte: "Geplante geführte Tour, dann unterwegs mit Freundin",
     kurz: "Einreise, Geld, Sicherheit, Klima und die Standorte",
     farbe: "#7A6A4F",
     bloecke: [
@@ -3077,7 +3252,9 @@ const LAENDER = {
     },
   },
   costarica: {
-    name: "Costa Rica", zeit: "Mitte November bis Dezember",
+    name: "Costa Rica", zeit: "Mitte November bis Ende Dezember", dauer: "ca. 8 Wochen",
+    schwerpunkte: "Unterwegs allein · evtl. Sprachschule in Heredia und Sámara, "
+      + "danach evtl. Kost und Logis gegen Mitarbeit",
     kurz: "Einreise, Geld, Klima, Busreisen und Work-Exchange",
     farbe: "#4E6B52",
     bloecke: [
@@ -3360,44 +3537,47 @@ const WOCHE_WICHTIG = 3;
 
 
 const TODO_THEMEN = {
-  einreise: ["🛂", "Einreise"],
+  unterkunft: ["🏠", "Unterkunft"],
+  transport: ["🚌", "Transport"],
+  aktivitaeten: ["🎟️", "Aktivitäten & Touren"],
+  formalitaeten: ["🛂", "Formalitäten"],
   finanzen: ["💳", "Finanzen"],
   gesundheit: ["🩺", "Gesundheit"],
   packen: ["🎒", "Packen"],
-  unterwegs: ["🗺️", "Unterwegs"],
+  dossiers: ["📖", "Dossiers"],
 };
 const TODO_KATEGORIE = {
-  "Reisedossier Alle Themen durchlesen": "einreise",
-  "Alle To-dos bis Abflugtag durchlesen": "einreise",
-  "Dossier Handy durchlesen": "packen",
-  "Dossier Revolut durchlesen": "finanzen",
-  "Dossier Gesundheit durchlesen": "gesundheit",
-  "Dossier Sprachschule durchlesen": "einreise",
-  "Dossier Reise durchlesen": "einreise",
-  "Flug Guatemala buchen": "einreise",
-  "Hostel für 29. Sep. bis 1. Okt. buchen": "einreise",
-  "Transfer mit Hostel reservieren und bestätigen lassen": "einreise",
+  "Reisedossier Alle Themen durchlesen": "dossiers",
+  "Alle To-dos bis Abflugtag durchlesen": "dossiers",
+  "Dossier Handy durchlesen": "dossiers",
+  "Dossier Revolut durchlesen": "dossiers",
+  "Dossier Gesundheit durchlesen": "dossiers",
+  "Dossier Sprachschule durchlesen": "dossiers",
+  "Dossier Reise durchlesen": "dossiers",
+  "Flug Guatemala buchen": "transport",
+  "Hostel für 29. Sep. bis 1. Okt. buchen": "unterkunft",
+  "Transfer mit Hostel reservieren und bestätigen lassen": "unterkunft",
   "Vacanza-Rechnung nachfragen": "finanzen",
-  "Flug nach Mexiko buchen": "einreise",
-  "Flug Costa Rica buchen": "einreise",
-  "Bus Nicaragua buchen": "einreise",
+  "Flug nach Mexiko buchen": "transport",
+  "Flug Costa Rica buchen": "transport",
+  "Bus Nicaragua buchen": "transport",
   "Rechn. Tour GT einzahlen": "finanzen",
   "Rechn. Hotel/Transfer einzahlen": "finanzen",
   "Vacanza-Prämie einzahlen": "finanzen",
   "Saily-eSIM aufs iPhone 17 installieren": "packen",
-  "Dokumente scannen": "einreise",
+  "Dokumente scannen": "finanzen",
   "iPhone einrichten und sichern": "packen",
   "Fehlende Artikel einkaufen": "packen",
   "Deckung englisch Visana": "gesundheit",
-  "Sprachschule buchen – Start Mo 16. Nov": "einreise",
-  "Schuladresse notieren": "einreise",
-  "Bestätigung 1. Nacht sichern": "einreise",
-  "Unterkunft Heredia buchen – 4 Nächte": "einreise",
-  "Reiseerklärung Guatemala": "einreise",
+  "Sprachschule buchen – Start Mo 16. Nov": "aktivitaeten",
+  "Schuladresse notieren": "unterkunft",
+  "Bestätigung 1. Nacht sichern": "unterkunft",
+  "Unterkunft Heredia buchen – 4 Nächte": "unterkunft",
+  "Reiseerklärung Guatemala": "formalitaeten",
   "Alle Reise-Apps installieren und testen": "packen",
-  "Notfallblatt ausfüllen": "einreise",
+  "Notfallblatt ausfüllen": "formalitaeten",
   "IMEI und Seriennummer aufs Notfallblatt notieren": "packen",
-  "Passgültigkeit prüfen – sechs Monate über die Rückreise hinaus": "einreise",
+  "Passgültigkeit prüfen – sechs Monate über die Rückreise hinaus": "formalitaeten",
   "Offline-Karten laden": "packen",
   "Linsenmittel besorgen": "gesundheit",
   "Tageslinsen abklären": "gesundheit",
@@ -3406,22 +3586,22 @@ const TODO_KATEGORIE = {
   "Bankkarten: Ablaufdatum und Reisemeldung": "finanzen",
   "Revolut einrichten und testen": "finanzen",
   "Währungsrechner erklären": "finanzen",
-  "EDA registrieren": "einreise",
-  "Scans in die iCloud": "einreise",
+  "EDA registrieren": "formalitaeten",
+  "Scans in die iCloud": "finanzen",
   "Ordner offline setzen": "packen",
   "Nackenkissen und Flugsachen bereitlegen": "packen",
   "Rucksack wiegen": "packen",
   "Letzte Kontrolle – Liste Vor dem Abflugtag": "packen",
-  "Reiseerklärung Ausreise Guatemala": "einreise",
-  "Unterkünfte für Oktober buchen": "einreise",
-  "Work-Exchange für Dezember suchen": "einreise",
+  "Reiseerklärung Ausreise Guatemala": "formalitaeten",
+  "Unterkünfte für Oktober buchen": "unterkunft",
+  "Work-Exchange für Dezember suchen": "aktivitaeten",
   "Sprachschule Restzahlung": "finanzen",
-  "Peru entscheiden": "einreise",
-  "Flug Costa Rica nach Peru buchen": "einreise",
+  "Peru entscheiden": "formalitaeten",
+  "Flug Costa Rica nach Peru buchen": "transport",
   "Höhe vorbereiten – Sorojchi, 24 h Ruhe": "gesundheit",
-  "Rückflug buchen": "einreise",
+  "Rückflug buchen": "transport",
   "Restbargeld ausgeben, Stempel prüfen": "finanzen",
-  "Passseite nach jeder Einreise kopieren": "einreise",
+  "Passseite nach jeder Einreise kopieren": "formalitaeten",
 };
 
 const TODO_ALLE = [
@@ -3471,7 +3651,7 @@ const TODO_ALLE = [
     "Zwei-Faktor prüfen, IMEI und Seriennummern notieren, Apps testen."]],
   ["Fehlende Artikel einkaufen", "18. Sep", "Sophie", false],
   ["Deckung englisch Visana", "24. Sep", "Markus", false],
-  ["Sprachschule buchen – Start Mo 16. Nov", "während Mexiko, sobald das Enddatum feststeht", "Sophie", false,
+  ["Sprachschule buchen – Start Mo 16. Nov", "Mitte Oktober", "Sophie", false,
    ["Direkt buchen, nicht über eine Agentur.",
     "Studentenwohnheim, Gastfamilie als zweite Wahl.",
     "Adresse notieren – wird bei der Einreise verlangt.",
@@ -3538,7 +3718,8 @@ const TODO_ALLE = [
   ["Rückflug buchen", "8. Jan", "Sophie", false,
    ["Vier bis sechs Wochen Vorlauf einplanen.",
     "Lima – Zürich.",
-    "Google Flights: https://www.google.com/travel/flights?q=Flug%20von%20Lima%20nach%20Z%C3%BCrich"]],
+    "Google Flights: https://www.google.com/travel/flights?q=Flug%20von%20Lima%20nach%20Z%C3%BCrich",
+    "Verschiebt sich das Datum nachträglich: Notreserve (500 Franken) deckt die Umbuchungsgebühr – Vacanza zahlt einen anderen Rückflug nur bei medizinischem Grund."]],
   ["Restbargeld ausgeben, Stempel prüfen", "1. Feb", "Sophie", false,
    ["<b>Geld:</b> Landeswährung ausgeben, Währungskonto leeren.",
     "<b>Stempel:</b> Ausreisestempel im Pass kontrollieren, bevor du den Schalter verlässt."]],
@@ -3734,6 +3915,7 @@ const ICON = {
   wallet: '<path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h15a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5"/><path d="M17 13h.01"/>',
   map: '<path d="m9 4-6 3v13l6-3 6 3 6-3V4l-6 3z"/><path d="M9 4v13"/><path d="M15 7v13"/>',
   book: '<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22z"/><path d="M20 16H6.5a2.5 2.5 0 0 0-2.5 2.5"/>',
+  tausch: '<path d="M8 3 4 7l4 4"/><path d="M4 7h13a3 3 0 0 1 3 3v1"/><path d="M16 21l4-4-4-4"/><path d="M20 17H7a3 3 0 0 1-3-3v-1"/>',
 };
 
 const svg = (name, groesse = 18, farbe = "currentColor", dicke = 1.8) =>
@@ -4815,8 +4997,11 @@ const todoTabelle = () => {
      Dokumentensicherheit, Gesundheit & Vorsorge, Dossier Reiseplanung,
      Packen) – mit "vb_" gekennzeichnete Schlüssel, damit sie unabhängig
      von den gleichnamigen Länder-Überschriften umbenannt werden können.
-     Nur für den Things-Export – die Kategorie-Ansicht in der App selbst
-     bleibt unverändert bei den fünf Themen. */
+     Dieselben Schlüssel (unterkunft/transport/aktivitaeten/formalitaeten/
+     finanzen/gesundheit/packen) sind auch die Themen im "Neues To-do"-
+     Formular und in der Kategorie-Ansicht der App – so landet ein selbst
+     erstelltes To-do beim Things-Export automatisch unter der passenden
+     Überschrift. */
   const THINGS_UEBERSCHRIFTEN = [
     ["vb_fluege", "✈️ Flüge & Bürokratie"],
     ["vb_unterkunft", "🏠 Unterkunft & Grobplanung"],
@@ -4829,9 +5014,8 @@ const todoTabelle = () => {
     ["vb_gesundheit", "🩺 Gesundheit & Vorsorge"],
     ["gesundheit", "🩺 Gesundheit"],
     ["vb_dossiers", "📖 Dossier Reiseplanung"],
-    ["einreise", "🛂 Einreise"],
+    ["dossiers", "📖 Dossiers"],
     ["packen", "🎒 Packen"],
-    ["unterwegs", "🗺️ Unterwegs"],
     ["checkliste", "✅ Checklisten"],
     ["weiteres", "Weiteres"],
   ];
@@ -5821,7 +6005,7 @@ const seiteNotfall = () => {
 /* Dieselbe Reihenfolge und Nummerierung wie die Register im Dossier. */
 const WISSEN_REIHE = [
   ["kreuz", "gesundheit"], ["shield", "sicherheit"], ["ordner", "ablage"],
-  ["ticket", "fluege"], ["globus", "eda"],
+  ["ticket", "fluege"], ["globus", "eda"], ["map", "neuesland"],
 ];
 
 const seiteWissen = () => {
@@ -5856,8 +6040,8 @@ const seiteWissen = () => {
         el("span", { class: "buchenpfeil" }, svg("chevron", 16, "#fff", 2))))));
 };
 
-const GELD_REIHE = [["wallet", "geld"], ["shield", "versicherung"],
-                    ["smartphone", "handy"], ["grid", "apps"]];
+const GELD_REIHE = [["wallet", "geld"], ["book", "budget"], ["tausch", "waehrung"],
+                    ["shield", "versicherung"], ["smartphone", "handy"], ["grid", "apps"]];
 
 const appTabelle = () => {
   /* Alles auf einen Blick: Zeichen, Name, wofür, Bemerkung. */
@@ -6000,6 +6184,10 @@ const seiteRoute = () => {
   offeneStation = station;
   let land = (param && param.land) || "guatemala";
   let formularOffen = false;
+  /* Welche Länder-Karten ihre Stationen aufgeklappt zeigen – per Default
+     alle zu, damit auf einen Blick nur Zeitraum, Dauer und Schwerpunkte
+     sichtbar sind, nicht gleich jede einzelne Station. */
+  const offeneLaender = {};
 
   const farbe = { guatemala: "gt", costarica: "cr", schweiz: "ch", mexiko: "mx" };
 
@@ -6403,64 +6591,164 @@ const seiteRoute = () => {
       inhalt.appendChild(formBand);
     }
 
-    let letztes = null;
-    let strang = null;
-    eigeneNach("start", inhalt);
-    STATIONEN.forEach((S) => {
-      const k = S.land || "peru";
-      if (k !== letztes) {
-        /* Drei Zeilen wie bei den Stationen: Name, Zeitraum, Kurzbeschrieb. */
-        const L = S.land ? LAENDER[S.land] : null;
-        const name = L ? L.name : "Peru";
-        const klasse = S.land ? farbe[S.land] : "pe";
-        const dreizeiler = () => el("div", { class: "landtext" },
-          el("div", { class: "landzeile" },
-            el("span", { class: "landname " + klasse }, name),
-            flagge(S.land || "peru")),
-          el("div", { class: "landzeit" }, L ? L.zeit : "Ende Dezember, offen"),
-          el("div", { class: "hinweis" },
-            L ? L.kurz : "Mit einer Freundin, noch nichts gebucht"));
+    /* Die Eckpunkte, die es in jedem Land gibt – auch wenn Datum oder Ort
+       noch offen sind: Hinflug, Ankunft, Unterwegs, Abflug. Ein Land nutzt
+       dieses feste Schema, sobald alle seine Stationen ein "phase"-Feld
+       tragen (bisher nur Guatemala, als Beispiel); sonst bleibt die alte,
+       schlichte Liste bestehen. */
+    const PHASEN_REIHENFOLGE = [
+      ["hinflug", "Hinflug"],
+      ["ankunft", "Ankunft"],
+      ["unterwegs", "Unterwegs"],
+      ["abflug", "Abflug"],
+    ];
 
-        if (S.land) {
-          inhalt.appendChild(el("button", { class: "landmarke landknopf",
-            onclick: () => { tab = "land"; land = S.land; zeichne(); } },
-            dreizeiler(),
-            el("span", { class: "landpfeil" }, svg("chevron", 15, "#B65A3C", 2))));
-        } else {
-          inhalt.appendChild(el("div", { class: "landmarke" }, dreizeiler()));
-        }
-
-        /* Tourismusportal des Landes – schmale Zeile unter der Ländermarke. */
-        if (S.land === "costarica") {
-          inhalt.appendChild(el("a", {
-            href: "https://de.visitcostarica.com/", target: "_blank", class: "portalzeile" },
-            el("span", { class: "portaltext" },
-              "Visit Costa Rica · offizielles Tourismusportal"),
-            svg("link", 14, "#B65A3C", 1.8)));
-        }
-        strang = el("div", { class: "strang" });
-        inhalt.appendChild(strang);
-        letztes = k;
-      }
-      const unbestimmt = /offen|noch nicht/i.test(S.zeit + S.kurz);
+    /* Eine einzelne Stationszeile – mit Kreis, Titel, Zeit und bei Bedarf
+       dem aufgeklappten Inhalt. Dieselbe Optik in beiden Anzeigearten. Trägt
+       das Land ein festes Eckpunkte-Schema, steht der Eckpunkt klein vor dem
+       Datum ("Hinflug · Dienstag, 29. September") – keine eigene Titelzeile,
+       die nur wiederholen würde, was im Stationstitel schon steht. */
+    const etappenzeile = (S, phasenTitel) => {
+      /* Alle echten Stationen sehen gleich aus, ob Datum feststeht oder
+         nicht – das Ausbleichen einzelner Kreise wirkte willkürlich statt
+         hilfreich. Nur eine Station ganz ohne Inhalt (leereEtappe) bleibt
+         sichtbar anders, weil sie eben (noch) keine echte Station ist. */
       const auf = station === S.id;
-      strang.appendChild(el("button", { class: "etappe etappeknopf" + (auf ? " auf" : ""),
+      const zeitText = phasenTitel ? phasenTitel + " · " + S.zeit : S.zeit;
+      liste.appendChild(el("button", { class: "etappe etappeknopf" + (auf ? " auf" : ""),
         onclick: () => { station = auf ? null : S.id; offeneStation = station; zeichne(); } },
         /* Kreis und Titel als Flex-Paar: der Browser zentriert sie exakt zueinander,
            unabhängig von Schriftgrösse oder Gerät – kein Pixel-Wert nötig. */
         el("div", { class: "etappekopf" },
-          el("span", { class: "punkt" + (unbestimmt ? " offen" : "") }, S.nummer),
+          el("span", { class: "punkt" }, S.nummer),
           el("div", { class: "etappenort" }, S.titel)),
-        el("div", { class: "etappenzeit" }, S.zeit),
+        el("div", { class: "etappenzeit" }, zeitText),
         el("div", { class: "hinweis" }, S.kurz),
         el("span", { class: "etappepfeil" + (auf ? " auf" : "") },
           svg("chevron", 16, "#B65A3C", 2))));
       if (auf) {
         const inh = stationsinhalt(S);
         inh.classList.add("offenerinhalt");   /* markiert das Ende der Station */
-        strang.appendChild(inh);
+        liste.appendChild(inh);
       }
-      eigeneNach(S.id, strang);
+      eigeneNach(S.id, liste);
+    };
+
+    /* Ein Eckpunkt ohne eigene Station – gleiche Zeile wie eine echte
+       Etappe, nur ohne Nummer, Pfeil und Klick, damit sie sich einreiht
+       statt als Fremdkörper zu wirken. */
+    const leereEtappe = (phasenTitel, zeitText) => {
+      liste.appendChild(el("div", { class: "etappe etappeleer" },
+        el("div", { class: "etappekopf" },
+          el("span", { class: "punkt offen" }),
+          el("div", { class: "etappenort" }, phasenTitel)),
+        el("div", { class: "etappenzeit" }, zeitText || "Noch offen")));
+    };
+
+    /* STATIONEN vorab nach Land gruppieren – dieselbe Reihenfolge wie bisher,
+       nur als eigener Schritt, damit sich beide Anzeigearten sauber trennen. */
+    const gruppen = [];
+    STATIONEN.forEach((S) => {
+      const k = S.land || "peru";
+      const letzte = gruppen[gruppen.length - 1];
+      if (letzte && letzte.land === k) letzte.stationen.push(S);
+      else gruppen.push({ land: k, stationen: [S] });
+    });
+
+    eigeneNach("start", inhalt);
+    gruppen.forEach((G, glIndex) => {
+      const landSchluessel = G.stationen[0].land;
+      /* Drei Zeilen wie bei den Stationen: Name, Zeitraum, Kurzbeschrieb. */
+      const L = landSchluessel ? LAENDER[landSchluessel] : null;
+      const name = L ? L.name : "Peru";
+      const klasse = landSchluessel ? farbe[landSchluessel] : "pe";
+      const dreizeiler = () => el("div", { class: "landtext" },
+        el("div", { class: "landzeile" },
+          el("span", { class: "landname " + klasse }, name),
+          flagge(landSchluessel || "peru")),
+        el("div", { class: "landzeit" }, L ? L.zeit : "Ende Dezember, offen"),
+        el("div", { class: "landzeit" }, L ? L.dauer : "ca. 4 Wochen"),
+        el("div", { class: "hinweis" },
+          L ? L.schwerpunkte : "Unterwegs mit Freundin"));
+
+      /* Titel, Zeitraum und Stationen bilden eine einzige Karte – vorher
+         schwebte der Länder-Titel lose über der weissen Fläche. */
+      strang = el("div", { class: "strang" });
+      if (landSchluessel) {
+        strang.appendChild(el("button", { class: "landmarke landknopf",
+          onclick: () => { tab = "land"; land = landSchluessel; zeichne(); } },
+          dreizeiler(),
+          el("span", { class: "landpfeil" }, svg("chevron", 15, "#B65A3C", 2))));
+      } else {
+        strang.appendChild(el("div", { class: "landmarke" }, dreizeiler()));
+      }
+
+      /* Tourismusportal des Landes – schmale Zeile unter der Ländermarke. */
+      if (landSchluessel === "costarica") {
+        strang.appendChild(el("a", {
+          href: "https://de.visitcostarica.com/", target: "_blank", class: "portalzeile" },
+          el("span", { class: "portaltext" },
+            "Visit Costa Rica · offizielles Tourismusportal"),
+          svg("link", 14, "#B65A3C", 1.8)));
+      }
+      /* Die Länder-Karte muss auf einen Blick reichen: Name, Zeitraum,
+         Dauer und Schwerpunkte – die einzelnen Stationen (Ankunft bis
+         Abflug) stehen erst nach Antippen darunter, nicht automatisch
+         schon alle offen. Ist eine bestimmte Station direkt verlinkt,
+         bleibt ihr Land trotzdem aufgeklappt. */
+      const gruppenSchluessel = landSchluessel || "peru";
+      const enthaeltOffeneStation = G.stationen.some((S) => S.id === station);
+      const aufgeklappt = !!offeneLaender[gruppenSchluessel] || enthaeltOffeneStation;
+
+      strang.appendChild(el("button", { class: "stationenumschalter",
+        onclick: () => {
+          offeneLaender[gruppenSchluessel] = !aufgeklappt;
+          zeichne();
+        } },
+        el("span", {}, aufgeklappt
+          ? "Stationen ausblenden"
+          : G.stationen.length + (G.stationen.length === 1 ? " Station anzeigen" : " Stationen anzeigen")),
+        el("span", { class: "etappepfeil" + (aufgeklappt ? " auf" : "") },
+          svg("chevron", 14, "#B65A3C", 2))));
+
+      liste = el("div", { class: "etappenliste" });
+      strang.appendChild(liste);
+      inhalt.appendChild(strang);
+
+      if (aufgeklappt) {
+        /* Der Hinflug ist nur beim allerersten Land ein eigener Eckpunkt (der
+           echte Flug ab der Schweiz). Bei jedem späteren Land steckt dieselbe
+           Grenzüberquerung schon als "Abflug nach X" im vorherigen Land –
+           deshalb startet dort die Liste direkt mit Ankunft. */
+        const phasenFuerLand = glIndex === 0
+          ? PHASEN_REIHENFOLGE
+          : PHASEN_REIHENFOLGE.filter(([schluessel]) => schluessel !== "hinflug");
+
+        const mitPhasen = G.stationen.every((S) => S.phase);
+        if (mitPhasen) {
+          phasenFuerLand.forEach(([schluessel, titel]) => {
+            const treffer = G.stationen.filter((S) => S.phase === schluessel);
+            if (!treffer.length) {
+              /* Auch ohne Station immer gleich benannt: "Ankunft Peru",
+                 "Abflug Peru" – nicht nur das nackte Wort. Ist für diesen
+                 Eckpunkt schon ein grober Zeitraum bekannt (LAENDER.eckpunkte),
+                 steht der da statt des nichtssagenden "Noch offen". */
+              const eckpunktZeit = L && L.eckpunkte && L.eckpunkte[schluessel];
+              leereEtappe(titel + " " + name, eckpunktZeit);
+            } else {
+              /* Der Eckpunkt steht nur vor der ersten Station einer Phase –
+                 und auch dort nur, wenn ihr Titel ihn nicht schon selbst sagt
+                 ("Hinflug nach Guatemala" braucht kein zusätzliches "Hinflug"). */
+              treffer.forEach((S, i) => {
+                const zeigen = i === 0 && !S.ohnePhasenLabel && !new RegExp(titel, "i").test(S.titel);
+                etappenzeile(S, zeigen ? titel : null);
+              });
+            }
+          });
+        } else {
+          G.stationen.forEach((S) => etappenzeile(S, null));
+        }
+      }
     });
 
   };
