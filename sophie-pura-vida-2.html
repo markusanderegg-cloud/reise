@@ -946,7 +946,9 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   align-items: center; column-gap: 10px;
   width: 100%; text-align: left;
   padding: 0 12px;
+  cursor: pointer;
 }
+.todozeile.wartet { cursor: default; }
 .todokopf {
   display: flex; align-items: center; gap: 10px;
   width: 100%; min-height: 42px;
@@ -3632,7 +3634,8 @@ const TODO_ALLE = [
    ["Zürich – Guatemala-Stadt.",
     "Google Flights: https://www.google.com/travel/flights?q=Flug%20von%20Z%C3%BCrich%20nach%20Guatemala-Stadt"]],
   ["Hostel für 29. Sep. bis 1. Okt. buchen", "bis 18. Sep", "Sophie", true,
-   ["In Antigua – für die zwei Nächte vor Tourstart. Danach zieht die Gruppe gemeinsam um."]],
+   ["In Antigua – für die zwei Nächte vor Tourstart. Danach zieht die Gruppe gemeinsam um.",
+    "Hostelworld oder Booking >> buchen|Schlafen"]],
   ["Transfer mit Hostel reservieren und bestätigen lassen", "bis 18. Sep", "Sophie", false,
    ["Angeben: Flugnummer IB 0221, Ankunft 29. September 15:25 Uhr, Flughafen La Aurora.",
     "Dazu Name und eine Telefonnummer für den Notfall.",
@@ -3668,7 +3671,8 @@ const TODO_ALLE = [
 
   ["Saily-eSIM aufs iPhone 17 installieren", "27. Sep", "Markus", false,
    ["App laden, Konto anlegen, Paket für Mittelamerika kaufen, eSIM installieren.",
-    "Nur aufs iPhone 17 – das iPhone 12 bekommt vor Ort eine lokale SIM, keine eSIM."]],
+    "Nur aufs iPhone 17 – das iPhone 12 bekommt vor Ort eine lokale SIM, keine eSIM.",
+    "https://saily.com/"]],
   ["Dokumente scannen", "27. Sep", "beide", false],
   ["iPhone einrichten und sichern", "27. Sep", "Sophie", false,
    ["Kontrollzentrum im Sperrbildschirm aus, „Wo ist?“ vollständig ein, Diebstahlschutz ein.",
@@ -3679,19 +3683,23 @@ const TODO_ALLE = [
    ["Direkt buchen, nicht über eine Agentur.",
     "Studentenwohnheim, Gastfamilie als zweite Wahl.",
     "Adresse notieren – wird bei der Einreise verlangt.",
-    "Zwei bis drei Wochen Vorlauf genügen. Nur den Kurs buchen, nicht die Unterkunft."]],
+    "Zwei bis drei Wochen Vorlauf genügen. Nur den Kurs buchen, nicht die Unterkunft.",
+    "Intercultura >> buchen|Schule und Mitarbeit"]],
   ["Schuladresse notieren", "Mitte Oktober", "Sophie", false],
   ["Bestätigung 1. Nacht sichern", "26. Sep", "Sophie", false,
    ["Wird bei der Einreise verlangt – Guatemala und Costa Rica.",
     "Das selbst gebuchte Hostel für die ersten zwei Nächte, ab 29. September.",
     "Bestätigung als PDF sichern, offline auf dem Handy."]],
   ["Unterkunft Heredia buchen – erste Nächte", "während Mexiko, sobald das Enddatum feststeht", "Sophie", false,
-   ["Wichtig für das Busticket – die Adresse wird dafür verlangt."]],
+   ["Wichtig für das Busticket – die Adresse wird dafür verlangt.",
+    "Hostelworld oder Booking >> buchen|Schlafen"]],
   ["Reiseerklärung Guatemala", "25. Sep", "Sophie", false,
    ["Vor dem Hinflug ausfüllen, QR-Code sichern.",
     "Nur .gob.gt-Adressen, Drittanbieter verlangen unnötig Geld.",
-    "Offizielles Formular >> wissen|djrv"]],
-  ["Alle Reise-Apps installieren und testen", "27. Sep", "Sophie", false],
+    "Formular: https://farm2.sat.gob.gt/declaDelViajeroGt-web/pages/public/declaracionJuradaDelViajero.html",
+    "Anleitung Schritt für Schritt >> wissen|djrv"]],
+  ["Alle Reise-Apps installieren und testen", "27. Sep", "Sophie", false,
+   ["Übersicht aller Apps >> wissen|apps"]],
   ["Notfallblatt ausfüllen", "27. Sep", "beide", false],
   ["IMEI und Seriennummer aufs Notfallblatt notieren", "27. Sep", "Sophie", false,
    ["Einstellungen → Allgemein → Info – für beide Geräte, Hauptgerät und iPhone 12."]],
@@ -3701,20 +3709,25 @@ const TODO_ALLE = [
    ["Linsen für fünf Monate, Peroxid-Behälter, Rezept als PDF."]],
   ["Tageslinsen abklären", "5. Sep", "Sophie", true],
   ["Yallo-App testen", "27. Sep", "Sophie", false,
-   ["Yallo-App installieren und Anmeldung testen."]],
+   ["Yallo-App installieren und Anmeldung testen.",
+    "https://yallo.ch"]],
   ["Gepäck und Material testen", "27. Sep", "Sophie", false,
    ["Neue Schuhe einlaufen, bevor sie in den Rucksack kommen."]],
   ["Bankkarten: Ablaufdatum und Reisemeldung", "27. Sep", "beide", false,
    ["Laufen die Karten über den Februar hinaus?",
-    "Reise bei BKB und Revolut melden – sonst sperrt der Geoblocking-Schutz die Karte."]],
+    "Reise bei BKB und Revolut melden – sonst sperrt der Geoblocking-Schutz die Karte.",
+    "BKB E-Banking: https://login.bkb.ch/"]],
   ["Revolut einrichten und testen", "27. Sep", "Sophie", false,
    ["Auf beiden iPhones einrichten, vier Konten anlegen, einmal testen.",
-    "Währungsrechner einrichten und zeigen."]],
+    "Währungsrechner einrichten und zeigen.",
+    "https://www.revolut.com/de-CH/"]],
   ["Währungsrechner erklären", "27. Sep", "beide", false],
   ["EDA registrieren", "27. Sep", "Sophie", false,
    ["App Travel Admin laden, Konto anlegen, Reise erfassen: Zeitraum, Länder, Kontakte.",
     "Beide Etappen eintragen – Guatemala im Oktober, Costa Rica ab November.",
-    "Push-Nachrichten aktiviert lassen, sonst entgeht dir die Warnung."]],
+    "Push-Nachrichten aktiviert lassen, sonst entgeht dir die Warnung.",
+    "App und Web-Login: https://www.eda.admin.ch/de/travel-admin-app",
+    "Mehr zur App >> wissen|eda"]],
   ["Scans in die iCloud", "27. Sep", "beide", false,
    ["Dokumente scannen, iCloud-Ordner teilen."]],
   ["Ordner offline setzen", "26. Sep", "Sophie", false],
@@ -3724,13 +3737,14 @@ const TODO_ALLE = [
   ["Reiseerklärung Ausreise Guatemala", "13. Okt", "Sophie", false,
    ["Gilt für den Grenzübertritt nach Mexiko, nicht erst für den Costa-Rica-Flug.",
     "Elektronisch, geht 14 Tage vorher auf. QR-Code sichern und ausdrucken.",
-    "Offizielles Formular >> wissen|djrv"]],
+    "Formular: https://farm2.sat.gob.gt/declaDelViajeroGt-web/pages/public/declaracionJuradaDelViajero.html",
+    "Anleitung Schritt für Schritt >> wissen|djrv"]],
   ["Unterkünfte für Oktober buchen", "30. Sep", "Sophie", false,
    ["Die Woche zu zweit mit deiner Freundin buchen – ab 7. Oktober, eine Woche vor Mexiko.",
     "Hostelworld oder Booking >> buchen|Schlafen",
     "Vor dem Tourstart erledigen, während der Tour hast du kaum Zeit."]],
   ["Work-Exchange für Dezember suchen", "25. Okt", "Sophie", false,
-   ["Worldpackers oder Workaway."]],
+   ["Worldpackers oder Workaway >> buchen|Schule und Mitarbeit"]],
   ["Peru entscheiden", "5. Dez", "beide", false,
    ["<b>Versicherung:</b> Vacanza läuft acht Monate ab Abreise – Dauer prüfen."]],
   ["Flug Costa Rica nach Peru buchen", "15. Dez", "Sophie", false,
@@ -5380,13 +5394,19 @@ const todoTabelle = () => {
       if (!wartet) zeile.onclick = () => { stand[was] = !stand[was]; merke("haken:alle", stand); zeichnen(); };
       return zeile;
     }
-    const zeilenAttr = {
-      class: "todozeile" + (ab ? " ab" : "") + (wartet ? " wartet" : ""),
-      onclick: () => {
-        if (wartet) return;
-        stand[was] = !stand[was]; merke("haken:alle", stand); zeichnen();
-      },
-    };
+    /* Hat die Zeile eine Notiz mit Link oder Sprungpfeil, muss die Zeile ein
+       div sein statt ein button – ein Link oder Button lässt sich in einem
+       button nicht mehr zuverlässig antippen (ungültiges HTML, Safari
+       schluckt den Klick dann und hakt nur die Zeile ab). */
+    const hatNotiz = Array.isArray(details) && details.length > 0;
+    const klick = () => { if (!wartet) { stand[was] = !stand[was]; merke("haken:alle", stand); zeichnen(); } };
+    const klasse = "todozeile" + (ab ? " ab" : "") + (wartet ? " wartet" : "");
+    if (hatNotiz) {
+      const zeile = el("div", { class: klasse }, ...inhaltZeile);
+      if (!wartet) zeile.onclick = klick;
+      return zeile;
+    }
+    const zeilenAttr = { class: klasse, onclick: klick };
     if (wartet) zeilenAttr.disabled = "disabled";
     return el("button", zeilenAttr, ...inhaltZeile);
   };
