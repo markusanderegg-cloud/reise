@@ -997,6 +997,13 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 .todozeile.ab .todotext { color: var(--grau); text-decoration: line-through; }
 .todozeile.ab .todolead, .todozeile.ab .tododatum { color: #A9A296; }
+/* Notiz unter der Zeile – Kontext wie beim Things-Export (z. B. welches Land). */
+.todonotiz {
+  grid-column: 1 / -1;
+  font-size: var(--ebene6); color: var(--grau); line-height: 1.35;
+  padding: 2px 0 4px 62px;
+}
+.todozeile.ab .todonotiz { color: #C9C0B3; }
 
 /* Verweis auf die vollständige To-do-Liste – gleiche Anmutung wie eine Zeile */
 .allezeile {
@@ -3537,6 +3544,7 @@ const WOCHE_WICHTIG = 3;
 
 
 const TODO_THEMEN = {
+  fluege: ["✈️", "Flüge"],
   unterkunft: ["🏠", "Unterkunft"],
   transport: ["🚌", "Transport"],
   aktivitaeten: ["🎟️", "Aktivitäten & Touren"],
@@ -3554,12 +3562,12 @@ const TODO_KATEGORIE = {
   "Dossier Gesundheit durchlesen": "dossiers",
   "Dossier Sprachschule durchlesen": "dossiers",
   "Dossier Reise durchlesen": "dossiers",
-  "Flug Guatemala buchen": "transport",
+  "Flug Guatemala buchen": "fluege",
   "Hostel für 29. Sep. bis 1. Okt. buchen": "unterkunft",
   "Transfer mit Hostel reservieren und bestätigen lassen": "unterkunft",
   "Vacanza-Rechnung nachfragen": "finanzen",
-  "Flug nach Mexiko buchen": "transport",
-  "Flug Costa Rica buchen": "transport",
+  "Flug nach Mexiko buchen": "fluege",
+  "Flug Costa Rica buchen": "fluege",
   "Bus Nicaragua buchen": "transport",
   "Rechn. Tour GT einzahlen": "finanzen",
   "Rechn. Hotel/Transfer einzahlen": "finanzen",
@@ -3596,9 +3604,9 @@ const TODO_KATEGORIE = {
   "Unterkünfte für Oktober buchen": "unterkunft",
   "Work-Exchange für Dezember suchen": "aktivitaeten",
   "Peru entscheiden": "formalitaeten",
-  "Flug Costa Rica nach Peru buchen": "transport",
+  "Flug Costa Rica nach Peru buchen": "fluege",
   "Höhe vorbereiten – Sorojchi, 24 h Ruhe": "gesundheit",
-  "Rückflug buchen": "transport",
+  "Rückflug buchen": "fluege",
   "Restbargeld ausgeben, Stempel prüfen": "finanzen",
   "Passseite nach jeder Einreise kopieren": "formalitaeten",
 };
@@ -5002,6 +5010,7 @@ const todoTabelle = () => {
      Überschrift. */
   const THINGS_UEBERSCHRIFTEN = [
     ["vb_fluege", "✈️ Flüge & Bürokratie"],
+    ["fluege", "✈️ Flüge"],
     ["vb_unterkunft", "🏠 Unterkunft & Grobplanung"],
     ["unterkunft", "🏠 Unterkunft"],
     ["transport", "🚌 Transport"],
@@ -5065,8 +5074,8 @@ const todoTabelle = () => {
     "Unterkunft Heredia buchen – erste Nächte": "unterkunft",
     "Work-Exchange für Dezember suchen": "aktivitaeten",
     "Peru entscheiden": "formalitaeten",
-    "Flug Costa Rica nach Peru buchen": "transport",
-    "Rückflug buchen": "transport",
+    "Flug Costa Rica nach Peru buchen": "fluege",
+    "Rückflug buchen": "fluege",
   };
   /* Für diese buchungsartigen To-dos bekommt Things zusätzlich eine kleine
      Schritte-Checkliste – die grossen Checklisten (Vor dem Abflugtag usw.)
@@ -5154,7 +5163,7 @@ const todoTabelle = () => {
          Überschriften erscheinen, auch wenn dort gerade nichts offen ist –
          so bleibt die Struktur für später gleich. Bei Vorbereitung und
          Laufende Checklisten nur Überschriften mit Inhalt. */
-      const LAENDER_UEBERSCHRIFTEN = ["unterkunft", "transport", "aktivitaeten", "formalitaeten", "finanzen", "gesundheit"];
+      const LAENDER_UEBERSCHRIFTEN = ["fluege", "unterkunft", "transport", "aktivitaeten", "formalitaeten", "finanzen", "gesundheit"];
       const LAENDER_PHASEN = ["guatemala", "mexiko", "costarica", "peru", "rueckkehr"];
 
       /* Aus den gesammelten Paaren pro Projekt die Items-Liste bauen:
@@ -5206,7 +5215,7 @@ const todoTabelle = () => {
       onclick: () => { todoAnsicht = wert; zeichnen(); },
     }, text);
     ansichtZeile.appendChild(knopf("datum", "Nach Datum"));
-    ansichtZeile.appendChild(knopf("kategorie", "Nach Kategorie"));
+    ansichtZeile.appendChild(knopf("kategorie", "Nach Land"));
   };
   zeichneUmschalter();
   kopfkarte.appendChild(ansichtZeile);
@@ -5286,10 +5295,14 @@ const todoTabelle = () => {
 
   /* Spaltenbeschriftung über der ersten Gruppe. */
 
-  /* Eine Zeile bauen – dieselbe Optik in beiden Ansichten. */
+  /* Eine Zeile bauen – dieselbe Optik in beiden Ansichten. Hat das To-do
+     Detail-Stichpunkte (z. B. welches Land, welcher Kontext), erscheinen sie
+     als kleine graue Notiz unter der Zeile – dieselben Angaben, die auch der
+     Things-Export als Notiz mitgibt. */
   const bauZeile = (eintrag) => {
     const [was, datum, lead] = eintrag;
     const eigenId = eintrag[6];
+    const details = eintrag[4];
     const ab = stand[was];
     /* Hängt die Aufgabe an einer anderen, bleibt sie grau und gesperrt. */
     const wartet = ab ? null : gesperrtDurch(eintrag, stand);
@@ -5300,6 +5313,10 @@ const todoTabelle = () => {
       el("span", { class: "todotext", html: was }),
       el("span", { class: "tododatum" }, wartet ? "wartet" : mitTag(datum)),
     ];
+    if (Array.isArray(details) && details.length) {
+      const notizHtml = details.map((d) => ohneSprung(String(d))).join("<br>");
+      inhaltZeile.push(el("div", { class: "todonotiz", html: notizHtml }));
+    }
     if (eigenId) {
       /* Eigene Zeile: exakt dieselbe Optik, nur als div mit einem echten
          Löschknopf zusätzlich – zwei Buttons ineinander sind kein gültiges HTML. */
@@ -5327,23 +5344,37 @@ const todoTabelle = () => {
   };
 
   if (todoAnsicht === "kategorie") {
-    /* Alle fünf Themen als eigene Abschnitte untereinander – plus ein
-       Sammelbereich für alles, was noch kein Thema hat. */
-    Object.entries(TODO_THEMEN).forEach(([schluessel, [icon, name]]) => {
-      const eintraege = sortiertAlle.filter((e) => themaVon(e[0], e[6]) === schluessel);
-      if (!eintraege.length) return;
-      box.appendChild(el("div", { class: "gruppentitel abstandoben klein3" }, icon + " " + name));
-      const zeilen = el("div", { class: "todogruppeninhalt offen" });
-      eintraege.forEach((eintrag) => zeilen.appendChild(bauZeile(eintrag)));
-      box.appendChild(zeilen);
+    /* Wie im Things-Export: erst nach Land/Etappe gruppiert (Projekt),
+       darin nach Thema (Überschrift) – so ist auf einen Blick klar, zu
+       welchem Land ein To-do gehört, nicht nur, worum es inhaltlich geht.
+       Dieselbe Zuordnung wie beim Things-Export weiter oben, nur hier
+       direkt in der App dargestellt statt nur exportiert. */
+    const LAND_PHASEN = [
+      ["vorbereitung", "Reiseplan"],
+      ["guatemala", "Guatemala"],
+      ["mexiko", "Mexiko"],
+      ["costarica", "Costa Rica"],
+      ["peru", "Peru"],
+      ["rueckkehr", "Rückkehr"],
+      ["laufend", "Laufend"],
+    ];
+    const kategorieVon = (was, eigenId) => {
+      const thema = themaVon(was, eigenId);
+      return TODO_UEBERSCHRIFT_FEST[was] || (thema && TODO_THEMEN[thema] ? thema : "weiteres");
+    };
+    LAND_PHASEN.forEach(([landSchluessel, landTitel]) => {
+      const landEintraege = sortiertAlle.filter((e) => thingsPhaseVon(e[0], e[1]) === landSchluessel);
+      if (!landEintraege.length) return;
+      box.appendChild(el("div", { class: "gruppentitel klein3 abstandoben" }, landTitel));
+      THINGS_UEBERSCHRIFTEN.forEach(([schluessel, titel]) => {
+        const eintraege = landEintraege.filter((e) => kategorieVon(e[0], e[6]) === schluessel);
+        if (!eintraege.length) return;
+        box.appendChild(el("div", { class: "gruppentitel" }, titel));
+        const zeilen = el("div", { class: "todogruppeninhalt offen" });
+        eintraege.forEach((eintrag) => zeilen.appendChild(bauZeile(eintrag)));
+        box.appendChild(zeilen);
+      });
     });
-    const ohneThema = sortiertAlle.filter((e) => !themaVon(e[0], e[6]));
-    if (ohneThema.length) {
-      box.appendChild(el("div", { class: "gruppentitel abstandoben klein3" }, "Ohne Thema"));
-      const zeilen = el("div", { class: "todogruppeninhalt offen" });
-      ohneThema.forEach((eintrag) => zeilen.appendChild(bauZeile(eintrag)));
-      box.appendChild(zeilen);
-    }
     return { kopfkarte, box };
   }
 
