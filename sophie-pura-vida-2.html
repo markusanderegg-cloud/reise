@@ -481,6 +481,8 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
   color: #211C18; font-weight: 600;
 }
 .todoliste .gruppentitel.klein3 + .gruppentitel { margin-top: 4px; }
+/* Kurzer Überblick unter dem Land-Titel – Zeitraum, Dauer, Schwerpunkt. */
+.landnotiz { margin: -4px 3px 10px; line-height: 1.4; }
 /* Grössenordnung der App:
    Seitentitel 30 · Bereich 19 · Block 15 · Text 14 · Hinweis 13 · Etikett 11.
    Eine Überschrift ist nie kleiner als das, was unter ihr steht. */
@@ -1694,6 +1696,15 @@ input[type="date"].meldefeld {
   padding: 9px 0; font-size: var(--ebene6); color: #211C18; background: #fff; text-align: center;
 }
 .ansichtknopf.an { border-color: var(--terra); color: #fff; background: var(--terra); font-weight: 600; }
+
+/* Kleiner Link unter dem Umschalter – öffnet die Ablage der erledigten
+   To-dos, erscheint nur, wenn dort überhaupt etwas liegt. */
+.logbuchknopf {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  width: 100%; padding: 9px 4px 5px;
+  font-size: var(--ebene6); color: #8B8175;
+}
+.logbuchknopf:active { color: var(--terra); }
 
 </style>
 </head>
@@ -3917,6 +3928,7 @@ let offeneStation = null;   // welche Station in der Route offen ist
 let bereichHeute = "todos";   // todos · checklisten · packen
 let todoFormOffen = false;   // Formular "Neues To-do" auf oder zu
 let todoAnsicht = "datum";   // "datum" oder "kategorie" in den To-dos
+let logbuchOffen = false;   // Ablage der erledigten To-dos statt der offenen zeigen
 let offeneNotizen = new Set();   // welche To-dos ihre Notiz gerade aufgeklappt zeigen
 let zielToDoAnzeige = null;   // Titel des To-dos, zu dem ein Sprung gerade hinscrollen soll
 
@@ -3944,6 +3956,21 @@ const ohneSprung = (t) => String(t).split(" >> ")[0];
 /* Eindeutige, gültige DOM-Id für ein To-do – für Sprünge von einem To-do
    direkt zu einem anderen (z. B. Flugbuchung → passender Ausreisenachweis). */
 const todoAnkerId = (was) => "todo-" + encodeURIComponent(was);
+/* Kurzer Überblick je Land – Zeitraum, Dauer, Schwerpunkt – aus den Wissen-
+   Daten (LAENDER) wiederverwendet statt neu erfasst: einmal für die "Nach
+   Land"-Ansicht der To-dos, einmal als Notiz im Things-Export-Projekt.
+   "rueckkehr" (Things-Phase) entspricht dort "schweiz"; für Vorbereitung
+   und Laufend gibt es keinen Landeintrag, also auch keine Notiz. */
+const LAND_ZU_LAENDER = {
+  guatemala: "guatemala", mexiko: "mexiko", costarica: "costarica",
+  peru: "peru", rueckkehr: "schweiz",
+};
+const landNotizText = (landSchluessel) => {
+  const eintrag = LAENDER[LAND_ZU_LAENDER[landSchluessel]];
+  if (!eintrag) return null;
+  const kopf = [eintrag.zeit, eintrag.dauer].filter(Boolean).join(" · ");
+  return [kopf, eintrag.schwerpunkte].filter(Boolean).join(" – ") || null;
+};
 
 const alsUnterzeile = (text) => {
   /* "Punkt<i>Hinweis</i>" wird zu zwei Zeilen: Punkt normal, Hinweis grau. */
@@ -5280,7 +5307,11 @@ const todoTabelle = () => {
         .filter(([schluessel]) => nachPhase[schluessel].length > 0 || LAENDER_PHASEN.includes(schluessel))
         .map(([schluessel, titel]) => ({
           type: "project",
-          attributes: { title: titel, area: THINGS_AREA, items: mitUeberschriften(nachPhase[schluessel], schluessel) },
+          attributes: {
+            title: titel, area: THINGS_AREA,
+            notes: landNotizText(schluessel) || undefined,
+            items: mitUeberschriften(nachPhase[schluessel], schluessel),
+          },
         }));
 
       const url = "things:///json?data=" + encodeURIComponent(JSON.stringify(projekte));
@@ -5302,6 +5333,14 @@ const todoTabelle = () => {
   const ansichtZeile = el("div", { class: "ansichtumschalter" });
   const zeichneUmschalter = () => {
     ansichtZeile.innerHTML = "";
+    /* Im Logbuch macht die Land/Datum-Wahl keinen Sinn – dort steht statt-
+       dessen ein einzelner Knopf zurück zur normalen, offenen Liste. */
+    if (logbuchOffen) {
+      ansichtZeile.appendChild(el("button", { class: "ansichtknopf an",
+        onclick: () => { logbuchOffen = false; zeichnen(); } },
+        svg("back", 12, "currentColor", 2.2), el("span", {}, " Zurück zu offenen")));
+      return;
+    }
     const knopf = (wert, text) => el("button", {
       class: "ansichtknopf" + (todoAnsicht === wert ? " an" : ""),
       onclick: () => { todoAnsicht = wert; zeichnen(); },
@@ -5358,6 +5397,17 @@ const todoTabelle = () => {
   const eigeneAlsZeilen = eigeneListe.map((et) => [et.was, et.datum, et.wer, false, null, null, et.id]);
   const sortiertAlle = TODO_ALLE.concat(eigeneAlsZeilen).sort((a, b) =>
     tag(a[1]) - tag(b[1]) || thema(a[0]) - thema(b[0]));
+  /* Erledigtes verschwindet aus der normalen Liste in die Ablage (Logbuch) –
+     dort bleibt es einsehbar und lässt sich per Haken auch wieder zurückholen. */
+  const offenAlle = sortiertAlle.filter(([was]) => !stand[was]);
+  const erledigtAlle = sortiertAlle.filter(([was]) => stand[was]);
+  /* Link zur Ablage nur, wenn es dort etwas zu sehen gibt. */
+  if (!logbuchOffen && erledigtAlle.length) {
+    kopfkarte.appendChild(el("button", { class: "logbuchknopf",
+      onclick: () => { logbuchOffen = true; zeichnen(); } },
+      svg("book", 13, "#8B8175", 1.8),
+      el("span", {}, "Logbuch – " + erledigtAlle.length + " erledigt")));
+  }
 
   /* Themen-Zuordnung: eigene To-dos schauen in ihr eigenes Thema-Feld,
      die festen in die Zuordnungstabelle. */
@@ -5497,6 +5547,16 @@ const todoTabelle = () => {
     return el("button", zeilenAttr, ...inhaltZeile);
   };
 
+  /* Logbuch: einfache Liste des Erledigten, gleiche Zeilenoptik – ein
+     Haken hier holt das To-do direkt wieder in die offene Liste zurück. */
+  if (logbuchOffen) {
+    box.appendChild(el("div", { class: "gruppentitel klein3 abstandoben" }, "Erledigt"));
+    const zeilen = el("div", { class: "todogruppeninhalt offen" });
+    box.appendChild(zeilen);
+    erledigtAlle.forEach((eintrag) => zeilen.appendChild(bauZeile(eintrag)));
+    return { kopfkarte, box };
+  }
+
   if (todoAnsicht === "kategorie") {
     /* Wie im Things-Export: erst nach Land/Etappe gruppiert (Projekt),
        darin nach Thema (Überschrift) – so ist auf einen Blick klar, zu
@@ -5517,9 +5577,11 @@ const todoTabelle = () => {
       return TODO_UEBERSCHRIFT_FEST[was] || (thema && TODO_THEMEN[thema] ? thema : "weiteres");
     };
     LAND_PHASEN.forEach(([landSchluessel, landTitel]) => {
-      const landEintraege = sortiertAlle.filter((e) => thingsPhaseVon(e[0], e[1]) === landSchluessel);
+      const landEintraege = offenAlle.filter((e) => thingsPhaseVon(e[0], e[1]) === landSchluessel);
       if (!landEintraege.length) return;
       box.appendChild(el("div", { class: "gruppentitel klein3 abstandoben" }, landTitel));
+      const landNotiz = landNotizText(landSchluessel);
+      if (landNotiz) box.appendChild(el("div", { class: "landnotiz hinweis" }, landNotiz));
       THINGS_UEBERSCHRIFTEN.forEach(([schluessel, titel]) => {
         const eintraege = landEintraege.filter((e) => kategorieVon(e[0], e[6]) === schluessel);
         if (!eintraege.length) return;
@@ -5536,7 +5598,7 @@ const todoTabelle = () => {
      jede Zeile trägt ihr Datum ja schon selbst. */
   const zeilen = el("div", { class: "todogruppeninhalt offen" });
   box.appendChild(zeilen);
-  sortiertAlle.forEach((eintrag) => zeilen.appendChild(bauZeile(eintrag)));
+  offenAlle.forEach((eintrag) => zeilen.appendChild(bauZeile(eintrag)));
   return { kopfkarte, box };
 };
 
