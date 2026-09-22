@@ -46,6 +46,7 @@
   --alarm-hell: #F6DEDA;
   --linie: #DED2BF;
   --navy: #1F3864;
+  --marker-gelb: #FFE58A;
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
 }
 
@@ -467,6 +468,19 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .gruppentitel {
   font-size: var(--ebene7); color: var(--grau); letter-spacing: .08em; text-transform: uppercase;
 }
+/* Kategorie-Zwischentitel in der "Nach Land"-Ansicht (z. B. "Formalitäten &
+   Finanzen") – braucht deutlichen Abstand nach oben, sonst verschmilzt sie
+   optisch mit der vorherigen To-do-Zeile. Erste Kategorie unter dem
+   Land-Titel bekommt weniger Abstand, da der Land-Titel schon eigenen hat.
+   Grösse/Farbe wie .todokopf .todogruppe (bestehendes Gruppentitel-Muster):
+   eine Überschrift ist nie kleiner als der Text darunter (var(--ebene5)),
+   nicht die winzige graue Etikett-Grösse der Basis-.gruppentitel-Regel. */
+.todoliste .gruppentitel {
+  margin: 20px 0 8px 3px;
+  font-size: var(--ebene5); letter-spacing: 0; text-transform: none;
+  color: #211C18; font-weight: 600;
+}
+.todoliste .gruppentitel.klein3 + .gruppentitel { margin-top: 4px; }
 /* Grössenordnung der App:
    Seitentitel 30 · Bereich 19 · Block 15 · Text 14 · Hinweis 13 · Etikett 11.
    Eine Überschrift ist nie kleiner als das, was unter ihr steht. */
@@ -895,6 +909,7 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
     --linie: #3D352E;
     --terra-hell: #3A2620;
     --alarm-hell: #3B211E;
+    --marker-gelb: #6B551C;
   }
   .blockband { border-color: var(--linie); }
   .blockband > .faltkarte + .faltkarte > .faltkopf { border-top-color: var(--linie); }
@@ -942,8 +957,10 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 }
 .todozeile {
   display: grid;
-  grid-template-columns: 22px 30px 1fr 84px;
-  align-items: center; column-gap: 10px;
+  /* Notiz-Symbol und Datum schmal und eng beieinander, damit der
+     Aufgabentext möglichst viel Breite bekommt. */
+  grid-template-columns: 22px 1fr 14px 56px;
+  align-items: center; column-gap: 8px;
   width: 100%; text-align: left;
   padding: 0 12px;
   cursor: pointer;
@@ -989,31 +1006,53 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
      um, wächst die Zeile einfach; Kästchen und Datum bleiben zentriert. */
   font-size: var(--ebene5); color: #211C18; line-height: 1.35;
 }
-.todolead { font-size: var(--ebene7); color: #9C9284; white-space: nowrap; text-align: center; }
 .tododatum {
   /* Ein echtes Datum ist kurz und bleibt einzeilig; ein Hinweistext wie
      "während Mexiko, sobald das Enddatum feststeht" ist länger – der bricht
-     um, statt (von der Karte) abgeschnitten zu werden. */
+     um, statt (von der Karte) abgeschnitten zu werden. Eigene, feste Spalte –
+     rutscht nicht, egal ob daneben ein Notiz-Symbol steht oder nicht. */
   font-size: var(--ebene6); color: #A9A296; line-height: 1.25;
   white-space: normal; text-align: right; align-self: center;
 }
+/* Eigene, schmale Spalte fürs Notiz-Symbol – getrennt vom Datum, damit das
+   Datum immer an derselben Stelle beginnt. */
+.notizspalte { display: flex; align-items: center; justify-content: center; opacity: .7; }
+.todozeile.notizoffen .notizspalte { opacity: 1; color: var(--terra); }
+/* Landet man per Sprung von einem verwandten To-do hier, kurz gelb
+   hinterlegen. Erscheint sofort (keine transition auf .angesprungen
+   allein); erst wenn zusätzlich .verblasst gesetzt wird (einen Frame
+   später, aus dem Skript), blendet die Farbe weich aus – zwei Klassen,
+   damit Erscheinen sofort und nur das Verschwinden weich ist. */
+.todozeile.angesprungen { background: var(--marker-gelb); }
+.todozeile.angesprungen.verblasst {
+  background: transparent;
+  transition: background 1.4s ease;
+}
 .todozeile.ab .todotext { color: var(--grau); text-decoration: line-through; }
-.todozeile.ab .todolead, .todozeile.ab .tododatum { color: #A9A296; }
-/* Notiz unter der Zeile – Kontext wie beim Things-Export (z. B. welches Land). */
+.todozeile.ab .tododatum { color: #A9A296; }
+/* Notiz unter der Zeile – erscheint erst, wenn man die Zeile antippt.
+   Einzug links 30px = Kästchenbreite (22px) + Spaltenabstand (8px), damit
+   die Notiz exakt unter dem Aufgabentext beginnt. Rechts nur der normale
+   Zeilenrand – der Text darf bis fast an den rechten Rand reichen. */
 .todonotiz {
   grid-column: 1 / -1;
-  font-size: var(--ebene6); color: var(--grau); line-height: 1.35;
-  padding: 2px 0 4px 62px;
+  font-size: var(--ebene6); color: var(--grau); line-height: 1.45;
+  padding: 3px 0 6px 30px;
 }
 .todozeile.ab .todonotiz { color: #C9C0B3; }
+/* Symbol (Link oder Sprungpfeil) sitzt direkt nach dem Text, mit kleinem
+   Abstand – nicht über die ganze Breite verteilt, sonst klafft bei kurzem
+   Text eine grosse Lücke zum Symbol. */
 .todonotizzeile {
-  display: flex; align-items: center; justify-content: space-between; gap: 6px;
+  display: flex; align-items: center; flex-wrap: wrap; gap: 2px 4px;
 }
-.todonotizzeile + .todonotizzeile { margin-top: 2px; }
-.todonotizlink {
-  color: var(--terra); text-decoration: underline; word-break: break-all;
+.todonotizzeile + .todonotizzeile { margin-top: 4px; }
+/* Link in der Notiz: nur ein kleines Symbol, keine ausgeschriebene URL. */
+.notizlinkknopf {
+  flex-shrink: 0; padding: 6px 2px 6px 8px;
+  display: flex; align-items: center;
 }
-.todozeile.ab .todonotizlink { color: #C9A08C; }
+.todozeile.ab .notizlinkknopf { opacity: .6; }
 
 /* Verweis auf die vollständige To-do-Liste – gleiche Anmutung wie eine Zeile */
 .allezeile {
@@ -1162,9 +1201,6 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .terminknopf .terminwas { flex: 1; min-width: 0; }
 .terminknopf .terminwann { margin-left: auto; flex-shrink: 0; }
 .todokopf { min-height: 38px; }
-
-/* Lead als Kürzel – S kursiv */
-.todolead i { font-style: italic; }
 
 /* Spaltenbeschriftung der To-do-Liste */
 .todospalten {
@@ -3648,24 +3684,29 @@ const TODO_ALLE = [
   ["Flug nach Mexiko buchen", "27. Sep", "Sophie", false,
    ["Guatemala-Stadt – Mexiko-Stadt, mit deiner Freundin zusammen.",
     "Datum hängt davon ab, wann die gemeinsame Woche in Guatemala endet.",
-    "Beim Check-in in Guatemala verlangt die Airline einen Nachweis der Weiterreise aus Mexiko – siehe eigenes To-do.",
+    "Beim Check-in in Guatemala verlangt die Airline einen Nachweis der Weiterreise aus Mexiko >> todo|Ausreisenachweis für Mexiko-Check-in besorgen",
     "Preise vergleichen, dann direkt bei der Airline buchen.",
     "Google Flights: https://www.google.com/travel/flights?q=Flug%20von%20Guatemala-Stadt%20nach%20Mexiko-Stadt"]],
   ["Ausreisenachweis für Mexiko-Check-in besorgen", "27. Sep", "Sophie", false,
    ["Mexiko verlangt von Einreisenden ohne Wohnsitz ein Ticket, das die Weiterreise zeigt – die Airline kontrolliert das schon beim Check-in in Guatemala, nicht erst die mexikanische Grenze.",
-    "Muss nicht das echte Costa-Rica-Ticket sein – ein günstiges, umbuchbares Busticket Mexiko-Stadt–Guatemala reicht, mit Passnummer drauf.",
-    "ADO oder ähnliche Buslinie: https://www.ado.com.mx >> buchen|Fahren"]],
+    "Muss nicht das echte Costa-Rica-Ticket sein – entweder ein Busticket zurück nach Guatemala oder das Flugticket nach Costa Rica reicht, mit Passnummer drauf.",
+    "Tica Bus Tapachula–Guatemala-Stadt: 27 USD, täglich 07:00 und 21:00 Uhr. Sprache oben rechts auf Englisch umstellen, Buchung gibt direkt eine PDF-Bestätigung.",
+    "Tica Bus: https://www.ticabus.com/en/ >> buchen|Fahren",
+    "Direktlink mit Beispieldatum 4. Nov.: https://viajaporca.betterez.com/cart/60f9d59f99a21f0f7cda816c/trip-results?productFamily=reservation&productId=627eb7d9abcb57082e585323&type=oneway&channel=websales&departureDate=2026-11-04&from=62acb2f1f9b2ce097bd8a087&to=612fc709a5a79f06d1396f18&fares=61364780e7e3a5070012796d%3A1",
+    "ADO oder ähnliche Buslinie: https://www.ado.com.mx >> buchen|Fahren",
+    "Gehört zum Check-in für den Mexiko-Flug >> todo|Flug nach Mexiko buchen"]],
   ["Flug Costa Rica buchen", "27. Sep", "Sophie", false,
    ["Mexiko-Stadt – San José. Copa und Avianca fliegen täglich.",
     "Datum hängt vom Ende der Mexiko-Reise ab – nicht zu früh fixieren.",
-    "Beim Check-in verlangt die Airline den Nachweis der Weiterreise aus Costa Rica – das Bus-Nicaragua-Ticket muss also schon gebucht sein.",
+    "Beim Check-in verlangt die Airline den Nachweis der Weiterreise aus Costa Rica >> todo|Bus Nicaragua buchen",
     "Preise vergleichen, dann direkt bei der Airline buchen >> buchen|Flug",
     "Google Flights: https://www.google.com/travel/flights?q=Flug%20von%20Mexiko-Stadt%20nach%20San%20Jos%C3%A9"]],
   ["Bus Nicaragua buchen", "27. Sep", "Sophie", false,
    ["Braucht es schon vor dem Costa-Rica-Datum: Die Airline verlangt das Ticket beim Check-in in Mexiko, nicht erst die costaricanische Grenze.",
     "Pass-Nummer muss auf dem Ticket stehen.",
     "Bus ist günstig – lieber jetzt ein ungefähres Datum buchen als bis zum fixen Costa-Rica-Datum warten. Bei TicaBus lässt sich das Datum später ändern.",
-    "Tica Bus: https://ticabus.com oder Busbud: https://busbud.com/de/country/cr >> buchen|Fahren"]],
+    "Tica Bus: https://ticabus.com oder Busbud: https://busbud.com/de/country/cr >> buchen|Fahren",
+    "Gehört zum Check-in für den Costa-Rica-Flug >> todo|Flug Costa Rica buchen"]],
   ["Rechn. Tour GT einzahlen", "5. Sep", "Sophie", true],
   ["Rechn. Hotel/Transfer einzahlen", "6. Sep", "Sophie", true],
   ["Vacanza-Prämie einzahlen", "bis 18. Sep", "Markus", true],
@@ -3876,6 +3917,8 @@ let offeneStation = null;   // welche Station in der Route offen ist
 let bereichHeute = "todos";   // todos · checklisten · packen
 let todoFormOffen = false;   // Formular "Neues To-do" auf oder zu
 let todoAnsicht = "datum";   // "datum" oder "kategorie" in den To-dos
+let offeneNotizen = new Set();   // welche To-dos ihre Notiz gerade aufgeklappt zeigen
+let zielToDoAnzeige = null;   // Titel des To-dos, zu dem ein Sprung gerade hinscrollen soll
 
 /* ── kleine Helfer ─────────────────────────────────────────────── */
 
@@ -3898,11 +3941,9 @@ const el = (tag, attrs = {}, ...kinder) => {
 const rein = (t) => String(t).replace(/<[^>]+>/g, "");
 /* Steuerzeichen aus Blocktiteln: "## " Gruppe, "!! " Zusatzinformation. */
 const ohneSprung = (t) => String(t).split(" >> ")[0];
-/* Macht eine nackte URL in einem Text anklickbar – z. B. Google-Flights-Links
-   in To-do-Notizen. */
-const linkifiziert = (html) => String(html).replace(
-  /(https?:\/\/[^\s<]+)/g,
-  (m) => '<a href="' + m + '" target="_blank" rel="noopener" class="todonotizlink">' + m + '</a>');
+/* Eindeutige, gültige DOM-Id für ein To-do – für Sprünge von einem To-do
+   direkt zu einem anderen (z. B. Flugbuchung → passender Ausreisenachweis). */
+const todoAnkerId = (was) => "todo-" + encodeURIComponent(was);
 
 const alsUnterzeile = (text) => {
   /* "Punkt<i>Hinweis</i>" wird zu zwei Zeilen: Punkt normal, Hinweis grau. */
@@ -3963,6 +4004,7 @@ const ICON = {
   map: '<path d="m9 4-6 3v13l6-3 6 3 6-3V4l-6 3z"/><path d="M9 4v13"/><path d="M15 7v13"/>',
   book: '<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22z"/><path d="M20 16H6.5a2.5 2.5 0 0 0-2.5 2.5"/>',
   tausch: '<path d="M8 3 4 7l4 4"/><path d="M4 7h13a3 3 0 0 1 3 3v1"/><path d="M16 21l4-4-4-4"/><path d="M20 17H7a3 3 0 0 1-3-3v-1"/>',
+  notiz: '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>',
 };
 
 const svg = (name, groesse = 18, farbe = "currentColor", dicke = 1.8) =>
@@ -5330,20 +5372,15 @@ const todoTabelle = () => {
 
   /* Wochentag davor – "Sa 5. Sep" liest sich schneller als "5. Sep". */
   const TAGE = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
-  /* S für Sophie, MA für Markus, alle für beide – S kursiv. */
-  const KURZ = { Sophie: "S", Markus: "M", beide: "MS" };
-  const leadZeichen = (lead) => {
-    const k = KURZ[lead] || lead;
-    return k === "S" ? el("i", {}, k) : el("span", {}, k);
-  };
 
   const mitTag = (text) => {
+    /* Nur das Datum, kein "bis"-Zusatz mehr – die Spalte bleibt so schmal
+       und kurz, egal ob es ein Start-, End- oder Einzeldatum ist. */
     const t = tag(text);
     if (t === Infinity) return text;
     const d = new Date(t);
     const kurz = d.getDate() + "." + (d.getMonth() + 1) + ".";
-    const vorsatz = /^bis/i.test(text) ? "bis " : "";
-    return vorsatz + TAGE[d.getDay()] + " " + kurz;
+    return TAGE[d.getDay()] + " " + kurz;
   };
 
   /* Spaltenbeschriftung über der ersten Gruppe. */
@@ -5352,33 +5389,67 @@ const todoTabelle = () => {
      Detail-Stichpunkte (z. B. welches Land, welcher Kontext), erscheinen sie
      als kleine graue Notiz unter der Zeile – dieselben Angaben, die auch der
      Things-Export als Notiz mitgibt. */
+  /* Ein Link in einer Notizzeile wird nicht ausgeschrieben – nur ein kleines
+     Symbol, das ihn öffnet. Der restliche Text (z. B. "Google Flights:")
+     bleibt stehen, die URL selbst verschwindet aus dem Fliesstext. */
+  const URL_MUSTER = /(https?:\/\/[^\s<]+)/;
+
   const bauZeile = (eintrag) => {
-    const [was, datum, lead] = eintrag;
+    const [was, datum] = eintrag;
     const eigenId = eintrag[6];
     const details = eintrag[4];
     const ab = stand[was];
     /* Hängt die Aufgabe an einer anderen, bleibt sie grau und gesperrt. */
     const wartet = ab ? null : gesperrtDurch(eintrag, stand);
+    const hatNotiz = Array.isArray(details) && details.length > 0;
+    /* Kommt man gerade per Sprung von einem anderen To-do hierher, gleich
+       aufklappen und offen halten – nicht nur kurz beim Landen. */
+    if (zielToDoAnzeige === was) offeneNotizen.add(was);
+    const offen = hatNotiz && offeneNotizen.has(was);
+    /* Das Kästchen hakt immer direkt ab, unabhängig davon, was ein Klick auf
+       den Rest der Zeile bewirkt – darum eigener Klick-Handler mit
+       stopPropagation, statt sich auf den Zeilen-Klick zu verlassen. */
+    const checkbox = el("span", { class: "box klein" + (ab ? " an" : "") },
+      ab ? svg("check", 11, "#fff", 3) : null);
+    if (!wartet) checkbox.onclick = (e) => {
+      e.stopPropagation();
+      stand[was] = !stand[was]; merke("haken:alle", stand); zeichnen();
+    };
     const inhaltZeile = [
-      el("span", { class: "box klein" + (ab ? " an" : "") },
-        ab ? svg("check", 11, "#fff", 3) : null),
-      el("span", { class: "todolead" }, leadZeichen(lead)),
+      checkbox,
       el("span", { class: "todotext", html: was }),
-      el("span", { class: "tododatum" }, wartet ? "wartet" : mitTag(datum)),
+      /* Eigene, feste Spalte fürs Notiz-Symbol – immer da (auch leer), damit
+         das Datum in seiner eigenen Spalte bleibt und nicht je nach Symbol
+         hin- und herrutscht. */
+      el("span", { class: "notizspalte" },
+        hatNotiz ? svg("notiz", 12, "#B0A594", 1.8) : null),
+      /* Immer das echte Datum zeigen, nie das Wort "wartet" – der gesperrte
+         Zustand ist schon an der blassen Zeile erkennbar. */
+      el("span", { class: "tododatum" }, mitTag(datum)),
     ];
-    if (Array.isArray(details) && details.length) {
-      /* Jede Detailzeile einzeln: Text mit anklickbaren Links, dazu ein
-         Sprungpfeil, falls die Zeile mit " >> ziel|param" auf eine
-         Buchungs- oder Wissensseite verweist (gleiches Muster wie bei den
-         Checklisten). Ein Klick auf Link oder Pfeil darf das To-do nicht
-         gleich abhaken – darum eigenes stopPropagation auf der Notiz. */
+    if (offen) {
+      /* Jede Detailzeile einzeln: Text ohne die URL, dazu ein kleines
+         Link-Symbol (falls eine URL drinsteckt) und ein Sprungpfeil, falls
+         die Zeile mit " >> ziel|param" auf eine Buchungs- oder Wissensseite
+         verweist. Ein Klick auf Link oder Pfeil darf das To-do nicht
+         gleich abhaken oder die Notiz zuklappen – darum stopPropagation. */
       const notizBox = el("div", { class: "todonotiz" });
       notizBox.onclick = (e) => { if (e.target.closest("a, button")) e.stopPropagation(); };
       details.forEach((d) => {
-        const text = String(d);
-        const sprungTeil = text.split(" >> ")[1];
-        const zeileEl = el("div", { class: "todonotizzeile" },
-          el("span", { html: linkifiziert(ohneSprung(text)) }));
+        const roh = ohneSprung(String(d));
+        const sprungTeil = String(d).split(" >> ")[1];
+        const urlTreffer = roh.match(URL_MUSTER);
+        const anzeigeText = urlTreffer
+          ? roh.replace(urlTreffer[0], "").replace(/[:\s]+$/, "").trim()
+          : roh;
+        const zeileEl = el("div", { class: "todonotizzeile" });
+        if (anzeigeText) zeileEl.appendChild(el("span", { html: anzeigeText }));
+        if (urlTreffer) {
+          zeileEl.appendChild(el("a", {
+            class: "notizlinkknopf", href: urlTreffer[0], target: "_blank", rel: "noopener",
+            "aria-label": "Link öffnen",
+          }, svg("link", 13, "#B65A3C", 2)));
+        }
         if (sprungTeil) {
           const [ziel, ...rest] = sprungTeil.split("|");
           zeileEl.appendChild(el("button", { class: "hakensprung",
@@ -5395,6 +5466,7 @@ const todoTabelle = () => {
          Löschknopf zusätzlich – zwei Buttons ineinander sind kein gültiges HTML. */
       const zeile = el("div", {
         class: "todozeile eigenzeile" + (ab ? " ab" : "") + (wartet ? " wartet" : ""),
+        id: todoAnkerId(was),
       }, ...inhaltZeile,
         el("button", { class: "eigenzeileweg", "aria-label": "To-do entfernen", onclick: (e) => {
           e.stopPropagation();
@@ -5405,19 +5477,22 @@ const todoTabelle = () => {
       if (!wartet) zeile.onclick = () => { stand[was] = !stand[was]; merke("haken:alle", stand); zeichnen(); };
       return zeile;
     }
-    /* Hat die Zeile eine Notiz mit Link oder Sprungpfeil, muss die Zeile ein
-       div sein statt ein button – ein Link oder Button lässt sich in einem
-       button nicht mehr zuverlässig antippen (ungültiges HTML, Safari
-       schluckt den Klick dann und hakt nur die Zeile ab). */
-    const hatNotiz = Array.isArray(details) && details.length > 0;
-    const klick = () => { if (!wartet) { stand[was] = !stand[was]; merke("haken:alle", stand); zeichnen(); } };
-    const klasse = "todozeile" + (ab ? " ab" : "") + (wartet ? " wartet" : "");
+    /* Hat die Zeile eine Notiz, muss sie ein div sein statt ein button – ein
+       Link oder Button lässt sich in einem button nicht mehr zuverlässig
+       antippen (ungültiges HTML, Safari schluckt den Klick dann und hakt
+       nur die Zeile ab). Ein Klick auf die Zeile klappt dann die Notiz auf/
+       zu, statt das To-do abzuhaken – dafür ist ja das Kästchen da. */
+    const klasse = "todozeile" + (ab ? " ab" : "") + (wartet ? " wartet" : "") + (offen ? " notizoffen" : "");
     if (hatNotiz) {
-      const zeile = el("div", { class: klasse }, ...inhaltZeile);
-      if (!wartet) zeile.onclick = klick;
+      const zeile = el("div", { class: klasse, id: todoAnkerId(was) }, ...inhaltZeile);
+      zeile.onclick = () => {
+        if (offen) offeneNotizen.delete(was); else offeneNotizen.add(was);
+        zeichnen();
+      };
       return zeile;
     }
-    const zeilenAttr = { class: klasse, onclick: klick };
+    const klick = () => { if (!wartet) { stand[was] = !stand[was]; merke("haken:alle", stand); zeichnen(); } };
+    const zeilenAttr = { class: klasse, onclick: klick, id: todoAnkerId(was) };
     if (wartet) zeilenAttr.disabled = "disabled";
     return el("button", zeilenAttr, ...inhaltZeile);
   };
@@ -6893,14 +6968,39 @@ function gehe(ziel, p = null, merken = false) {
     return;
   }
   if (seite !== "suche") vorSuche = seite;
-  seite = ziel;
-  param = p;
-  /* "packen|pack:flug" wählt Bereich und Liste – vor dem Zeichnen setzen. */
-  if (ziel === "heute" && typeof p === "string") {
-    const ber = p.split("|")[0];
-    if (["todos", "checklisten", "packen"].includes(ber)) bereichHeute = ber;
+  /* "todo|<Titel>" springt nicht auf eine eigene Seite, sondern zur To-do-
+     Liste und dort direkt zur genannten Zeile – z. B. von einer Flugbuchung
+     zum passenden Ausreisenachweis, statt das nur als Text zu erwähnen. */
+  if (ziel === "todo") {
+    zielToDoAnzeige = p;
+    seite = "heute"; param = "todos"; bereichHeute = "todos";
+  } else {
+    seite = ziel;
+    param = p;
+    /* "packen|pack:flug" wählt Bereich und Liste – vor dem Zeichnen setzen. */
+    if (ziel === "heute" && typeof p === "string") {
+      const ber = p.split("|")[0];
+      if (["todos", "checklisten", "packen"].includes(ber)) bereichHeute = ber;
+    }
   }
   zeichnen();
+  if (zielToDoAnzeige) {
+    const ziel2 = zielToDoAnzeige; zielToDoAnzeige = null;
+    const zeile = document.getElementById(todoAnkerId(ziel2));
+    if (zeile) {
+      zeile.scrollIntoView({ block: "center" });
+      /* Kurz gelb markieren, damit auf Anhieb klar ist, welche Zeile
+         gemeint ist. Erscheint sofort; das Ausblenden kommt erst einen
+         Frame später dazu, sonst würde auch das Erscheinen langsam
+         einblenden statt sofort da zu sein. */
+      zeile.classList.add("angesprungen");
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        zeile.classList.add("verblasst");
+      }));
+      setTimeout(() => zeile.classList.remove("angesprungen", "verblasst"), 2200);
+      return;
+    }
+  }
   window.scrollTo(0, 0);
 }
 
