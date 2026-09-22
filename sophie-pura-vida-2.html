@@ -2602,7 +2602,7 @@ const STATIONEN = [
         ["eigen", "", [
           { punkt: "<b>Reiserucksack packen</b> – Osprey Fairview Trek 70<br>23 kg sind erlaubt, 10 kg ist das Ziel.",
             sprung: "heute", param: "packen|pack:rucksack" },
-          { punkt: "<b>Handgepäck packen</b> – Patagonia Terravia 24 L<br>Elektrotasche, iPad, Nackenkissen.",
+          { punkt: "<b>Handgepäck packen</b> – Tagesrucksack<br>Elektrotasche, iPad, Nackenkissen.",
             sprung: "heute", param: "packen|pack:hand" },
           "<b>iPhones und Powerbank laden</b> – beide Geräte über Nacht.",
           { punkt: "<b>Offline abspeichern</b> – Ticket, Hotel, Reiseerklärung<br>Karten und Sprachpaket herunterladen.",
@@ -2783,7 +2783,7 @@ const STATIONEN = [
           "<b>Pesos loswerden</b> – in Costa Rica wertlos.",
           { punkt: "<b>Reiserucksack packen</b> – Osprey Fairview Trek 70, keine Elektronik hinein.",
             sprung: "heute", param: "packen|pack:rucksack" },
-          { punkt: "<b>Handgepäck packen</b> – Patagonia Terravia 24 L, Elektrotasche und iPad.",
+          { punkt: "<b>Handgepäck packen</b> – Tagesrucksack, Elektrotasche und iPad.",
             sprung: "heute", param: "packen|pack:hand" },
           "<b>iPhones und Powerbank laden</b> – beide Geräte über Nacht.",
           { punkt: "<b>Offline abspeichern</b> – Ticket, Unterkunft, Reiseerklärung.",
@@ -3455,16 +3455,16 @@ const LAENDER = {
 
 
 const PACKLISTE = [
-  ["Kleidung", ["Hardshell-Regenjacke", "Fleece oder dünner Hoodie", "Dünnes Langarmshirt", "Merino-Longsleeve", "Trekkinghose", "Leichthose oder Leggings", "2× Shorts", "3× T-Shirts oder Tops", "Sarong", "Buff", "Cap", "Merinomütze", "Leichte Daunen- oder Primaloftjacke<i>für Cusco und kalte Nachtbusse</i>", "Dünne Handschuhe", "5× Unterwäsche", "3× Socken, davon 1 Paar Wandersocken", "Bikini", "Ein schickeres Teil für Abende"]],
-  ["Schuhe", ["Salomon Wanderschuh", "Sandalen mit Fersenriemen", "Duschschlappen<i>fünf Monate Gemeinschaftsduschen</i>"]],
-  ["Kulturbeutel", ["Festes Shampoo und Seife", "Zahnbürste und -pasta", "Sonnencreme LSF 50, riff-verträglich", "Lippenbalsam mit Lichtschutz", "DEET 50 % für den Dschungel", "Icaridin für den Alltag", "Mikrofaser-Handtuch L", "Reisewaschmittel", "Wäscheleine und Klammern", "Nagelknipser und Schere", "Kleines Nähset", "Feuchttücher und eine Rolle Klopapier<i>viele Toiletten haben keines</i>", "Alaunstein", "Monatshygiene", "Handdesinfektion", "Digitales Thermometer"]],
+  ["Kleidung", ["Hardshell-Regenjacke", "Fleece oder dünner Hoodie", "Dünnes Langarmshirt", "Merino-Longsleeve", "Trekkinghose", "Leichthose oder Leggings", "2× Shorts", "3× T-Shirts oder Tops", "Sarong", "Buff", "Cap", "Leichte Daunen- oder Primaloftjacke<i>für Cusco und kalte Nachtbusse</i>", "5× Unterwäsche", "3× Socken, davon 1 Paar Wandersocken", "Bikini", "Ein schickeres Teil für Abende"]],
+  ["Schuhe", ["Salomon Sneaker", "Birkenstock Sandale", "Zehensandale<i>fünf Monate Gemeinschaftsduschen</i>"]],
+  ["Kulturbeutel", ["Festes Shampoo und Seife", "Zahnbürste und -pasta", "Sonnencreme LSF 50, riff-verträglich", "Lippenbalsam mit Lichtschutz", "DEET 50 % für den Dschungel", "Icaridin für den Alltag", "Mikrofaser-Handtuch L", "Reisewaschmittel", "Wäscheleine und Klammern", "Nagelknipser und Schere", "Kleines Nähset", "Feuchttücher und eine Rolle Klopapier<i>viele Toiletten haben keines</i>", "Monatshygiene", "Handdesinfektion", "Digitales Thermometer"]],
   ["Brille und Linsen", ["Ersatzbrille im harten Etui", "Sonnenbrille mit Sehstärke", "Rezept und Linsenwerte als PDF", "Monatslinsen mit Reserve", "Zwei Linsenbehälter für Peroxid", "Befeuchtende Augentropfen", "Lensy Care 4 – Peroxidlösung"]],
-  ["Reiseapotheke", ["Ibuprofen und Paracetamol", "Imodium akut", "Elektrolytpulver", "Kohletabletten", "Antihistaminikum-Gel", "Hydrocortison 0.5 %", "Bepanthen Wundspray", "Kleine Flasche Betadine", "Pflasterset", "Pinzette für Splitter und Zecken", "Elastische Binde und Leukotape", "Blasenpflaster", "Vomex gegen Reiseübelkeit", "Ärztliche Bescheinigung auf Englisch"]],
-  ["Elektronik", ["Smartphone<i>am Körper im Bodybag</i>", "Zweites iPhone als Backup<i>Handgepäck – deine Rückfallebene</i>", "Powerbank 10'000–20'000 mAh<i>Handgepäck ist Vorschrift, im Gepäck verboten</i>", "Kabelkopfhörer<i>Lightning für das iPhone 12 – ohne Akku, ohne Koppeln</i>", "Ladekabel USB-C für das iPhone 17<i>auch für iPad und Powerbank</i>",
-    "Ladekabel Lightning für das iPhone 12<i>anderer Anschluss – ohne dieses Kabel bleibt das Ersatzgerät leer</i>", "US-Netzteil mit USB-Ports", "CH→US-Adapter als Reserve", "Elektrotasche für Kabel und Kleinteile", "Wasserdichte Handyhülle", "Stossfeste Hülle und Handykordel"]],
+  ["Reiseapotheke", ["Ibuprofen und Paracetamol", "Imodium akut", "Elektrolytpulver", "Kohletabletten", "Antihistaminikum-Gel", "Bepanthen Wundspray", "Kleine Flasche Betadine", "Pflasterset", "Pinzette für Splitter und Zecken", "Elastische Binde und Leukotape", "Blasenpflaster", "Vomex gegen Reiseübelkeit", "Ärztliche Bescheinigung auf Englisch"]],
+  ["Elektronik", ["Smartphone<i>am Körper im Bodybag</i>", "Zweites iPhone als Backup<i>Handgepäck – deine Rückfallebene</i>", "Powerbank 5'000 mAh<i>Handgepäck ist Vorschrift, im Gepäck verboten</i>", "Kabelkopfhörer<i>Lightning für das iPhone 12 – ohne Akku, ohne Koppeln</i>", "Ladekabel USB-C für das iPhone 17<i>auch für iPad und Powerbank</i>",
+    "Ladekabel Lightning für das iPhone 12<i>anderer Anschluss – ohne dieses Kabel bleibt das Ersatzgerät leer</i>", "US-Netzteil mit USB-Ports", "CH→US-Adapter als Reserve", "Elektrotasche für Kabel und Kleinteile", "Wasserdichte Handyhülle"]],
   ["Wertsachen-Box", ["Pass im Zip-Beutel", "BKB-Karte", "150 USD in kleinen Scheinen", "Impfausweis", "Zwei Passfotos für Ausweise unterwegs", "Ersatzbrille", "Zweites iPhone", "Papierkopie Notfallblatt", "Zweite laminierte Passkopie"]],
   ["Rucksack und Hostel", ["## Rucksack selbst",
-    "Patagonia Terravia 24 L", "Regenhülle für den grossen Rucksack",
+    "Tagesrucksack", "Regenhülle für den grossen Rucksack",
     "## Sicherheit unterwegs",
     "Stahlkabel zum Anschliessen<i>ohne Kabel nützt das Schloss im Bus und im Hostel nichts</i>",
     "ABUS-Schloss für den Locker", "Zweites Zahlenschloss als Reserve", "Zipper-Schloss", "2 Karabiner",
@@ -3560,7 +3560,7 @@ const PACK_INLAND = [
   "Schlafbeutel & Apotheke ~ Deckel",
   "Trinkflasche & Wäschebeutel ~ aussen",
   "Quittung fürs Gepäck behalten",
-  "## Patagonia Terravia 24 L",
+  "## Tagesrucksack",
   "Vorne fixiert oder auf dem Schoss",
   "Powerbank, Wasser & Jacke",
   "## Bodybag am Körper",
@@ -3571,11 +3571,11 @@ const PACK_INLAND = [
 const ORTSWECHSEL = [
   "## Vor der Abfahrt",
   "Bestätigung offline gespeichert, Adresse notiert >> wissen|ablage",
-  "Weg vom Bahnhof oder Flughafen geklärt",
+  "Transport zu Bahnhof/Flughafen geklärt + organisiert",
   "Nur tagsüber unterwegs, Ankunft vor Einbruch der Dunkelheit >> wissen|sicherheit",
   "## Papiere und Geld",
   "Bei Landeswechsel: Aus- und Einreiseformular erledigt >> wissen|djrv",
-  "Weiterreisenachweis griffbereit >> wissen|fluege",
+  "Weiterreisenachweis griffbereit (Bus oder Flugticket) >> wissen|fluege",
   "Adresse der Unterkunft auch auf Papier",
   "Bargeld für die Ankunft geholt >> geld|geld",
   "Landeswährung stimmt – altes Geld ausgegeben >> geld|geld",
@@ -3862,7 +3862,6 @@ const VOR_ABFLUG = [
   "Reiseerklärung ausgefüllt, QR-Code gespeichert",
   "Notfallblatt ausgefüllt und ausgedruckt",
   "Wichtige Register offline auf beiden Geräten",
-  "Offline-Karten und Spanisch-Sprachpaket geladen",
   "Karten getestet, PIN auswendig",
   "Ersatzhandy eingerichtet",
   "Offline-Test bestanden",
@@ -3959,18 +3958,33 @@ const todoAnkerId = (was) => "todo-" + encodeURIComponent(was);
 /* Kurzer Überblick je Land – Zeitraum, Dauer, Schwerpunkt – aus den Wissen-
    Daten (LAENDER) wiederverwendet statt neu erfasst: einmal für die "Nach
    Land"-Ansicht der To-dos, einmal als Notiz im Things-Export-Projekt.
-   "rueckkehr" (Things-Phase) entspricht dort "schweiz"; für Vorbereitung
-   und Laufend gibt es keinen Landeintrag, also auch keine Notiz. */
+   "rueckkehr" (Things-Phase) entspricht dort "schweiz". Vorbereitung ist
+   kein Land, kriegt darum einen eigenen, fest formulierten Text; für
+   Laufend gibt es keinen, also auch keine Notiz. */
 const LAND_ZU_LAENDER = {
   guatemala: "guatemala", mexiko: "mexiko", costarica: "costarica",
   peru: "peru", rueckkehr: "schweiz",
 };
+const PHASE_NOTIZ_FEST = {
+  vorbereitung: "Bis 29. September (Abflug Zürich–Guatemala-Stadt via Madrid) "
+    + "– restliche Buchungen, Formalitäten und Packen abschliessen.",
+};
 const landNotizText = (landSchluessel) => {
+  if (PHASE_NOTIZ_FEST[landSchluessel]) return PHASE_NOTIZ_FEST[landSchluessel];
   const eintrag = LAENDER[LAND_ZU_LAENDER[landSchluessel]];
   if (!eintrag) return null;
   const kopf = [eintrag.zeit, eintrag.dauer].filter(Boolean).join(" · ");
   return [kopf, eintrag.schwerpunkte].filter(Boolean).join(" – ") || null;
 };
+/* Dieselben sieben Projekte wie beim Things-Export (THINGS_PHASEN) und der
+   "Nach Projekt"-Ansicht (LAND_PHASEN) – hier zusätzlich fürs Formular
+   "Neues To-do", damit ein neues To-do gleich dem richtigen Projekt
+   zugeteilt werden kann, statt sich auf die Datums-Schätzung zu verlassen. */
+const PROJEKT_LISTE = [
+  ["vorbereitung", "Reiseplan"], ["guatemala", "Guatemala"], ["mexiko", "Mexiko"],
+  ["costarica", "Costa Rica"], ["peru", "Peru"], ["rueckkehr", "Rückkehr"],
+  ["laufend", "Laufend"],
+];
 
 const alsUnterzeile = (text) => {
   /* "Punkt<i>Hinweis</i>" wird zu zwei Zeilen: Punkt normal, Hinweis grau. */
@@ -4977,40 +4991,31 @@ const todoTabelle = () => {
       el("button", { class: "formzu", "aria-label": "Schliessen", onclick: () => {
         todoFormOffen = false; zeichnen();
       } }, svg("x", 16, "#8B8175", 2))));
+    /* Bewusst kurz: nur Projekt, Titel und Datum – "Wer" (immer Sophie) und
+       "Überschrift" entfallen, das war für ein schnelles Erfassen zu viel. */
+    const projektfeld = el("select", { class: "meldefeld" },
+      el("option", { value: "" }, "Projekt (optional)"),
+      PROJEKT_LISTE.map(([schluessel, name]) => el("option", { value: schluessel }, name)));
     const wasfeld = el("input", { class: "meldefeld formgross", placeholder: "Was steht an?" });
-    let wer = "Sophie";
     const wannfeld = el("input", { class: "meldefeld", type: "date" });
-    const themafeld = el("select", { class: "meldefeld" },
-      el("option", { value: "" }, "Thema (optional)"),
-      Object.entries(TODO_THEMEN).map(([schluessel, [icon, name]]) =>
-        el("option", { value: schluessel }, icon + " " + name)));
 
+    /* Ohne diese Wahl würde ein neues To-do nur anhand seines Datums grob
+       einer Phase zugeschätzt – bei Terminen, die sich überschneiden
+       (z. B. Ende Oktober/Anfang November), landet es sonst leicht im
+       falschen Projekt, sowohl hier in der App als auch beim Things-Export. */
+    karte.appendChild(el("div", { class: "formabschnitt" }, projektfeld));
     karte.appendChild(el("div", { class: "formabschnitt" }, wasfeld));
-
-    const werKnopf = (wert) => el("button", {
-      class: "pille" + (wer === wert ? " an" : ""),
-      onclick: () => { wer = wert; zeichneWer(); },
-    }, wert);
-    const werZeile = el("div", { class: "pillenzeile" });
-    const zeichneWer = () => {
-      werZeile.innerHTML = "";
-      werZeile.appendChild(werKnopf("Sophie"));
-      werZeile.appendChild(werKnopf("beide"));
-    };
-    zeichneWer();
-    karte.appendChild(el("div", { class: "formabschnitt" },
-      el("span", { class: "formueberschrift" }, "Wer"), werZeile));
-
-    karte.appendChild(el("div", { class: "formabschnitt formzeile" }, wannfeld, themafeld));
+    karte.appendChild(el("div", { class: "formabschnitt" }, wannfeld));
 
     karte.appendChild(el("button", { class: "textknopf kopierknopf formspeichern", onclick: () => {
       const was = wasfeld.value.trim();
       if (!was) return;
       const liste = hole("eigeneToDos", []);
       liste.push({
-        id: "et" + Date.now(), was, wer,
+        id: "et" + Date.now(), was, wer: "Sophie",
         datum: todoDatumKurz(wannfeld.value) || "ohne Datum",
-        thema: themafeld.value.trim(),
+        thema: "",
+        projekt: projektfeld.value.trim(),
       });
       merke("eigeneToDos", liste);
       todoFormOffen = false;
@@ -5088,8 +5093,10 @@ const todoTabelle = () => {
     "Rückflug buchen": "rueckkehr",
     "Restbargeld ausgeben, Stempel prüfen": "rueckkehr",
   };
-  /* Fallback fürs Datum – nur für To-dos ohne feste Zuordnung oben. */
-  const thingsPhaseVon = (was, datum) => {
+  /* Fallback fürs Datum – nur für To-dos ohne feste Zuordnung oben oder
+     eigene Projekt-Wahl im Formular (dritter Parameter, hat Vorrang). */
+  const thingsPhaseVon = (was, datum, projektUeberschrieben) => {
+    if (projektUeberschrieben) return projektUeberschrieben;
     if (TODO_PHASE_FEST[was]) return TODO_PHASE_FEST[was];
     const d = String(datum);
     if (/^laufend$/i.test(d) || d === "ohne Datum") return "laufend";
@@ -5215,8 +5222,10 @@ const todoTabelle = () => {
   const thingsKnopf = el("button", { class: "todoaktion teilenknopf",
     "aria-label": "Offene To-dos und Checklisten in Things 3 öffnen",
     onclick: () => {
-      const eigeneFuerThings = hole("eigeneToDos", []).map((et) => [et.was, et.datum, et.thema || null, null]);
-      const fixeFuerThings = TODO_ALLE.map(([was, datum, , , details]) => [was, datum, TODO_KATEGORIE[was] || null, details || null]);
+      const eigeneFuerThings = hole("eigeneToDos", []).map((et) =>
+        [et.was, et.datum, et.thema || null, null, et.projekt || null]);
+      const fixeFuerThings = TODO_ALLE.map(([was, datum, , , details]) =>
+        [was, datum, TODO_KATEGORIE[was] || null, details || null, null]);
       const thingsPosten = fixeFuerThings.concat(eigeneFuerThings).filter(([was]) => !stand[was]);
 
       /* Details-Stichpunkte aus der App (Kontext, Links, Hinweise) werden
@@ -5234,7 +5243,7 @@ const todoTabelle = () => {
       const nachPhase = {};
       THINGS_PHASEN.forEach(([schluessel]) => { nachPhase[schluessel] = []; });
 
-      thingsPosten.forEach(([was, datum, thema, details]) => {
+      thingsPosten.forEach(([was, datum, thema, details, projekt]) => {
         const attrs = { title: was };
         const tage = alsTage(datum);
         if (tage !== null) {
@@ -5253,7 +5262,7 @@ const todoTabelle = () => {
             type: "checklist-item", attributes: { title: titel, completed: false },
           }));
         }
-        nachPhase[thingsPhaseVon(was, datum)].push([kategorie, { type: "to-do", attributes: attrs }]);
+        nachPhase[thingsPhaseVon(was, datum, projekt)].push([kategorie, { type: "to-do", attributes: attrs }]);
       });
 
       /* Jede Checkliste wird selbst zu einem To-do; ihre Punkte werden zu
@@ -5346,7 +5355,7 @@ const todoTabelle = () => {
       onclick: () => { todoAnsicht = wert; zeichnen(); },
     }, text);
     ansichtZeile.appendChild(knopf("datum", "Nach Datum"));
-    ansichtZeile.appendChild(knopf("kategorie", "Nach Land"));
+    ansichtZeile.appendChild(knopf("kategorie", "Nach Projekt"));
   };
   zeichneUmschalter();
   kopfkarte.appendChild(ansichtZeile);
@@ -5412,7 +5421,8 @@ const todoTabelle = () => {
   /* Themen-Zuordnung: eigene To-dos schauen in ihr eigenes Thema-Feld,
      die festen in die Zuordnungstabelle. */
   const eigenThema = {};
-  eigeneListe.forEach((et) => { eigenThema[et.id] = et.thema; });
+  const eigenProjekt = {};
+  eigeneListe.forEach((et) => { eigenThema[et.id] = et.thema; eigenProjekt[et.id] = et.projekt; });
   const themaVon = (was, eigenId) => eigenId ? (eigenThema[eigenId] || null) : (TODO_KATEGORIE[was] || null);
 
   /* Je Woche eine Gruppe – so bleiben auch die späteren Aufgaben übersichtlich. */
@@ -5577,11 +5587,21 @@ const todoTabelle = () => {
       return TODO_UEBERSCHRIFT_FEST[was] || (thema && TODO_THEMEN[thema] ? thema : "weiteres");
     };
     LAND_PHASEN.forEach(([landSchluessel, landTitel]) => {
-      const landEintraege = offenAlle.filter((e) => thingsPhaseVon(e[0], e[1]) === landSchluessel);
-      if (!landEintraege.length) return;
+      const landEintraege = offenAlle.filter((e) =>
+        thingsPhaseVon(e[0], e[1], eigenProjekt[e[6]]) === landSchluessel);
+      const landErledigt = erledigtAlle.filter((e) =>
+        thingsPhaseVon(e[0], e[1], eigenProjekt[e[6]]) === landSchluessel);
+      /* Nur ganz weglassen, wenn dieses Projekt noch nie ein To-do hatte –
+         waren welche da und sind jetzt alle erledigt, bleibt die Überschrift
+         stehen, damit das Projekt nicht einfach aus der Liste verschwindet. */
+      if (!landEintraege.length && !landErledigt.length) return;
       box.appendChild(el("div", { class: "gruppentitel klein3 abstandoben" }, landTitel));
       const landNotiz = landNotizText(landSchluessel);
       if (landNotiz) box.appendChild(el("div", { class: "landnotiz hinweis" }, landNotiz));
+      if (!landEintraege.length) {
+        box.appendChild(el("div", { class: "hinweis" }, "Alle To-dos hier erledigt."));
+        return;
+      }
       THINGS_UEBERSCHRIFTEN.forEach(([schluessel, titel]) => {
         const eintraege = landEintraege.filter((e) => kategorieVon(e[0], e[6]) === schluessel);
         if (!eintraege.length) return;
@@ -5596,6 +5616,11 @@ const todoTabelle = () => {
 
   /* Eine durchgehende Liste, nach Datum sortiert – keine Wochen-Titel mehr,
      jede Zeile trägt ihr Datum ja schon selbst. */
+  if (!offenAlle.length) {
+    box.appendChild(el("div", { class: "hinweis abstandoben" },
+      "Alle offenen To-dos erledigt – im Logbuch siehst du sie wieder."));
+    return { kopfkarte, box };
+  }
   const zeilen = el("div", { class: "todogruppeninhalt offen" });
   box.appendChild(zeilen);
   offenAlle.forEach((eintrag) => zeilen.appendChild(bauZeile(eintrag)));
@@ -5756,11 +5781,6 @@ const termineBlock = () => {
   return behaelter;
 };
 
-const vorbereitungFertigOben = () => {
-  const stand = hole("haken:alle", {});
-  return TODO_ALLE.every(([was]) => stand[was]);
-};
-
 const seiteHeute = () => {
   /* Landing: drei grosse Kacheln, genau wie bei Wissen und Geld.
      Erst beim Antippen geht es in die jeweilige Liste. */
@@ -5817,7 +5837,7 @@ const seiteHeute = () => {
   const vorbereitungFertig = erledigt("abflug", VOR_ABFLUG);
 
   /* Es wird immer nur ein Bereich gezeigt – gewählt über die Kacheln oben. */
-  if (bereichHeute === "todos" && !vorbereitungFertigOben()) {
+  if (bereichHeute === "todos") {
     const { kopfkarte, box } = todoTabelle();
     /* Titel und Aktionskarte zusammen als eine sticky-Einheit – sonst
        reserviert die Karte allein nicht genug Platz, und die Liste
