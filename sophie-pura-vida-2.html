@@ -5594,12 +5594,12 @@ const todoTabelle = () => {
       /* Nur ganz weglassen, wenn dieses Projekt noch nie ein To-do hatte –
          waren welche da und sind jetzt alle erledigt, bleibt die Überschrift
          stehen, damit das Projekt nicht einfach aus der Liste verschwindet. */
-      if (!landEintraege.length && !landErledigt.length) return;
       box.appendChild(el("div", { class: "gruppentitel klein3 abstandoben" }, landTitel));
       const landNotiz = landNotizText(landSchluessel);
       if (landNotiz) box.appendChild(el("div", { class: "landnotiz hinweis" }, landNotiz));
       if (!landEintraege.length) {
-        box.appendChild(el("div", { class: "hinweis" }, "Alle To-dos hier erledigt."));
+        box.appendChild(el("div", { class: "hinweis" },
+          landErledigt.length ? "Alle To-dos hier erledigt." : "Noch keine To-dos hier."));
         return;
       }
       THINGS_UEBERSCHRIFTEN.forEach(([schluessel, titel]) => {
