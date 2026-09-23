@@ -5604,8 +5604,15 @@ const todoTabelle = () => {
       }
       THINGS_UEBERSCHRIFTEN.forEach(([schluessel, titel]) => {
         const eintraege = landEintraege.filter((e) => kategorieVon(e[0], e[6]) === schluessel);
-        if (!eintraege.length) return;
+        const eintraegeErledigt = landErledigt.filter((e) => kategorieVon(e[0], e[6]) === schluessel);
+        /* Auch hier: eine Unterüberschrift bleibt stehen, sobald sie einmal
+           etwas hatte – nicht nur ganz oben beim Projekt selbst. */
+        if (!eintraege.length && !eintraegeErledigt.length) return;
         box.appendChild(el("div", { class: "gruppentitel" }, titel));
+        if (!eintraege.length) {
+          box.appendChild(el("div", { class: "hinweis" }, "Alle To-dos hier erledigt."));
+          return;
+        }
         const zeilen = el("div", { class: "todogruppeninhalt offen" });
         eintraege.forEach((eintrag) => zeilen.appendChild(bauZeile(eintrag)));
         box.appendChild(zeilen);
