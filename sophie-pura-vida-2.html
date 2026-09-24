@@ -1230,6 +1230,23 @@ mark { background: #F6E7B0; color: var(--ink); padding: 0 2px; border-radius: 2p
 .geldzeile .kacheltitel { display: block; }
 .geldzeile .hinweis { display: block; margin-top: 2px; }
 
+/* Übersichten von Heute, Wissen und Geld: 3-Spalten-Kachel-Raster statt Liste.
+   Feste Höhe für JEDE Kachel – nicht nur pro Zeile gleich, sondern alle
+   gleich gross, egal wie lang der Titel ist. Ein zu langer Titel bricht auf
+   zwei Zeilen um und wird danach abgeschnitten (Ellipsis), statt die Kachel
+   zu strecken. */
+.kachelraster { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.geldkachel {
+  background: var(--karte); border: 1px solid var(--linie); border-radius: 18px;
+  padding: 0 8px; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 10px; text-align: center; height: 108px; box-sizing: border-box;
+}
+.geldkachel .kacheltitel {
+  font-size: 12px; line-height: 1.25; font-weight: 500; letter-spacing: 0.1px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 /* Detailansicht ruhiger */
 .kopf h1 { font-weight: 600; }
 .karte.faltkarte.dringend .blocktitel { font-weight: 600; }
@@ -2125,6 +2142,17 @@ const DOKUMENTE = [
         { begriff: "Bargeld im Spind ca. 150 USD",
           text: "Dazu Tagesgeld am Körper für den Alltag.<br><b>Das ist deine Rückfallebene:</b> Sind Karte und Handy weg, zahlst du damit die Nacht, das Taxi und den Weg zur Polizei." },
       ]],
+      ["Geld und Karten aufbewahren", [
+        "Nie alles am gleichen Ort – drei Schichten, die schon in der Packliste und bei Sicherheit stecken:",
+        "<b>Tagesportemonnaie (Alltag, das man notfalls hergibt):</b> wenig Bargeld für den Tag, die alte abgelaufene Karte als Dummy, Passkopie – <b>nicht</b> die echte Revolut-Karte. Wird das geklaut, ist der Schaden klein.",
+        "<b>Zahlen unterwegs:</b> zuerst Apple Pay übers Handy versuchen – das bleibt in der Tasche, nicht im Portemonnaie, und ein Dieb braucht dafür ohnehin Face ID. Nur wo das nicht geht (kleine Tiendas, Märkte, Busschalter), die echte Revolut-Karte kurz aus ihrem eigenen Versteck am Körper holen (z. B. Innenfach des Bodybags), danach gleich wieder weg.",
+        "<b>Spind (Haupt-Depot):</b> Pass, BKB-Reservekarte, der grosse Rest Bargeld – wasserdicht verpackt, eigenes Vorhängeschloss.",
+        "<b>Bodybag (Reisetag):</b> Pass und beide Karten am Körper – nie im Fach über dem Sitz oder auf dem Boden.",
+        "<b>2-Banken-Regel:</b> Revolut und BKB sind bewusst zwei verschiedene Banken – sperrt eine wegen Auslandsaktivität, bleibt die andere sofort nutzbar.",
+        "<b>Dummy-Card:</b> die alte, abgelaufene Schweizer Karte lenkt bei einem Diebstahl im ersten Moment von der Tatsache ab, dass die echte Karte gar nicht im Portemonnaie ist.",
+        "Kartenbox mit RFID-Schutz steht schon auf der Packliste, Dokumente-Scan als eigenes To-do.",
+        { sprung: "geld", param: "verstauen", label: "Konkret nach Situation: Flug, Bus, Alltag, Ausgang" },
+      ]],
       ["Woche für Woche", [
         "<b>Sonntags:</b> Budget von der Reisekasse aufs Hauptkonto schieben, Ausgaben anschauen – liegt der Tagesschnitt im Rahmen?",
         "<b>Vor jedem Ortswechsel:</b> genug Bargeld für zwei Tage.",
@@ -2148,11 +2176,62 @@ const DOKUMENTE = [
         "<b>Wenn der Scan nicht geht:</b> Schweizer QR-Rechnungen kann Revolut je nach Version nicht lesen. Dann Banküberweisung wählen und IBAN samt Referenznummer von Hand eintippen.",
         "Betrifft dich unterwegs bei der Restzahlung der Sprachschule.",
       ]],
+      ["Karten-Sicherheit einstellen", [
+        "Einmal vor dem Abflug in den Kartensicherheitseinstellungen einrichten (Karte antippen → Einstellungen → Sicherheit).",
+        "<b>Standortbasierte Sicherheit einschalten</b> – gleicht Kartenstandort mit Handystandort ab und blockiert Abhebungen, wenn beide nicht zusammenpassen. Handy braucht dafür „Immer“-Standortzugriff für Revolut.",
+        "<b>Bargeldbezug am Automaten sperren</b>, nur kurz vor der Abhebung selbst freischalten und danach gleich wieder sperren.",
+        "<b>Monatliches Ausgabenlimit setzen</b> (z. B. 500–1000 CHF) – Schutz, falls Karte und PIN doch kompromittiert werden. Lässt sich jederzeit mit einem Klick erhöhen.",
+        "<b>Magnetstreifen-Zahlungen deaktivieren</b>, nur bei Bedarf kurz freischalten.",
+        "<b>Push-Benachrichtigungen für jede Transaktion</b> aktiviert lassen – bei ungewohnter Buchung Karte sofort in der App einfrieren.",
+      ]],
       ["Wenn eine Karte weg ist", [
         "<b>Zuerst selbst sperren</b> – Revolut einfrieren, BKB in „one“. Gratis, weltweit, in Sekunden.",
+        "<b>Sofort weiterzahlen</b> mit der BKB-Karte aus dem Spind – nicht auf eine neue Revolut-Karte warten. Eine Revolut-Ersatzkarte lässt sich zwar auch ins Ausland bestellen, dauert aber oft ein bis mehrere Wochen und braucht eine feste Adresse, an der die Sendung ankommt – für unterwegs zu unsicher als einziger Plan.",
         "<b>Danach Visana melden</b> – sperrt die restlichen Karten und übernimmt die Ersatzgebühren.",
         "<b>Wenn gar nichts mehr geht:</b> Papi schickt Geld über Western Union. Du holst es mit Namen und Referenznummer, ohne Karte.",
         { sprung: "notfall", param: "ablauf", label: "Alle Nummern und der ganze Ablauf" },
+      ]],
+    ],
+  },
+  {
+    id: "verstauen", titel: "Wertsachen verstauen",
+    kurz: "Flug, Bus, Alltag, Ausgang – vier Situationen",
+    bloecke: [
+      ["A) Während der Flugreise (Anreise & Inlandsflüge)", [
+        { begriff: "Handgepäck (Rucksack/Tasche, die mit in die Kabine geht)",
+          text: "<b>Original-Reisepass:</b> in einem Reissverschluss-Innenfach, das schwer zugänglich ist.<br>"
+            + "<b>Revolut-Karte & kleines Bargeld:</b> griffbereit für Verpflegung am Flughafen.<br>"
+            + "<b>BKB-Reservekarte:</b> in einem separaten Fach im Handgepäck." },
+        "<b>Wichtig:</b> Sämtliche Karten, der Pass und das meiste Geld gehören ausschliesslich ins Handgepäck, niemals ins aufgegebene Gepäck (Koffer/grosser Rucksack)!",
+        "<b>Flug-Tipp:</b> Wenn du im Flugzeug schläfst, gehört die Tasche mit den Wertsachen unter den Vordersitz oder als Kopfkissen – nicht oben in die Ablage, wo Fremde herangehen könnten.",
+      ]],
+      ["B) Während Busreisen & Standortwechsel (Fernbusse, Shuttles, Colectivos)", [
+        { begriff: "Grosser Backpack / Koffer",
+          text: "Enthält keine Wertsachen, kein Geld und keine Elektronik. Warum? Er wird oft auf dem Dach festgebunden oder unten im Gepäckraum verstaut." },
+        { begriff: "Kleine Tages-Tasche (Wertsachen-Bag)",
+          text: "<b>Brustbeutel/Geldgürtel:</b> unter dem T-Shirt trägt man den Pass, die BKB-Reservekarte und das Haupt-Bargeld.<br>"
+            + "<b>Revolut-Karte & etwas Wechselgeld:</b> in der Tages-Tasche für Stopps an Raststätten." },
+        "<b>Wichtig im Bus:</b> Nimm die kleine Tasche mit deinen Wertsachen immer mit auf den Schoss oder wickle den Riemen um deine Beine. Leg die Wertgegenstände niemals in die Netz-Ablage vor dir und niemals oben in die Gepäckablage im Bus! Steigst du bei einem Zwischenstopp aus oder gehst auf die Toilette: Die Wertsachen-Tasche geht immer mit.",
+      ]],
+      ["C) Während dem Alltag in der Stadt (Hostel als Basis)", [
+        { begriff: "Im Hostel (Locker/Safe)",
+          text: "<b>BKB-Reservekarte:</b> bleibt im verschlossenen Safe oder im eigenen Rucksack, der mit einem eigenen Vorhängeschloss im Hostel-Locker gesichert ist.<br>"
+            + "<b>Original-Reisepass:</b> bleibt ebenfalls sicher im Locker.<br>"
+            + "<b>Notfall-Dollar-Depot:</b> bleibt im Locker." },
+        { begriff: "Mitnehmen in die Stadt",
+          text: "<b>Haupt-Geldgürtel (unter der Kleidung):</b> Revolut-Karte, Passkopie, grösseres Tagesbudget.<br>"
+            + "<b>Tasche/Hosentasche (griffbereit):</b> nur kleine Geldscheine für Bus, Streetfood oder Kaffee." },
+      ]],
+      ["D) Während dem Ausgang (Abend / Ausgang / Bars / Party)", [
+        { begriff: "Im Hostel (Locker/Safe)",
+          text: "<b>BKB-Reservekarte:</b> bleibt definitiv im Hostel.<br>"
+            + "<b>Original-Reisepass:</b> bleibt im Hostel.<br>"
+            + "<b>Grosses Bargeld:</b> bleibt im Hostel." },
+        { begriff: "Mitnehmen in den Ausgang",
+          text: "<b>Revolut-Karte:</b> in der Tasche, aber in der App auf dem Handy eingefroren.<br>"
+            + "<b>Bargeld für den Abend:</b> nur so viel, wie verbraucht wird.<br>"
+            + "<b>Not-Taxi-Geld:</b> ein Schein komplett separat verstaut (z. B. im BH, im Socken oder in der Innensohle des Schuhs) – nur für die sichere Heimfahrt per Uber/Sicherheitstaxi.<br>"
+            + "<b>Ausweis:</b> Foto des Reisepasses auf dem Smartphone oder eine Papier-Fotokopie." },
       ]],
     ],
   },
@@ -2205,6 +2284,15 @@ const DOKUMENTE = [
         "<b>Dritte Wahl:</b> günstiger Copa-Flug in ein Nachbarland.",
         "<b>Letzte Möglichkeit:</b> onwardticket.com – echtes Ticket, rund 48 Stunden gültig, etwa 15 Franken.",
         "Das Ausreisedatum muss innerhalb der gestempelten Aufenthaltsdauer liegen.",
+      ]],
+      ["Bus Nicaragua ab Costa Rica – der Standardfall", [
+        "<b>Beste Strecke:</b> San José (Costa Rica) – Rivas oder Managua (Nicaragua), die Standardroute.",
+        "<b>Datum:</b> muss innerhalb der 90 Tage liegen, die als Touristin in Costa Rica erlaubt sind – am einfachsten 4–6 Wochen nach der Einreise wählen.",
+        "<b>Für die Buchung:</b> voller Name genau wie im Pass, Geburtsdatum, Nationalität.",
+        "<b>Pass-Nummer muss stimmen</b> – Tica Bus übermittelt die Passagierliste vorab den Migrationsbehörden.",
+        "Pass muss zum Zeitpunkt der Busfahrt noch mindestens 6 Monate gültig sein.",
+        "<b>Adresse in Costa Rica:</b> wird oft verlangt – Name und Adresse des ersten Hostels angeben.",
+        { sprung: "todo", param: "Bus Nicaragua buchen", label: "Zum To-do „Bus Nicaragua buchen“" },
       ]],
       ["Wo du buchst", [
         { label: "Tica Bus – internationale Busse", url: "https://ticabus.com" },
@@ -3714,8 +3802,13 @@ const TODO_ALLE = [
     "Google Flights: https://www.google.com/travel/flights?q=Flug%20von%20Mexiko-Stadt%20nach%20San%20Jos%C3%A9"]],
   ["Bus Nicaragua buchen", "27. Sep", "Sophie", false,
    ["Braucht es schon vor dem Costa-Rica-Datum: Die Airline verlangt das Ticket beim Check-in in Mexiko, nicht erst die costaricanische Grenze.",
-    "Pass-Nummer muss auf dem Ticket stehen.",
+    "<b>Beste Strecke:</b> San José (Costa Rica) – Rivas oder Managua (Nicaragua), die Standardroute.",
+    "<b>Datum:</b> muss innerhalb der 90 Tage liegen, die Sophie höchstens als Touristin in Costa Rica bleiben darf – am einfachsten 4–6 Wochen nach der Einreise wählen.",
     "Bus ist günstig – lieber jetzt ein ungefähres Datum buchen als bis zum fixen Costa-Rica-Datum warten. Bei TicaBus lässt sich das Datum später ändern.",
+    "<b>Für die Buchung:</b> voller Name genau wie im Pass, Geburtsdatum, Nationalität.",
+    "<b>Pass-Nummer muss stimmen</b> – Tica Bus übermittelt die Passagierliste vorab den Migrationsbehörden.",
+    "Pass muss zum Zeitpunkt der Busfahrt noch mindestens 6 Monate gültig sein.",
+    "<b>Adresse in Costa Rica:</b> wird oft verlangt – Name und Adresse des ersten Hostels angeben.",
     "Tica Bus: https://ticabus.com oder Busbud: https://busbud.com/de/country/cr >> buchen|Fahren",
     "Gehört zum Check-in für den Costa-Rica-Flug >> todo|Flug Costa Rica buchen"]],
   ["Rechn. Tour GT einzahlen", "5. Sep", "Sophie", true],
@@ -3773,7 +3866,13 @@ const TODO_ALLE = [
   ["Revolut einrichten und testen", "27. Sep", "Sophie", false,
    ["Auf beiden iPhones einrichten, vier Konten anlegen, einmal testen.",
     "Währungsrechner einrichten und zeigen.",
-    "https://www.revolut.com/de-CH/"]],
+    "https://www.revolut.com/de-CH/",
+    "<b>Sicherheitseinstellungen bei der Karte (Einstellungen → Sicherheit):</b>",
+    "Standortbasierte Sicherheit einschalten – gleicht Kartenstandort mit Handystandort ab und blockiert Abhebungen, wenn beide nicht zusammenpassen (Handy braucht dafür „Immer“-Standortzugriff).",
+    "Bargeldbezug am Automaten sperren, nur kurz vor der Abhebung selbst freischalten und danach gleich wieder sperren.",
+    "Monatliches Ausgabenlimit setzen (z. B. 500–1000 CHF) – Schutz, falls Karte und PIN doch kompromittiert werden.",
+    "Magnetstreifen-Zahlungen deaktivieren, nur bei Bedarf kurz freischalten.",
+    "Push-Benachrichtigungen für jede Transaktion aktiviert lassen – bei ungewohnter Buchung Karte sofort in der App einfrieren."]],
   ["Währungsrechner erklären", "27. Sep", "beide", false],
   ["EDA registrieren", "27. Sep", "Sophie", false,
    ["App Travel Admin laden, Konto anlegen, Reise erfassen: Zeitraum, Länder, Kontakte.",
@@ -4072,6 +4171,15 @@ const hole = (schluessel, ersatz) => {
 
 const karte = (inhalt, ton = "weiss") =>
   el("div", { class: "karte " + ton }, inhalt);
+
+/* Kachel-Raster: 3 Spalten, Icon + Titel – für die Übersichten von
+   Heute, Wissen und Geld. liste = [[ikon, titel, klick], ...] */
+const kachelRaster = (liste) => el("div", { class: "kachelraster" },
+  liste.map(([ikon, titel, klick]) =>
+    el("button", { class: "block", onclick: klick },
+      el("div", { class: "geldkachel" },
+        el("span", { class: "geldikon" }, svg(ikon, 26, "#B65A3C", 1.8)),
+        el("span", { class: "kacheltitel" }, titel)))));
 
 const kopf = (titel, unter, zurueck, zurueckText = "Übersicht") =>
   el("div", { class: "kopf" + (titel ? "" : " ohnetitel") },
@@ -5802,20 +5910,13 @@ const seiteHeute = () => {
 
   if (!bereich) {
     const REIHE = [
-      ["check", "To-dos", "Was zu tun ist, nach Datum sortiert", "todos"],
-      ["book", "Checkliste", "Was ständig gilt, zum Abhaken", "checklisten"],
-      ["rucksack", "Packliste", "Was mitkommt, nach Rucksack sortiert", "packen"],
+      ["check", "To-dos", "todos"],
+      ["book", "Checkliste", "checklisten"],
+      ["rucksack", "Packliste", "packen"],
     ];
     return el("div", {},
-      el("div", { class: "spalten" }, REIHE.map(([ikon, titel, kurz, ziel]) =>
-        el("button", { class: "block", onclick: () => gehe("heute", ziel) },
-          karte(el("div", { class: "geldzeile" },
-            el("span", { class: "geldikon" }, svg(ikon, 19, "#B65A3C", 1.8)),
-            el("span", { class: "min0" },
-              el("span", { class: "kacheltitel klein2" }, titel),
-              el("span", { class: "hinweis" }, kurz)),
-            el("span", { class: "faltpfeil pfeilrechts" },
-              svg("chevron", 16, "#B65A3C", 2.2))))))));
+      kachelRaster(REIHE.map(([ikon, titel, ziel]) =>
+        [ikon, titel, () => gehe("heute", ziel)])));
   }
 
   const bereichHeute = bereich;
@@ -6293,26 +6394,18 @@ const seiteWissen = () => {
     .map(([nr, id]) => [nr, DOKUMENTE.find((d) => d.id === id)])
     .filter(([, d]) => d);
   return el("div", {},
-    el("div", { class: "spalten" },
-      liste.map(([ikon, d]) =>
-        el("button", { class: "block", onclick: () => gehe("wissen", d.id) },
-          karte(el("div", { class: "geldzeile" },
-            el("span", { class: "geldikon" }, svg(ikon, 19, "#B65A3C", 1.8)),
-            el("span", { class: "min0" },
-              el("span", { class: "kacheltitel klein2" }, d.titel),
-              el("span", { class: "hinweis" }, d.kurz)),
-            el("span", { class: "faltpfeil pfeilrechts" },
-              svg("chevron", 16, "#B65A3C", 2.2)))))),
+    kachelRaster(liste.map(([ikon, d]) =>
+      [ikon, d.titel, () => gehe("wissen", d.id)])),
     /* Buchen ist der Aktionsbereich – bewusst als farbige Karte. */
     el("button", { class: "block", onclick: () => gehe("buchen") },
       el("div", { class: "karte buchenkarte" },
         el("div", { class: "kacheltitel klein2" }, "Buchen"),
         el("div", { class: "buchenunter" }, "Hostels, Busse, Schule, Formulare",
           netzzeichen()),
-        el("span", { class: "buchenpfeil" }, svg("chevron", 16, "#fff", 2))))));
+        el("span", { class: "buchenpfeil" }, svg("chevron", 16, "#fff", 2)))));
 };
 
-const GELD_REIHE = [["wallet", "geld"], ["book", "budget"], ["tausch", "waehrung"],
+const GELD_REIHE = [["wallet", "geld"], ["rucksack", "verstauen"], ["book", "budget"], ["tausch", "waehrung"],
                     ["shield", "versicherung"], ["smartphone", "handy"], ["grid", "apps"]];
 
 const appTabelle = () => {
@@ -6368,15 +6461,8 @@ const seiteGeld = () => {
     .map(([nr, id]) => [nr, DOKUMENTE.find((d) => d.id === id)])
     .filter(([, d]) => d);
   return el("div", {},
-    liste.map(([ikon, d]) =>
-      el("button", { class: "block", onclick: () => gehe("geld", d.id) },
-        karte(el("div", { class: "geldzeile" },
-          el("span", { class: "geldikon" }, svg(ikon, 19, "#B65A3C", 1.8)),
-          el("span", { class: "min0" },
-            el("span", { class: "kacheltitel klein2" }, d.titel),
-            el("span", { class: "hinweis" }, d.kurz)),
-          el("span", { class: "faltpfeil pfeilrechts" },
-            svg("chevron", 16, "#B65A3C", 2.2)))))));
+    kachelRaster(liste.map(([ikon, d]) =>
+      [ikon, d.titel, () => gehe("geld", d.id)])));
 };
 
 /* Schmale Zeile: Name, Zweck, Netzzeichen – kein Kasten je Eintrag. */
