@@ -5385,28 +5385,6 @@ const todoTabelle = () => {
         nachPhase[thingsPhaseVon(was, datum, projekt)].push([kategorie, { type: "to-do", attributes: attrs }]);
       });
 
-      /* Jede Checkliste wird selbst zu einem To-do; ihre Punkte werden zu
-         abhakbaren Things-Unterpunkten. Abschnitts-Titel ("## ...") sind
-         keine eigenen Punkte und werden ausgelassen; der bereits erledigte
-         Stand wird mit übernommen. Sie laufen die ganze Reise über, darum
-         alle im Projekt "Laufende Checklisten". */
-      CHECKLISTEN_FUER_THINGS.forEach(([titel, punkte, schluessel]) => {
-        const checkStand = hole("haken:" + schluessel, {});
-        const eigenePunkte = hole("eigene:" + schluessel, []);
-        const zeilen = punkte.concat(eigenePunkte)
-          .filter((p) => !String(p).startsWith("## ") && !String(p).startsWith("%%"));
-        const checklistItems = zeilen.map((p) => ({
-          type: "checklist-item",
-          attributes: {
-            title: rein(alsUnterzeile(ohneSprung(String(p))).replace(/<br>/g, " – ")
-              .replace(/<[^>]+>/g, "")).trim(),
-            completed: !!checkStand[p],
-          },
-        }));
-        nachPhase.laufend.push(["checkliste", { type: "to-do",
-          attributes: { title: titel, tags: ["Checkliste"], "checklist-items": checklistItems } }]);
-      });
-
       /* In den Länder-Projekten sollen immer alle vier reisenahen
          Überschriften erscheinen, auch wenn dort gerade nichts offen ist –
          so bleibt die Struktur für später gleich. Bei Vorbereitung und
@@ -5443,38 +5421,67 @@ const todoTabelle = () => {
           },
         }));
 
-      /* Packliste: pro Bereich ein eigenes Projekt, alle Artikel als eine
-         abhakbare Things-Checkliste in einem einzigen To-do – so hakt man
-         eine Packliste in Things tatsächlich ab, nicht als 88 einzelne
-         To-dos. "Punkt<i>Hinweis</i>" wird zu "Punkt – Hinweis", der
-         bereits gesetzte Haken aus der App wird übernommen. */
+      /* Packliste & Routinen: EIN Projekt statt elf einzelner – die
+         Bereiche werden zu Überschriften zusammengefasst, jeder Artikel
+         ist ein eigenes To-do (nicht in einer Checkliste versteckt). So
+         ist beim Öffnen des Projekts alles auf einen Blick sichtbar, ohne
+         in ein Unter-To-do klicken zu müssen. "Punkt<i>Hinweis</i>" wird
+         zu "Punkt – Hinweis". Danach folgen die laufenden Checklisten
+         (Vor dem Abflugtag usw.) als weitere Überschriften im selben
+         Projekt, ebenfalls als einzelne To-dos, ihr Haken-Stand aus der
+         App wird jeweils übernommen. */
       const alsChecklistTitel = (text) => {
         const m = String(text).match(/^(.*?)<i>(.*?)<\/i>$/);
         if (m) return m[1].trim() + " – " + m[2].trim();
         return rein(String(text)).trim();
       };
-      const packProjekte = PACKLISTE.map(([titel, punkte]) => {
-        const checkStand = hole("haken:pack:" + titel, {});
-        return {
-          type: "project",
-          attributes: {
-            title: titel,
-            area: THINGS_AREA,
-            items: [{
-              type: "to-do",
-              attributes: {
-                title: titel,
-                "checklist-items": punkte.map((p) => ({
-                  type: "checklist-item",
-                  attributes: { title: alsChecklistTitel(p), completed: !!checkStand[p] },
-                })),
-              },
-            }],
-          },
-        };
+      const PACK_UEBERSCHRIFTEN = [
+        ["Rucksack", "🎒 Rucksack & Organisation"],
+        ["Packorganisation", "🎒 Rucksack & Organisation"],
+        ["Sicherheit & Schloss", "🔒 Sicherheit & Schloss"],
+        ["Kleidung", "👕 Kleidung & Schuhe"],
+        ["Schuhe", "👕 Kleidung & Schuhe"],
+        ["Kulturbeutel", "🧼 Kulturbeutel, Brille & Reiseapotheke"],
+        ["Brille und Linsen", "🧼 Kulturbeutel, Brille & Reiseapotheke"],
+        ["Reiseapotheke", "🧼 Kulturbeutel, Brille & Reiseapotheke"],
+        ["Schlafen", "😴 Schlafen"],
+        ["Elektronik", "🔌 Elektronik & Wertsachen"],
+        ["Wertsachen-Box", "🔌 Elektronik & Wertsachen"],
+      ];
+      const packItems = [];
+      const gesehen = new Set();
+      PACK_UEBERSCHRIFTEN.forEach(([bereich, ueberschrift]) => {
+        const eintrag = PACKLISTE.find(([t]) => t === bereich);
+        if (!eintrag) return;
+        if (!gesehen.has(ueberschrift)) {
+          packItems.push({ type: "heading", attributes: { title: ueberschrift } });
+          gesehen.add(ueberschrift);
+        }
+        const checkStand = hole("haken:pack:" + bereich, {});
+        eintrag[1].forEach((p) => {
+          packItems.push({ type: "to-do",
+            attributes: { title: alsChecklistTitel(p), completed: !!checkStand[p] } });
+        });
       });
+      CHECKLISTEN_FUER_THINGS.forEach(([titel, punkte, schluessel]) => {
+        packItems.push({ type: "heading", attributes: { title: "🔁 Routine: " + titel } });
+        const checkStand = hole("haken:" + schluessel, {});
+        const eigenePunkte = hole("eigene:" + schluessel, []);
+        punkte.concat(eigenePunkte)
+          .filter((p) => !String(p).startsWith("## ") && !String(p).startsWith("%%"))
+          .forEach((p) => {
+            packItems.push({ type: "to-do", attributes: {
+              title: alsChecklistTitel(ohneSprung(String(p)).replace(/<br>/g, " – ")),
+              completed: !!checkStand[p],
+            } });
+          });
+      });
+      const packProjekt = {
+        type: "project",
+        attributes: { title: "Packliste & Routinen", area: THINGS_AREA, items: packItems },
+      };
 
-      const url = "things:///json?data=" + encodeURIComponent(JSON.stringify(projekte.concat(packProjekte)));
+      const url = "things:///json?data=" + encodeURIComponent(JSON.stringify(projekte.concat([packProjekt])));
       console.log("Things-Export:", url);
       window.location.href = url;
     } }, svg("link", 15, "#8B8175", 2), thingsLabel);
