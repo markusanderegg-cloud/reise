@@ -5192,7 +5192,7 @@ const todoTabelle = () => {
     ["mexiko", "Mexiko"],
     ["costarica", "Costa Rica"],
     ["peru", "Peru"],
-    ["rueckkehr", "Rückkehr"],
+    ["rueckkehr", "Rückkehr & Laufendes"],
     ["laufend", "Laufende Checklisten"],
   ];
   /* Feste inhaltliche Zuordnung für die To-dos, die eindeutig zu einer
@@ -5385,6 +5385,12 @@ const todoTabelle = () => {
         nachPhase[thingsPhaseVon(was, datum, projekt)].push([kategorie, { type: "to-do", attributes: attrs }]);
       });
 
+      /* "Rückkehr" und "Laufend" werden zu einem einzigen Projekt
+         zusammengelegt – ein eigenes Projekt nur für ein, zwei laufende
+         Punkte ohne festes Land lohnt sich nicht. */
+      nachPhase.rueckkehr = nachPhase.rueckkehr.concat(nachPhase.laufend);
+      nachPhase.laufend = [];
+
       /* In den Länder-Projekten sollen immer alle vier reisenahen
          Überschriften erscheinen, auch wenn dort gerade nichts offen ist –
          so bleibt die Struktur für später gleich. Bei Vorbereitung und
@@ -5441,12 +5447,12 @@ const todoTabelle = () => {
         ["Sicherheit & Schloss", "🔒 Sicherheit & Schloss"],
         ["Kleidung", "👕 Kleidung & Schuhe"],
         ["Schuhe", "👕 Kleidung & Schuhe"],
-        ["Kulturbeutel", "🧼 Kulturbeutel, Brille & Reiseapotheke"],
-        ["Brille und Linsen", "🧼 Kulturbeutel, Brille & Reiseapotheke"],
-        ["Reiseapotheke", "🧼 Kulturbeutel, Brille & Reiseapotheke"],
-        ["Schlafen", "😴 Schlafen"],
-        ["Elektronik", "🔌 Elektronik & Wertsachen"],
-        ["Wertsachen-Box", "🔌 Elektronik & Wertsachen"],
+        ["Kulturbeutel", "🧼 Kulturbeutel & Reiseapotheke"],
+        ["Brille und Linsen", "🧼 Kulturbeutel & Reiseapotheke"],
+        ["Reiseapotheke", "🧼 Kulturbeutel & Reiseapotheke"],
+        ["Schlafen", "😴 Schlafen & Nachtruhe"],
+        ["Elektronik", "🔌 Elektronik & Dokumente"],
+        ["Wertsachen-Box", "🔌 Elektronik & Dokumente"],
       ];
       const packItems = [];
       const gesehen = new Set();
@@ -5463,8 +5469,15 @@ const todoTabelle = () => {
             attributes: { title: alsChecklistTitel(p), completed: !!checkStand[p] } });
         });
       });
+      const ROUTINE_UEBERSCHRIFT = {
+        "Vor dem Abflugtag": "🛫 Routine: Vor dem Abflugtag",
+        "Weiterreise": "🚌 Routine: Am Tag der Weiterreise",
+        "Jede Woche": "🔄 Routine: Jede Woche",
+        "Rückkehr": "🛬 Routine: Bei endgültiger Rückkehr",
+      };
       CHECKLISTEN_FUER_THINGS.forEach(([titel, punkte, schluessel]) => {
-        packItems.push({ type: "heading", attributes: { title: "🔁 Routine: " + titel } });
+        packItems.push({ type: "heading",
+          attributes: { title: ROUTINE_UEBERSCHRIFT[titel] || ("Routine: " + titel) } });
         const checkStand = hole("haken:" + schluessel, {});
         const eigenePunkte = hole("eigene:" + schluessel, []);
         punkte.concat(eigenePunkte)
