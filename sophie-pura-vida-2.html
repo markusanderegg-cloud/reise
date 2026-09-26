@@ -3702,8 +3702,6 @@ const WOCHE = [
   "Zu Hause anrufen, nicht nur schreiben",
   "Budget aufs Hauptkonto schieben >> geld|geld",
   "Nächsten Ortswechsel buchen – Unterkunft mit Gratisstornierung, Transport >> buchen|Unterkunft",
-  "Vorräte geprüft – auch Linsenmittel >> heute|packen|pack:Reiseapotheke",
-  "Wäsche gemacht oder abgegeben",
 ];
 
 const WOCHE_WICHTIG = 3;
@@ -5405,7 +5403,7 @@ const todoTabelle = () => {
          Vorbereitung und Laufende Checklisten ohnehin nur Überschriften
          mit Inhalt. */
       const LAENDER_UEBERSCHRIFTEN = ["buchungen", "formalitaeten", "aktivitaeten"];
-      const LAENDER_PHASEN = ["guatemala", "mexiko", "costarica", "peru", "rueckkehr"];
+      const LAENDER_PHASEN = ["guatemala", "mexiko", "costarica", "peru"];
 
       /* Aus den gesammelten Paaren pro Projekt die Items-Liste bauen:
          eine Things-Überschrift, gefolgt von ihren To-dos. */
@@ -5423,10 +5421,12 @@ const todoTabelle = () => {
 
       /* Die Länder-Projekte immer anlegen – auch Mexiko, auch wenn dort
          gerade nichts offen ist – damit die Reihenfolge der Reise
-         (Guatemala, Mexiko, Costa Rica, Peru, Rückkehr) sichtbar bleibt.
-         Vorbereitung und Laufende Checklisten nur, wenn etwas offen ist. */
+         (Guatemala, Mexiko, Costa Rica, Peru) sichtbar bleibt.
+         Vorbereitung nur, wenn etwas offen ist. "Rückkehr" und "Laufend"
+         werden bewusst nicht in Things abgebildet – bleiben nur in der App. */
       const projekte = THINGS_PHASEN
-        .filter(([schluessel]) => nachPhase[schluessel].length > 0 || LAENDER_PHASEN.includes(schluessel))
+        .filter(([schluessel]) => schluessel !== "rueckkehr" && schluessel !== "laufend" &&
+          (nachPhase[schluessel].length > 0 || LAENDER_PHASEN.includes(schluessel)))
         .map(([schluessel, titel]) => ({
           type: "project",
           attributes: {
@@ -5442,11 +5442,16 @@ const todoTabelle = () => {
          Packen-Ansicht) und Ausrüstung (die eigentliche Packliste, nach
          Themen). Jeder Artikel/Punkt ist ein eigenes To-do (nicht in einer
          Checkliste versteckt), ihr Haken-Stand aus der App wird jeweils
-         übernommen. "Punkt<i>Hinweis</i>" wird zu "Punkt – Hinweis". */
-      const alsChecklistTitel = (text) => {
-        const m = String(text).match(/^(.*?)<i>(.*?)<\/i>$/);
-        if (m) return m[1].trim() + " – " + m[2].trim();
-        return rein(String(text)).trim();
+         übernommen. Ein Zusatz – "Punkt<i>Hinweis</i>" oder "Punkt ~ Ort" –
+         landet nicht mehr im (sonst abgeschnittenen) Titel, sondern in den
+         Things-Notizen: Titel "Punkt", Notiz "Hinweis"/"Ort". */
+      const alsChecklistEintrag = (roh) => {
+        const text = ohneSprung(String(roh)).replace(/<br>/g, " – ");
+        const iTreffer = text.match(/^(.*?)<i>(.*?)<\/i>$/);
+        if (iTreffer) return { title: rein(iTreffer[1]).trim(), notiz: rein(iTreffer[2]).trim() };
+        const tildeTreffer = text.match(/^(.*?)\s~\s(.*)$/);
+        if (tildeTreffer) return { title: rein(tildeTreffer[1]).trim(), notiz: rein(tildeTreffer[2]).trim() };
+        return { title: rein(text).trim(), notiz: null };
       };
 
       const ROUTINE_UEBERSCHRIFT = {
@@ -5463,9 +5468,9 @@ const todoTabelle = () => {
         punkte.concat(eigenePunkte)
           .filter((p) => !String(p).startsWith("## ") && !String(p).startsWith("%%"))
           .forEach((p) => {
+            const { title, notiz } = alsChecklistEintrag(p);
             checklistenItems.push({ type: "to-do", attributes: {
-              title: alsChecklistTitel(ohneSprung(String(p)).replace(/<br>/g, " – ")),
-              completed: !!checkStand[p],
+              title, notes: notiz || undefined, completed: !!checkStand[p],
             } });
           });
       });
@@ -5489,9 +5494,9 @@ const todoTabelle = () => {
           punkte.concat(eigenePunkte)
             .filter((p) => !String(p).startsWith("## ") && !String(p).startsWith("%%"))
             .forEach((p) => {
+              const { title, notiz } = alsChecklistEintrag(p);
               packordnungItems.push({ type: "to-do", attributes: {
-                title: alsChecklistTitel(ohneSprung(String(p)).replace(/<br>/g, " – ")),
-                completed: !!checkStand[p],
+                title, notes: notiz || undefined, completed: !!checkStand[p],
               } });
             });
         });
@@ -5525,8 +5530,9 @@ const todoTabelle = () => {
         }
         const checkStand = hole("haken:pack:" + bereich, {});
         eintrag[1].forEach((p) => {
+          const { title, notiz } = alsChecklistEintrag(p);
           ausruestungItems.push({ type: "to-do",
-            attributes: { title: alsChecklistTitel(p), completed: !!checkStand[p] } });
+            attributes: { title, notes: notiz || undefined, completed: !!checkStand[p] } });
         });
       });
       const ausruestungProjekt = {
