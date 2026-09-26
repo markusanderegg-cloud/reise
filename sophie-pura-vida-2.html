@@ -2158,9 +2158,9 @@ const DOKUMENTE = [
       ["Geld und Karten aufbewahren", [
         "Nie alles am gleichen Ort – drei Schichten, die schon in der Packliste und bei Sicherheit stecken:",
         "<b>Tagesportemonnaie (Alltag, das man notfalls hergibt):</b> wenig Bargeld für den Tag, die alte abgelaufene Karte als Dummy, Passkopie – <b>nicht</b> die echte Revolut-Karte. Wird das geklaut, ist der Schaden klein.",
-        "<b>Zahlen unterwegs:</b> zuerst Apple Pay übers Handy versuchen – das bleibt in der Tasche, nicht im Portemonnaie, und ein Dieb braucht dafür ohnehin Face ID. Nur wo das nicht geht (kleine Tiendas, Märkte, Busschalter), die echte Revolut-Karte kurz aus ihrem eigenen Versteck am Körper holen (z. B. Innenfach des Bodybags), danach gleich wieder weg.",
+        "<b>Zahlen unterwegs:</b> zuerst Apple Pay übers Handy versuchen – das bleibt in der Tasche, nicht im Portemonnaie, und ein Dieb braucht dafür ohnehin Face ID. Nur wo das nicht geht (kleine Tiendas, Märkte, Busschalter), die echte Revolut-Karte kurz aus ihrem eigenen Versteck am Körper holen (z. B. Innenfach der Freitag-Tasche), danach gleich wieder weg.",
         "<b>Spind (Haupt-Depot):</b> Pass, BKB-Reservekarte, der grosse Rest Bargeld – wasserdicht verpackt, eigenes Vorhängeschloss.",
-        "<b>Bodybag (Reisetag):</b> Pass und beide Karten am Körper – nie im Fach über dem Sitz oder auf dem Boden.",
+        "<b>Freitag-Tasche (Reisetag):</b> Pass und beide Karten am Körper – nie im Fach über dem Sitz oder auf dem Boden.",
         "<b>2-Banken-Regel:</b> Revolut und BKB sind bewusst zwei verschiedene Banken – sperrt eine wegen Auslandsaktivität, bleibt die andere sofort nutzbar.",
         "<b>Dummy-Card:</b> die alte, abgelaufene Schweizer Karte lenkt bei einem Diebstahl im ersten Moment von der Tatsache ab, dass die echte Karte gar nicht im Portemonnaie ist.",
         "Kartenbox mit RFID-Schutz steht schon auf der Packliste, Dokumente-Scan als eigenes To-do.",
@@ -2679,7 +2679,7 @@ const STATIONEN = [
       ["vor", 14, "Reiseerklärung ausfüllen, QR-Code sichern", []],
       ["vor", 2, "Nachweise und Adresse griffbereit legen", []],
       ["vortag", 0, "Packen, laden, alles offline sichern", []],
-      ["tag", 0, "Papiere in den Bodybag", []],
+      ["tag", 0, "Papiere in die Freitag-Tasche", []],
       ["nach", 0, "Transfer nach Antigua", []],
     ],
     abschnitte: [
@@ -2714,7 +2714,7 @@ const STATIONEN = [
 
       [">> Am Flugtag", [
         ["eigen", "", [
-          "<b>In den Bodybag</b> – Pass, Geld, Revolut-Karte, Handy<br>Flugticket, Reiseerklärung, Hoteladresse und Tourbestätigung ausgedruckt.",
+          "<b>In die Freitag-Tasche</b> – Pass, Geld, Revolut-Karte, Handy<br>Flugticket, Reiseerklärung, Hoteladresse und Tourbestätigung ausgedruckt.",
           "<b>Am Schalter in Zürich</b> – beide Nachweise vorzeigen<br>Die Airline haftet, wenn du abgewiesen wirst – deshalb fragt sie.<br><span class='warnung'>Ohne Nachweis kein Einsteigen.</span>",
           "<b>Sicherheitskontrolle</b> – Powerbank und iPad heraus<br>Trinkflasche leer.",
         ]],
@@ -2859,7 +2859,7 @@ const STATIONEN = [
       ["vor", 3, "Weiterreisenachweis und Adresse griffbereit legen", []],
       ["vor", 1, "Flug einchecken, Weg zum Flughafen organisieren", []],
       ["vortag", 0, "Packen, laden, Bestätigungen offline", []],
-      ["tag", 0, "Papiere in den Bodybag, FMM-Ausreiseteil bereit", []],
+      ["tag", 0, "Papiere in die Freitag-Tasche, FMM-Ausreiseteil bereit", []],
       ["nach", 0, "WLAN, eSIM, Colón, Fahrt nach Heredia", []],
     ],
 
@@ -2895,7 +2895,7 @@ const STATIONEN = [
 
       [">> Am Flugtag", [
         ["eigen", "", [
-          "<b>In den Bodybag</b> – Pass, Geld, Revolut-Karte, Handy<br>Flugticket, FMM-Ausreiseteil und die Adresse in Heredia ausgedruckt.",
+          "<b>In die Freitag-Tasche</b> – Pass, Geld, Revolut-Karte, Handy<br>Flugticket, FMM-Ausreiseteil und die Adresse in Heredia ausgedruckt.",
           "<b>Am Schalter</b> – Busticket zeigen, wenn verlangt, FMM-Ausreiseteil abgeben.",
           "<b>Sicherheitskontrolle</b> – Powerbank und iPad heraus<br>Trinkflasche leer.",
           { punkt: "<b>Ausreisestempel prüfen</b> – vor dem Gate.",
@@ -3559,7 +3559,7 @@ const PACKLISTE = [
   ["Rucksack", ["Osprey Fairview Trek 70", "Regenhülle für Trek 70", "Tagesrucksack grau", "Trinkflasche", "Sackmesser"]],
   ["Packorganisation", ["3× Packing Cubes (2× M, 1× S)", "2–3 Dry Bags", "Zip-Beutel",
     "Karteikarten-Box mit RFID-Schutz", "Geruchsdichter Wäschebeutel (Wäscheleine und Klammern, Waschmittel)"]],
-  ["Sicherheit & Schloss", ["Bodybag für Pass, Handy, Karte",
+  ["Sicherheit & Schloss", ["Freitag-Tasche für Pass, Handy, Karte",
     "Stahlkabel zum Anschliessen<i>ohne Kabel nützt das Schloss im Bus und im Hostel nichts</i>",
     "ABUS-Schloss für den Locker", "Zweites Zahlenschloss als Reserve", "Zipper-Schloss", "2 Karabiner"]],
   ["Kleidung", ["Hardshell-Regenjacke", "Fleecejacke", "Leichte Daunenjacke<i>für Cusco und kalte Nachtbusse</i>", "Dünnes Langarmshirt", "Merino-Longsleeve", "Trekkinghose", "Leichthose oder Leggings", "2× Shorts", "3× T-Shirts oder Tops", "5× Unterwäsche", "3× Socken, davon 1 Paar Wandersocken", "Bikini", "Sarong", "Buff", "Cap", "Ein schickeres Teil für Abende"]],
@@ -3568,7 +3568,7 @@ const PACKLISTE = [
   ["Brille und Linsen", ["Brille", "Sonnenbrille", "Monatslinsen mit Reserve", "Lensy Care 4 – Peroxidlösung", "Zwei Linsenbehälter für Peroxid", "Befeuchtende Augentropfen", "Rezept und Linsenwerte als PDF"]],
   ["Reiseapotheke", ["Ibuprofen und Paracetamol", "Imodium akut", "Elektrolytpulver", "Kohletabletten", "Antihistaminikum-Gel", "Bepanthen Wundspray", "Kleine Flasche Betadine", "Pflasterset", "Pinzette für Splitter und Zecken", "Elastische Binde und Leukotape", "Blasenpflaster", "Vomex gegen Reiseübelkeit"]],
   ["Schlafen", ["Blackroll Schlafkissen", "Seidenschlafsack", "Seidenschlafhaube", "Schlafkleidung", "Ohropax", "Stirnlampe"]],
-  ["Elektronik", ["iPhone 17 Black<i>am Körper im Bodybag</i>",
+  ["Elektronik", ["iPhone 17 Black<i>am Körper in der Freitag-Tasche</i>",
     "Kabelkopfhörer iPhone 17<i>im Elektrobeutel</i>", "Ladekabel USB-C für das iPhone 17<i>im Elektrobeutel, auch für Powerbank</i>",
     "iPhone 12 Weiss als Backup<i>im Elektrobeutel – deine Rückfallebene</i>", "Kabelkopfhörer iPhone 12<i>im Elektrobeutel, ohne Akku, ohne Koppeln</i>",
     "Ladekabel Lightning für das iPhone 12<i>im Elektrobeutel – anderer Anschluss, ohne dieses Kabel bleibt das Ersatzgerät leer</i>",
@@ -3577,7 +3577,7 @@ const PACKLISTE = [
 ];
 
 const TAGESRUCKSACK = [
-  "Bodybag am Körper<br><span class='unterzeile'>Pass oder Passkopie, Revolut-Karte, Bargeld, Handy, Adresse der Unterkunft auf Papier</span>",
+  "Freitag-Tasche am Körper<br><span class='unterzeile'>Pass oder Passkopie, Revolut-Karte, Bargeld, Handy, Adresse der Unterkunft auf Papier</span>",
   "Dry Bag im Rucksack<br><span class='unterzeile'>Notfallblatt laminiert, Powerbank, was trocken bleiben muss</span>",
   "Mini-Apotheke<br><span class='unterzeile'>Medikamente, Elektrolyte, Teebaumöl, Correct-X, Pflaster, Tageslinsen als Reserve</span>",
   "Trinkflasche",
@@ -3587,8 +3587,8 @@ const TAGESRUCKSACK = [
   "Snacks",
   "Nastücher",
   "Sackmesser",
-  "Stirnlampe (bei Bedarf)",
   "Badesachen und Mikrofaser-Handtuch (bei Bedarf)",
+  "Stirnlampe (bei Bedarf)",
 ];
 
 const TOUR = [
@@ -3633,8 +3633,8 @@ const PACK_RUCKSACK = [
 const PACK_HAND = [
   "Elektrotasche ~ iPhone 12, Powerbank, Kabelkopfhörer, beide Ladekabel",
   "Nackenkissen, Schlafmaske, Ohropax",
-  "Apotheke & Linsenlösung unter 100 ml",
-  "Eine Garnitur Kleidung, Buff",
+  "Brille & Linsenlösung unter 100 ml",
+  "Buff",
 ];
 
 const PACK_BODY = [
@@ -3663,9 +3663,23 @@ const PACK_INLAND = [
   "## Tagesrucksack",
   "Vorne fixiert oder auf dem Schoss",
   "Powerbank, Wasser & Jacke",
-  "## Bodybag am Körper",
+  "## Freitag-Tasche am Körper",
   "Pass, Geld & Revolut-Karte",
   "Handy",
+];
+
+const PACKORDNUNG_GRUPPEN = [
+  ["packflugzeug", "Packordnung Flugzeug", [
+    ["Reiserucksack – Flug", PACK_RUCKSACK, "pack:rucksack"],
+    ["Handgepäck – Flug", PACK_HAND, "pack:hand"],
+    ["Freitag-Tasche am Körper", PACK_BODY, "pack:body"],
+  ]],
+  ["packbus", "Packordnung Bus", [
+    ["Im Bus", PACK_INLAND, "pack:inland"],
+  ]],
+  ["packtagestour", "Packordnung Tagestour", [
+    ["Tagesrucksack unterwegs", TAGESRUCKSACK, "tour:rucksack"],
+  ]],
 ];
 
 const ORTSWECHSEL = [
@@ -3676,13 +3690,10 @@ const ORTSWECHSEL = [
   "## Papiere und Geld",
   "Bei Landeswechsel: Aus- und Einreiseformular erledigt >> wissen|djrv",
   "Weiterreisenachweis griffbereit (Bus oder Flugticket) >> wissen|fluege",
-  "Adresse der Unterkunft auch auf Papier",
-  "Bargeld für die Ankunft geholt >> geld|geld",
-  "Landeswährung stimmt – altes Geld ausgegeben >> geld|geld",
+  "Bargeld für die Ankunft geholt, altes Geld ausgegeben >> geld|geld",
   "## Packen und los",
-  "iPhones und Powerbank geladen",
   "Spind und Zimmer zweimal kontrolliert",
-  "Wertsachen in den Tagesrucksack >> heute|packen|tour:rucksack",
+  "Wertsachen und geladene Geräte (iPhones, Powerbank) im Tagesrucksack >> heute|packen|tour:rucksack",
   "Zu Hause gesagt, wohin du fährst",
 ];
 
@@ -3690,12 +3701,9 @@ const ORTSWECHSEL = [
 const WOCHE = [
   "Zu Hause anrufen, nicht nur schreiben",
   "Budget aufs Hauptkonto schieben >> geld|geld",
-  "Ausgaben der Woche anschauen",
-  "Belege fotografiert und abgelegt >> wissen|ablage",
-  "Wäsche gemacht oder abgegeben",
   "Nächsten Ortswechsel buchen – Unterkunft mit Gratisstornierung, Transport >> buchen|Unterkunft",
   "Vorräte geprüft – auch Linsenmittel >> heute|packen|pack:Reiseapotheke",
-  "Fotos gesichert im guten WLAN",
+  "Wäsche gemacht oder abgegeben",
 ];
 
 const WOCHE_WICHTIG = 3;
@@ -3967,15 +3975,9 @@ const ABFLUG_ALLGEMEIN = [
 ];
 
 const VOR_ABFLUG = [
-  "Nach Packordnung „Im Flugzeug“ gepackt<i>Rucksack, Handgepäck, Bodybag – Gewicht unter dem Limit der Airline</i> >> heute|packen",
   "Alle Tickets gebucht und ausgedruckt",
   "Erste Nacht und Transfer gebucht",
   "Reiseerklärung ausgefüllt, QR-Code gespeichert",
-  "Notfallblatt ausgefüllt und ausgedruckt",
-  "Wichtige Register offline auf beiden Geräten",
-  "Karten getestet, PIN auswendig",
-  "Ersatzhandy eingerichtet",
-  "Offline-Test bestanden",
 ];
 
 const VOR_REISE = [
@@ -4035,9 +4037,10 @@ let param = null;
 let vorSuche = "start";
 let zurueckZu = null;   // woher der letzte Sprung kam
 let offeneStation = null;   // welche Station in der Route offen ist
+let packenAuswahl = null;   // welche Packordnung-Kategorie einzeln offen ist
 let bereichHeute = "todos";   // todos · checklisten · packen
 let todoFormOffen = false;   // Formular "Neues To-do" auf oder zu
-let todoAnsicht = "datum";   // "datum" oder "kategorie" in den To-dos
+let todoAnsicht = "kategorie";   // "datum" oder "kategorie" in den To-dos
 let logbuchOffen = false;   // Ablage der erledigten To-dos statt der offenen zeigen
 let offeneNotizen = new Set();   // welche To-dos ihre Notiz gerade aufgeklappt zeigen
 let zielToDoAnzeige = null;   // Titel des To-dos, zu dem ein Sprung gerade hinscrollen soll
@@ -4408,7 +4411,7 @@ const hakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig = 0
       "pack:inland": ["Packordnung Inland", PACK_INLAND],
       "pack:rucksack": ["Reiserucksack", PACK_RUCKSACK],
       "pack:hand": ["Handgepäck", PACK_HAND],
-      "pack:body": ["Bodybag", PACK_BODY],
+      "pack:body": ["Freitag-Tasche", PACK_BODY],
       "woche": ["Jede Woche", WOCHE],
       "tour:rucksack": ["Tagesrucksack", TAGESRUCKSACK],
       "tour": ["Tagsüber weg", TOUR],
@@ -5164,8 +5167,9 @@ const todoTabelle = () => {
     } }, svg("share", 15, "#8B8175", 2), teilenLabel);
 
   /* Einmaliger Export nach Things 3: alle offenen To-dos (Titel, Datum,
-     Kategorie als Tag) sowie die 6 laufenden Checklisten (als eigene To-dos
-     mit den Punkten als Things-Unterpunkten) über das things:///json-Schema
+     Kategorie als Tag) sowie Checklisten, Packordnung und Ausrüstung als
+     drei eigene Projekte (ihre Punkte als eigene To-dos mit den Punkten
+     als Things-Unterpunkten) über das things:///json-Schema
      übergeben. Projekte = Reisephasen/Länder (chronologischer Überblick),
      Überschriften darin = Kategorien wie Einreise, Finanzen, Packen
      (thematischer Zugriff). Die Zuteilung zur Phase richtet sich nach dem
@@ -5178,11 +5182,12 @@ const todoTabelle = () => {
      passend direkt bei den einzelnen Route-Stationen (z.B. bei der Ankunft
      in Antigua) und würden hier nur als weitere, generische Punkte
      duplizieren. */
+  /* "Rückkehr" bewusst nicht dabei – die Liste bleibt in der App sichtbar,
+     wird aber separat (ausserhalb von Things) geführt. */
   const CHECKLISTEN_FUER_THINGS = [
     ["Vor dem Abflugtag", VOR_ABFLUG, "abflug"],
     ["Weiterreise", ORTSWECHSEL, "ortswechsel"],
     ["Jede Woche", WOCHE, "woche"],
-    ["Rückkehr", RUECKKEHR, "rueckkehr"],
   ];
   /* Reihenfolge der Reise: Vorbereitung, dann die Länder/Etappen, dann
      Rückkehr; laufende Punkte ohne festes Land ganz am Schluss. */
@@ -5236,7 +5241,7 @@ const todoTabelle = () => {
      Peru, Rückkehr) haben reisenahe Überschriften (Unterkunft, Transport,
      Aktivitäten & Touren, Formalitäten, Finanzen, Gesundheit). Das Projekt
      Vorbereitung hat eine eigene, breitere Gliederung nach Priorität
-     (Flüge & Bürokratie, Unterkunft & Grobplanung, Finanzen &
+     (Flüge & Einreise, Unterkunft & Grobplanung, Finanzen &
      Dokumentensicherheit, Gesundheit & Vorsorge, Dossier Reiseplanung,
      Packen) – mit "vb_" gekennzeichnete Schlüssel, damit sie unabhängig
      von den gleichnamigen Länder-Überschriften umbenannt werden können.
@@ -5247,7 +5252,7 @@ const todoTabelle = () => {
      Überschrift. */
   const THINGS_UEBERSCHRIFTEN = [
     /* Vorbereitung – unverändert, eigene breitere Gliederung. */
-    ["vb_fluege", "✈️ Flüge & Bürokratie"],
+    ["vb_fluege", "✈️ Flüge & Einreise"],
     ["vb_unterkunft", "🏠 Unterkunft & Grobplanung"],
     ["vb_finanzen", "💳 Finanzen & Dokumentensicherheit"],
     ["vb_gesundheit", "🩺 Gesundheit & Vorsorge"],
@@ -5273,7 +5278,7 @@ const todoTabelle = () => {
      oben, und die Länder-spezifischen Punkte (Unterkunft/Transport/
      Aktivitäten/Formalitäten) in Guatemala, Costa Rica, Peru und Rückkehr. */
   const TODO_UEBERSCHRIFT_FEST = {
-    // Vorbereitung – Flüge & Bürokratie
+    // Vorbereitung – Flüge & Einreise
     "Flug Guatemala buchen": "vb_fluege",
     "Flug nach Mexiko buchen": "vb_fluege",
     "Flug Costa Rica buchen": "vb_fluege",
@@ -5391,11 +5396,15 @@ const todoTabelle = () => {
       nachPhase.rueckkehr = nachPhase.rueckkehr.concat(nachPhase.laufend);
       nachPhase.laufend = [];
 
-      /* In den Länder-Projekten sollen immer alle vier reisenahen
-         Überschriften erscheinen, auch wenn dort gerade nichts offen ist –
-         so bleibt die Struktur für später gleich. Bei Vorbereitung und
-         Laufende Checklisten nur Überschriften mit Inhalt. */
-      const LAENDER_UEBERSCHRIFTEN = ["buchungen", "formalitaeten", "gesundheit", "aktivitaeten"];
+      /* In den Länder-Projekten sollen immer drei reisenahe Überschriften
+         erscheinen, auch wenn dort gerade nichts offen ist – so bleibt die
+         Struktur für später gleich. "Gesundheit" NICHT erzwungen: die
+         Themen dort betreffen nur Peru (Höhenanpassung) und die Vorbereitung
+         (eigene Überschrift "🩺 Gesundheit & Vorsorge") – für Guatemala,
+         Mexiko, Costa Rica und Rückkehr bliebe sie sonst leer stehen. Bei
+         Vorbereitung und Laufende Checklisten ohnehin nur Überschriften
+         mit Inhalt. */
+      const LAENDER_UEBERSCHRIFTEN = ["buchungen", "formalitaeten", "aktivitaeten"];
       const LAENDER_PHASEN = ["guatemala", "mexiko", "costarica", "peru", "rueckkehr"];
 
       /* Aus den gesammelten Paaren pro Projekt die Items-Liste bauen:
@@ -5427,20 +5436,71 @@ const todoTabelle = () => {
           },
         }));
 
-      /* Packliste & Routinen: EIN Projekt statt elf einzelner – die
-         Bereiche werden zu Überschriften zusammengefasst, jeder Artikel
-         ist ein eigenes To-do (nicht in einer Checkliste versteckt). So
-         ist beim Öffnen des Projekts alles auf einen Blick sichtbar, ohne
-         in ein Unter-To-do klicken zu müssen. "Punkt<i>Hinweis</i>" wird
-         zu "Punkt – Hinweis". Danach folgen die laufenden Checklisten
-         (Vor dem Abflugtag usw.) als weitere Überschriften im selben
-         Projekt, ebenfalls als einzelne To-dos, ihr Haken-Stand aus der
-         App wird jeweils übernommen. */
+      /* Drei weitere, eigenständige Projekte neben den Reisephasen – genau
+         die Gliederung der App: Checklisten (die wiederkehrenden Routinen),
+         Packordnung (Flugzeug/Bus/Tagestour, aus derselben Quelle wie die
+         Packen-Ansicht) und Ausrüstung (die eigentliche Packliste, nach
+         Themen). Jeder Artikel/Punkt ist ein eigenes To-do (nicht in einer
+         Checkliste versteckt), ihr Haken-Stand aus der App wird jeweils
+         übernommen. "Punkt<i>Hinweis</i>" wird zu "Punkt – Hinweis". */
       const alsChecklistTitel = (text) => {
         const m = String(text).match(/^(.*?)<i>(.*?)<\/i>$/);
         if (m) return m[1].trim() + " – " + m[2].trim();
         return rein(String(text)).trim();
       };
+
+      const ROUTINE_UEBERSCHRIFT = {
+        "Vor dem Abflugtag": "🛫 Vor dem Abflugtag",
+        "Weiterreise": "🚌 Am Tag der Weiterreise",
+        "Jede Woche": "🔄 Jede Woche",
+      };
+      const checklistenItems = [];
+      CHECKLISTEN_FUER_THINGS.forEach(([titel, punkte, schluessel]) => {
+        checklistenItems.push({ type: "heading",
+          attributes: { title: ROUTINE_UEBERSCHRIFT[titel] || titel } });
+        const checkStand = hole("haken:" + schluessel, {});
+        const eigenePunkte = hole("eigene:" + schluessel, []);
+        punkte.concat(eigenePunkte)
+          .filter((p) => !String(p).startsWith("## ") && !String(p).startsWith("%%"))
+          .forEach((p) => {
+            checklistenItems.push({ type: "to-do", attributes: {
+              title: alsChecklistTitel(ohneSprung(String(p)).replace(/<br>/g, " – ")),
+              completed: !!checkStand[p],
+            } });
+          });
+      });
+      const checklistenProjekt = {
+        type: "project",
+        attributes: { title: "Checklisten", area: THINGS_AREA, items: checklistenItems },
+      };
+
+      const PACKORDNUNG_UEBERSCHRIFT = {
+        packflugzeug: "✈️ Flugzeug",
+        packbus: "🚌 Bus",
+        packtagestour: "🎒 Tagestour",
+      };
+      const packordnungItems = [];
+      PACKORDNUNG_GRUPPEN.forEach(([gk, , eintraege]) => {
+        packordnungItems.push({ type: "heading",
+          attributes: { title: PACKORDNUNG_UEBERSCHRIFT[gk] || gk } });
+        eintraege.forEach(([titel, punkte, schluessel]) => {
+          const checkStand = hole("haken:" + schluessel, {});
+          const eigenePunkte = hole("eigene:" + schluessel, []);
+          punkte.concat(eigenePunkte)
+            .filter((p) => !String(p).startsWith("## ") && !String(p).startsWith("%%"))
+            .forEach((p) => {
+              packordnungItems.push({ type: "to-do", attributes: {
+                title: alsChecklistTitel(ohneSprung(String(p)).replace(/<br>/g, " – ")),
+                completed: !!checkStand[p],
+              } });
+            });
+        });
+      });
+      const packordnungProjekt = {
+        type: "project",
+        attributes: { title: "Packordnung", area: THINGS_AREA, items: packordnungItems },
+      };
+
       const PACK_UEBERSCHRIFTEN = [
         ["Rucksack", "🎒 Rucksack & Organisation"],
         ["Packorganisation", "🎒 Rucksack & Organisation"],
@@ -5454,47 +5514,28 @@ const todoTabelle = () => {
         ["Elektronik", "🔌 Elektronik & Dokumente"],
         ["Wertsachen-Box", "🔌 Elektronik & Dokumente"],
       ];
-      const packItems = [];
+      const ausruestungItems = [];
       const gesehen = new Set();
       PACK_UEBERSCHRIFTEN.forEach(([bereich, ueberschrift]) => {
         const eintrag = PACKLISTE.find(([t]) => t === bereich);
         if (!eintrag) return;
         if (!gesehen.has(ueberschrift)) {
-          packItems.push({ type: "heading", attributes: { title: ueberschrift } });
+          ausruestungItems.push({ type: "heading", attributes: { title: ueberschrift } });
           gesehen.add(ueberschrift);
         }
         const checkStand = hole("haken:pack:" + bereich, {});
         eintrag[1].forEach((p) => {
-          packItems.push({ type: "to-do",
+          ausruestungItems.push({ type: "to-do",
             attributes: { title: alsChecklistTitel(p), completed: !!checkStand[p] } });
         });
       });
-      const ROUTINE_UEBERSCHRIFT = {
-        "Vor dem Abflugtag": "🛫 Routine: Vor dem Abflugtag",
-        "Weiterreise": "🚌 Routine: Am Tag der Weiterreise",
-        "Jede Woche": "🔄 Routine: Jede Woche",
-        "Rückkehr": "🛬 Routine: Bei endgültiger Rückkehr",
-      };
-      CHECKLISTEN_FUER_THINGS.forEach(([titel, punkte, schluessel]) => {
-        packItems.push({ type: "heading",
-          attributes: { title: ROUTINE_UEBERSCHRIFT[titel] || ("Routine: " + titel) } });
-        const checkStand = hole("haken:" + schluessel, {});
-        const eigenePunkte = hole("eigene:" + schluessel, []);
-        punkte.concat(eigenePunkte)
-          .filter((p) => !String(p).startsWith("## ") && !String(p).startsWith("%%"))
-          .forEach((p) => {
-            packItems.push({ type: "to-do", attributes: {
-              title: alsChecklistTitel(ohneSprung(String(p)).replace(/<br>/g, " – ")),
-              completed: !!checkStand[p],
-            } });
-          });
-      });
-      const packProjekt = {
+      const ausruestungProjekt = {
         type: "project",
-        attributes: { title: "Packliste & Routinen", area: THINGS_AREA, items: packItems },
+        attributes: { title: "Ausrüstung", area: THINGS_AREA, items: ausruestungItems },
       };
 
-      const url = "things:///json?data=" + encodeURIComponent(JSON.stringify(projekte.concat([packProjekt])));
+      const url = "things:///json?data=" + encodeURIComponent(JSON.stringify(
+        projekte.concat([checklistenProjekt, packordnungProjekt, ausruestungProjekt])));
       console.log("Things-Export:", url);
       window.location.href = url;
     } }, svg("link", 15, "#8B8175", 2), thingsLabel);
@@ -6039,26 +6080,68 @@ const seiteHeute = () => {
   }
 
   if (bereichHeute === "packen") {
-    const ORDNUNG = [
-      ["Reiserucksack – Flug", PACK_RUCKSACK, "pack:rucksack"],
-      ["Handgepäck – Flug", PACK_HAND, "pack:hand"],
-      ["Bodybag am Körper", PACK_BODY, "pack:body"],
-      ["Im Bus", PACK_INLAND, "pack:inland"],
-      ["Tagesrucksack unterwegs", TAGESRUCKSACK, "tour:rucksack"],
-    ];
+    /* PACKORDNUNG_GRUPPEN kommt aus daten.js – dieselbe Quelle wie der
+       Things-Export, damit beide immer dieselbe Gruppierung zeigen.
+       "Flugzeug" bündelt die drei Flugtag-Listen zu einer Übersichtszeile,
+       "Bus" und "Tagestour" haben ohnehin nur je eine. Angetippt zeigt
+       jede ihre Titel und Artikel – ohne dass die Übersicht selbst schon
+       einzeln aufgeführt oder mit zusätzlichen Zwischentiteln aufgebläht
+       wird. */
+    const ORDNUNG = PACKORDNUNG_GRUPPEN.flatMap(([, , eintraege]) => eintraege);
     const ausruestung = PACKLISTE.map(([t, p]) => [t, p, "pack:" + t]);
-    /* Kam man über einen Sprung auf eine bestimmte Liste, steht nur sie da –
-       sonst sucht man sie zwischen allen anderen. */
-    const nurEine = zurueckZu
-      ? ORDNUNG.concat(ausruestung).find(([, , k]) => k === offeneListe) : null;
 
-    if (nurEine) {
-      gruppe("Packordnung", [
-        faltHakenliste(nurEine[0], nurEine[1], nurEine[2], true, 0, true),
+    /* Ein Sprung von anderswo (offeneListe) zielt auf einen einzelnen
+       Punkt – der zeigt sich allein, wie bisher. Eine eigene Auswahl
+       (packenAuswahl) zeigt dagegen eine ganze Packordnung-Gruppe mit
+       allen ihren Listen zusammen. */
+    const einzelTreffer = offeneListe
+      ? ORDNUNG.concat(ausruestung).find(([, , k]) => k === offeneListe) : null;
+    const gruppenTreffer = !offeneListe && packenAuswahl
+      ? PACKORDNUNG_GRUPPEN.find(([gk]) => gk === packenAuswahl) : null;
+
+    if (einzelTreffer) {
+      const eigeneGruppe = PACKORDNUNG_GRUPPEN.find(([, , eintraege]) =>
+        eintraege.some(([, , k]) => k === einzelTreffer[2]));
+      gruppe(eigeneGruppe ? eigeneGruppe[1] : "Ausrüstung", [
+        faltHakenliste(einzelTreffer[0], einzelTreffer[1], einzelTreffer[2], true, 0, true),
       ]);
+    } else if (gruppenTreffer) {
+      const [, titel, eintraege] = gruppenTreffer;
+      wrap.appendChild(el("button", { class: "zurueckzeile",
+        onclick: () => { packenAuswahl = null; zeichnen(); } },
+        el("span", { class: "zurueckpfeil" }, svg("chevron", 16, "#B65A3C", 2)),
+        el("span", {}, "Packliste")));
+      gruppe(titel, eintraege.map(([t, p, k]) => faltHakenliste(t, p, k, true, 0, true)));
     } else {
-      gruppe("Packordnung", ORDNUNG.map(([t, p, k]) =>
-        faltHakenliste(t, p, k, true, 0, offeneListe === k)));
+      /* Übersicht: eine Zeile pro Packordnung-Gruppe (Zähler über alle
+         ihre Listen zusammengezählt), gleiche Kartenoptik wie Ausrüstung –
+         keine eigene Zwischenüberschrift nötig, der Zeilentext trägt sie
+         schon im Namen. */
+      const zaehltext = (eintraege) => {
+        let total = 0, offen = 0;
+        eintraege.forEach(([, p, k]) => {
+          const stand = hole("haken:" + k, {});
+          const alle = p.concat(hole("eigene:" + k, []))
+            .filter((x) => !String(x).startsWith("## ") && !String(x).startsWith("%%"));
+          total += alle.length;
+          offen += alle.filter((x) => !stand[x]).length;
+        });
+        return offen === 0 ? "fertig"
+          : offen === total ? total + " Punkte"
+          : offen + " von " + total + " offen";
+      };
+      const gruppenZeile = (gk, titel, eintraege) => el("div", { class: "karte faltkarte" },
+        el("button", { class: "faltkopf",
+          onclick: () => { packenAuswahl = gk; zeichnen(); } },
+          el("div", { class: "zeile mitte" },
+            el("div", { class: "blocktitel" }, titel),
+            el("div", { class: "klein" }, zaehltext(eintraege))),
+          el("span", { class: "faltpfeil pfeilrechts" }, svg("chevron", 15, "#B65A3C", 2.2))));
+      wrap.appendChild(el("div", { class: "blockband" },
+        PACKORDNUNG_GRUPPEN.map(([gk, titel, eintraege]) => gruppenZeile(gk, titel, eintraege))));
+
+      /* Ausrüstung: unverändert – alle Kategorien als unabhängig auf- und
+         zuklappbare Karten. */
       gruppe("Ausrüstung", ausruestung.map(([t, p, k]) =>
         faltHakenliste(t, p, k, false, 0, offeneListe === k)));
     }
@@ -6198,7 +6281,7 @@ const seiteNotfall = () => {
       "pack:inland": ["Packordnung Inland", PACK_INLAND],
       "pack:rucksack": ["Reiserucksack", PACK_RUCKSACK],
       "pack:hand": ["Handgepäck", PACK_HAND],
-      "pack:body": ["Bodybag", PACK_BODY],
+      "pack:body": ["Freitag-Tasche", PACK_BODY],
       "woche": ["Jede Woche", WOCHE],
       "tour:rucksack": ["Tagesrucksack", TAGESRUCKSACK],
       "tour": ["Tagsüber weg", TOUR],
@@ -6677,7 +6760,7 @@ const seiteRoute = () => {
       "pack:inland": ["Packordnung Inland", PACK_INLAND],
       "pack:rucksack": ["Reiserucksack", PACK_RUCKSACK],
       "pack:hand": ["Handgepäck", PACK_HAND],
-      "pack:body": ["Bodybag", PACK_BODY],
+      "pack:body": ["Freitag-Tasche", PACK_BODY],
       "woche": ["Jede Woche", WOCHE],
       "tour:rucksack": ["Tagesrucksack", TAGESRUCKSACK],
       "tour": ["Tagsüber weg", TOUR],
