@@ -4158,6 +4158,7 @@ const ICON = {
   book: '<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22z"/><path d="M20 16H6.5a2.5 2.5 0 0 0-2.5 2.5"/>',
   tausch: '<path d="M8 3 4 7l4 4"/><path d="M4 7h13a3 3 0 0 1 3 3v1"/><path d="M16 21l4-4-4-4"/><path d="M20 17H7a3 3 0 0 1-3-3v-1"/>',
   notiz: '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>',
+  pin: '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/>',
 };
 
 const svg = (name, groesse = 18, farbe = "currentColor", dicke = 1.8) =>
@@ -4178,6 +4179,20 @@ const hole = (schluessel, ersatz) => {
     const r = localStorage.getItem("sophie:" + schluessel);
     return r ? JSON.parse(r) : ersatz;
   } catch (e) { return ersatz; }
+};
+
+/* Eine Liste (Packliste, Checkliste-Reise, …) besteht aus den fest
+   vorgegebenen Punkten MINUS dauerhaft gelöschte ("versteckt:") PLUS
+   selbst hinzugefügte ("eigene:") – überall dort verwendet, wo die
+   gleiche Liste ausserhalb von hakenliste() gebraucht wird (Things-
+   Export, Notizen-Export, Zähler), damit eine Löschung wirklich überall
+   verschwindet, nicht nur in der Checklisten-Ansicht selbst. Der
+   Häkchen-Stand ("haken:") ist bewusst NICHT Teil davon – das ist reiner
+   Fortschritt, keine inhaltliche Änderung der Liste. */
+const sichtbarePunkte = (punkte, schluessel) => {
+  const versteckt = hole("versteckt:" + schluessel, []);
+  const eigene = hole("eigene:" + schluessel, []);
+  return punkte.filter((p) => !versteckt.includes(p)).concat(eigene);
 };
 
 /* ── Bausteine ─────────────────────────────────────────────────── */
@@ -4392,6 +4407,11 @@ const faltHakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig
 const hakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig = 0) => {
   const stand = hole("haken:" + schluessel, {});
   let eigene = hole("eigene:" + schluessel, []);
+  /* Dauerhaft entfernte, fest vorgegebene Punkte (nicht nur abgehakt,
+     sondern aus der Liste gelöscht) – bleibt so, auch nach Neuladen und
+     in Things-/Notizen-Export. Kein Zurückholen vorgesehen. */
+  let versteckt = hole("versteckt:" + schluessel, []);
+  punkte = punkte.filter((p) => !versteckt.includes(p));
   let pruefeKnopfRef = null;
 
   const inhalt = el("div");
@@ -4611,19 +4631,26 @@ const hakenliste = (titel, punkte, schluessel, ruecksetzbar = false, wichtig = 0
           svg("chevron", 15, "#B65A3C", 2.2)));
       }
 
-      if (selbst) {
-        zeile.appendChild(el("button", {
-          class: "weg", "aria-label": "Punkt entfernen",
-          onclick: () => {
+      /* Löschen geht bei jedem Punkt – bei einem eigenen verschwindet er
+         ganz, bei einem fest vorgegebenen landet er dauerhaft in
+         "versteckt" (bleibt auch nach Neuladen weg, überall). */
+      zeile.appendChild(el("button", {
+        class: "weg", "aria-label": selbst ? "Punkt entfernen" : "Punkt aus Liste löschen",
+        onclick: () => {
+          if (selbst) {
             eigene = eigene.filter((x) => x !== p);
-            delete stand[p];
             merke("eigene:" + schluessel, eigene);
-            merke("haken:" + schluessel, stand);
-            zeichne();
-            if (pruefeKnopfRef) pruefeKnopfRef();
-          },
-        }, "×"));
-      }
+          } else {
+            punkte = punkte.filter((x) => x !== p);
+            versteckt = versteckt.concat([p]);
+            merke("versteckt:" + schluessel, versteckt);
+          }
+          delete stand[p];
+          merke("haken:" + schluessel, stand);
+          zeichne();
+          if (pruefeKnopfRef) pruefeKnopfRef();
+        },
+      }, "×"));
       inhalt.appendChild(zeile);
     });
 
@@ -4816,6 +4843,68 @@ const sicherungBlock = () => {
       })),
     meldung,
   ]));
+  return box;
+};
+
+/* ── Standort ──────────────────────────────────────────────────────
+   Vor dem Ausgang einmal antippen, danach führt der Link von überall
+   zurück – auch wenn unterwegs kein Netz mehr da ist (GPS selbst
+   braucht keins, nur das Öffnen der Karten-App danach). */
+
+const standortBlock = () => {
+  const box = el("div");
+  const meldung = el("div", { class: "hinweis abstandoben" });
+  const linksBox = el("div");
+
+  const formatiereZeit = (ms) => {
+    const d = new Date(ms);
+    return d.toLocaleDateString("de-CH") + ", "
+      + d.toLocaleTimeString("de-CH", { hour: "2-digit", minute: "2-digit" });
+  };
+
+  const zeichneLinks = () => {
+    linksBox.innerHTML = "";
+    const s = hole("standort", null);
+    if (!s) {
+      linksBox.appendChild(el("div", { class: "text abstandoben" },
+        "Noch kein Standort gespeichert."));
+      return;
+    }
+    linksBox.appendChild(el("div", { class: "klein abstandoben" },
+      "Gespeichert: " + formatiereZeit(s.zeit)));
+    linksBox.appendChild(el("div", { class: "zeile abstandoben" },
+      el("a", { href: "https://maps.apple.com/?daddr=" + s.lat + "," + s.lng,
+                target: "_blank", rel: "noopener", class: "aktionslink" },
+        "Apple Maps", svg("link", 12, "#B65A3C", 2), netzzeichen()),
+      el("a", { href: "https://www.google.com/maps/dir/?api=1&destination=" + s.lat + "," + s.lng,
+                target: "_blank", rel: "noopener", class: "aktionslink" },
+        "Google Maps", svg("link", 12, "#B65A3C", 2), netzzeichen())));
+  };
+
+  box.appendChild(el("div", { class: "gruppentitel klein3" }, "Standort"));
+  box.appendChild(karte([
+    el("div", { class: "text" },
+      "Vor dem Ausgang speichern – der Link führt danach von überall zurück hierher."),
+    el("button", { class: "textknopf abstandoben", onclick: () => {
+      if (!navigator.geolocation) {
+        meldung.textContent = "Wird von diesem Gerät nicht unterstützt.";
+        return;
+      }
+      meldung.textContent = "Standort wird ermittelt …";
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          merke("standort", { lat: pos.coords.latitude, lng: pos.coords.longitude, zeit: Date.now() });
+          meldung.textContent = "Gespeichert.";
+          zeichneLinks();
+        },
+        () => { meldung.textContent = "Ging nicht – Standortzugriff erlauben?"; },
+        { enableHighAccuracy: true, timeout: 10000 });
+    } }, svg("pin", 15, "#B65A3C", 2), el("span", {}, "  Standort speichern")),
+    meldung,
+    linksBox,
+  ], "terra"));
+
+  zeichneLinks();
   return box;
 };
 
@@ -5091,6 +5180,121 @@ const wannText = (datum) => {
   return datum;
 };
 
+/* Things-Export "Backpacking 2026": gemeinsam von todoTabelle() (normale
+   To-dos, Tab "To-dos") und seiteHeute() (Checkliste Reise, Tab
+   "Checkliste") genutzt – darum hier auf Modulebene statt in einer der
+   beiden Funktionen. */
+const THINGS_AREA = "🌍 Backpacking 2026";
+/* "Rückkehr" bewusst nicht dabei – die Liste bleibt in der App sichtbar,
+   wird aber separat (ausserhalb von Things) geführt. Jede Routine wird zu
+   EINEM To-do mit eingebauter Things-Checkliste (statt vieler einzelner
+   To-dos) – so lässt sich das To-do für die nächste Verwendung einfach in
+   Things duplizieren. "Vor dem Abflugtag" und "Weiterreise" erscheinen
+   unter der Überschrift "Checkliste Reise" in Reiseplan UND in jedem
+   Land (CHECKLISTE_REISE_PHASEN) – griffbereit, wo sie gebraucht werden.
+   "Jede Woche" ist ortsunabhängig und bleibt darum nur einmal, in
+   Reiseplan. Läuft über einen EIGENEN Button (checklisteReiseKnopf) statt
+   über "In Things öffnen" – so kann Letzterer beliebig oft ohne Dubletten
+   getippt werden, während die Checkliste-Reise-To-dos gezielt nur bei
+   Bedarf neu angelegt werden. */
+const CHECKLISTE_REISE = [
+  ["Vor dem Abflugtag", VOR_ABFLUG, "abflug", "🛫"],
+  ["Weiterreise", ORTSWECHSEL, "ortswechsel", "🚌"],
+  ["Jede Woche", WOCHE, "woche", "🔄"],
+];
+const CHECKLISTE_REISE_PHASEN = ["vorbereitung", "guatemala", "mexiko", "costarica", "peru"];
+/* Wird von "In Things öffnen" NICHT mehr benutzt – nur noch von
+   checklisteReiseKnopf. "## "-Zwischentitel passen nicht in eine flache
+   Things-Checkliste und werden übersprungen. */
+const alsChecklistItems = (punkte, schluessel) => {
+  const checkStand = hole("haken:" + schluessel, {});
+  return sichtbarePunkte(punkte, schluessel)
+    .filter((p) => !String(p).startsWith("## ") && !String(p).startsWith("%%"))
+    .map((p) => ({ type: "checklist-item", attributes: {
+      title: rein(ohneSprung(String(p)).replace(/<br>/g, " – ")).trim(),
+      completed: !!checkStand[p],
+    } }));
+};
+/* Reihenfolge der Reise: Vorbereitung, dann die Länder/Etappen, dann
+   Rückkehr; laufende Punkte ohne festes Land ganz am Schluss. */
+const THINGS_PHASEN = [
+  ["vorbereitung", "Reiseplan"],
+  ["guatemala", "Guatemala"],
+  ["mexiko", "Mexiko"],
+  ["costarica", "Costa Rica"],
+  ["peru", "Peru"],
+  ["rueckkehr", "Rückkehr & Laufendes"],
+  ["laufend", "Laufende Checklisten"],
+];
+
+/* Vorlagen-Version der Checkliste: immer unangehakt (unabhängig vom
+   aktuellen Haken-Stand in der App) – gedacht als dauerhafte Vorlage zum
+   Duplizieren, nicht als Arbeitskopie für eine bestimmte Etappe. */
+const alsVorlageItems = (punkte, schluessel) => sichtbarePunkte(punkte, schluessel)
+  .filter((p) => !String(p).startsWith("## ") && !String(p).startsWith("%%"))
+  .map((p) => ({ type: "checklist-item", attributes: {
+    title: rein(ohneSprung(String(p)).replace(/<br>/g, " – ")).trim(),
+    completed: false,
+  } }));
+
+/* Eigener Button für die Checkliste Reise (Vor dem Abflugtag, Weiterreise,
+   Jede Woche): sitzt auf dem Tab "Checkliste" (nicht "To-dos"), weil er
+   genau die dortigen Listen exportiert. Jede Routine wird zu EINEM
+   kompakten To-do mit eingebauter Things-Checkliste unter der Überschrift
+   "✅ Checkliste Reise" – NICHT als viele einzelne, dauerhaft sichtbare
+   To-dos (das wirkt in Things schnell überladen). Erzeugt die To-dos
+   direkt in den BESTEHENDEN Projekten (per "list"/"heading"-Attribut,
+   statt als neues "project"-Objekt) – dadurch entsteht kein zweites
+   "Guatemala"-Projekt. Gedacht zum gelegentlichen, bewussten Antippen
+   (z.B. für eine neue Runde vor der nächsten Etappe), nicht für jeden
+   normalen Sync – jedes Antippen legt die Checklisten-To-dos frisch an,
+   Things kann sie nicht automatisch mit vorherigen zusammenführen.
+   Zusätzlich wird "Vor dem Abflugtag" und "Weiterreise" als dauerhafte
+   VORLAGE in einem eigenen Projekt direkt im Bereich "Backpacking 2026"
+   angelegt (je EIN To-do mit eingebauter Checkliste, unangehakt) – falls
+   die Arbeitskopie in einem Land-Projekt einmal ganz abgehakt und
+   archiviert wird, bleibt hier trotzdem eine frische Vorlage zum
+   Duplizieren stehen. */
+const checklisteReiseKnopf = () => el("button", { class: "todoaktion teilenknopf",
+  "aria-label": "Checkliste (Vor dem Abflugtag, Weiterreise, Jede Woche) in Things 3 öffnen",
+  onclick: () => {
+    const items = [];
+    CHECKLISTE_REISE_PHASEN.forEach((schluessel) => {
+      const eintrag = THINGS_PHASEN.find(([k]) => k === schluessel);
+      if (!eintrag) return;
+      const projektTitel = eintrag[1];
+      const eintraege = schluessel === "vorbereitung"
+        ? CHECKLISTE_REISE : CHECKLISTE_REISE.filter(([titel]) => titel !== "Jede Woche");
+      eintraege.forEach(([titel, punkte, ck, icon]) => {
+        items.push({
+          type: "to-do",
+          attributes: {
+            title: icon + " " + titel,
+            list: projektTitel,
+            heading: "✅ Checkliste Reise",
+            "checklist-items": alsChecklistItems(punkte, ck),
+          },
+        });
+      });
+    });
+
+    items.push({
+      type: "project",
+      attributes: {
+        title: "🗂️ Checklisten-Vorlagen",
+        area: THINGS_AREA,
+        notes: "Vorlagen zum Duplizieren für die nächste Etappe (Halten/Rechtsklick → Duplizieren) – nicht selbst abhaken.",
+        items: CHECKLISTE_REISE.filter(([titel]) => titel !== "Jede Woche").map(([titel, punkte, ck, icon]) => ({
+          type: "to-do",
+          attributes: { title: icon + " " + titel, "checklist-items": alsVorlageItems(punkte, ck) },
+        })),
+      },
+    });
+
+    const url = "things:///json?data=" + encodeURIComponent(JSON.stringify(items));
+    window.location.href = url;
+  } }, svg("check", 15, "#8B8175", 2), el("span", {}, "In Things öffnen"));
+
 const todoTabelle = () => {
   /* Eine Zeile je Aufgabe: Haken, Tätigkeit, Lead, Datum.
      Gruppiert nach diese Woche, nächste Woche, später – sonst sind es zu viele. */
@@ -5175,53 +5379,13 @@ const todoTabelle = () => {
      gehört zu Costa Rica, auch wenn die Buchung noch während Mexiko
      passiert. Kein laufender Abgleich – muss nach Änderungen erneut
      angestossen werden. */
-  const THINGS_AREA = "🌍 Backpacking 2026";
+  /* THINGS_AREA, CHECKLISTE_REISE(_PHASEN), alsChecklistItems und
+     THINGS_PHASEN sind auf Modulebene definiert (weiter oben) – gemeinsam
+     mit checklisteReiseKnopf, der jetzt auf dem Tab "Checkliste" sitzt. */
   /* "Angekommen" und "Tagsüber weg" fehlen hier bewusst: die stehen schon
      passend direkt bei den einzelnen Route-Stationen (z.B. bei der Ankunft
      in Antigua) und würden hier nur als weitere, generische Punkte
      duplizieren. */
-  /* "Rückkehr" bewusst nicht dabei – die Liste bleibt in der App sichtbar,
-     wird aber separat (ausserhalb von Things) geführt. Jede Routine wird zu
-     EINEM To-do mit eingebauter Things-Checkliste (statt vieler einzelner
-     To-dos) – so lässt sich das To-do für die nächste Verwendung einfach in
-     Things duplizieren. "Vor dem Abflugtag" und "Weiterreise" erscheinen
-     unter der Überschrift "Checkliste Reise" in Reiseplan UND in jedem
-     Land (CHECKLISTE_REISE_PHASEN) – griffbereit, wo sie gebraucht werden.
-     "Jede Woche" ist ortsunabhängig und bleibt darum nur einmal, in
-     Reiseplan. Läuft über einen EIGENEN Button (checklisteReiseKnopf) statt
-     über "In Things öffnen" – so kann Letzterer beliebig oft ohne Dubletten
-     getippt werden, während die Checkliste-Reise-To-dos gezielt nur bei
-     Bedarf neu angelegt werden. */
-  const CHECKLISTE_REISE = [
-    ["Vor dem Abflugtag", VOR_ABFLUG, "abflug", "🛫"],
-    ["Weiterreise", ORTSWECHSEL, "ortswechsel", "🚌"],
-    ["Jede Woche", WOCHE, "woche", "🔄"],
-  ];
-  const CHECKLISTE_REISE_PHASEN = ["vorbereitung", "guatemala", "mexiko", "costarica", "peru"];
-  /* Wird von "In Things öffnen" NICHT mehr benutzt (siehe checklisteReiseKnopf
-     weiter unten) – nur noch von diesem eigenen Button. "## "-Zwischentitel
-     passen nicht in eine flache Things-Checkliste und werden übersprungen. */
-  const alsChecklistItems = (punkte, schluessel) => {
-    const checkStand = hole("haken:" + schluessel, {});
-    const eigenePunkte = hole("eigene:" + schluessel, []);
-    return punkte.concat(eigenePunkte)
-      .filter((p) => !String(p).startsWith("## ") && !String(p).startsWith("%%"))
-      .map((p) => ({ type: "checklist-item", attributes: {
-        title: rein(ohneSprung(String(p)).replace(/<br>/g, " – ")).trim(),
-        completed: !!checkStand[p],
-      } }));
-  };
-  /* Reihenfolge der Reise: Vorbereitung, dann die Länder/Etappen, dann
-     Rückkehr; laufende Punkte ohne festes Land ganz am Schluss. */
-  const THINGS_PHASEN = [
-    ["vorbereitung", "Reiseplan"],
-    ["guatemala", "Guatemala"],
-    ["mexiko", "Mexiko"],
-    ["costarica", "Costa Rica"],
-    ["peru", "Peru"],
-    ["rueckkehr", "Rückkehr & Laufendes"],
-    ["laufend", "Laufende Checklisten"],
-  ];
   /* Feste inhaltliche Zuordnung für die To-dos, die eindeutig zu einer
      späteren Etappe gehören, aber vorher (oder ohne festes Datum)
      erledigt werden. Alles andere – die eigentliche Vorbereitung – fällt
@@ -5469,112 +5633,19 @@ const todoTabelle = () => {
         }));
 
       const url = "things:///json?data=" + encodeURIComponent(JSON.stringify(projekte));
-      console.log("Things-Export:", url);
       window.location.href = url;
     } }, svg("link", 15, "#8B8175", 2), thingsLabel);
 
-  /* "Vor dem Abflugtag" und "Weiterreise" werden hier wie Buchungen/
-     Formalitäten behandelt: eine ECHTE Things-Überschrift pro Routine, mit
-     jedem Punkt als eigenem, einzeln abhakbarem To-do darunter – statt
-     eines einzigen To-dos mit eingebauter Checkliste. "Jede Woche" bleibt
-     bewusst die Ausnahme: EIN To-do mit eingebauter Checkliste unter
-     "✅ Checkliste Reise" in Reiseplan, da sie später manuell auf
-     Wiederholung gestellt werden soll. */
-  const alsEinzelTodos = (punkte, schluessel, heading, projektTitel) => {
-    const checkStand = hole("haken:" + schluessel, {});
-    const eigenePunkte = hole("eigene:" + schluessel, []);
-    return punkte.concat(eigenePunkte)
-      .filter((p) => !String(p).startsWith("## ") && !String(p).startsWith("%%"))
-      .map((p) => ({
-        type: "to-do",
-        attributes: {
-          title: rein(ohneSprung(String(p)).replace(/<br>/g, " – ")).trim(),
-          list: projektTitel,
-          heading,
-          completed: !!checkStand[p],
-        },
-      }));
-  };
-
-  /* Vorlagen-Version der Checkliste: immer unangehakt (unabhängig vom
-     aktuellen Haken-Stand in der App) – gedacht als dauerhafte Vorlage zum
-     Duplizieren, nicht als Arbeitskopie für eine bestimmte Etappe. */
-  const alsVorlageItems = (punkte, schluessel) => {
-    const eigenePunkte = hole("eigene:" + schluessel, []);
-    return punkte.concat(eigenePunkte)
-      .filter((p) => !String(p).startsWith("## ") && !String(p).startsWith("%%"))
-      .map((p) => ({ type: "checklist-item", attributes: {
-        title: rein(ohneSprung(String(p)).replace(/<br>/g, " – ")).trim(),
-        completed: false,
-      } }));
-  };
-
-  /* Eigener Button für die Checkliste Reise (Vor dem Abflugtag, Weiterreise,
-     Jede Woche): erzeugt To-dos direkt in den BESTEHENDEN Projekten (per
-     "list"/"heading"-Attribut, statt als neues "project"-Objekt) – dadurch
-     entsteht kein zweites "Guatemala"-Projekt. Gedacht zum gelegentlichen,
-     bewussten Antippen (z.B. für eine neue Runde vor der nächsten Etappe),
-     nicht für jeden normalen Sync – jedes Antippen legt die Checklisten-
-     To-dos frisch an, Things kann sie nicht automatisch mit vorherigen
-     zusammenführen. Zusätzlich wird "Vor dem Abflugtag" und "Weiterreise"
-     als dauerhafte VORLAGE in einem eigenen Projekt direkt im Bereich
-     "Backpacking 2026" angelegt (je EIN To-do mit eingebauter Checkliste,
-     unangehakt) – die einzelnen To-dos in den Länder-Projekten verschwinden
-     ja aus der Liste, sobald sie abgehakt sind, diese Vorlage bleibt aber
-     immer stehen und lässt sich in Things jederzeit duplizieren. */
-  const checklisteReiseKnopf = el("button", { class: "todoaktion teilenknopf",
-    "aria-label": "Checkliste Reise (Vor dem Abflugtag, Weiterreise, Jede Woche) in Things anlegen",
-    onclick: () => {
-      const items = [];
-      CHECKLISTE_REISE_PHASEN.forEach((schluessel) => {
-        const eintrag = THINGS_PHASEN.find(([k]) => k === schluessel);
-        if (!eintrag) return;
-        const projektTitel = eintrag[1];
-        const eintraege = schluessel === "vorbereitung"
-          ? CHECKLISTE_REISE : CHECKLISTE_REISE.filter(([titel]) => titel !== "Jede Woche");
-        eintraege.forEach(([titel, punkte, ck, icon]) => {
-          if (titel === "Jede Woche") {
-            items.push({
-              type: "to-do",
-              attributes: {
-                title: icon + " " + titel,
-                list: projektTitel,
-                heading: "✅ Checkliste Reise",
-                "checklist-items": alsChecklistItems(punkte, ck),
-              },
-            });
-          } else {
-            items.push(...alsEinzelTodos(punkte, ck, icon + " " + titel, projektTitel));
-          }
-        });
-      });
-
-      items.push({
-        type: "project",
-        attributes: {
-          title: "🗂️ Checklisten-Vorlagen",
-          area: THINGS_AREA,
-          notes: "Vorlagen zum Duplizieren für die nächste Etappe (Halten/Rechtsklick → Duplizieren) – nicht selbst abhaken.",
-          items: CHECKLISTE_REISE.filter(([titel]) => titel !== "Jede Woche").map(([titel, punkte, ck, icon]) => ({
-            type: "to-do",
-            attributes: { title: icon + " " + titel, "checklist-items": alsVorlageItems(punkte, ck) },
-          })),
-        },
-      });
-
-      const url = "things:///json?data=" + encodeURIComponent(JSON.stringify(items));
-      console.log("Things-Export (Checkliste Reise):", url);
-      window.location.href = url;
-    } }, svg("check", 15, "#8B8175", 2), el("span", {}, "Checkliste Reise"));
-
+  /* checklisteReiseKnopf (Vor dem Abflugtag/Weiterreise/Jede Woche) sitzt
+     jetzt auf dem Tab "Checkliste" statt hier bei den To-dos – er exportiert
+     ja genau dessen Listen, nicht die normalen To-dos. Siehe seiteHeute(). */
   const neu = el("button", { class: "todoaktion todoaktion-primaer",
     onclick: () => { todoFormOffen = true; zeichnen(); },
   }, svg("plus", 15, "#fff", 2.4), el("span", {}, "Neues To-do"));
 
   const kopfkarte = el("div", { class: "todokopfkarte" },
     el("div", { class: "todokopfzeile todokopfzeile-oben" }, neu),
-    el("div", { class: "todokopfzeile" }, teilen, thingsKnopf),
-    el("div", { class: "todokopfzeile" }, checklisteReiseKnopf));
+    el("div", { class: "todokopfzeile" }, teilen, thingsKnopf));
 
   /* Zwei Ansichten: nach Datum (wie bisher) oder nach Kategorie – dort
      alle fünf Themen als eigene Abschnitte untereinander, nicht als Pillen
@@ -6071,8 +6142,7 @@ const seiteHeute = () => {
   /* Ist die Vorbereitung erledigt, rutscht sie ans Ende – weg ist sie nie. */
   const erledigt = (schluessel, punkte) => {
     const stand = hole("haken:" + schluessel, {});
-    const alle = punkte.concat(hole("eigene:" + schluessel, []));
-    return alle.every((p) => stand[p]);
+    return sichtbarePunkte(punkte, schluessel).every((p) => stand[p]);
   };
   const vorbereitungFertig = erledigt("abflug", VOR_ABFLUG);
 
@@ -6099,6 +6169,7 @@ const seiteHeute = () => {
        die erscheinen schon direkt bei der jeweiligen Route-Station (z.B.
        bei der Ankunft in Antigua), eine zusätzliche generische Karte hier
        wäre nur eine Dopplung. */
+    wrap.appendChild(el("div", { class: "todokopfzeile abstandunten" }, checklisteReiseKnopf()));
     gruppe("Immer wieder", [
       faltHakenliste("Vor dem Abflugtag", VOR_ABFLUG, "abflug", true),
       faltHakenliste("Weiterreise", ORTSWECHSEL, "ortswechsel", true),
@@ -6147,7 +6218,7 @@ const seiteHeute = () => {
       PACKLISTE.forEach(([titel, punkte]) => {
         zeilen.push((PACKLISTE_ICON[titel] || "▪️") + "  " + titel.toUpperCase());
         zeilen.push(NOTIZ_LINIE);
-        punkte.forEach((p) => zeilen.push(alsNotizZeile(p)));
+        sichtbarePunkte(punkte, "pack:" + titel).forEach((p) => zeilen.push(alsNotizZeile(p)));
         zeilen.push("");
       });
       return zeilen.join("\n").trim() + "\n";
@@ -6158,9 +6229,9 @@ const seiteHeute = () => {
         zeilen.push((PACKORDNUNG_GRUPPEN_ICON[gk] || "▪️") + "  " + gtitel.toUpperCase());
         zeilen.push(NOTIZ_LINIE);
         zeilen.push("");
-        eintraege.forEach(([titel, punkte]) => {
+        eintraege.forEach(([titel, punkte, k]) => {
           zeilen.push(titel);
-          punkte.forEach((p) => {
+          sichtbarePunkte(punkte, k).forEach((p) => {
             if (String(p).startsWith("## ")) { zeilen.push(""); zeilen.push(rein(p.slice(3)).trim() + ":"); }
             else zeilen.push(alsNotizZeile(p));
           });
@@ -6212,7 +6283,7 @@ const seiteHeute = () => {
         let total = 0, offen = 0;
         eintraege.forEach(([, p, k]) => {
           const stand = hole("haken:" + k, {});
-          const alle = p.concat(hole("eigene:" + k, []))
+          const alle = sichtbarePunkte(p, k)
             .filter((x) => !String(x).startsWith("## ") && !String(x).startsWith("%%"));
           total += alle.length;
           offen += alle.filter((x) => !stand[x]).length;
@@ -6536,6 +6607,7 @@ const seiteNotfall = () => {
   const zeichne = () => {
     inhalt.innerHTML = "";
     if (tab === "nummern") {
+      inhalt.appendChild(standortBlock());
       /* Notrufe je Land – umschaltbar, weil 911 nur in Costa Rica gilt. */
       const land = hole("notrufland", "guatemala");
       const waehler = el("div", { class: "reiter" });
