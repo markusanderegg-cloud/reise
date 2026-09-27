@@ -5181,12 +5181,36 @@ const todoTabelle = () => {
      in Antigua) und würden hier nur als weitere, generische Punkte
      duplizieren. */
   /* "Rückkehr" bewusst nicht dabei – die Liste bleibt in der App sichtbar,
-     wird aber separat (ausserhalb von Things) geführt. */
-  const CHECKLISTEN_FUER_THINGS = [
-    ["Vor dem Abflugtag", VOR_ABFLUG, "abflug"],
-    ["Weiterreise", ORTSWECHSEL, "ortswechsel"],
-    ["Jede Woche", WOCHE, "woche"],
+     wird aber separat (ausserhalb von Things) geführt. Jede Routine wird zu
+     EINEM To-do mit eingebauter Things-Checkliste (statt vieler einzelner
+     To-dos) – so lässt sich das To-do für die nächste Verwendung einfach in
+     Things duplizieren. "Vor dem Abflugtag" und "Weiterreise" erscheinen
+     unter der Überschrift "Checkliste Reise" in Reiseplan UND in jedem
+     Land (CHECKLISTE_REISE_PHASEN) – griffbereit, wo sie gebraucht werden.
+     "Jede Woche" ist ortsunabhängig und bleibt darum nur einmal, in
+     Reiseplan. Läuft über einen EIGENEN Button (checklisteReiseKnopf) statt
+     über "In Things öffnen" – so kann Letzterer beliebig oft ohne Dubletten
+     getippt werden, während die Checkliste-Reise-To-dos gezielt nur bei
+     Bedarf neu angelegt werden. */
+  const CHECKLISTE_REISE = [
+    ["Vor dem Abflugtag", VOR_ABFLUG, "abflug", "🛫"],
+    ["Weiterreise", ORTSWECHSEL, "ortswechsel", "🚌"],
+    ["Jede Woche", WOCHE, "woche", "🔄"],
   ];
+  const CHECKLISTE_REISE_PHASEN = ["vorbereitung", "guatemala", "mexiko", "costarica", "peru"];
+  /* Wird von "In Things öffnen" NICHT mehr benutzt (siehe checklisteReiseKnopf
+     weiter unten) – nur noch von diesem eigenen Button. "## "-Zwischentitel
+     passen nicht in eine flache Things-Checkliste und werden übersprungen. */
+  const alsChecklistItems = (punkte, schluessel) => {
+    const checkStand = hole("haken:" + schluessel, {});
+    const eigenePunkte = hole("eigene:" + schluessel, []);
+    return punkte.concat(eigenePunkte)
+      .filter((p) => !String(p).startsWith("## ") && !String(p).startsWith("%%"))
+      .map((p) => ({ type: "checklist-item", attributes: {
+        title: rein(ohneSprung(String(p)).replace(/<br>/g, " – ")).trim(),
+        completed: !!checkStand[p],
+      } }));
+  };
   /* Reihenfolge der Reise: Vorbereitung, dann die Länder/Etappen, dann
      Rückkehr; laufende Punkte ohne festes Land ganz am Schluss. */
   const THINGS_PHASEN = [
@@ -5421,9 +5445,17 @@ const todoTabelle = () => {
 
       /* Die Länder-Projekte immer anlegen – auch Mexiko, auch wenn dort
          gerade nichts offen ist – damit die Reihenfolge der Reise
-         (Guatemala, Mexiko, Costa Rica, Peru) sichtbar bleibt.
-         Vorbereitung nur, wenn etwas offen ist. "Rückkehr" und "Laufend"
-         werden bewusst nicht in Things abgebildet – bleiben nur in der App. */
+         (Guatemala, Mexiko, Costa Rica, Peru) sichtbar bleibt. Vorbereitung
+         nur, wenn etwas offen ist. "Rückkehr" und "Laufend" werden bewusst
+         nicht in Things abgebildet – bleiben nur in der App. Packordnung
+         und Ausrüstung (die Packliste) werden ebenfalls bewusst nicht mehr
+         nach Things exportiert – die sind als Nachschlage-Listen in
+         Notizen besser aufgehoben (Buttons dafür im Packen-Tab) und hätten
+         in Things nur einen zweiten, unabhängigen Häkchen-Stand neben dem
+         der App erzeugt. Die Checkliste Reise (Vor dem Abflugtag,
+         Weiterreise, Jede Woche) läuft NICHT über diesen Button – dafür
+         gibt es den eigenen "Checkliste Reise"-Knopf daneben, damit dieser
+         Knopf hier beliebig oft ohne Dubletten getippt werden kann. */
       const projekte = THINGS_PHASEN
         .filter(([schluessel]) => schluessel !== "rueckkehr" && schluessel !== "laufend" &&
           (nachPhase[schluessel].length > 0 || LAENDER_PHASEN.includes(schluessel)))
@@ -5436,115 +5468,45 @@ const todoTabelle = () => {
           },
         }));
 
-      /* Drei weitere, eigenständige Projekte neben den Reisephasen – genau
-         die Gliederung der App: Checklisten (die wiederkehrenden Routinen),
-         Packordnung (Flugzeug/Bus/Tagestour, aus derselben Quelle wie die
-         Packen-Ansicht) und Ausrüstung (die eigentliche Packliste, nach
-         Themen). Jeder Artikel/Punkt ist ein eigenes To-do (nicht in einer
-         Checkliste versteckt), ihr Haken-Stand aus der App wird jeweils
-         übernommen. Ein Zusatz – "Punkt<i>Hinweis</i>" oder "Punkt ~ Ort" –
-         landet nicht mehr im (sonst abgeschnittenen) Titel, sondern in den
-         Things-Notizen: Titel "Punkt", Notiz "Hinweis"/"Ort". */
-      const alsChecklistEintrag = (roh) => {
-        const text = ohneSprung(String(roh)).replace(/<br>/g, " – ");
-        const iTreffer = text.match(/^(.*?)<i>(.*?)<\/i>$/);
-        if (iTreffer) return { title: rein(iTreffer[1]).trim(), notiz: rein(iTreffer[2]).trim() };
-        const tildeTreffer = text.match(/^(.*?)\s~\s(.*)$/);
-        if (tildeTreffer) return { title: rein(tildeTreffer[1]).trim(), notiz: rein(tildeTreffer[2]).trim() };
-        return { title: rein(text).trim(), notiz: null };
-      };
-
-      const ROUTINE_UEBERSCHRIFT = {
-        "Vor dem Abflugtag": "🛫 Vor dem Abflugtag",
-        "Weiterreise": "🚌 Am Tag der Weiterreise",
-        "Jede Woche": "🔄 Jede Woche",
-      };
-      const checklistenItems = [];
-      CHECKLISTEN_FUER_THINGS.forEach(([titel, punkte, schluessel]) => {
-        checklistenItems.push({ type: "heading",
-          attributes: { title: ROUTINE_UEBERSCHRIFT[titel] || titel } });
-        const checkStand = hole("haken:" + schluessel, {});
-        const eigenePunkte = hole("eigene:" + schluessel, []);
-        punkte.concat(eigenePunkte)
-          .filter((p) => !String(p).startsWith("## ") && !String(p).startsWith("%%"))
-          .forEach((p) => {
-            const { title, notiz } = alsChecklistEintrag(p);
-            checklistenItems.push({ type: "to-do", attributes: {
-              title, notes: notiz || undefined, completed: !!checkStand[p],
-            } });
-          });
-      });
-      const checklistenProjekt = {
-        type: "project",
-        attributes: { title: "Checklisten", area: THINGS_AREA, items: checklistenItems },
-      };
-
-      const PACKORDNUNG_UEBERSCHRIFT = {
-        packflugzeug: "✈️ Flugzeug",
-        packbus: "🚌 Bus",
-        packtagestour: "🎒 Tagestour",
-      };
-      const packordnungItems = [];
-      PACKORDNUNG_GRUPPEN.forEach(([gk, , eintraege]) => {
-        packordnungItems.push({ type: "heading",
-          attributes: { title: PACKORDNUNG_UEBERSCHRIFT[gk] || gk } });
-        eintraege.forEach(([titel, punkte, schluessel]) => {
-          const checkStand = hole("haken:" + schluessel, {});
-          const eigenePunkte = hole("eigene:" + schluessel, []);
-          punkte.concat(eigenePunkte)
-            .filter((p) => !String(p).startsWith("## ") && !String(p).startsWith("%%"))
-            .forEach((p) => {
-              const { title, notiz } = alsChecklistEintrag(p);
-              packordnungItems.push({ type: "to-do", attributes: {
-                title, notes: notiz || undefined, completed: !!checkStand[p],
-              } });
-            });
-        });
-      });
-      const packordnungProjekt = {
-        type: "project",
-        attributes: { title: "Packordnung", area: THINGS_AREA, items: packordnungItems },
-      };
-
-      const PACK_UEBERSCHRIFTEN = [
-        ["Rucksack", "🎒 Rucksack & Organisation"],
-        ["Packorganisation", "🎒 Rucksack & Organisation"],
-        ["Sicherheit & Schloss", "🔒 Sicherheit & Schloss"],
-        ["Kleidung", "👕 Kleidung & Schuhe"],
-        ["Schuhe", "👕 Kleidung & Schuhe"],
-        ["Kulturbeutel", "🧼 Kulturbeutel"],
-        ["Brille und Linsen", "👓 Brille & Linsen"],
-        ["Reiseapotheke", "💊 Reiseapotheke"],
-        ["Schlafen", "😴 Schlafen & Nachtruhe"],
-        ["Elektronik", "🔌 Elektronik"],
-        ["Wertsachen-Box", "📄 Dokumente & Wertsachen"],
-      ];
-      const ausruestungItems = [];
-      const gesehen = new Set();
-      PACK_UEBERSCHRIFTEN.forEach(([bereich, ueberschrift]) => {
-        const eintrag = PACKLISTE.find(([t]) => t === bereich);
-        if (!eintrag) return;
-        if (!gesehen.has(ueberschrift)) {
-          ausruestungItems.push({ type: "heading", attributes: { title: ueberschrift } });
-          gesehen.add(ueberschrift);
-        }
-        const checkStand = hole("haken:pack:" + bereich, {});
-        eintrag[1].forEach((p) => {
-          const { title, notiz } = alsChecklistEintrag(p);
-          ausruestungItems.push({ type: "to-do",
-            attributes: { title, notes: notiz || undefined, completed: !!checkStand[p] } });
-        });
-      });
-      const ausruestungProjekt = {
-        type: "project",
-        attributes: { title: "Ausrüstung", area: THINGS_AREA, items: ausruestungItems },
-      };
-
-      const url = "things:///json?data=" + encodeURIComponent(JSON.stringify(
-        projekte.concat([checklistenProjekt, packordnungProjekt, ausruestungProjekt])));
+      const url = "things:///json?data=" + encodeURIComponent(JSON.stringify(projekte));
       console.log("Things-Export:", url);
       window.location.href = url;
     } }, svg("link", 15, "#8B8175", 2), thingsLabel);
+
+  /* Eigener Button für die Checkliste Reise (Vor dem Abflugtag, Weiterreise,
+     Jede Woche): erzeugt To-dos direkt in den BESTEHENDEN Projekten (per
+     "list"/"heading"-Attribut, statt als neues "project"-Objekt) – dadurch
+     entsteht kein zweites "Guatemala"-Projekt. Gedacht zum gelegentlichen,
+     bewussten Antippen (z.B. für eine neue Runde vor der nächsten Etappe),
+     nicht für jeden normalen Sync – jedes Antippen legt die Checklisten-
+     To-dos frisch an, Things kann sie nicht automatisch mit vorherigen
+     zusammenführen. */
+  const checklisteReiseKnopf = el("button", { class: "todoaktion teilenknopf",
+    "aria-label": "Checkliste Reise (Vor dem Abflugtag, Weiterreise, Jede Woche) in Things anlegen",
+    onclick: () => {
+      const items = [];
+      CHECKLISTE_REISE_PHASEN.forEach((schluessel) => {
+        const eintrag = THINGS_PHASEN.find(([k]) => k === schluessel);
+        if (!eintrag) return;
+        const projektTitel = eintrag[1];
+        const eintraege = schluessel === "vorbereitung"
+          ? CHECKLISTE_REISE : CHECKLISTE_REISE.filter(([titel]) => titel !== "Jede Woche");
+        eintraege.forEach(([titel, punkte, ck, icon]) => {
+          items.push({
+            type: "to-do",
+            attributes: {
+              title: icon + " " + titel,
+              list: projektTitel,
+              heading: "✅ Checkliste Reise",
+              "checklist-items": alsChecklistItems(punkte, ck),
+            },
+          });
+        });
+      });
+      const url = "things:///json?data=" + encodeURIComponent(JSON.stringify(items));
+      console.log("Things-Export (Checkliste Reise):", url);
+      window.location.href = url;
+    } }, svg("check", 15, "#8B8175", 2), el("span", {}, "Checkliste Reise"));
 
   const neu = el("button", { class: "todoaktion todoaktion-primaer",
     onclick: () => { todoFormOffen = true; zeichnen(); },
@@ -5552,7 +5514,8 @@ const todoTabelle = () => {
 
   const kopfkarte = el("div", { class: "todokopfkarte" },
     el("div", { class: "todokopfzeile todokopfzeile-oben" }, neu),
-    el("div", { class: "todokopfzeile" }, teilen, thingsKnopf));
+    el("div", { class: "todokopfzeile" }, teilen, thingsKnopf),
+    el("div", { class: "todokopfzeile" }, checklisteReiseKnopf));
 
   /* Zwei Ansichten: nach Datum (wie bisher) oder nach Kategorie – dort
      alle fünf Themen als eigene Abschnitte untereinander, nicht als Pillen
@@ -6096,6 +6059,69 @@ const seiteHeute = () => {
     const ORDNUNG = PACKORDNUNG_GRUPPEN.flatMap(([, , eintraege]) => eintraege);
     const ausruestung = PACKLISTE.map(([t, p]) => [t, p, "pack:" + t]);
 
+    /* Für "In Notizen kopieren": derselbe Zusatz-Split wie beim Things-
+       Export ("Punkt<i>Hinweis</i>" / "Punkt ~ Ort" / "Punkt<br><span>…"
+       wird zu "Punkt – Hinweis"), aber ohne Checkbox-Präfix – Notizen
+       erkennt die Liste selbst als Checkliste, wenn man sie markiert und
+       über das Häkchen-Symbol umwandelt. Eine lange Unterstrichzeile dient
+       als durchgehende Trennlinie unter jeder Überschrift. */
+    const NOTIZ_LINIE = "_".repeat(28);
+    const alsNotizZeile = (roh) => {
+      const text = String(roh);
+      const brM = text.match(/^(.*?)<br>\s*<span[^>]*>(.*?)<\/span>$/);
+      if (brM) return rein(brM[1]).trim() + " – " + rein(brM[2]).trim();
+      const iM = text.match(/^(.*?)<i>(.*?)<\/i>$/);
+      if (iM) return rein(iM[1]).trim() + " – " + rein(iM[2]).trim();
+      const tM = text.match(/^(.*?)\s~\s(.*)$/);
+      if (tM) return rein(tM[1]).trim() + " – " + rein(tM[2]).trim();
+      return rein(text).trim();
+    };
+    const PACKLISTE_ICON = {
+      "Rucksack": "🎒", "Packorganisation": "🧳", "Sicherheit & Schloss": "🔒",
+      "Kleidung": "👕", "Schuhe": "👟", "Kulturbeutel": "🧼", "Brille und Linsen": "👓",
+      "Reiseapotheke": "💊", "Schlafen": "😴", "Elektronik": "🔌", "Wertsachen-Box": "📄",
+    };
+    const PACKORDNUNG_GRUPPEN_ICON = { packflugzeug: "✈️", packbus: "🚌", packtagestour: "🎒" };
+
+    const alsNotizPackliste = () => {
+      const zeilen = ["PACKLISTE", "Sophie · Backpacking Zentralamerika 2026", NOTIZ_LINIE, ""];
+      PACKLISTE.forEach(([titel, punkte]) => {
+        zeilen.push((PACKLISTE_ICON[titel] || "▪️") + "  " + titel.toUpperCase());
+        zeilen.push(NOTIZ_LINIE);
+        punkte.forEach((p) => zeilen.push(alsNotizZeile(p)));
+        zeilen.push("");
+      });
+      return zeilen.join("\n").trim() + "\n";
+    };
+    const alsNotizPackordnung = () => {
+      const zeilen = ["PACKORDNUNG", "Sophie · Backpacking Zentralamerika 2026", NOTIZ_LINIE, ""];
+      PACKORDNUNG_GRUPPEN.forEach(([gk, gtitel, eintraege]) => {
+        zeilen.push((PACKORDNUNG_GRUPPEN_ICON[gk] || "▪️") + "  " + gtitel.toUpperCase());
+        zeilen.push(NOTIZ_LINIE);
+        zeilen.push("");
+        eintraege.forEach(([titel, punkte]) => {
+          zeilen.push(titel);
+          punkte.forEach((p) => {
+            if (String(p).startsWith("## ")) { zeilen.push(""); zeilen.push(rein(p.slice(3)).trim() + ":"); }
+            else zeilen.push(alsNotizZeile(p));
+          });
+          zeilen.push("");
+        });
+      });
+      return zeilen.join("\n").replace(/\n{3,}/g, "\n\n").trim() + "\n";
+    };
+    const notizKnopf = (label, textFn) => {
+      const knopf = el("button", { class: "todoaktion teilenknopf", onclick: () => {
+        const fertig = () => { knopf.lastChild.textContent = "kopiert";
+          setTimeout(() => { knopf.lastChild.textContent = label; }, 1600); };
+        const text = textFn();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(fertig, () => altKopie(text, fertig));
+        } else altKopie(text, fertig);
+      } }, svg("notiz", 15, "#8B8175", 2), el("span", {}, label));
+      return knopf;
+    };
+
     /* Ein Sprung von anderswo (offeneListe) zielt auf einen einzelnen
        Punkt – der zeigt sich allein, wie bisher. Eine eigene Auswahl
        (packenAuswahl) zeigt dagegen eine ganze Packordnung-Gruppe mit
@@ -6143,6 +6169,14 @@ const seiteHeute = () => {
             el("div", { class: "blocktitel" }, titel),
             el("div", { class: "klein" }, zaehltext(eintraege))),
           el("span", { class: "faltpfeil pfeilrechts" }, svg("chevron", 15, "#B65A3C", 2.2))));
+
+      /* Für Notizen: die ganze Packliste bzw. Packordnung mit Überschriften
+         auf einen Schlag in die Zwischenablage – dort einfügen, Abschnitt
+         markieren und über das Häkchen-Symbol zur echten Checkliste machen. */
+      wrap.appendChild(el("div", { class: "todokopfzeile abstandunten" },
+        notizKnopf("Packliste kopieren", alsNotizPackliste),
+        notizKnopf("Packordnung kopieren", alsNotizPackordnung)));
+
       wrap.appendChild(el("div", { class: "blockband" },
         PACKORDNUNG_GRUPPEN.map(([gk, titel, eintraege]) => gruppenZeile(gk, titel, eintraege))));
 
