@@ -5285,7 +5285,7 @@ const todoTabelle = () => {
     ["buchungen", "✈️ Buchungen & Transport"],
     ["formalitaeten", "📋 Formalitäten & Finanzen"],
     ["gesundheit", "🩺 Gesundheit"],
-    ["aktivitaeten", "🗺️ Aktivitäten & To-dos vor Ort"],
+    ["aktivitaeten", "📍 Aktivitäten & To-dos vor Ort"],
     ["dossiers", "📖 Dossiers"],
     ["checkliste", "✅ Checklisten"],
     /* Nur noch als Sicherheitsnetz für ältere/eigene Zuordnungen. */
@@ -5473,6 +5473,42 @@ const todoTabelle = () => {
       window.location.href = url;
     } }, svg("link", 15, "#8B8175", 2), thingsLabel);
 
+  /* "Vor dem Abflugtag" und "Weiterreise" werden hier wie Buchungen/
+     Formalitäten behandelt: eine ECHTE Things-Überschrift pro Routine, mit
+     jedem Punkt als eigenem, einzeln abhakbarem To-do darunter – statt
+     eines einzigen To-dos mit eingebauter Checkliste. "Jede Woche" bleibt
+     bewusst die Ausnahme: EIN To-do mit eingebauter Checkliste unter
+     "✅ Checkliste Reise" in Reiseplan, da sie später manuell auf
+     Wiederholung gestellt werden soll. */
+  const alsEinzelTodos = (punkte, schluessel, heading, projektTitel) => {
+    const checkStand = hole("haken:" + schluessel, {});
+    const eigenePunkte = hole("eigene:" + schluessel, []);
+    return punkte.concat(eigenePunkte)
+      .filter((p) => !String(p).startsWith("## ") && !String(p).startsWith("%%"))
+      .map((p) => ({
+        type: "to-do",
+        attributes: {
+          title: rein(ohneSprung(String(p)).replace(/<br>/g, " – ")).trim(),
+          list: projektTitel,
+          heading,
+          completed: !!checkStand[p],
+        },
+      }));
+  };
+
+  /* Vorlagen-Version der Checkliste: immer unangehakt (unabhängig vom
+     aktuellen Haken-Stand in der App) – gedacht als dauerhafte Vorlage zum
+     Duplizieren, nicht als Arbeitskopie für eine bestimmte Etappe. */
+  const alsVorlageItems = (punkte, schluessel) => {
+    const eigenePunkte = hole("eigene:" + schluessel, []);
+    return punkte.concat(eigenePunkte)
+      .filter((p) => !String(p).startsWith("## ") && !String(p).startsWith("%%"))
+      .map((p) => ({ type: "checklist-item", attributes: {
+        title: rein(ohneSprung(String(p)).replace(/<br>/g, " – ")).trim(),
+        completed: false,
+      } }));
+  };
+
   /* Eigener Button für die Checkliste Reise (Vor dem Abflugtag, Weiterreise,
      Jede Woche): erzeugt To-dos direkt in den BESTEHENDEN Projekten (per
      "list"/"heading"-Attribut, statt als neues "project"-Objekt) – dadurch
@@ -5480,7 +5516,12 @@ const todoTabelle = () => {
      bewussten Antippen (z.B. für eine neue Runde vor der nächsten Etappe),
      nicht für jeden normalen Sync – jedes Antippen legt die Checklisten-
      To-dos frisch an, Things kann sie nicht automatisch mit vorherigen
-     zusammenführen. */
+     zusammenführen. Zusätzlich wird "Vor dem Abflugtag" und "Weiterreise"
+     als dauerhafte VORLAGE in einem eigenen Projekt direkt im Bereich
+     "Backpacking 2026" angelegt (je EIN To-do mit eingebauter Checkliste,
+     unangehakt) – die einzelnen To-dos in den Länder-Projekten verschwinden
+     ja aus der Liste, sobald sie abgehakt sind, diese Vorlage bleibt aber
+     immer stehen und lässt sich in Things jederzeit duplizieren. */
   const checklisteReiseKnopf = el("button", { class: "todoaktion teilenknopf",
     "aria-label": "Checkliste Reise (Vor dem Abflugtag, Weiterreise, Jede Woche) in Things anlegen",
     onclick: () => {
@@ -5492,17 +5533,35 @@ const todoTabelle = () => {
         const eintraege = schluessel === "vorbereitung"
           ? CHECKLISTE_REISE : CHECKLISTE_REISE.filter(([titel]) => titel !== "Jede Woche");
         eintraege.forEach(([titel, punkte, ck, icon]) => {
-          items.push({
-            type: "to-do",
-            attributes: {
-              title: icon + " " + titel,
-              list: projektTitel,
-              heading: "✅ Checkliste Reise",
-              "checklist-items": alsChecklistItems(punkte, ck),
-            },
-          });
+          if (titel === "Jede Woche") {
+            items.push({
+              type: "to-do",
+              attributes: {
+                title: icon + " " + titel,
+                list: projektTitel,
+                heading: "✅ Checkliste Reise",
+                "checklist-items": alsChecklistItems(punkte, ck),
+              },
+            });
+          } else {
+            items.push(...alsEinzelTodos(punkte, ck, icon + " " + titel, projektTitel));
+          }
         });
       });
+
+      items.push({
+        type: "project",
+        attributes: {
+          title: "🗂️ Checklisten-Vorlagen",
+          area: THINGS_AREA,
+          notes: "Vorlagen zum Duplizieren für die nächste Etappe (Halten/Rechtsklick → Duplizieren) – nicht selbst abhaken.",
+          items: CHECKLISTE_REISE.filter(([titel]) => titel !== "Jede Woche").map(([titel, punkte, ck, icon]) => ({
+            type: "to-do",
+            attributes: { title: icon + " " + titel, "checklist-items": alsVorlageItems(punkte, ck) },
+          })),
+        },
+      });
+
       const url = "things:///json?data=" + encodeURIComponent(JSON.stringify(items));
       console.log("Things-Export (Checkliste Reise):", url);
       window.location.href = url;
@@ -6134,7 +6193,7 @@ const seiteHeute = () => {
     if (einzelTreffer) {
       const eigeneGruppe = PACKORDNUNG_GRUPPEN.find(([, , eintraege]) =>
         eintraege.some(([, , k]) => k === einzelTreffer[2]));
-      gruppe(eigeneGruppe ? eigeneGruppe[1] : "Ausrüstung", [
+      gruppe(eigeneGruppe ? eigeneGruppe[1] : "Packliste", [
         faltHakenliste(einzelTreffer[0], einzelTreffer[1], einzelTreffer[2], true, 0, true),
       ]);
     } else if (gruppenTreffer) {
@@ -6142,7 +6201,7 @@ const seiteHeute = () => {
       wrap.appendChild(el("button", { class: "zurueckzeile",
         onclick: () => { packenAuswahl = null; zeichnen(); } },
         el("span", { class: "zurueckpfeil" }, svg("chevron", 16, "#B65A3C", 2)),
-        el("span", {}, "Packliste")));
+        el("span", {}, "Übersicht")));
       gruppe(titel, eintraege.map(([t, p, k]) => faltHakenliste(t, p, k, true, 0, true)));
     } else {
       /* Übersicht: eine Zeile pro Packordnung-Gruppe (Zähler über alle
@@ -6177,12 +6236,16 @@ const seiteHeute = () => {
         notizKnopf("Packliste kopieren", alsNotizPackliste),
         notizKnopf("Packordnung kopieren", alsNotizPackordnung)));
 
+      /* Klar benannt, damit nicht beide Abschnitte wie "Packliste" wirken:
+         "Packordnung" = wann/wo etwas verstaut wird (Flugzeug/Bus/Tages-
+         tour), "Packliste" = was überhaupt eingepackt wird (Ausrüstung). */
+      const packordnungTitel = el("div", { class: "gruppentitel abstandoben klein3" }, "Packordnung");
+      packordnungTitel.id = "gr-packordnung";
+      wrap.appendChild(packordnungTitel);
       wrap.appendChild(el("div", { class: "blockband" },
         PACKORDNUNG_GRUPPEN.map(([gk, titel, eintraege]) => gruppenZeile(gk, titel, eintraege))));
 
-      /* Ausrüstung: unverändert – alle Kategorien als unabhängig auf- und
-         zuklappbare Karten. */
-      gruppe("Ausrüstung", ausruestung.map(([t, p, k]) =>
+      gruppe("Packliste", ausruestung.map(([t, p, k]) =>
         faltHakenliste(t, p, k, false, 0, offeneListe === k)));
     }
   }
