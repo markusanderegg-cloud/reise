@@ -1,3 +1,7 @@
+<!doctype html>
+<html lang="de"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Familien-Wichteln</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&display=swap">
@@ -35,6 +39,7 @@
   --f1: #E86A80; --f2: #6FB3D6; --f3: #A8C25A; --f4: #C79AD8; --f5: #E0B15A;
   color-scheme: dark;
 }
+[hidden] { display: none !important; }
 * { box-sizing: border-box; }
 body {
   background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.5;
@@ -117,6 +122,7 @@ dl.facts dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
   @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 }
 </style>
+</head><body>
 
 <div class="wrap">
   <header style="display:flex;flex-direction:column;gap:8px">
@@ -548,3 +554,4 @@ dl.facts dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
   renderGroups(); updateDrawButton(); renderResults(); checkHash();
 })();
 </script>
+</body></html>
