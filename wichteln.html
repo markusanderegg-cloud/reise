@@ -117,6 +117,7 @@ dl.facts dt { color: var(--muted); font-size: 0.875rem; }
 dl.facts dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
 .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); background: var(--fg); color: var(--bg); padding: 10px 16px; border-radius: 999px; font-size: 0.9rem; font-weight: 600; z-index: 20; }
 .foot { color: var(--muted); font-size: 0.8125rem; max-width: 60ch; }
+body.receiver .tabs, body.receiver #panel-draw, body.receiver #code-card, body.receiver .foot { display: none !important; }
 @media (prefers-reduced-motion: no-preference) {
   .los { animation: rise 0.25s ease-out; }
   @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
@@ -126,9 +127,9 @@ dl.facts dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
 
 <div class="wrap">
   <header style="display:flex;flex-direction:column;gap:8px">
-    <p class="eyebrow">Wichteln für mehrere Familien</p>
-    <h1>Familien-Wichteln</h1>
-    <p class="lead">Ihr tragt die Namen ein, die Seite lost aus. Jede Person bekommt per WhatsApp einen eigenen Link und sieht nur ihr eigenes Los. Auch wer auslost, erfährt die anderen Lose nicht.</p>
+    <p class="eyebrow" id="hd-eyebrow">Wichteln für mehrere Familien</p>
+    <h1 id="hd-title">Familien-Wichteln</h1>
+    <p class="lead" id="hd-lead">Ihr tragt die Namen ein, die Seite lost aus. Jede Person bekommt per WhatsApp einen eigenen Link und sieht nur ihr eigenes Los. Auch wer auslost, erfährt die anderen Lose nicht.</p>
   </header>
 
   <div class="tabs" role="tablist">
@@ -196,7 +197,7 @@ dl.facts dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
   </div>
 
   <div class="panel" id="panel-los" role="tabpanel" aria-labelledby="tab-los" hidden>
-    <section class="card">
+    <section class="card" id="code-card">
       <div class="card-head">
         <h2>Dein Los öffnen</h2>
         <p class="hint">Hast du einen Link bekommen, siehst du dein Los hier automatisch. Sonst füge den Code aus der Nachricht ein.</p>
@@ -544,10 +545,23 @@ dl.facts dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
   $('#tab-draw').addEventListener('click', function () { selectTab('draw'); });
   $('#tab-los').addEventListener('click', function () { selectTab('los'); });
 
+  function receiverMode(on) {
+    document.body.classList.toggle('receiver', on);
+    if (on) {
+      $('#hd-eyebrow').textContent = 'Wichteln';
+      $('#hd-title').textContent = 'Dein Wichtel-Los';
+      $('#hd-lead').textContent = 'Tippe auf den Knopf, um zu sehen, wen du beschenkst. Verrate es niemandem.';
+    }
+  }
   function checkHash() {
     var h = '';
     try { h = (location.hash || '').replace(/^#/, ''); } catch (e) {}
-    if (h && findToken(h)) { selectTab('los'); $('#code-in').value = h; openFrom(h, true); }
+    if (!h) return;
+    if (findToken(h)) { receiverMode(true); selectTab('los'); $('#code-in').value = h; openFrom(h, true); }
+    else if (h.length > 10) {
+      selectTab('los'); $('#code-in').value = h;
+      showMsg($('#code-msg'), 'Der Link ist unvollständig. Füge den Code aus der Nachricht hier ein.');
+    }
   }
   window.addEventListener('hashchange', checkHash);
 
