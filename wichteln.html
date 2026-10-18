@@ -548,9 +548,8 @@ body.receiver .tabs, body.receiver #panel-draw, body.receiver #code-card, body.r
   function receiverMode(on) {
     document.body.classList.toggle('receiver', on);
     if (on) {
-      $('#hd-eyebrow').textContent = 'Wichteln';
-      $('#hd-title').textContent = 'Dein Wichtel-Los';
-      $('#hd-lead').textContent = 'Tippe auf den Knopf, um zu sehen, wen du beschenkst. Verrate es niemandem.';
+      $('#hd-eyebrow').hidden = true;
+      $('#hd-lead').textContent = 'Dieses Jahr wichteln wir online. Jede Person hat heimlich einen Namen gezogen und weiss nicht, von wem sie selbst beschenkt wird. Tippe unten auf «Los aufdecken», dann siehst du, wen du beschenkst.';
     }
   }
   function checkHash() {
