@@ -551,6 +551,9 @@ body.receiver .tabs, body.receiver #panel-draw, body.receiver #code-card, body.r
     document.body.classList.toggle('receiver', on);
     if (on) {
       $('#hd-eyebrow').hidden = true;
+      var lead = $('#hd-lead'), panel = $('#panel-los');
+      lead.style.marginTop = '16px';
+      panel.parentNode.insertBefore(lead, panel.nextSibling);
       $('#hd-lead').textContent = 'Dieses Jahr wichteln wir online. Jede Person hat heimlich einen Namen gezogen und weiss nicht, von wem sie selbst beschenkt wird. Tippe unten auf «Los aufdecken», dann siehst du, wen du beschenkst.';
     }
   }
