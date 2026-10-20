@@ -197,6 +197,10 @@ body.receiver #info-after { display: block; text-align: center; margin-inline: a
       </label>
       <p class="hint">Der Link kommt in jede Nachricht. Wenn das Feld leer ist oder der Link nicht stimmt, füge hier den Link ein, den du zu dieser Seite hast. Ohne Link steht nur der Code in der Nachricht.</p>
       <ul class="res-list" id="results"></ul>
+      <div id="overview-box" style="display:flex;flex-direction:column;gap:10px">
+        <button type="button" class="link" id="show-overview">Übersicht anzeigen (nur für Sophie)</button>
+        <ul class="res-list" id="overview" hidden></ul>
+      </div>
       <div id="fallback" hidden style="display:flex;flex-direction:column;gap:6px">
         <p class="hint">Kopieren hat hier nicht geklappt. Markiere den Text und kopiere ihn von Hand:</p>
         <textarea id="fallback-text" readonly></textarea>
@@ -477,6 +481,7 @@ body.receiver #info-after { display: block; text-align: center; margin-inline: a
     return lines.join('\n');
   }
   function renderResults() {
+    ovReset();
     var card = $('#results-card');
     card.hidden = !state.results.length;
     $('#results').innerHTML = state.results.map(function (res, i) {
@@ -511,6 +516,32 @@ body.receiver #info-after { display: block; text-align: center; margin-inline: a
     try {
       navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); });
     } catch (err) { fallbackCopy(text); }
+  });
+
+  /* ---------- Übersicht (nur für die Auslosende) ---------- */
+  var ovArmed = false, ovTimer = null;
+  function ovReset() {
+    ovArmed = false; clearTimeout(ovTimer);
+    var list = $('#overview'), btn = $('#show-overview');
+    list.hidden = true; list.innerHTML = '';
+    btn.textContent = 'Übersicht anzeigen (nur für Sophie)';
+  }
+  $('#show-overview').addEventListener('click', function () {
+    var list = $('#overview'), btn = $('#show-overview');
+    if (!list.hidden) { ovReset(); return; }
+    if (!ovArmed) {
+      ovArmed = true;
+      btn.textContent = 'Achtung, du siehst alle Lose. Nochmals tippen zum Anzeigen';
+      clearTimeout(ovTimer); ovTimer = setTimeout(ovReset, 6000);
+      return;
+    }
+    ovArmed = false; clearTimeout(ovTimer);
+    list.innerHTML = state.results.map(function (res) {
+      var d = readToken(res.token);
+      return '<li class="res" style="--fam:var(--f' + ((res.fam % 5) + 1) + ')"><div class="res-top"><strong>' + esc(res.name) + ' beschenkt ' + esc(d ? d.target : '?') + '</strong></div></li>';
+    }).join('');
+    list.hidden = false;
+    btn.textContent = 'Übersicht verbergen';
   });
 
   /* ---------- Mein Los ---------- */
