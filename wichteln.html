@@ -119,6 +119,12 @@ dl.facts dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
 .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); background: var(--fg); color: var(--bg); padding: 10px 16px; border-radius: 999px; font-size: 0.9rem; font-weight: 600; z-index: 20; }
 .foot { color: var(--muted); font-size: 0.8125rem; max-width: 60ch; }
 body.receiver .tabs, body.receiver #panel-draw, body.receiver #code-card, body.receiver .foot { display: none !important; }
+body.receiver header { align-items: center; text-align: center; }
+body.receiver .elf { margin-inline: auto; }
+body.receiver .ticket { text-align: center; }
+body.receiver #hd-lead { display: none; }
+#info-after { display: none; }
+body.receiver #info-after { display: block; text-align: center; margin-inline: auto; }
 @media (prefers-reduced-motion: no-preference) {
   .los { animation: rise 0.25s ease-out; }
   @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
@@ -213,6 +219,7 @@ body.receiver .tabs, body.receiver #panel-draw, body.receiver #code-card, body.r
     <section id="reveal" hidden></section>
   </div>
 
+  <p class="lead" id="info-after">Dieses Jahr wichteln wir online. Jede Person hat heimlich einen Namen gezogen und weiss nicht, von wem sie selbst beschenkt wird. Tippe oben auf «Los aufdecken», dann siehst du, wen du beschenkst.</p>
   <p class="foot">Die Codes sind verschleiert, aber nicht streng verschlüsselt. Für eine Familienrunde reicht das, solange niemand absichtlich versucht, sie zu knacken. Wer auslost, schaut einfach nicht in die Codes.</p>
 </div>
 <div class="toast" id="toast" role="status" hidden></div>
@@ -549,10 +556,7 @@ body.receiver .tabs, body.receiver #panel-draw, body.receiver #code-card, body.r
 
   function receiverMode(on) {
     document.body.classList.toggle('receiver', on);
-    if (on) {
-      $('#hd-eyebrow').hidden = true;
-      $('#hd-lead').textContent = 'Dieses Jahr wichteln wir online. Jede Person hat heimlich einen Namen gezogen und weiss nicht, von wem sie selbst beschenkt wird. Tippe unten auf «Los aufdecken», dann siehst du, wen du beschenkst.';
-    }
+    if (on) { $('#hd-eyebrow').hidden = true; }
   }
   function checkHash() {
     var h = '';
