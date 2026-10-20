@@ -118,15 +118,6 @@ dl.facts dt { color: var(--muted); font-size: 0.875rem; }
 dl.facts dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
 .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); background: var(--fg); color: var(--bg); padding: 10px 16px; border-radius: 999px; font-size: 0.9rem; font-weight: 600; z-index: 20; }
 .foot { color: var(--muted); font-size: 0.8125rem; max-width: 60ch; }
-/* Empfänger-Ansicht: alles mittig, ruhig, gleiche Breite */
-body.receiver .wrap { max-width: 420px; gap: 22px; }
-body.receiver header { align-items: center; text-align: center; gap: 18px !important; }
-body.receiver h1 { font-size: 2.1rem; }
-body.receiver .elf { max-width: 240px; margin: 0 auto; box-shadow: 0 10px 28px rgba(60, 40, 30, 0.18); }
-body.receiver .ticket { text-align: center; }
-body.receiver #hd-lead { text-align: center; margin: 0 auto; font-size: 0.98rem; line-height: 1.6; }
-body.receiver #los { text-align: center; align-items: center; }
-body.receiver #hide-los { align-self: center !important; }
 body.receiver .tabs, body.receiver #panel-draw, body.receiver #code-card, body.receiver .foot { display: none !important; }
 @media (prefers-reduced-motion: no-preference) {
   .los { animation: rise 0.25s ease-out; }
@@ -152,12 +143,12 @@ body.receiver .tabs, body.receiver #panel-draw, body.receiver #code-card, body.r
     <section class="card">
       <div class="card-head">
         <h2>1. Wer macht mit?</h2>
-        <p class="hint">Die Namen unten sind Beispiele. Überschreibe sie mit euren Vornamen. Nur Vornamen, die in der ganzen Runde eindeutig sind.</p>
+        <p class="hint">Prüfe die Namen. Jeder Vorname darf nur einmal vorkommen.</p>
       </div>
       <div id="groups" style="display:flex;flex-direction:column;gap:12px"></div>
       <div style="display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between">
         <button type="button" class="link" id="add-fam">+ Familie hinzufügen</button>
-        <button type="button" class="link" id="clear-names" style="color:var(--muted)">Beispielnamen leeren</button>
+        <button type="button" class="link" id="clear-names" style="color:var(--muted)">Alle Namen leeren</button>
       </div>
       <p class="count" id="count" aria-live="polite"></p>
     </section>
@@ -234,17 +225,17 @@ body.receiver .tabs, body.receiver #panel-draw, body.receiver #code-card, body.r
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
   };
-  var KEY = 'familien-wichteln-v1';
+  var KEY = 'familien-wichteln-v2';
 
   function defaults() {
     return {
       families: [
-        { name: 'Familie 1', members: ['Anna', 'Ben', 'Clara'] },
-        { name: 'Familie 2', members: ['David', 'Eva', 'Felix'] },
-        { name: 'Familie 3', members: ['Greta', 'Hans', 'Ida'] },
-        { name: 'Familie 4', members: ['Jana', 'Karl', 'Lena'] }
+        { name: 'Familie Anderegg Känerkinden', members: ['Kurt', 'Claudia', 'Philipp', 'Melanie', 'Nicole'] },
+        { name: 'Familie Studer', members: ['Claudeli', 'Roland', 'Robin', 'Elena'] },
+        { name: 'Familie Anderegg Gelti', members: ['Regina', 'Markus'] },
+        { name: 'Familie Vogel', members: ['Brigitte', 'Max'] }
       ],
-      rules: { budget: '30', occasion: 'Weihnachten 2026', note: '', cross: true, link: '' },
+      rules: { budget: 'max. CHF 50', occasion: 'Weihnachten 2026', note: '', cross: true, link: '' },
       results: []
     };
   }
@@ -392,36 +383,36 @@ body.receiver .tabs, body.receiver #panel-draw, body.receiver #code-card, body.r
     var t = e.target;
     if (t.dataset.fam !== undefined) state.families[+t.dataset.fam].name = t.value;
     else if (t.dataset.mem !== undefined) { var p = t.dataset.mem.split(':'); state.families[+p[0]].members[+p[1]] = t.value; }
-    save(); updateCount(); invalidateResults();
+    save(); updateCount();
   });
   $('#groups').addEventListener('keydown', function (e) {
     if (e.key === 'Enter' && e.target.dataset.mem !== undefined) {
       e.preventDefault();
       var p = e.target.dataset.mem.split(':'), fi = +p[0];
       state.families[fi].members.splice(+p[1] + 1, 0, '');
-      save(); invalidateResults(); renderGroups(); focusId('mem-' + fi + '-' + (+p[1] + 1));
+      save(); renderGroups(); focusId('mem-' + fi + '-' + (+p[1] + 1));
     }
   });
   $('#groups').addEventListener('click', function (e) {
     var b = e.target.closest('button'); if (!b) return;
     if (b.dataset.addMem !== undefined) {
       var fi = +b.dataset.addMem; state.families[fi].members.push('');
-      save(); invalidateResults(); renderGroups(); focusId('mem-' + fi + '-' + (state.families[fi].members.length - 1));
+      save(); renderGroups(); focusId('mem-' + fi + '-' + (state.families[fi].members.length - 1));
     } else if (b.dataset.delMem !== undefined) {
       var p = b.dataset.delMem.split(':'); state.families[+p[0]].members.splice(+p[1], 1);
-      save(); invalidateResults(); renderGroups();
+      save(); renderGroups();
     } else if (b.dataset.delFam !== undefined) {
       state.families.splice(+b.dataset.delFam, 1);
-      save(); invalidateResults(); renderGroups();
+      save(); renderGroups();
     }
   });
   $('#add-fam').addEventListener('click', function () {
     state.families.push({ name: 'Familie ' + (state.families.length + 1), members: ['', ''] });
-    save(); invalidateResults(); renderGroups(); focusId('mem-' + (state.families.length - 1) + '-0');
+    save(); renderGroups(); focusId('mem-' + (state.families.length - 1) + '-0');
   });
   $('#clear-names').addEventListener('click', function () {
     state.families.forEach(function (f) { f.members = f.members.map(function () { return ''; }); });
-    save(); invalidateResults(); renderGroups(); focusId('mem-0-0');
+    save(); renderGroups(); focusId('mem-0-0');
   });
 
   /* ---------- Regeln ---------- */
@@ -435,12 +426,6 @@ body.receiver .tabs, body.receiver #panel-draw, body.receiver #code-card, body.r
 
   /* ---------- Auslosen & Verschicken ---------- */
   var armed = false, armTimer = null;
-  function invalidateResults() {
-    if (!state.results.length) return;
-    state.results = []; armed = false; clearTimeout(armTimer);
-    save(); updateDrawButton(); renderResults();
-    showMsg($('#draw-msg'), 'Die Namen wurden geändert. Die alte Liste unten war nicht mehr gültig und wurde gelöscht. Bitte neu auslosen.');
-  }
   function showMsg(el, text) { el.textContent = text; el.hidden = !text; }
   function updateDrawButton() { $('#do-draw').textContent = state.results.length ? 'Neu auslosen' : 'Auslosen'; }
 
@@ -566,8 +551,6 @@ body.receiver .tabs, body.receiver #panel-draw, body.receiver #code-card, body.r
     document.body.classList.toggle('receiver', on);
     if (on) {
       $('#hd-eyebrow').hidden = true;
-      var lead = $('#hd-lead'), panel = $('#panel-los');
-      panel.parentNode.insertBefore(lead, panel.nextSibling);
       $('#hd-lead').textContent = 'Dieses Jahr wichteln wir online. Jede Person hat heimlich einen Namen gezogen und weiss nicht, von wem sie selbst beschenkt wird. Tippe unten auf «Los aufdecken», dann siehst du, wen du beschenkst.';
     }
   }
@@ -583,11 +566,6 @@ body.receiver .tabs, body.receiver #panel-draw, body.receiver #code-card, body.r
   }
   window.addEventListener('hashchange', checkHash);
 
-  (function () {
-    var cur = people().map(function (p) { return p.name; }).sort().join('|');
-    var old = state.results.map(function (r) { return r.name; }).sort().join('|');
-    if (state.results.length && cur !== old) invalidateResults();
-  })();
   renderGroups(); updateDrawButton(); renderResults(); checkHash();
 })();
 </script>
